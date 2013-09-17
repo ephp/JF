@@ -1,0 +1,22 @@
+<h1>Benvenuto {{ user.nome }}</h1>.
+
+<p>Sei stato registrato come <b>SuperAmministratore</b> dei servizi di</p>
+
+<h2>{{ user.cliente.nome }}</h2>
+
+<p>Da questo account potrai:
+
+    <ul>
+        <li>Gestire utente e ruoli relative a {{ user.cliente.nome }}</li>
+        <li>Segnalare Bug</li>
+        <li>Gestire pacchetti e licenze</li>
+    </ul>
+</p>
+
+<p>Per accedere al tuo account vai su<br/>
+    
+<a href="{{ url('fos_user_security_login') }}">{{ url('fos_user_security_login') }}</a><br/>
+
+Username: <b>{{ user.username }}</b><br/>
+Password: <b>{{ password }}</b><br/>
+</p>

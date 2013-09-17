@@ -2,15 +2,18 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
+parameters:
+    email_robot: %mailer_username%
+
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: ~
-    form:            ~
-    csrf_protection: ~
+        strict_requirements: "%kernel.debug%"
+    form:            true
+    csrf_protection: true
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -30,7 +33,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    #bundles:        [ ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -64,3 +67,41 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+    
+#GEDMO SLUG
+#https://github.com/stof/StofDoctrineExtensionsBundle/blob/master/Resources/doc/index.rst
+stof_doctrine_extensions:
+    default_locale: it_IT
+    orm:
+        default: 
+            timestampable:  true
+            sluggable:      true
+            translatable:   true
+            
+# FOS User
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: JF\ACLBundle\Entity\Gestore
+    service:
+        mailer:                 fos_user.mailer.default
+        email_canonicalizer:    fos_user.util.canonicalizer.default
+        username_canonicalizer: fos_user.util.canonicalizer.default
+        user_manager:           fos_user.user_manager.default
+    registration:
+        confirmation:
+            enabled:    true
+            template:   FOSUserBundle:Email:registrazioneAccount.txt.twig
+            from_email:
+                address:        %mailer_username%
+                sender_name:    %mailer_user%    
+
+ephp_acl:
+  user_class: JF\ACLBundle\Entity\Gestore
+  access_log:
+    enable: true
+    class: JF\ACLBundle\Entity\AccessLogGestore
+    
+knp_menu:
+    twig: 
+        template: ::knp_menu_sidebar.html.twig

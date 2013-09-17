@@ -1,0 +1,50 @@
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+{#---------------------------------- 
+ * 
+ *  al momento carico qui il validate, che altrimenti non mi prende il validation
+ * 
+ * ----------------------------------#}	
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+{% javascripts  
+    '../app/Resources/public/js/plugins/jquery/jquery-1.9.1.min.js'
+    '../app/Resources/public/js/plugins/jquery/jquery-ui-1.10.1.custom.min.js'
+    '../app/Resources/public/js/plugins/jquery/jquery-migrate-1.1.1.min.js'
+    '../app/Resources/public/js/plugins/jquery/globalize.js'
+    '../app/Resources/public/js/plugins/other/excanvas.js'
+    
+    '../app/Resources/public/js/plugins/other/jquery.mousewheel.min.js'
+        
+    '../app/Resources/public/js/plugins/bootstrap/bootstrap.min.js'
+    
+    '../app/Resources/public/js/plugins/cookies/jquery.cookies.2.2.0.min.js'    
+    
+    '../app/Resources/public/js/plugins/jflot/jquery.flot.js'    
+    '../app/Resources/public/js/plugins/jflot/jquery.flot.stack.js'    
+    '../app/Resources/public/js/plugins/jflot/jquery.flot.pie.js'
+    '../app/Resources/public/js/plugins/jflot/jquery.flot.resize.js'
+    
+    '../app/Resources/public/js/plugins/sparklines/jquery.sparkline.min.js'        
+    
+    '../app/Resources/public/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js'
+    
+    '../app/Resources/public/js/plugins/uniform/jquery.uniform.min.js'
+    '../app/Resources/public/js/plugins/datatables/jquery.dataTables.min.js'
+    
+    '../app/Resources/public/js/plugins/shbrush/XRegExp.js'
+    '../app/Resources/public/js/plugins/shbrush/shCore.js'
+    '../app/Resources/public/js/plugins/shbrush/shBrushXml.js'
+    '../app/Resources/public/js/plugins/shbrush/shBrushJScript.js'
+    '../app/Resources/public/js/plugins/shbrush/shBrushCss.js'    
+    
+    '../app/Resources/public/js/plugins.js'
+    '../app/Resources/public/js/charts.js'
+
+    '../app/Resources/public/js/sugar.min.js'
+    
+    '../app/Resources/public/js/actions.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+    

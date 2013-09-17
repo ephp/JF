@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
+<html lang="it">
+    <head>        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />    
+        <!--[if gt IE 8]>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
+        <![endif]--> 
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% include "::layout/stylesheets.html.twig" %}
+        {% block css %}{% endblock %}
+
+        <script type="text/css">
+            {% block inline_css %}{% endblock %}
+        </script>
+        {% include "::layout/javascript.html.twig" %}
+        {% block js %}{% endblock %}
+        <script type="text/javascript">
+            {% block inline_js %}{% endblock %}
+            $(document).ready(function() {
+                {% block ready_js %}{% endblock %}
+            });
+        </script>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div id="loader"><img src="{{ asset('/img/loader.gif') }}"/></div>
+        <div class="wrapper">
+            <div class="sidebar">
+                {% block sidebar %}
+                    <nav append="navigation bordered">
+                        {{ knp_menu_render('sidebar') }}
+                    </nav>
+                {% endblock %}
+            </div>
+            <div class="body">
+                <ul class="navigation">
+                    {% block navigation %}{% endblock %}
+                </ul>
+                <div class="content">
+                    {% block body %}{% endblock %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="dialog" id="source" style="display: none; z-index: 500;" title="Help"></div>
     </body>
 </html>

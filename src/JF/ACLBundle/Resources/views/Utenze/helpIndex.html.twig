@@ -1,0 +1,195 @@
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-info"></span>
+    </div>
+    <div class="icon">
+        <span class="ico-group"></span>
+    </div>
+    <h1>Utenze <small>Guida in linea</small></h1>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                La pagina permette di gestire le utenze di <b>{{ app.user.cliente.nome }}</b>.<br/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span3">
+        <div class="block">
+            <div class="head">                                
+                <h2>Operazioni</h2>
+            </div>                                        
+            <div class="data-fluid">
+                <ol class="rollover" rel="u" default="u-base">
+                    <li rel="u-new">Creare nuove utenze</li>
+                    <li rel="u-role">Assegnare ruoli</li>
+                    <li rel="u-edit">Modificare i dati</li>
+                    <li rel="u-stop">Disabilitare un'utenza</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="block u u-base">
+            <div class="head">                                
+                <h3>Clicca sulle operazioni per vederne i dettagli</h3>
+            </div>                                        
+        </div>
+
+        <div class="block u u-new no-display">
+            <div class="head">                                
+                <h2>Creare nuove utenze</h2>
+            </div>                                        
+            <div class="data-fluid">
+                Tramite il pulsante <span class="label label-important">Nuova utenza</span> è possibile 
+                registrare un nuovo utente per <b>{{ app.user.cliente.nome }}</b>.<br/>
+                Il numero massimo di utenze è soggetto a licenza. Questa licenza non ha scadenza, 
+                ed è possibile scegliere fra diversi pacchetti:
+                <table class="table todo">
+                    <thead>
+                        <tr>
+                            <th>Pacchetto</th>
+                            <th>Numero utenze</th>
+                            <th>Prezzo</th>
+                            <th>Acquista</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Free</b></td>
+                            <td>1</td>
+                            <td>Gratis</td>
+                            <td><span class="label label-important">Profilo attuale</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Small</b></td>
+                            <td>2-5</td>
+                            <td>100 €</td>
+                            <td><span class="label label-green">Acquista</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Medium</b></td>
+                            <td>6-10</td>
+                            <td>175 €</td>
+                            <td><span class="label label-green">Acquista</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Big</b></td>
+                            <td>11-20</td>
+                            <td>250 €</td>
+                            <td><span class="label label-green">Acquista</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Unlimited</b></td>
+                            <td>20+</td>
+                            <td>500 €</td>
+                            <td><span class="label label-green">Acquista</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            
+        <div class="block u u-role no-display">
+            <div class="head">                                
+                <h2>Assegnare ruoli</h2>
+            </div>                                        
+            <div class="data-fluid">
+                I ruoli possono essere assegnati solo dopo la creazione dell'utente.<br/>
+                Si opera direttamente dalla tabella riassuntiva, agendo sulle ultime colonne.<br/>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Icona</th>
+                            <th>Stato attuale</th>
+                            <th>Funzionalità</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" class="button green">
+                                    <div class="icon"><span class="ico-check"></span></div>
+                                </a>
+                            </td>
+                            <td>Ruolo attivo</td>
+                            <td>Cliccando sull'icona si disabilita il ruolo selezionato</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" class="button red">
+                                    <div class="icon"><span class="ico-blocked"></span></div>
+                                </a>
+                            </td>
+                            <td>Ruolo disattivo</td>
+                            <td>Cliccando sull'icona si abilita il ruolo selezionato</td>
+                        </tr>
+                    </tbody>
+                </table>
+                È possibile leggere il nome esteso del ruolo, andando col mouse sulla sigla.<br/>
+                Non è possibile assegnare o togliere ruoli a utenti disabilitati.<br/>
+            </div>
+        </div>
+            
+        <div class="block u u-edit no-display">
+            <div class="head">                                
+                <h2>Modificare i dati</h2>
+            </div>                                        
+            <div class="data-fluid">
+                La modifica dei dati utente si opera tramite l'icona
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" class="button yellow">
+                                    <div class="icon"><span class="ico-pencil"></span></div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                Da quest'area è possibile modificare tutti i dati immessi in fase di registrazione.<br/>
+            </div>
+        </div>
+            
+        <div class="block u u-stop no-display">
+            <div class="head">                                
+                <h2>Disabilitare un'utenza</h2>
+            </div>                                        
+            <div class="data-fluid">
+                Per bloccare un utente basta cliccare l'icona
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" class="button red">
+                                    <div class="icon"><span class="ico-trash"></span></div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                L'utente non potrà più accedere finché non si clicca sull'icona
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" class="button green">
+                                    <div class="icon"><span class="ico-refresh"></span></div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                Le utenze non vengono mai cancellate per mantenere coerente lo storico delle azioni.<br/>
+                Non è possibile disabilitare sé stessi.<br/>
+                Gli utenti disabilitiati contribuiscono ugualmente al numero di utenze vive nel sistema.<br/>
+            </div>
+        </div>
+            
+    </div>
+</div>
+

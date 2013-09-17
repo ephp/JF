@@ -1,0 +1,62 @@
+<!-- RIGA ATTIVA -->
+<tr id="riga_{{ entity.entity.id }}" class="r cg ca bg-{% if entity.entity.priorita %}{{ entity.entity.priorita.css }}{% else %}white{% endif %}" titolo="{{ entity.tpa }} {{ entity.claimant }}" riga="{{ entity.entity.id }}" gestore="{{ entity.entity.gestore.sigla }}" priorita="{% if entity.entity.priorita %}{{ entity.entity.priorita.id }}{% else %}0{% endif %}" stato="{% if entity.entity.statoOperativo %}{{ entity.entity.statoOperativo.id }}{% else %}0{% endif %}" {% if entity.entity.priorita and entity.entity.priorita.priorita == 'definita' %}style="display: none;"{% endif %}>
+    {% if gestore is defined and gestore %}
+        <th style="text-align: right;">{{ index }}</th>
+        <td id="star_{{ entity.entity.id }}" style="background-color: transparent;" class="{% if entity.entity.primaPagina %}cal_important{% else %}cal_normal{% endif %}" onclick="primaPagina({{ entity.entity.id }})"></td>
+    {% endif %}
+    <td style="text-align: right">{{ entity.giorni }}</td>
+    {% if mode <= 1 %}
+        <td style="text-align: center"><a href="{{ path('tabellone', {'ospedale': entity.entity.ospedale.gruppo}) }}"><abbr title="{{ entity.entity.ospedale.nome }}">{{ entity.entity.ospedale.sigla|upper }}</abbr></a></td>
+    {% endif %}
+    {% if mode <= 2 %}
+        <td style="text-align: center"><a href="{{ path('tabellone', {'ospedale': entity.entity.ospedale.gruppo, 'anno': entity.entity.anno}) }}"><abbr title="{{ entity.entity.ospedale.nome }} 20{{ entity.entity.anno2 }}">{{ entity.entity.anno2 }}</abbr></a></td>
+    {% endif %}
+    <td style="text-align: center"><input type="text" class="autoupdate auto_date" pratica="{{ entity.entity.id }}" name="dasc" value="{% if entity.entity.dasc %}{{ entity.entity.dasc|date('d/m/Y') }}{% endif%}"/></td>
+    <td style="text-align: center">{{ entity.entity.giudiziale }}</td>
+    <td style="text-align: center">{{ entity.entity.ospedale.sigla|upper }}/{{ entity.entity.anno2 }}/{{ entity.entity.tpa }}</td>
+    <td>{{ entity.entity.claimant }}</td>
+    {% if gestore is not defined or not gestore %}
+        <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox"><abbr title="{{ entity.entity.gestore.nome }}">{{ entity.entity.gestore.sigla }}</abbr></a></td>
+    {% endif %}
+    <td style="text-align: center">{{ entity.entity.soi }}</td>
+    <td nowrap><input type="text" class="autoupdate currency" readonly="readonly" pratica="{{ entity.entity.id }}" name="amountReserved" value="{% if entity.entity.amountReserved >= 0 %}{{ entity.entity.amountReserved }}{% else %}NP{% endif %}"/> €</td>
+    <td style="text-align: center"><textarea class="autoupdate" style="height: 32px; width: 250px;" pratica="{{ entity.entity.id }}" name="note">{{ entity.entity.note }}</textarea></td>
+    <td style="text-align: center" class="chp"><a href="#fb_cambia_priorita" class="fancybox">{% if entity.entity.priorita %}{{ entity.entity.priorita.priorita }}{% else %}N/A{% endif %}</a></td>
+    <td style="text-align: center" class="chs"><a href="#fb_stato_operativo" class="fancybox">{% if entity.entity.statoOperativo %}{{ entity.entity.statoOperativo.stato }}{% else %}Nuovo{% endif %}</a></td>
+    <td>
+        <button type="button" onclick="javascript:$('#detail_{{ entity.entity.id }}').toggle()">
+            Dettagli
+        </button>
+        <button type="button" onclick="javascript:window.location='{{ path('tabellone_show', {'id': entity.entity.id}) }}'">
+            Apri
+        </button>
+    </td>
+</tr>
+<tr style="display: none" class="r detail" id="detail_{{ entity.entity.id }}">
+    <td colspan="{{ colspan }}">
+        <table class="records_list">
+            <thead>
+                <tr>
+                    <th>First Reserve</th>
+                    <th>Sa</th>
+                    <th>Offerta Nostra</th>
+                    <th>Offerta Loro</th>
+                    <th>Recupero Offerta Nostra</th>
+                    <th>Recupero Offerta Loro</th>
+                    <th>Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="firstReserve" value="{{ entity.entity.firstReserve }}"/> €</td>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="sa" value="{{ entity.entity.sa }}"/> €</td>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="offertaNostra" value="{{ entity.entity.offertaNostra }}"/> €</td>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="offertaLoro" value="{{ entity.entity.offertaLoro }}"/> €</td>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="recuperoOffertaNostra" value="{{ entity.entity.recuperoOffertaNostra }}" id="recuperoOffertaNostra_{{ entity.entity.id }}" /> <span class="um" target="recuperoOffertaNostra_{{ entity.entity.id }}"></span></td>
+                    <td><input type="text" class="autoupdate currency" pratica="{{ entity.entity.id }}" name="recuperoOffertaLoro" value="{{ entity.entity.recuperoOffertaLoro }}" id="recuperoOffertaLoro_{{ entity.entity.id }}"/>  <span class="um" target="recuperoOffertaLoro_{{ entity.entity.id }}"></span></td>
+                    <td>{% if entity.entity.stato %}{{ entity.entity.stato.stato }}{% endif%}</td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>

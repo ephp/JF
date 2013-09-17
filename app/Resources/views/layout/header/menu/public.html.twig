@@ -1,0 +1,61 @@
+<!-- NAVIGATION -->
+<div class="nine columns">
+    <nav class="top-bar">
+        <ul>
+            <!-- RESPONSIVE NAVIGATION -->
+            <li class="name">
+                <h1><a href="#">Apri menu</a></h1>
+            </li>
+            <li class="toggle-topbar"><a href="#"></a></li>
+            <!-- END RESPONSIVE NAVIGATION -->
+        </ul>
+        <section>
+            <ul class="right">
+                <li class="no-dropdown"><a {% if menu_active == 'home' %}class="active"{% endif %} href="{{ path('index') }}">Home</a></li>
+                <li class="has-dropdown"> <a {% if menu_active == 'progetto' %}class="active"{% endif %}href="javascript:void(0)">Il progetto</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('come_nasce') }}">Come nasce ARTEesistenza</a></li>
+                        <li><a href="{{ path('manifesto') }}">Il Manifesto</a></li>
+                        <li><a href="{{ path('dichiarazione_intenti') }}">Dichiarazione d'intenti</a></li>
+                        <li><a href="{{ path('progetto_adesioni') }}">Hanno aderito</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown"> <a {% if menu_active == 'luoghi' %}class="active"{% endif %} href="#">Luoghi e Eventi</a>
+                    <ul class="dropdown">
+                        <li><a href="columns.html">Luoghi aperti</a></li>
+                        <li><a href="typography.html">Luoghi chiusi</a></li>
+                        <li><a href="buttons.html">Eventi attuali</a></li>
+                        <li><a href="tabs_and_toggles.html">Eventi passati</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown"> <a {% if menu_active == 'social' %}class="active"{% endif %} href="#">Social</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('blog') }}">Blog ARTEesistenza</a></li>
+                        <li><a href="single_post.html">Discussioni</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown"> <a {% if menu_active == 'galleria' %}class="active"{% endif %} href="#">Gallerie</a>
+                    <ul class="dropdown">
+                        <li><a href="portfolio_2_col.html" class="">Portfolio 2 Columns</a></li>
+                        <li><a href="portfolio_3_col.html">Portfolio 3 Columns</a></li>
+                        <li><a href="portfolio_4_col.html">Portfolio 4 Columns</a></li>
+                        <li><a href="portfolio_single.html">Single Project</a></li>
+                    </ul>
+                </li>
+                <li class="no-dropdown"><a {% if menu_active == 'contatti' %}class="active"{% endif %} href="contact.html">Contatti</a></li>
+                {% if not app.user %}
+                    <li class="has-dropdown"> <a href="#">Accedi</a>
+                        <ul class="dropdown">
+                            {% for owner in hwi_oauth_resource_owners() %}
+                                <li><a href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{{ path('_security_logout') }}">Esci</a></li>
+                {% endif %}
+                </ul>
+            </section>
+        </nav>
+    </div>
+    <!-- END NAVIGATION -->

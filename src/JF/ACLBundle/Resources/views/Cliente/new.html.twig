@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+{% form_theme form '::form_aries_layout.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-sale"></span>
+    </div>
+    <h1>Clienti <small>Nuovo cliente</small></h1>
+</div>
+{{ form_start(form) }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Dati anagrafici</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.nome) }}
+                    {{ form_row(form.partitaIva) }}
+                    {{ form_row(form.indirizzo) }}
+                    {{ form_row(form.citta) }}
+                    {{ form_row(form.cap) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Contatti</h2>
+                    <ul class="buttons">             
+                        <li><a href="#" onClick="source('help_{{ app.request.get('_route') }}'); return false;"><div class="icon"><span class="ico-info"></span></div></a></li>
+                    </ul>                                  
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.telefono) }}
+                    {{ form_row(form.cellulare) }}
+                    {{ form_row(form.fax) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.sito) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{{ form_end(form) }}
+
+<a href="{{ path('eph_clienti') }}">
+    <span class="label label-inverse">Torna indietro</span>
+</a>
+{% endblock %}

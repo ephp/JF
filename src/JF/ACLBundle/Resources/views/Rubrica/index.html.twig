@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+{% block js %}
+{% javascripts  
+    '@JFACLBundle/Resources/public/js/utenze/index.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+    
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-group"></span>
+    </div>
+    <h1>Rubrica</h1>
+</div>
+
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="span4">
+                <div class="input-prepend">
+                    <span class="add-on orange"><span class="icon-search icon-white"></span></span>
+                    <input type="text" class="live-filter" rel="u"/>                                                      
+                </div>
+            </div>
+            <div class="span8">
+                <div class="head">
+                    <ul class="buttons">
+                        <li><a href="#" onclick="source('help_{{ app.request.get('_route') }}'); return false;"><div class="icon"><span class="ico-info"></span></div></a></li>
+                    </ul>
+                </div>  
+            </div>
+        </div>  
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widgets">
+            {% for entity in entities %}
+                <div class="widget {% if entity.hasRole('R_SUPER') %}red{% else %}dblue{% endif %} icon u" livefilter="{{ entity.nome }} {{ entity.sigla }}">
+                    <div class="left">                                    
+                        <div class="icon">
+                            <span class="ico-user"></span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <h5>{{ entity.nome }}</h5>
+                        {{ entity.email }}<br/>
+                        tel. {{ entity.telefono }}<br/>
+                        sigla: {{ entity.sigla }}<br/>
+                    </div>
+                    <div class="bottom todo">
+                        <a href="alert('TODO')">Scrivi</a>
+                    </div>                            
+                </div>                        
+            {% endfor %}
+        </div>            
+    </div>
+</div>
+{% endblock %}

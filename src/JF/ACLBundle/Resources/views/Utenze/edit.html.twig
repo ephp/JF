@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+{% form_theme edit_form '::form_aries_layout.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-user"></span>
+    </div>
+    <h1>Utente <small>Nuovo</small></h1>
+</div>
+{{ form_start(edit_form) }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Anagrafica Utente</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(edit_form.sigla) }}
+                    {{ form_row(edit_form.firstname) }}
+                    {{ form_row(edit_form.telefono) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>&nbsp;</h2>
+                    <ul class="buttons">             
+                        <li><a href="#" onClick="source('help_{{ app.request.get('_route') }}'); return false;"><div class="icon"><span class="ico-info"></span></div></a></li>
+                    </ul>                                  
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(edit_form.email) }}
+                    {{ form_row(edit_form.lastname) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+{{ form_end(edit_form) }}
+<a href="{{ path('utenze') }}">
+    <span class="label label-inverse">Torna indietro</span>
+</a>
+{% endblock %}

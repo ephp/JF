@@ -1,0 +1,37 @@
+.todo:hover { 
+    opacity:0.4;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+.no-padding {
+    padding: 0px !important;
+}
+.padding-3 {
+    padding: 3px !important;
+}
+.padding-5 {
+    padding: 5px !important;
+}
+.padding-10 {
+    padding: 10px !important;
+}
+.no-margin {
+    margin: 0px !important;
+}
+.margin-3 {
+    margin: 3px !important;
+}
+.margin-5 {
+    margin: 5px !important;
+}
+.margin-10 {
+    margin: 10px !important;
+}
+.no-display {
+    display: none;
+}
+tr.stroke {
+    font-style: italic !important;
+}
+tr.stroke td {
+    color: #D3D3D3 !important;
+}

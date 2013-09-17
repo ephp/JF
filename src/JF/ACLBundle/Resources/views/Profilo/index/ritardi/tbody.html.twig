@@ -1,0 +1,7 @@
+{% if index is not defined %}
+    {% set index = 1 %}
+{% endif %}
+{% for entity in entities %}
+    {% include 'EphpGestoriBundle:Profilo:index/ritardi/riga.html.twig' %}
+    {% set index = index + 1 %}
+{% endfor %}

@@ -1,0 +1,18 @@
+Benvenuto {{ user.nome }}.
+
+Sei stato registrato come SUPERAMMINISTRATORE dei servizi di
+
+"{{ user.cliente.nome }}"
+
+Da questo account potrai
+
+* Gestire utente e ruoli relative a {{ user.cliente.nome }}
+* Segnalare Bug
+* Gestire pacchetti e licenze
+
+Per accedere al tuo account vai su
+
+{{ url('fos_user_security_login') }}
+
+Username: {{ user.username }}
+Password: {{ password }}

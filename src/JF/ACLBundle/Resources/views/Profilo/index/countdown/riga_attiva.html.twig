@@ -1,0 +1,117 @@
+<!-- RIGA ATTIVA -->
+<tr id="{{ prefisso }}_riga_{{ entity.id }}" {% if entity.gestore %}gestore="{{ entity.gestore.sigla }}"{% endif %} cd="{{ entity.id }}" titolo="{{ entity.email.subject }}">
+    <th style="text-align: right;">{{ index }}</th>
+    <td style="text-align: center;">{{ entity.giorniRimanenti }}</td>
+    <td>{{ entity.email.subject }}</td>
+    <td>{{ entity.email.fromName }}</td>
+    <td>
+        {% if entity.scheda %}
+            <button type="button" onclick="javascript:window.location='{{ path('tabellone_show', {'id': entity.scheda.id}) }}'">
+                Apri scheda
+                {{ entity.scheda.ospedale.sigla|upper }}/{{ entity.scheda.anno2 }}/{{ entity.scheda.tpa }}
+            </button>
+            <br/>
+            {{ entity.scheda.claimant }}
+        {% endif %}
+    </td>
+    {% if gest is defined %}
+        {% if entity.gestore or entity.responsedAt %}
+            <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox">{{ entity.gestore.sigla }}</a></td>
+        {% else %}
+            <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox">Assegna</a></td>
+        {% endif %}
+    {% endif %}
+    <td>
+        <button type="button" onclick="leggi('#{{ prefisso }}_riga_{{ entity.id }}_leggi');">
+            Leggi
+        </button>
+        {% if app.user.hasRole('ROLE_ADMIN') and not entity.gestore and not entity.responsedAt %}
+            <button type="button" onclick="if(confirm('Vuoi cancellare il countdown {{ entity.email.subject|upper }}')) { window.location='{{ path('countdown_delete', {'id': entity.id}) }}'; }">
+                Cancella
+            </button>
+        {% endif %}
+    </td>
+</tr>
+<tr id="{{ prefisso }}_riga_{{ entity.id }}_leggi" class="rh rh-{{ entity.id }}" style="display: none">
+    <th>&nbsp;</th>
+    <td colspan="{% if gest is defined %}5{% else %}4{% endif %}">
+        <div style="background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; overflow-y: scroll">
+            {{ entity.email.body.html|raw }}
+        </div>
+        {% if entity.email.body.attach|length > 0 %}
+            <dl>
+                <dt>Allegati</dt>
+                {% for allegato in entity.email.body.attach %}
+                    <dd><a target="_blank" href="{{ path('download_attach', {'email': allegato.body.id, 'id': allegato.id, 'name': allegato.filename}) }}">{{ allegato.filename }}</a></dd>
+                {% endfor %}
+            </dl>
+        {% endif %}
+    </td>
+    <td style="vertical-align: middle">
+        <button type="button" onclick="rispondi('#{{ prefisso }}_riga_{{ entity.id }}_rispondi');">
+            {% if entity.stato == 'C' %}Risposta{% else %}Rispondi{% endif %}
+        </button>
+        <button type="button" onclick="$('.rh').hide();">
+            Chiudi
+        </button>
+    </td>
+</tr>
+<tr id="{{ prefisso }}_riga_{{ entity.id }}_rispondi" class="rh rh-{{ entity.id }}" style="display: none">
+    <th>&nbsp;</th>
+    <td colspan="{% if gest is defined %}5{% else %}4{% endif %}">
+        {% if entity.risposta or entity.stato == 'C' %}
+            {% if entity.risposta %}
+                <div style="background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; overflow-y: scroll">
+                    {{ entity.risposta.body.html|raw }}
+                </div>
+                {% if entity.risposta.body.attach|length > 0 %}
+                    <dl>
+                        <dt>Allegati</dt>
+                        {% for allegato in entity.risposta.body.attach %}
+                            <dd><a target="_blank" href="{{ path('download_attach', {'email': allegato.body.id, 'id': allegato.id, 'name': allegato.filename}) }}">{{ allegato.filename }}</a></dd>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+            {% else %}
+                <div style="color: #aa0000; background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; overflow-y: scroll">
+                    Risposta da elaborare. Sarà disponibile al massimo entro un'ora.
+                </div>
+            {% endif %}
+        {% else %}
+            <form action="{{ path('countdown_reply', {'id': entity.id}) }}" method="post" class="p_input" id="fileupload_{{ entity.id }}">
+                <h3>RE: {{ entity.email.subject }} [RECD-{{ entity.id }}]</h3>
+                <table>
+                    <tr>
+                        <td colspan="2" style="text-align: center">
+                            <textarea name="email[testo]" id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_txt"  style="background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; width: 95%;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%">
+                            <input type="hidden" id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_docs" name="email[docs]" value="[]" />
+                            {% render 'EphpGestoriBundle:Profilo:uploadMulti' with {
+                                        'id': 'fileupload_' ~ entity.id,
+                                        'field': 'documenti_' ~ entity.id,
+                                        'values': '',
+                                        'dir': 'attach_countdown/' ~ entity.id
+                            } %}
+                        </td>
+                        <td style="width: 50%">
+                            <ul id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_ul"></ul>
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" id="bt_{{ entity.id }}" style="display: none;">
+                    Invia Risposta
+                </button>
+            </form> 
+        {% endif %}
+    </td>
+    <td style="vertical-align: bottom">
+        {% if entity.stato != 'C' %}
+            <button type="button" onclick="$('#fileupload_{{ entity.id }}').submit();" style="margin-bottom: 50px;">
+                Invia Risposta
+            </button>
+        {% endif %}
+    </td>
+</tr>

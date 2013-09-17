@@ -1,0 +1,13 @@
+jf_acl:
+    resource: "@JFACLBundle/Controller/"
+    type:     annotation
+    prefix:   /
+jf_core:
+    resource: "@JFCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+_fos:
+    resource: routing_fos_user.yml
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

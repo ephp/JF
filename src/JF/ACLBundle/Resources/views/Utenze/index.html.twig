@@ -1,0 +1,89 @@
+{% extends '::base.html.twig' %}
+{% block js %}
+{% javascripts  
+    '@JFACLBundle/Resources/public/js/utenze/index.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+    
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-group"></span>
+    </div>
+    <h1>Utenze</h1>
+</div>
+
+<a href="{{ path('utenze_new') }}">
+    <span class="label label-important">Nuova utenza</span>
+</a>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="head blue">
+                <div class="icon"><i class="ico-user"></i></div>
+                <h2>Utenti</h2>
+                <ul class="buttons">
+                    <li><a href="#" onclick="source('help_{{ app.request.get('_route') }}'); return false;"><div class="icon"><span class="ico-info"></span></div></a></li>
+                </ul>
+            </div>                
+            <div class="data-fluid">
+                <table class="table dtable lcnp" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th width="80">Sigla</th>
+                            <th class="TAC">Nome</th>
+                            <th width="15%" class="TAC">Email</th>
+                            <th width="15%" class="TAC">Telefono</th>
+                            {% for role in roles %}
+                                <th width="40"><abbr title="{{ role.name }}">{{ role.abbr }}</abbr></th>
+                            {% endfor %}
+                            <th width="80">Op.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                        <tr {% if entity.locked %}class="stroke"{% endif %}>
+                            <td>{{ entity.sigla }}</td>
+                            <td>{{ entity.nome }}</td>
+                            <td>{{ entity.email }}</td>
+                            <td>{{ entity.telefono }}</td>
+                            {% for role in roles %}
+                                <td width="40" class="no-padding">
+                                    {% if entity.hasRole(role.code) %}
+                                        <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button green role">
+                                            <div class="icon"><span class="ico-check"></span></div>
+                                        </a>
+                                    {% else %}
+                                        <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button red role">
+                                            <div class="icon"><span class="ico-blocked"></span></div>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td>
+                                <a href="{{ path('utenze_edit', { 'slug': entity.slug }) }}" class="button yellow">
+                                    <div class="icon"><span class="ico-pencil"></span></div>
+                                </a>
+                                {% if not entity.locked %}
+                                    <a href="javascript:void()" slug="{{ entity.slug}}" class="button red lock">
+                                        <div class="icon"><span class="ico-trash"></span></div>
+                                    </a>
+                                {% else %}
+                                    <a href="javascript:void()" slug="{{ entity.slug}}" class="button green lock">
+                                        <div class="icon"><span class="ico-refresh"></span></div>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>                    
+            </div> 
+                
+            {% include 'JFACLBundle:commons:accessi.html.twig' %}
+        </div>  
+    </div>
+</div>
+{% endblock %}

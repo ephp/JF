@@ -1,0 +1,12 @@
+Benvenuto {{ user.nome }}.
+
+Sei stato registrato su JF-SYSTEM per la gestione per conto di
+
+"{{ user.cliente.nome }}"
+
+Per accedere al tuo account vai su
+
+{{ url('fos_user_security_login') }}
+
+Username: {{ user.username }}
+Password: {{ password }}

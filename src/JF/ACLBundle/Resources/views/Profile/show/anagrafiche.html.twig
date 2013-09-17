@@ -1,0 +1,112 @@
+<div class="span6">
+    <div class="block">
+        <div class="head">
+            <div class="icon"><span class="ico-user"></span></div>
+            <h2>{{ user.nome }}</h2>
+        </div>
+        <div class="data">
+            <p>
+                <b>Abbreviazione</b>
+                <span>{{ user.sigla }}</span>
+            </p>
+            <p>
+                <b>Email</b>
+                <span>{{ user.email }}</span>
+            </p>
+            <p>
+                <b>Telefono</b>
+                <span>{{ user.telefono }}</span>
+            </p>
+            <a href="{{ path('fos_user_profile_edit') }}" class="button green">
+                <span class="label label-important icon"><span class="ico-pencil"></span> Modifica</span>
+            </a>
+        </div>                            
+    </div>                        
+</div>
+
+<div class="span6">
+    <div class="block">
+        {% if entity %}
+            <div class="head">
+                <div class="icon"><span class="ico-group"></span></div>
+                <h2>Dati {{ entity.nome }}</h2>
+            </div>
+            <div class="data">
+                <p>
+                    <b>Indirizzo</b>
+                    <span>{{ entity.indirizzo }} - {{ entity.cap }} - {{ entity.citta }}</span>
+                </p>
+                <p>
+                    <b>Partita IVA</b>
+                    <span>{{ entity.partitaIva }}</span>
+                </p>
+                <p>
+                    <b>Email</b>
+                    <span>{{ entity.email }}</span>
+                </p>
+                {% if entity.telefono %}
+                    <p>
+                        <b>Telefono</b>
+                        <span>{{ entity.telefono }}</span>
+                    </p>
+                {% endif %}
+                {% if entity.cellulare %}
+                    <p>
+                        <b>Cellulare</b>
+                        <span>{{ entity.cellulare }}</span>
+                    </p>
+                {% endif %}                    
+                {% if entity.fax %}
+                    <p>
+                        <b>Fax</b>
+                        <span>{{ entity.fax }}</span>
+                    </p>
+                {% endif %}
+                {% if entity.sito %}
+                    <p>
+                        <b>Sito</b>
+                        <span>{{ entity.sito }}</span>
+                    </p>
+                {% endif %}
+                {% if user.hasRole('R_SUPER') %}
+                    <a href="{{ path('utenze_azienda_edit') }}" class="button green">
+                        <span class="label label-important icon"><span class="ico-pencil"></span> Modifica</span>
+                    </a>
+                {% endif %}
+            </div>       
+        {% else %}
+            <div class="head">
+                <div class="icon"><span class="ico-group"></span></div>
+                <h2>JF-System</h2>
+            </div>
+            <div class="data">
+                <p>
+                    <b>Indirizzo</b>
+                    <span>via Toscana, 54 - 57124 - Livorno</span>
+                </p>
+                <p>
+                    <b>Partita IVA</b>
+                    <span>01722730494</span>
+                </p>
+                <p>
+                    <b>Email</b>
+                    <span>ephraim.pepe@gmail.com</span>
+                </p>
+                <p>
+                    <b>Telefono</b>
+                    <span>-</span>
+                </p>
+                <p>
+                    <b>Fax</b>
+                    <span>-</span>
+                </p>
+                <p>
+                    <b>Sito</b>
+                    <span>http://www.jfsystem.it</span>
+                </p>
+            </div>       
+        {% endif %}
+    </div>
+</div>
+
+                

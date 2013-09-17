@@ -1,0 +1,19 @@
+{% set small = true %}
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>&nbsp;</th>
+            <th>Tpa</th>
+            <th>Claimant</th>
+            <th>Note</th>
+            {% if gest is defined %}
+                <th>Gestore</th>
+            {% endif %}
+            <th>Apri</th>
+        </tr>
+    </thead>
+    <tbody id="tb_container">
+        {% include 'EphpGestoriBundle:Profilo:index/schede/tbody.html.twig' %}
+    </tbody>
+</table>            

@@ -1,0 +1,42 @@
+{% set colspan = 11 %}
+{% if mode is not defined %}
+    {% set mode = 0 %}
+{% endif %}
+<table class="records_list">
+    <thead>
+        <tr>
+            {% if gestore is defined and gestore %}
+                {% set colspan = colspan + 2 %}
+                <th>#</th>
+                <th>PP</th>
+            {% endif %}
+            <th>Giorni</th>
+            {% if mode <= 1 %}
+                {% set colspan = colspan + 1 %}
+                <th>Ospedale</th>
+            {% endif %}
+            {% if mode <= 2 %}
+                {% set colspan = colspan + 1 %}
+                <th>Anno</th>
+            {% endif %}
+            <th>Dasc</th>
+            <th>Giud</th>
+            <th>Tpa</th>
+            <th>Claimant</th>
+            {% if gestore is not defined or not gestore %}
+                {% set colspan = colspan + 1 %}
+                <th>Gestore</th>
+            {% endif %}
+            <th>Soi</th>
+            <th>Amount Reserved</th>
+            <th>Note</th>
+            <th>Priorita</th>
+            <th>Stato Op.</th>
+            <th>Operazioni</th>
+        </tr>
+    </thead>
+    <tbody id="tb_container">
+        {% include 'EphpGestoriBundle:Profilo:index/ritardi/tbody.html.twig' %}
+    </tbody>
+</table>
+     

@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+
+{% block content %}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-user"></span>
+    </div>
+    <h1>{{ user.nome }} <small>Profilo</small></h1>
+</div>
+
+{% include ':layout:widgets.html.twig' %}
+
+<div class="row-fluid">
+    <div class="span7">
+        <div class="block">
+            {% include 'JFACLBundle:Profile:show/anagrafiche.html.twig' with {'entity': user.cliente} %}
+            {% include 'JFACLBundle:commons:accessi.html.twig' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

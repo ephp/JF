@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+{% form_theme edit_form '::form_aries_layout.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    {% if app.user.hasRole('R_EPH') %}
+        <div class="icon">
+            <span class="ico-sale"></span>
+        </div>
+        <h1>{{ entity.nome }} <small>Modifica cliente</small></h1>
+    {% endif %}
+    {% if app.user.hasRole('R_SUPER') %}
+        <div class="icon">
+            <span class="ico-group"></span>
+        </div>
+        <h1>{{ entity.nome }} <small>Modifica dati aziendali</small></h1>
+    {% endif %}
+</div>
+{{ form_start(edit_form) }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Dati anagrafici</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(edit_form.nome) }}
+                    {{ form_row(edit_form.partitaIva) }}
+                    {{ form_row(edit_form.indirizzo) }}
+                    {{ form_row(edit_form.citta) }}
+                    {{ form_row(edit_form.cap) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Contatti</h2>
+                    <ul class="buttons">             
+                        <li><a href="#" onClick="source('help_{{ app.request.get('_route') }}'); return false;"><div class="icon"><span class="ico-info"></span></div></a></li>
+                    </ul>                                  
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(edit_form.telefono) }}
+                    {{ form_row(edit_form.cellulare) }}
+                    {{ form_row(edit_form.fax) }}
+                    {{ form_row(edit_form.email) }}
+                    {{ form_row(edit_form.sito) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+{{ form_end(edit_form) }}
+{% if app.user.hasRole('R_EPH') %}
+    <a href="{{ path('eph_clienti') }}">
+        <span class="label label-inverse">Torna indietro</span>
+    </a>
+{% endif %}
+{% if app.user.hasRole('R_SUPER') %}
+    <a href="{{ path('fos_user_profile_show') }}">
+        <span class="label label-inverse">Torna indietro</span>
+    </a>
+{% endif %}
+{% endblock %}

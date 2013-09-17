@@ -1,0 +1,12 @@
+{# UTENZE #}
+<div class="widget red value">
+    <div class="left">{{ entity.utenze|length }}</div>
+    <div class="right">
+        {% for tipo in entity.tipoUtenze %}
+            {{ tipo.n }} {{ tipo.role }}<br>
+        {% endfor %}
+    </div>
+    <div class="bottom">
+        <a href="alert('TODO')">Vedi utenze</a>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="span6">
+    <div class="block">
+        <div class="head">
+            <div class="icon"><span class="ico-group"></span></div>
+            <h2>Dati Cliente</h2>
+        </div>
+        <div class="data">
+            <p>
+                <b>Indirizzo</b>
+                <span>{{ entity.indirizzo }} - {{ entity.cap }} - {{ entity.citta }}</span>
+            </p>
+            <p>
+                <b>Partita IVA</b>
+                <span>{{ entity.partitaIva }}</span>
+            </p>
+            <p>
+                <b>Email</b>
+                <span>{{ entity.email }}</span>
+            </p>
+            {% if entity.telefono %}
+                <p>
+                    <b>Telefono</b>
+                    <span>{{ entity.telefono }}</span>
+                </p>
+            {% endif %}
+            {% if entity.cellulare %}
+                <p>
+                    <b>Cellulare</b>
+                    <span>{{ entity.cellulare }}</span>
+                </p>
+            {% endif %}
+            {% if entity.fax %}
+                <p>
+                    <b>Fax</b>
+                    <span>{{ entity.fax }}</span>
+                </p>
+            {% endif %}
+            {% if entity.sito %}
+                <p>
+                    <b>Sito</b>
+                    <span>{{ entity.sito }}</span>
+                </p>
+            {% endif %}
+        </div>       
+    </div>
+</div>
+
+<div class="span6">
+    <div class="block">
+        <div class="head">
+            <div class="icon"><span class="ico-user"></span></div>
+            <h2>Referente</h2>
+        </div>
+        <div class="data">
+            <p>
+                <b>Nome</b>
+                <span>{{ entity.referente.nome }}</span>
+            </p>
+            <p>
+                <b>Email</b>
+                <span>{{ entity.referente.email }}</span>
+            </p>
+            <p>
+                <b>Telefono</b>
+                <span>{{ entity.referente.telefono }}</span>
+            </p>
+        </div>                            
+    </div>                        
+</div>
+                

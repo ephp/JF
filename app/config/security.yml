@@ -1,39 +1,55 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        R_ADMIN:       ROLE_USER
+        R_SUPER:       ROLE_ADMIN
+        R_EPH:         [ROLE_USER, R_ADMIN, R_SUPER, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
+        fos_userbundle:
+                id: fos_user.user_manager
         in_memory:
             memory:
                 users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                    dodo:  { password: pci, roles: [ 'ROLE_SUPER_ADMIN' ] }
 
     firewalls:
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+        eph:
+            pattern:  /eph$
             security: false
-
         login:
-            pattern:  ^/demo/secured/login$
+            pattern:  ^/login$
             security: false
-
-        secured_area:
-            pattern:    ^/demo/secured/
+ 
+            remember_me:
+                key: "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path: /
+                domain: ~ # Defaults to the current domain from $_SERVER
+        main:
+            remember_me:
+                key: divine_office_hub_17021976
+                lifetime: 31536000 # 365 days in seconds
+                path: /
+                domain: ~ # Defaults to the current domain from $_SERVER                   
+                always_remember_me: true
+                remember_me_parameter: _remember_me
+            pattern: ^/
             form_login:
-                check_path: _security_check
-                login_path: _demo_login
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+                login_path: /login
+                check_path: /login_check
+                success_handler: my_user_provider        
             logout:
-                path:   _demo_logout
-                target: _demo
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
+                path: /logout
+                target: /
+                invalidate_session: false # Provissorio per il 5.11
+            anonymous:    false
 
     access_control:
-        - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

@@ -1,0 +1,13 @@
+services:
+    jf_menu.builder:
+        class: JF\CoreBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@security.context"]
+
+    jf_menu.sidebar:
+        class: Knp\Menu\MenuItem 
+        factory_service: jf_menu.builder
+        factory_method: createSidebarMenu
+        arguments: ["@request", %jf.menu%]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: sidebar }

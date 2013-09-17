@@ -1,0 +1,68 @@
+{% form_theme form '::form_aries_layout.html.twig' %}
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Anagrafica (obbligatoria)</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.sigla) }}
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.telefono) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>&nbsp;</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.lastname) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{#
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Altre informazioni (facoltative)</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.birthday) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>&nbsp;</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.avatar) }}
+                </div>
+            </div>
+        </div>
+    </div>
+#}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Sicurezza</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.current_password) }}
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" class="btn" />
+    </div>
+</form>

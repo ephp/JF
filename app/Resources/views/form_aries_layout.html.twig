@@ -1,0 +1,35 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block form_row %}
+{% spaceless %}
+    <div class="row-form {% if errors|length > 0 %}error{% endif %}">
+        <div class="span3">{{ form_label(form) }}</div>
+        <div class="span9">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+        {% for error in errors %}
+            <span class="bottom">{{ error.message }}</span>
+        {% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_widget_compound %}
+{% spaceless %}
+    <div class="data-fluid">
+        {% if form.parent is empty and errors|length > 0 %}
+            {{ form_errors(form) }}
+        {% endif %}
+        {{ block('form_rows') }}
+        {{ form_rest(form) }}
+    </div>
+{% endspaceless %}
+{% endblock form_widget_compound %}

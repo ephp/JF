@@ -1,0 +1,20 @@
+<!-- RIGA ATTIVA -->
+<tr id="riga_{{ entity.id }}" class="r cg ca bg-{% if entity.priorita %}{{ entity.priorita.css }}{% else %}white{% endif %}" titolo="{{ entity.ospedale.sigla|upper }}/{{ entity.anno2 }}/{{ entity.tpa }} {{ entity.claimant }}" riga="{{ entity.id }}" {% if entity.gestore %}gestore="{{ entity.gestore.sigla }}"{% endif %} priorita="{% if entity.priorita %}{{ entity.priorita.id }}{% else %}0{% endif %}">
+    <th style="text-align: right;">{{ index }}</th>
+    <td id="star_{{ entity.id }}" style="background-color: transparent;" class="{% if entity.primaPagina %}cal_important{% else %}cal_normal{% endif %}" onclick="primaPagina({{ entity.id }})"></td>
+    <td style="text-align: center">{{ entity.ospedale.sigla|upper }}/{{ entity.anno2 }}/{{ entity.tpa }}</td>
+    <td>{{ entity.claimant }}</td>
+    <td style="text-align: center"><textarea class="autoupdate" style="height: 32px; width: 100%;" pratica="{{ entity.id }}" name="note">{{ entity.note }}</textarea></td>
+    {% if gest is defined %}
+        <td>{{ entity.gestore.sigla }}</td>
+    {% endif %}
+    {% if not entity.gestore %}
+        <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox">Assegna</a></td>
+    {% else %}
+    <td>
+        <button type="button" onclick="javascript:window.location='{{ path('tabellone_show', {'id': entity.id}) }}'">
+            Apri
+        </button>
+    </td>
+    {% endif %}
+</tr>

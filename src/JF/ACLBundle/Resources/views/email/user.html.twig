@@ -1,0 +1,13 @@
+<h1>Benvenuto {{ user.nome }}</h1>.
+
+<p>Sei stato registrato su <b>JF-SYSTEM</b> per la gestione per conto di</p>
+
+<h2>{{ user.cliente.nome }}</h2>
+
+<p>Per accedere al tuo account vai su<br/>
+    
+<a href="{{ url('fos_user_security_login') }}">{{ url('fos_user_security_login') }}</a><br/>
+
+Username: <b>{{ user.username }}</b><br/>
+Password: <b>{{ password }}</b><br/>
+</p>

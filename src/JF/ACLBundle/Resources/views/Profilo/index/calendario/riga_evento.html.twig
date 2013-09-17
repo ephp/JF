@@ -1,0 +1,20 @@
+<tr id="riga_{{ entity.id }}" style="background-color: #{{ entity.tipo.colore }}; {% if oggi|date('d-m-Y') ==  entity.dataOra|date('d-m-Y') %}font-weight: bold;{% endif %}">
+    {% if gestore != '' %}
+        <th style="text-align: right;">{{ index }}</th>
+    {% endif %}
+    <td style="background-color: transparent;" title="{{entity.tipo.sigla}}" class="{% if entity.importante %}cal_important{% else %}cal_normal{% endif %}"></td>
+    {% if small is not defined %}
+        <td style="text-align: center; background-color: transparent;">{{ entity.dataOra|date('d/m/Y') }}</td>
+    {% endif %}
+    <td style="text-align: center; background-color: transparent;">{{ entity.scheda.ospedale.sigla|upper }}/{{ entity.scheda.anno2 }}/{{ entity.scheda.tpa }}</td>
+    <td style="background-color: transparent;"><a href="{{ path('tabellone_show', {'id': entity.scheda.id}) }}">{{ entity.scheda.claimant }}</a></td>
+    {% if gestore == '' %}
+        <td style="text-align: center; background-color: transparent;"><abbr title="{{ entity.scheda.gestore.nome }}">{{ entity.scheda.gestore.sigla }}</abbr></td>
+    {% endif %}
+    <td style="background-color: transparent;">{{ entity.titolo }}</td>
+</tr>
+{% if entity.note %}
+    <tr id="riga_{{ entity.id }}b" style="background-color: #{{ entity.tipo.colore }}; {% if oggi|date('d-m-Y') ==  entity.dataOra|date('d-m-Y') %}font-weight: bold;{% endif %}">
+        <td colspan="5" style="background-color: transparent;">{{ entity.note }}</td>
+    </tr>
+{% endif %}

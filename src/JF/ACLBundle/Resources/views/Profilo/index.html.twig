@@ -1,0 +1,81 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+Profilo
+{% endblock %}
+
+{% block content %}
+<h1>{{ gestore.nome }}</h1>
+<div id="tabs">
+    <ul>
+        {% if app.user.hasRole('ROLE_ADMIN') and nuove|length > 0 %}
+            <li><a href="#tabs-nn">Nuovi</a></li>
+        {% endif %}
+        {% if app.user.hasRole('ROLE_ADMIN') and riattivate|length > 0 %}
+            <li><a href="#tabs-rr">Riattivati</a></li>
+        {% endif %}
+        {% if prima_pagina|length > 0 %}
+            <li><a href="#tabs-pp">Prima pagina</a></li>
+        {% endif %}
+        {% if attenzione|length > 0 %}
+            <li><a href="#tabs-i">Importanti</a></li>
+        {% endif %}
+        {% for tab in tabs %}
+            {% if attribute(private, tab.id)|length + attribute(pubbliche, tab.id)|length > 0 %}
+                <li><a href="#tabs-{{ tab.id }}">{{ tab.stato|capitalize }}</a></li>
+            {% endif %}
+        {% endfor%}
+    </ul>
+{% if app.user.hasRole('ROLE_ADMIN') and nuove|length > 0 %}
+    <div id="tabs-nn" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/schede.html.twig' with {'entities': nuove} %}
+    </div>
+{% endif %}
+{% if app.user.hasRole('ROLE_ADMIN') and riattivate|length > 0 %}
+    <div id="tabs-rr" style="display: none">
+        {% include 'EphpSinistriBundle:Scheda:index/table.html.twig' with {'entities': riattivate} %}
+    </div>
+{% endif %}
+{% if prima_pagina|length > 0 %}
+    <div id="tabs-pp" style="display: none">
+        {% include 'EphpSinistriBundle:Scheda:index/table.html.twig' with {'entities': prima_pagina} %}
+    </div>
+{% endif %}
+{% if attenzione|length > 0 %}
+    <div id="tabs-i" style="display: none">
+        {% include 'EphpSinistriBundle:Scheda:index/table.html.twig' with {'entities': attenzione} %}
+    </div>
+{% endif %}
+{% for tab in tabs %}
+    {% if attribute(private, tab.id)|length + attribute(pubbliche, tab.id)|length > 0 %}
+        <div id="tabs-{{ tab.id }}" style="display: none">
+            {% if attribute(private, tab.id)|length > 0 %}
+                <h3>Personali</h3>
+                {% include 'EphpSinistriBundle:Scheda:index/table.html.twig' with {'entities': attribute(private, tab.id)} %}
+            {% endif %}
+            {% if attribute(pubbliche, tab.id)|length > 0 %}
+                <h3>Tutte</h3>
+                {% include 'EphpSinistriBundle:Scheda:index/table.html.twig' with {'entities': attribute(pubbliche, tab.id)} %}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endfor%}
+</div>
+
+{% include 'EphpSinistriBundle:Scheda:index/assegna_gestore.html.twig' %}
+{% include 'EphpSinistriBundle:Scheda:index/cambia_priorita.html.twig' %}
+{% include 'EphpSinistriBundle:Scheda:index/cambia_stato_operativo.html.twig' %}
+
+{% include 'EphpSinistriBundle:Scheda:index/table.js.html.twig' %}
+
+<script type="text/javascript">
+    $(function() {
+        $( "#tabs" ).tabs();
+        $( "#tabs ul li a" ).click(function(){
+            $( "#tabs div" ).hide();
+            $($(this).attr('href')).show();
+        });
+        $( "#tabs div:first" ).show();
+    });
+</script>
+{% endblock %}

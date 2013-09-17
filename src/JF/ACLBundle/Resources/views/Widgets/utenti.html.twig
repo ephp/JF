@@ -1,0 +1,16 @@
+{% if not entity.bloccato %}
+    <div class="widget dblue value">
+        <div class="center">{{ entity.utenze|length }}</div>
+        <div class="right">
+            <b>Utenze {{ entity.nome }}</b><br/>
+            {% for tipo in entity.tipoUtenze %}
+                {{ tipo.n }} {{ tipo.role }}<br/>
+            {% endfor %}
+        </div>
+        {% if app.user.hasRole('R_SUPER') %}
+            <div class="bottom">
+                <a href="{{ path('utenze') }}">Gestisci</a>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

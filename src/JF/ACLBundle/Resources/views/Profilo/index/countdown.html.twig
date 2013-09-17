@@ -1,0 +1,19 @@
+{% set small = true %}
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Giorni</th>
+            <th>Subject</th>
+            <th>Mittente</th>
+            <th>Scheda</th>
+            {% if gest is defined %}
+                <th>Gestore</th>
+            {% endif %}
+            <th>Operazioni</th>
+        </tr>
+    </thead>
+    <tbody id="tb_container">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown/tbody.html.twig' %}
+    </tbody>
+</table>            

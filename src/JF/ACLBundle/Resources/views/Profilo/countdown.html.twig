@@ -1,0 +1,143 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+Countdown
+{% endblock %}
+
+{% block content %}
+<h1>{{ gestore.nome }} - Countdown</h1>
+
+{% render 'EphpSinistriBundle:Scheda:uploadJs' %}
+
+<div id="tabs">
+    <ul>
+        {% if app.user.hasRole('ROLE_ADMIN') and nuovi|length > 0 %}
+            <li><a href="#tabs-na">Nuovi</a></li>
+        {% endif %}
+        {% if miei_aperti|length > 0 %}
+            <li><a href="#tabs-a">Countdown aperti</a></li>
+        {% endif %}
+        {% if miei_chiusi|length > 0 %}
+            <li><a href="#tabs-c">Countdown chiusi</a></li>
+        {% endif %}
+        {% if app.user.hasRole('ROLE_ADMIN') and aperti|length > 0 %}
+            <li><a href="#tabs-aa">Countdown aperti ufficio</a></li>
+        {% endif %}
+        {% if app.user.hasRole('ROLE_ADMIN') and chiusi|length > 0 %}
+            <li><a href="#tabs-ca">Countdown chiusi ufficio</a></li>
+        {% endif %}
+    </ul>
+{% if app.user.hasRole('ROLE_ADMIN') and nuovi|length > 0 %}
+    <div id="tabs-na" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
+    </div>
+{% endif %}
+{% if miei_aperti|length > 0 %}
+    <div id="tabs-a" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown.html.twig' with {'prefisso': 'a', 'entities': miei_aperti} %}
+    </div>
+{% endif %}
+{% if miei_chiusi|length > 0 %}
+    <div id="tabs-c" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown.html.twig' with {'prefisso': 'c', 'entities': miei_chiusi} %}
+    </div>
+{% endif %}
+{% if app.user.hasRole('ROLE_ADMIN') and aperti|length > 0 %}
+    <div id="tabs-aa" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown.html.twig' with {'prefisso': 'o', 'entities': aperti, 'gest': true} %}
+    </div>
+{% endif %}
+{% if app.user.hasRole('ROLE_ADMIN') and chiusi|length > 0 %}
+    <div id="tabs-ca" style="display: none">
+        {% include 'EphpGestoriBundle:Profilo:index/countdown.html.twig' with {'prefisso': 'r', 'entities': chiusi, 'gest': true} %}
+    </div>
+{% endif %}
+</div>
+
+
+<div style="display: none" id="fb_assegna_gestore">
+    <form id="assegna_gestore_scheda">
+        <li>Assegna il gestore a <span id="assegna_gestore_a"></span></a></li>
+        <div style="clear: both"></div>
+        <select name="cd[gestore]" id="cd_gestore">
+            <option value="">Nessuno</option>
+            {% for ges in gestori %}
+                <option value="{{ ges.sigla }}">{{ges.nome}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="cd[id]" id="cd_id" value="" />    
+        <button type="button" onclick="assegnaGestore()">Assegna</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function cambiaGestore() {
+        $('.chg').click(function(){
+            tr = $(this).closest('tr');
+            $('#assegna_gestore_a').text(tr.attr('titolo'));
+            $('#cd_id').val(tr.attr('cd'));
+            $('#cd_gestore').val(tr.attr('gestore'));
+        });
+    }
+    cambiaGestore();
+
+    function assegnaGestore() {
+        form = $('#assegna_gestore_scheda');
+        $.post('{{ path('countdown_assegna_gestore') }}', form.serialize(), function(out) {
+            window.location = out.redirect;
+        });
+    }
+
+    $(function() {
+        $( "#tabs" ).tabs();
+        $( "#tabs ul li a" ).click(function(){
+            $( "#tabs div" ).hide();
+            $($(this).attr('href')).show();
+        });
+        $( "#tabs div:first" ).show();
+    });
+    $('.autoupdate').change(function(){
+        val = $(this).val();
+        pratica = $(this).attr('pratica');
+        field = $(this).attr('name');
+        $.post('{{ path('tabellone_autoupdate') }}', {'pratica': {'id': pratica, 'field': field, 'value': val}}, function(out) {
+            checkUm();
+        });
+    });
+    function leggi(id) {
+        $('.rh').hide();
+        $(id).show();
+        $(id).find('div').show();
+    }
+    var risposta = '';
+    function rispondi(id) {
+        $(id).show();
+        $(id).find('div').show();
+        risposta = id;
+        attach = [];
+        $('.tmb').hide();
+    }
+    var idn = 0;
+    var attach = [];
+    function multiUploadDoneCB(response) {
+        $(risposta+'_ul').append($('#li').html().assign(response).assign({id: ++idn}));
+        attach = eval($(risposta+'_docs').val());
+        attach.add(response.url);
+        $(risposta+'_docs').val(JSON.stringify(attach));
+        $('.tmb').hide();
+    }        
+    function cancella(id, url) {
+        $.post(url, {}, function(output){
+            console.log(output);
+            $('#'+id).remove();
+        });
+    }        
+    function invia(id) {
+        console.log($('#'+id));
+        $('#'+id).submit();
+    }        
+</script>
+<script type="text/html" id="li">
+    <li id="r_{id}"><a href="{url}" target="_blank">{name}</a> ({size} byte) <button onclick="cancella('r_{id}','{delete_url}')">X</button></li>
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% if entity.bloccato %}
+    <div class="widget red icon">
+        <div class="left">
+            <div class="icon">
+                <span class="ico-alarm"></span>
+            </div>
+        </div>
+        <div class="right">
+            Le utenza di<h4 class="margin-3">{{ entity.nome }}</h4>sono bloccate!
+        </div>
+        <div class="bottom todo">
+            <a href="{{ path('utenze') }}">Per informazioni contatta lo staff</a>
+        </div>
+    </div>
+{% endif %}

@@ -44,6 +44,8 @@ class Gestore extends BaseUser {
     protected $telefono;
 
     /**
+     * @var Cliente
+     * 
      * @ORM\ManyToOne(targetEntity="Cliente")
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id", nullable=true)
      */
@@ -142,16 +144,27 @@ class Gestore extends BaseUser {
         return $this->cliente;
     }
 
-    public function _isCredentialsNonExpired() {
-        if($this->getCliente()) {
-            if(!$this->hasRole('R_SUPER')) {
-                if($this->getCliente()->getBloccato()) {
+    public function hasRole($role) {
+        if (in_array($role, array('R_EPH', 'R_SUPER'))) {
+            return parent::hasRole($role);
+        }
+        $roles = array_intersect($this->getCliente()->getRoles(), $this->getRoles());
+        foreach ($roles as $_role) {
+            if (strtoupper($_role) == strtoupper($role)) {
+                return true;
+            }
+        }
+    }
+
+    public function isCredentialsNonExpired() {
+        if ($this->getCliente()) {
+            if (!$this->hasRole('R_SUPER')) {
+                if ($this->getCliente()->getBloccato()) {
                     return false;
                 }
             }
         }
-        
-        parent::isCredentialsNonExpired();
+        return parent::isCredentialsNonExpired();
     }
-
+    
 }

@@ -95,6 +95,19 @@ trait InstallController {
             $licenza->setStato($stato);
             $this->persist($licenza);
         }
+        
+        if($licenza->getAutoinstall()) {
+            foreach($this->findBy('JFACLBundle:Cliente', array()) as $cliente) {
+                if(!$this->findOneBy('JFACLBundle:Licenza', array('gruppo' => $gruppo, 'cliente' => $cliente->getId()))) {
+                    $_licenza = new \JF\ACLBundle\Entity\Licenza();
+                    $_licenza->setLicenza($licenza);
+                    $_licenza->setCliente($cliente);
+                    $_licenza->setPagamento(new \DateTime());
+                    $this->persist($_licenza);
+                }
+            }
+        }
+        
         return array('codice' => $licenza->getCodiceEsteso(), 'stato' => $licenza->getStatoTestuale());
     }
 

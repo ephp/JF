@@ -14,12 +14,12 @@ class MenuBuilder {
      * @var FactoryInterface 
      */
     private $factory;
-    
+
     /**
      * @var Request 
      */
     private $request;
-    
+
     /**
      * @var SecurityContextInterface 
      */
@@ -50,21 +50,21 @@ class MenuBuilder {
         $menu = $this->factory->createItem('root');
         $menu->setAttribute('id', 'menu_sidebar')->setAttribute('class', 'navigation bordered');
 
-        $this->buildMenu($menu, $voci);
+        $this->buildMenu($menu, $voci, $request->get('_route'));
 
         return $menu;
     }
 
-    private function buildMenu(MenuItem $menu, $voci) {
-        usort($voci, function($a, $b){
-            if(!isset($a['order'])) {
-                $a['order'] = 1000;
-            }
-            if(!isset($b['order'])) {
-                $b['order'] = 1000;
-            }
-            return $a['order'] > $b['order'];
-        });
+    private function buildMenu(MenuItem $menu, $voci, $route) {
+        usort($voci, function($a, $b) {
+                    if (!isset($a['order'])) {
+                        $a['order'] = 1000;
+                    }
+                    if (!isset($b['order'])) {
+                        $b['order'] = 1000;
+                    }
+                    return $a['order'] > $b['order'];
+                });
         foreach ($voci as $voce) {
             if (!isset($voce['show'])) {
                 $voce['show'] = array('always' => true);
@@ -72,11 +72,17 @@ class MenuBuilder {
             if ($this->show($voce['show'])) {
                 if (isset($voce['route'])) {
                     $vm = $menu->addChild($voce['label'], array('route' => $voce['route']));
+                    if($route == $voce['route']) {
+                        $this->active($vm);
+                    }
                 } else {
                     if (isset($voce['submenu'])) {
                         $vm = $menu->addChild($voce['label'], array('url' => 'javascript:void(0);'));
                         $vm->setAttribute('class', 'submenu');
-                        $this->buildMenu($vm, $voce['submenu']);
+                        $this->buildMenu($vm, $voce['submenu'], $route);
+                        if(!$vm->hasChildren()) {
+                            $vm->setDisplay(false);
+                        }
                     } else {
                         $vm = $menu->addChild($voce['label']);
                     }
@@ -90,32 +96,49 @@ class MenuBuilder {
         }
     }
 
+    private function active(\Knp\Menu\MenuItem $vm) {
+        if(!$vm->isRoot()) {
+            $vm->setAttribute('class', 'active');
+            $this->active($vm->getParent());
+        }
+    }
+
     private function show($rules) {
         $out = false;
-        if(isset($rules['always'])) {
+        if (isset($rules['always'])) {
             $out = $rules['always'];
         }
-        if(isset($rules['logged'])) {
+        if (isset($rules['logged'])) {
             $out = $rules['logged'] ? is_object($this->user) : !is_object($this->user);
         }
-        if(is_object($this->user) && isset($rules['in_role']) ) {
-            if(!is_array($rules['in_role'])) {
+        if (is_object($this->user) && isset($rules['in_role'])) {
+            if (!is_array($rules['in_role'])) {
                 $rules['in_role'] = array($rules['in_role']);
             }
             foreach ($rules['in_role'] as $role) {
                 $out |= $this->user->hasRole($role);
             }
         }
-        if(is_object($this->user) && isset($rules['out_role']) ) {
-            if(!is_array($rules['out_role'])) {
-                $rules['out_role'] = array($rules['out_role']);
+        if (is_object($this->user)) {
+            if (isset($rules['out_role'])) {
+                if (!is_array($rules['out_role'])) {
+                    $rules['out_role'] = array($rules['out_role']);
+                }
+                $test = true;
+                foreach ($rules['out_role'] as $role) {
+                    $test &=!$this->user->hasRole($role);
+                }
+                $out = $test;
             }
-            $test = true;
-            foreach ($rules['out_role'] as $role) {
-                $test &= !$this->user->hasRole($role);
+            if (isset($rules['license'])) {
+                $active = $this->user->getCliente()->getLicenzeAttive();
+                foreach ($rules['license'] as $gruppo => $licenses) {
+                    $out &= in_array($active[$gruppo], $licenses);
+                }
             }
-            $out = $test;
         }
+
         return $out;
     }
+
 }

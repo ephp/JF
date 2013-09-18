@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use JF\ACLBundle\Entity\Cliente;
 use JF\ACLBundle\Entity\Gestore;
+use JF\ACLBundle\Entity\Licenza;
 use JF\ACLBundle\Form\ClienteType;
 use JF\ACLBundle\Form\SuperadminType;
 
@@ -54,6 +55,14 @@ class ClienteController extends Controller {
 
         if ($form->isValid()) {
             $this->persist($entity);
+            
+            foreach($this->findBy('JFCoreBindle:Licenza', array('autoinstall' => true)) as $licenza) {
+                $_licenza = new Licenza();
+                $_licenza->setLicenza($licenza);
+                $_licenza->setCliente($entity);
+                $_licenza->setPagamento(new \DateTime());
+                $this->persist($_licenza);
+            }
 
             return $this->redirect($this->generateUrl('eph_clienti_super_new', array('id' => $entity->getId())));
         }

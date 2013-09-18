@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3e543769b989e3234e338f6015728917",
+    "hash": "fb97907cfc89f631b7d7f38d45cbb65e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -611,19 +611,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/ACL.git",
-                "reference": "5e08fe9c4dee328b0d0cbeb820467eefce28de9c"
+                "reference": "1a32ac6c5ba293893568b2c67382733141322fe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/ACL/zipball/5e08fe9c4dee328b0d0cbeb820467eefce28de9c",
-                "reference": "5e08fe9c4dee328b0d0cbeb820467eefce28de9c",
+                "url": "https://api.github.com/repos/ephp/ACL/zipball/1a32ac6c5ba293893568b2c67382733141322fe0",
+                "reference": "1a32ac6c5ba293893568b2c67382733141322fe0",
                 "shasum": ""
             },
             "require": {
                 "ephp/utility": "master",
                 "friendsofsymfony/user-bundle": "~2.0@dev",
                 "hwi/oauth-bundle": "0.3.*@dev",
-                "php": ">=5.3.2"
+                "php": ">=5.3.2",
+                "stof/doctrine-extensions-bundle": "dev-master"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -651,7 +652,7 @@
                 "symfony",
                 "symfony-2.1"
             ],
-            "time": "2013-08-29 11:15:34"
+            "time": "2013-09-18 10:11:46"
         },
         {
             "name": "ephp/utility",
@@ -660,12 +661,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/Utility.git",
-                "reference": "6113d315124616673c6533fa2862480d71c5bf8d"
+                "reference": "463c886018b309a331f1ce53af80ded5800f3c6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/Utility/zipball/6113d315124616673c6533fa2862480d71c5bf8d",
-                "reference": "6113d315124616673c6533fa2862480d71c5bf8d",
+                "url": "https://api.github.com/repos/ephp/Utility/zipball/463c886018b309a331f1ce53af80ded5800f3c6e",
+                "reference": "463c886018b309a331f1ce53af80ded5800f3c6e",
                 "shasum": ""
             },
             "require": {
@@ -699,21 +700,21 @@
                 "symfony-2.1",
                 "time"
             ],
-            "time": "2013-09-04 10:41:20"
+            "time": "2013-09-18 10:09:29"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "target-dir": "FOS/JsRoutingBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "b93f01e8f81918bd86fc673afaaf26e5fc51b3ae"
+                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/b93f01e8f81918bd86fc673afaaf26e5fc51b3ae",
-                "reference": "b93f01e8f81918bd86fc673afaaf26e5fc51b3ae",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/73fd9994ee85e57e778e059c28beb1b963679fa5",
+                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5",
                 "shasum": ""
             },
             "require": {
@@ -753,7 +754,7 @@
             "keywords": [
                 "Js Routing"
             ],
-            "time": "2013-07-15 09:21:37"
+            "time": "2013-09-10 15:45:38"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -762,12 +763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "2038b755126e590ff2f21a7d64b3b9554e9c58e9"
+                "reference": "1ee84a86a5e82420c6459705110b1804dd9063b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/2038b755126e590ff2f21a7d64b3b9554e9c58e9",
-                "reference": "2038b755126e590ff2f21a7d64b3b9554e9c58e9",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/1ee84a86a5e82420c6459705110b1804dd9063b8",
+                "reference": "1ee84a86a5e82420c6459705110b1804dd9063b8",
                 "shasum": ""
             },
             "require": {
@@ -822,7 +823,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-09-06 08:11:57"
+            "time": "2013-09-16 22:05:58"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -911,12 +912,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "156372aa3451d51bacdd0e9b1f380577b8075ad8"
+                "reference": "4ac3ee70e86032305cc997dbe5d14bc8ed110748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/156372aa3451d51bacdd0e9b1f380577b8075ad8",
-                "reference": "156372aa3451d51bacdd0e9b1f380577b8075ad8",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/4ac3ee70e86032305cc997dbe5d14bc8ed110748",
+                "reference": "4ac3ee70e86032305cc997dbe5d14bc8ed110748",
                 "shasum": ""
             },
             "require": {
@@ -961,7 +962,7 @@
                     "homepage": "https://github.com/hwi/HWIOAuthBundle/contributors"
                 },
                 {
-                    "name": "Alexander Mols",
+                    "name": "Alexander",
                     "email": "iam.asm89@gmail.com"
                 },
                 {
@@ -991,6 +992,7 @@
                 "instagram",
                 "jira",
                 "linkedin",
+                "mail.ru",
                 "oauth",
                 "oauth1",
                 "oauth2",
@@ -1001,6 +1003,7 @@
                 "sina weibo",
                 "stack exchange",
                 "stereomood",
+                "twitch",
                 "twitter",
                 "vkontakte",
                 "windows live",
@@ -1008,7 +1011,7 @@
                 "yahoo",
                 "yandex"
             ],
-            "time": "2013-08-10 07:38:51"
+            "time": "2013-09-17 16:40:03"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1116,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "7baf621fb77867e49daca7dd72b443ea232cb5e1"
+                "reference": "52c8ffd7eba8028f93ef9eece98f74b2f11c1c1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/7baf621fb77867e49daca7dd72b443ea232cb5e1",
-                "reference": "7baf621fb77867e49daca7dd72b443ea232cb5e1",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/52c8ffd7eba8028f93ef9eece98f74b2f11c1c1f",
+                "reference": "52c8ffd7eba8028f93ef9eece98f74b2f11c1c1f",
                 "shasum": ""
             },
             "require": {
@@ -1172,7 +1175,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2013-06-24 00:02:29"
+            "time": "2013-09-16 09:46:19"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -1595,16 +1598,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "fe3f6551a41d0bce874159fd4c46296fdd697d2b"
+                "reference": "6e8dc798687963ffc4e4e0dfa687b361699855a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/fe3f6551a41d0bce874159fd4c46296fdd697d2b",
-                "reference": "fe3f6551a41d0bce874159fd4c46296fdd697d2b",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/6e8dc798687963ffc4e4e0dfa687b361699855a9",
+                "reference": "6e8dc798687963ffc4e4e0dfa687b361699855a9",
                 "shasum": ""
             },
             "require": {
-                "gedmo/doctrine-extensions": "2.3.*",
+                "gedmo/doctrine-extensions": "~2.3.1",
                 "php": ">=5.3.2",
                 "symfony/framework-bundle": "~2.1"
             },
@@ -1648,7 +1651,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2013-08-27 13:42:00"
+            "time": "2013-09-16 09:35:16"
         },
         {
             "name": "swiftmailer/swiftmailer",

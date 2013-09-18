@@ -16,7 +16,7 @@ class InstallController extends Controller {
         BaseInstall;
 
     /**
-     * @Route("-core", name="install_core", defaults={"_format": "json})
+     * @Route("-core", name="install_core", defaults={"_format": "json"})
      */
     public function indexAction() {
         $package = 'jf.core';

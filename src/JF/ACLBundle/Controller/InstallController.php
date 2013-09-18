@@ -16,7 +16,7 @@ class InstallController extends Controller {
         BaseInstall;
 
     /**
-     * @Route("-acl", name="install_acl"), defaults={"_format": "json})
+     * @Route("-acl", name="install_acl"), defaults={"_format": "json"})
      */
     public function indexAction() {
         $package = 'jf.acl';
@@ -32,7 +32,7 @@ class InstallController extends Controller {
                     'JFACLBundle:Install:utenze_free.txt.twig',                 //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
-                    array('jf.acl.locked', 'jf.acl.utenti'),                    //Widget abilitati
+                    array('jf.acl.locked', 'jf.acl.licenze'),                   //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'max' => 1,                                             //  Numero massimo di utenti
                         'rubrica' => false,                                     //  Abilitazione rubrica
@@ -44,7 +44,7 @@ class InstallController extends Controller {
                     'JFACLBundle:Install:utenze_small.txt.twig',                //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
-                    array('jf.acl.locked', 'jf.acl.utenti'),                    //Widget abilitati
+                    array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'max' => 5,                                             //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
@@ -56,7 +56,7 @@ class InstallController extends Controller {
                     'JFACLBundle:Install:utenze_medium.txt.twig',               //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
-                    array('jf.acl.locked', 'jf.acl.utenti'),                    //Widget abilitati
+                    array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'max' => 10,                                            //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
@@ -68,7 +68,7 @@ class InstallController extends Controller {
                     'JFACLBundle:Install:utenze_big.txt.twig',                  //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
-                    array('jf.acl.locked', 'jf.acl.utenti'),                    //Widget abilitati
+                    array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'max' => 25,                                            //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
@@ -80,7 +80,7 @@ class InstallController extends Controller {
                     'JFACLBundle:Install:utenze_unlimited.txt.twig',            //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
-                    array('jf.acl.locked', 'jf.acl.utenti'),                    //Widget abilitati
+                    array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'max' => 10000,                                         //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica

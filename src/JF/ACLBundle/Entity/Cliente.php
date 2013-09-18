@@ -130,11 +130,18 @@ class Cliente {
     private $referente;
 
     /**
-     * @var User
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Gestore", mappedBy="cliente", cascade="all")
      */
     private $utenze;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Licenza", mappedBy="cliente", cascade="all")
+     */
+    private $licenze;
 
     /**
      * @var \DateTime
@@ -155,6 +162,7 @@ class Cliente {
      */
     public function __construct() {
         $this->utenze = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->licenze = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -470,6 +478,36 @@ class Cliente {
     }
 
     /**
+     * Add licenze
+     *
+     * @param Licenza $licenze
+     * @return Cliente
+     */
+    public function addLicenze(\JF\ACLBundle\Entity\Gestore $licenze) {
+        $this->licenze[] = $licenze;
+
+        return $this;
+    }
+
+    /**
+     * Remove licenze
+     *
+     * @param \JF\ACLBundle\Entity\Licenza $licenze
+     */
+    public function removeLicenze(\JF\ACLBundle\Entity\Gestore $licenze) {
+        $this->licenze->removeElement($licenze);
+    }
+
+    /**
+     * Get licenze
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLicenze() {
+        return $this->licenze;
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist() {
@@ -500,4 +538,48 @@ class Cliente {
         return $out;
     }
 
+    public function getRoles() {
+        $roles = array();
+        foreach ($this->getLicenze() as $licenza) {
+            /* @var $licenza Licenza */
+            if (!$licenza->getScadenza() || $licenza->getScadenza()->diff(new \DateTime())->format('R') != '-') {
+                foreach ($licenza->getLicenza()->getRoles() as $role) {
+                    $roles[$role] = 1;
+                }
+            }
+        }
+        return array_keys($roles);
+    }
+
+    public function getWidgets() {
+        $widgets = array();
+        foreach ($this->getLicenze() as $licenza) {
+            /* @var $licenza Licenza */
+            if (!$licenza->getScadenza() || $licenza->getScadenza()->diff(new \DateTime())->format('R') != '-') {
+                foreach ($licenza->getLicenza()->getWidgets() as $widget) {
+                    $widgets[$widget] = 1;
+                }
+            }
+        }
+        return array_keys($widgets);
+    }
+
+    public function getLicenzeAttive($object = false, $sorted = true) {
+        $licenze = array();
+        foreach ($this->getLicenze() as $licenza) {
+            /* @var $licenza Licenza */
+            if($licenza->isActive()) {
+                $licenze[] = $object ? $licenza : $licenza->info();
+            }
+        }
+        return $object || !$sorted ? $licenze : $this->ordinaLicenze($licenze);
+    }
+
+    private function ordinaLicenze($licenze) {
+        $out = array();
+        foreach($licenze as $licenza) {
+            $out[$licenza['gruppo']] = $licenza['codice'];
+        }
+        return $out;
+    }
 }

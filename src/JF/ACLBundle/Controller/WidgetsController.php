@@ -28,6 +28,17 @@ class WidgetsController extends Controller {
     /**
      * Lists all Gestore entities.
      *
+     * @Route("/licenze", name="wigdet_acl_licenze")
+     * @Template()
+     */
+    public function licenzeAction() {
+        $entity = $this->getUser()->getCliente();
+        return array('entity' => $entity);
+    }
+    
+    /**
+     * Lists all Gestore entities.
+     *
      * @Route("/lock", name="wigdet_acl_lock")
      * @Template()
      */

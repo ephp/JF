@@ -35,9 +35,9 @@ class JFACLExtension extends Extension implements IExtension {
 
     public function setInstall(ContainerBuilder $container) {
         $install = $container->getParameter('jf.install');
-        
+
         $this->newInstall($install, '\JF\ACLBundle\Controller\InstallController', 'indexAction');
-        
+
         $container->setParameter('jf.install', $install);
     }
 
@@ -49,7 +49,10 @@ class JFACLExtension extends Extension implements IExtension {
         $sub_admin[] = array(
             'label' => 'Utenze',
             'route' => 'utenze',
-            'show' => array('in_role' => array('R_SUPER')),
+            'show' => array(
+                'in_role' => array('R_SUPER'),
+                'license' => array('utenze' => array('small', 'medium', 'big', 'unlimited'))
+            ),
             'order' => 10,
         );
         $sub_admin[] = array(
@@ -67,25 +70,25 @@ class JFACLExtension extends Extension implements IExtension {
             'order' => 999,
             'a' => array('class' => 'blyellow'),
         );
-        
+
         $sub_prof[] = array(
             'label' => 'Logout',
             'route' => '_security_logout',
             'order' => 99,
         );
-        
+
         $sub_prof[] = array(
             'label' => 'Visualizza',
             'route' => 'fos_user_profile_show',
             'order' => 1,
         );
-        
+
         $sub_prof[] = array(
             'label' => 'Cambia Password',
             'route' => 'fos_user_change_password',
             'order' => 25,
         );
-        
+
         $menu[] = array(
             'label' => 'Profilo',
             'submenu' => $sub_prof,
@@ -93,29 +96,32 @@ class JFACLExtension extends Extension implements IExtension {
             'order' => 999,
             'a' => array('class' => 'blyellow'),
         );
-        
+
         $sub_util[] = array(
             'label' => 'Rubrica',
             'route' => 'rubrica',
-            'show' => array('out_role' => 'R_EPH'),
+            'show' => array(
+                'out_role' => 'R_EPH',
+                'license' => array('utenze' => array('small', 'medium', 'big', 'unlimited'))
+            ),
             'order' => 90,
         );
-        
+
         $menu[] = array(
             'label' => 'Utility',
             'submenu' => $sub_util,
             'order' => 100,
             'a' => array('class' => 'blgreen'),
         );
-        
+
         $container->setParameter('jf.menu', $menu);
     }
 
     public function setPackage(ContainerBuilder $container) {
         $package = $container->getParameter('jf.package');
-        
+
         $this->newPackage($package, 'jf.acl', 'ACL', 0, true);
-        
+
         $container->setParameter('jf.package', $package);
     }
 
@@ -130,10 +136,11 @@ class JFACLExtension extends Extension implements IExtension {
 
     public function setWidgets(ContainerBuilder $container) {
         $widgets = $container->getParameter('jf.widgets');
-        
+
         $this->newWidget($widgets, 'jf.acl.locked', 'ACLock', array('R_SUPER'), 'JFACLBundle:Widgets:lock');
         $this->newWidget($widgets, 'jf.acl.utenti', 'Utenti', array('R_SUPER'), 'JFACLBundle:Widgets:utenti');
-        
+        $this->newWidget($widgets, 'jf.acl.licenze', 'Licenze', array('R_SUPER'), 'JFACLBundle:Widgets:licenze');
+
         $container->setParameter('jf.widgets', $widgets);
     }
 

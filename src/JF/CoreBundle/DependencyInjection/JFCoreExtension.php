@@ -6,15 +6,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use JF\CoreBundle\DependencyInjection\Interfaces\IExtension;
+use JF\CoreBundle\DependencyInjection\Traits\CoreExtension;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class JFCoreExtension extends Extension {
+class JFCoreExtension extends Extension implements IExtension {
 
-    use Traits\CoreExtension;
+    use CoreExtension;
 
     /**
      * {@inheritDoc}
@@ -23,13 +25,22 @@ class JFCoreExtension extends Extension {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $menu = $roles = $package = $widgets = array();
+        $this->configure($container);
 
-        $this->newPackage($package, 'jf.core', 'Core', 0, true);
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
+    
+    public function setInstall(ContainerBuilder $container) {
+        $install = array();
+        
+        $this->newInstall($install, '\JF\CoreBundle\Controller\InstallController', 'indexAction');
+        
+        $container->setParameter('jf.install', $install);
+    }
 
-        $this->newRole($roles, 'R_SUPER', 'SUP', 'Super Amministratore');
-        $this->newRole($roles, 'R_ADMIN', 'ADM', 'Amministratore');
-
+    public function setMenu(ContainerBuilder $container) {
+        $menu = array();
         $sub_admin = array();
         
         $menu[] = array(
@@ -45,6 +56,7 @@ class JFCoreExtension extends Extension {
             'route' => 'index',
             'show' => array('in_role' => array('R_EPH')),
             'order' => 20,
+            'a' => array('class' => 'todo'),
         );
         
         $sub_admin[] = array(
@@ -52,6 +64,7 @@ class JFCoreExtension extends Extension {
             'route' => 'index',
             'show' => array('in_role' => array('R_EPH')),
             'order' => 999,
+            'a' => array('class' => 'todo'),
         );
         
         $menu['admin'] = array(
@@ -61,14 +74,28 @@ class JFCoreExtension extends Extension {
             'order' => 990,
             'a' => array('class' => 'blred'),
         );
-
-        $container->setParameter('jf.widgets', $widgets);
-        $container->setParameter('jf.package', $package);
+        
         $container->setParameter('jf.menu', $menu);
-        $container->setParameter('jf.roles', $roles);
+    }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+    public function setPackage(ContainerBuilder $container) {
+        $package = array();
+        
+        $this->newPackage($package, 'jf.core', 'Core', 0, true);
+        
+        $container->setParameter('jf.package', $package);
+    }
+    
+    public function setRoles(ContainerBuilder $container) {
+        $roles = array();
+               
+        $container->setParameter('jf.roles', $roles);
+    }
+
+    public function setWidgets(ContainerBuilder $container) {
+        $widgets = array();
+        
+        $container->setParameter('jf.widgets', $widgets);
     }
 
 }

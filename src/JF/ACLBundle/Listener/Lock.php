@@ -97,18 +97,11 @@ class Lock {
                     if (strpos($this->request->get('_route'), '_assetic') !== false) {
                         throw new \Exception('OK');
                     }
-//                    if ($this->request->get('_route') == $this->request->getSession()->get('lock')) {
-//                        throw new \Exception('OK');
-//                    }
                 }
                 throw new NotFoundHttpException('Utenza bloccata');
             } catch (NotFoundHttpException $e) {
-//                $this->request->getSession()->set('lock', $this->request->get('_route'));
                 throw $e;
-            } catch (\Exception $e) {
-                
-            }
-//            $this->request->getSession()->remove('lock');
+            } catch (\Exception $e) { }
         }
     }
 

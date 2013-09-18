@@ -4,12 +4,24 @@ namespace JF\CoreBundle\DependencyInjection\Traits;
 
 trait CoreExtension {
 
+    protected function configure(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
+            $this->setPackage($container);
+            $this->setMenu($container);
+            $this->setRoles($container);
+            $this->setWidgets($container);
+            $this->setInstall($container);
+    }
+    
     protected function newPackage(&$package, $code, $name, $order, $permission) {
         $package[$code] = array('name' => $name, 'order' => $order, 'permission' => $permission);
     }
     
     protected function newRole(&$roles, $code, $abbr, $name) {
         $roles[$code] = array('name' => $name, 'code' => $code, 'abbr' => $abbr);
+    }
+    
+    protected function newInstall(&$install, $route, $render) {
+        $install[$route] = $render;
     }
     
     protected function newWidget(&$widgets, $key, $name, $roles, $render, $params = array()) {

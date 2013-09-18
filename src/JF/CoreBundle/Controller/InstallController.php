@@ -4,21 +4,43 @@ namespace JF\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ephp\UtilityBundle\Controller\Traits\BaseController;
+use JF\CoreBundle\Controller\Traits\InstallController as BaseInstall;
 
 /**
  * @Route("/__install")
  */
-class RenderController extends Controller {
+class InstallController extends Controller {
 
-    use \Ephp\UtilityBundle\Controller\Traits\BaseController,
-        Traits\InstallController;
+    use BaseController,
+        BaseInstall;
 
     /**
-     * @Route("-core")
+     * @Route("-core", name="install_core", defaults={"_format": "json})
      */
     public function indexAction() {
-        $this->installPackage('jf.core', 'JF-System Core', 'Il core di JF-System, le cui regole devono essere base per lo sviluppo degli altri pacchetti');
+        $package = 'jf.core';
+        $status = 200;
+        $message = 'Ok';
+        $licenze = array();
+        try {
+            $this->getEm()->beginTransaction();
+            
+            $this->installPackage($package, 'JF-System Core', 'JFCoreBundle:Install:package.txt.twig');
+
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            $status = 500;
+            $message = $e->getMessage();
+        }
+        
+        return array(
+            'package' => $package,
+            'status' => $status,
+            'message' => $message,
+            'licenze' => $licenze,
+        );
     }
 
 }

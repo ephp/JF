@@ -30,71 +30,84 @@ class JFCoreExtension extends Extension implements IExtension {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
-    
+
     public function setInstall(ContainerBuilder $container) {
         $install = array();
-        
+
         $this->newInstall($install, '\JF\CoreBundle\Controller\InstallController', 'indexAction');
-        
+
         $container->setParameter('jf.install', $install);
     }
 
     public function setMenu(ContainerBuilder $container) {
         $menu = array();
-        $sub_admin = array();
-        
         $menu[] = array(
             'label' => 'Home',
             'route' => 'index',
             'show' => array('always' => true),
             'order' => 1,
-            'a' => array('class' => 'blblue'),
+            'a' => array('class' => 'bldblue'),
         );
 
-        $sub_admin[] = array(
+        $menu['admin'] = array(
+            'label' => 'Amministrazione',
+            'submenu' => array(),
+            'show' => array('in_role' => array('R_SUPER', 'R_EPH')),
+            'order' => 990,
+            'a' => array('class' => 'blred'),
+        );
+        $menu['admin']['submenu'][] = array(
+            'label' => 'Catalogo',
+            'route' => 'catalogo',
+            'show' => array(
+                'in_role' => array('R_SUPER'),
+            ),
+            'order' => 1,
+        );
+        $menu['admin']['submenu'][] = array(
             'label' => 'Licenze',
             'route' => 'index',
             'show' => array('in_role' => array('R_EPH')),
             'order' => 20,
             'a' => array('class' => 'todo'),
         );
-        
-        $sub_admin[] = array(
+        $menu['admin']['submenu'][] = array(
             'label' => 'Stato del sistema',
             'route' => 'index',
             'show' => array('in_role' => array('R_EPH')),
             'order' => 999,
             'a' => array('class' => 'todo'),
         );
-        
-        $menu['admin'] = array(
-            'label' => 'Amministrazione',
-            'submenu' => $sub_admin,
-            'show' => array('in_role' => array('R_SUPER', 'R_EPH')),
-            'order' => 990,
-            'a' => array('class' => 'blred'),
+
+        $menu['utility'] = array(
+            'label' => 'Utility',
+            'submenu' => array(),
+            'order' => 100,
+            'a' => array('class' => 'blgreen'),
         );
-        
+
         $container->setParameter('jf.menu', $menu);
     }
 
     public function setPackage(ContainerBuilder $container) {
         $package = array();
-        
+
         $this->newPackage($package, 'jf.core', 'Core', 0, true);
-        
+
         $container->setParameter('jf.package', $package);
     }
-    
+
     public function setRoles(ContainerBuilder $container) {
         $roles = array();
-               
+
+        $this->newRole($roles, 'R_SUPER', 'SUP', 'Super Amministratore');
+
         $container->setParameter('jf.roles', $roles);
     }
 
     public function setWidgets(ContainerBuilder $container) {
         $widgets = array();
-        
+
         $container->setParameter('jf.widgets', $widgets);
     }
 

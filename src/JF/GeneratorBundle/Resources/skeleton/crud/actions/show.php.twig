@@ -1,0 +1,62 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Finds and displays a {{ entity }} entity.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+{% if has_slug %}
+     * @Route("/{slug}", name="{{ route_name_prefix }}_show")
+{% else %}
+     * @Route("/{id}", name="{{ route_name_prefix }}_show")
+{% endif %}
+     * @Method("GET")
+{% if has_slug %}
+     * @ParamConverter("comment", options={"mapping": {"slug": "slug"}})     
+{% else %}
+     * @ParamConverter("id", class="{{ bundle }}:{{ entity }}")
+{% endif %}
+     * @Template()
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+{% if 'annotation' == format %}
+    public function showAction({{ entity }} $entity)
+{% else %}
+    public function showAction($id)
+{% endif %}
+{% endblock method_definition %}
+    {
+{% block method_body %}
+{% if 'annotation' != format %}
+        $entity = $this->find('{{ bundle }}:{{ entity }}', $id);
+{% endif %}
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
+        }
+{% if 'delete' in actions %}
+
+        $deleteForm = $this->createDeleteForm($id);
+{% endif %}
+{% endblock method_body %}
+
+{% block method_return %}
+{% if 'annotation' == format %}
+        return array(
+            'entity'      => $entity,
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{% endif %}
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
+            'entity'      => $entity,
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{%- endif %}
+        ));
+{% endif %}
+{% endblock method_return %}
+    }

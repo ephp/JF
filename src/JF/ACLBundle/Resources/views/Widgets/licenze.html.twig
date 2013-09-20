@@ -1,5 +1,5 @@
 {# LICENZE #}
-<div class="widget green icon">
+<div class="widget red icon">
     <div class="left">
         <div class="icon">
             <span class="ico-box"></span>
@@ -9,26 +9,26 @@
         <table cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Pkg</th><th>Licenza</th><th>Scadenza</th>
+                    <th>Licenza</th><th>Scadenza</th>
                 </tr>
             </thead>
             <tbody>
                 {% for licenza in entity.licenze %}
                     <tr>
-                        <td>{{ licenza.gruppo|capitalize }}</td><td>{{ licenza.licenza.nome }}</td><td>{% if licenza.scadenza %}{{ licenza.scadenza|date('d-m-Y') }}{% else%}n.s.{% endif %}</td>
+                        <td><attr title="{{ licenza.licenza.nome }}">{{ licenza.gruppo|capitalize }}</attr></td><td>{% if licenza.scadenza %}{{ licenza.scadenza|date('d-m-Y') }}{% else%}n.s.{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
     {% if app.user.hasRole('R_SUPER') %}
-        <div class="bottom todo">
-            <a href="alert('TODO')">Vai al catalogo</a>
+        <div class="bottom">
+            <a href="{{ path('catalogo') }}">Vai al catalogo</a>
         </div>                            
     {% endif %}
     {% if app.user.hasRole('R_EPH') %}
         <div class="bottom todo">
-            <a href="alert('TODO')">Dettagli</a>
+            <a href="javascrit:alert('TODO')">Dettagli</a>
         </div>                            
     {% endif %}
 </div>

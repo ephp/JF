@@ -17,8 +17,14 @@ security:
                     dodo:  { password: pci, roles: [ 'ROLE_SUPER_ADMIN' ] }
 
     firewalls:
+        andreani:
+            pattern:  ^/andreani/
+            security: false
         eph:
             pattern:  /eph$
+            security: false
+        work:
+            pattern:  /(_wdt)|(js)
             security: false
         login:
             pattern:  ^/login$

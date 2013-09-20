@@ -22,15 +22,15 @@
                 </ul>
             </div>                
             <div class="data-fluid">
-                <table class="table dtable lcnp" cellpadding="0" cellspacing="0" width="100%">
+                <table class="table" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="TAC">Cliente</th>
-                            <th width="15%" class="TAC">Contatto</th>
-                            <th width="15%" class="TAC">Telefono</th>
-                            <th width="15%" class="TAC">Email</th>
-                            <th width="15%" class="TAC">Scadenza Licenza</th>
-                            <th width="80">Op.</th>
+                            <th>Cliente</th>
+                            <th width="15%">Contatto</th>
+                            <th width="15%">Telefono</th>
+                            <th width="15%">Email</th>
+                            <th width="15%">Scadenza Licenza</th>
+                            <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,9 +42,7 @@
                             <td>{{ entity.telefono }}</td>
                             <td>{% if entity.scadenzaLicenza %}{{ entity.scadenzaLicenza|date('Y-m-d H:i:s') }}{% endif %}</td>
                             <td>
-                                <a href="{{ path('eph_clienti_edit', { 'id': entity.id }) }}" class="button yellow">
-                                    <div class="icon"><span class="ico-pencil"></span></div>
-                                </a>
+                                {% include ":commons:edit.html.twig" with {'route': path('eph_clienti_edit', { 'id': entity.id })} %}
                             </td>
                         </tr>
                         {% endfor %}

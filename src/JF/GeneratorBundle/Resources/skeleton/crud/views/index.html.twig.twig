@@ -1,0 +1,91 @@
+{% block extends %}
+{{ "{% extends '::base.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block body -%}" }}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>{{ entity }}</h1>
+</div>
+{% if 'new' in actions %}
+<a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
+    <span class="label label-important">Nuovo {{ entity|lower }}</span>
+</a>
+{% endif %}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                <table class="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                        {%- for field, metadata in fields %}
+
+                            <th>{{ field|capitalize }}</th>
+
+                        {%- endfor %}
+
+                            <th width="40" class="TAC">Op.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {{ '{% for entity in entities %}' }}
+                        <tr>
+
+                    {%- for field, metadata in fields %}
+                        {%- if loop.first and ('show' in actions) %}
+                            {%- if has_slug %}
+                            
+                            <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'slug': entity.slug }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+                            
+                            {%- else %}
+                            
+                            <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity.id }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+
+                            {%- endif %}
+                        {%- elseif metadata.type in ['array'] %}
+                        {%- elseif metadata.type in ['date', 'datetime'] %}
+
+                            <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+                        
+                        {%- elseif metadata.type in ['boolean'] %}
+
+                            <td width="40" class="no-padding js-{{ field }}">
+                                {{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}' }}
+                                    <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button green role">
+                                        <div class="icon"><span class="ico-check"></span></div>
+                                    </a>
+                                {{ '{% else %}' }}
+                                    <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button red role">
+                                        <div class="icon"><span class="ico-check-empty"></span></div>
+                                    </a>
+                                {{ '{% endif %}' }}
+                            </td>
+
+                        {%- else %}
+
+                            <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                        {%- endif %}
+
+                        {%- if loop.last %}
+
+                            <td>
+                                {%- include "crud/views/others/actions.html.twig.twig" %}
+                            </td>
+
+                        {%- endif %}
+                    {%- endfor %}
+
+                        </tr>
+                    {{ '{% endfor %}' }}
+                
+                
+        </tbody>
+    </table>
+
+{{ "{% endblock %}" }}
+{% endblock body %}

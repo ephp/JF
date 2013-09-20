@@ -6,10 +6,10 @@ $(document).ready(function() {
         function(out) {
             if(out.active) {
                 $a.removeClass('red').addClass('green');
-                $a.find('span').removeClass('ico-blocked').addClass('ico-check');
+                $a.find('span').removeClass('ico-check-empty').addClass('ico-check');
             } else {
                 $a.removeClass('green').addClass('red');
-                $a.find('span').removeClass('ico-check').addClass('ico-blocked');
+                $a.find('span').removeClass('ico-check').addClass('ico-check-empty');
             }
         });
     });

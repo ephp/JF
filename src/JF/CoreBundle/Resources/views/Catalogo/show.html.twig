@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+                
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-dollar"></span>
+    </div>
+    <h1>{{ entity.gruppo|capitalize }} <small>{{ entity.codiceEsteso }}</small></h1>
+</div>
+
+<div class="row-fluid">
+    <div class="span8">                
+        
+        <div class="block">
+            <div class="data invoice">
+                <h3>{{ entity.nome }}</h3>
+                {{ entity.descrizione|raw }}
+            </div>
+        </div>    
+        <div class="row-fluid">
+            <div class="span9">
+                <a href="{{ path('catalogo') }}">
+                   <span class="label label-important">Torna al catalogo</span>
+                </a>
+            </div>
+            <div class="span3">
+                <div class="total">
+                    <p><strong><span>Prezzo:</span> {{ entity.prezzo|number_format(2) }} €</strong></p>
+                    <p><strong><span>IVA:</span> {{ (entity.prezzo*0.21)|number_format(2) }} €</strong></p>
+                    <div class="highlight">
+                        <strong><span>Totale:</span> {{ (entity.prezzo*1.21)|number_format(2) }} €</strong>
+                    </div>
+                    <p>
+                        <a href="{{ path('catalogo_buy', {'gruppo': entity.gruppo, 'sigla': entity.sigla}) }}">
+                            <span class="label label-success">Acquista</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="span4">
+        {% include "JFCoreBundle:Catalogo:commons/carrello.html.twig" %}
+    </div>
+</div>
+
+
+<ul class="record_actions">
+    <li>
+    </li>
+</ul>
+{% endblock %}

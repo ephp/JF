@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>Sistema</h1>
+</div>
+<a href="{{ path('eph_claims_h_sistemi_new') }}">
+    <span class="label label-important">Nuovo sistema</span>
+</a>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                <table class="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Urlbase</th>
+                            <th width="40" class="TAC">Op.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.nome }}</td>
+                            <td>{{ entity.urlBase }}</td>
+                            <td>
+                <ul>                    
+                    {% include ":commons:edit.html.twig" with {'route': path('eph_claims_h_sistemi_edit', { 'id': entity.id })} %}
+                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                
+                
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -102,7 +102,7 @@ class Licenza {
     /**
      * @var string
      *
-     * @ORM\Column(name="nome", type="string", length=32)
+     * @ORM\Column(name="nome", type="string", length=64)
      */
     private $nome;
 
@@ -547,6 +547,29 @@ class Licenza {
                 return 'In offerta';
             case self::$S_UPD:
                 return 'Aggiornato';
+            default:
+                return '-';
+        }
+    }
+    
+    public function getStatoClasse() {
+        switch ($this->stato) {
+            case self::$S_DEL:
+                return 'no-display';
+            case self::$S_DOW:
+                return 'label-warning';
+            case self::$S_HID:
+                return 'no-display';
+            case self::$S_LIM:
+                return 'label-success';
+            case self::$S_NEW:
+                return 'label-green';
+            case self::$S_NOP:
+                return 'no-display';
+            case self::$S_SAL:
+                return 'label-important';
+            case self::$S_UPD:
+                return 'label-info';
             default:
                 return '-';
         }

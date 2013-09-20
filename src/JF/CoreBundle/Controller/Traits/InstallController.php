@@ -55,6 +55,10 @@ trait InstallController {
                 $licenza->setDescrizione($descrizione);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
+            if($licenza->getNome() != $nome) {
+                $licenza->setNome($nome);
+                $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
+            }
             if($licenza->getDurata() != $durata) {
                 $licenza->setDurata($durata);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
@@ -63,15 +67,15 @@ trait InstallController {
                 $licenza->setAutoinstall($autoinstall);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getRoles(), $roles)) != 0) {
+            if(count(array_diff($licenza->getRoles(), $roles)) + count(array_diff($roles, $licenza->getRoles())) != 0) {
                 $licenza->setRoles($roles);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getParams(), $params)) != 0) {
+            if(count(array_diff($licenza->getParams(), $params)) + count(array_diff($params, $licenza->getParams())) != 0) {
                 $licenza->setParams($params);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getWidgets(), $widgets)) != 0) {
+            if(count(array_diff($licenza->getWidgets(), $widgets)) + count(array_diff($widgets, $licenza->getWidgets())) != 0) {
                 $licenza->setWidgets($widgets);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }

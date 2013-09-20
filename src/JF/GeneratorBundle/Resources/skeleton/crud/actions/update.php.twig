@@ -1,0 +1,72 @@
+    /**
+{% block phpdoc_method_header %}
+     * Edits an existing {{ entity }} entity.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+{% if has_slug %}
+     * @Route("/{slug}", name="{{ route_name_prefix }}_update")
+{% else %}
+     * @Route("/{id}", name="{{ route_name_prefix }}_update")
+{% endif %}
+     * @Method("PUT")
+{% if has_slug %}
+     * @ParamConverter("comment", options={"mapping": {"slug": "slug"}})     
+{% else %}
+     * @ParamConverter("id", class="{{ bundle }}:{{ entity }}")
+{% endif %}
+     * @Template("{{ bundle }}:{{ entity }}:edit.html.twig")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+{% if 'annotation' == format %}
+    public function updateAction({{ entity }} $entity)
+{% else %}
+    public function updateAction(Request $request, $id)
+{% endif %}
+{% endblock method_definition %}
+    {
+{% block method_body %}
+{% if 'annotation' != format %}
+        $entity = $this->find('{{ bundle }}:{{ entity }}', $id);
+{% else %}
+        $request = $this->getRequest();
+{% endif %}
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
+        }
+{% if 'delete' in actions %}
+        $deleteForm = $this->createDeleteForm($id);
+{% endif %}
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $this->persist($entity);
+
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+        }
+{% endblock method_body %}
+
+{% block method_return %}
+{% if 'annotation' == format %}
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{% endif %}
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{% endif %}
+        ));
+{% endif %}
+{% endblock method_return %}
+    }

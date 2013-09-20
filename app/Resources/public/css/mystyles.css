@@ -29,6 +29,11 @@
 .no-display {
     display: none;
 }
+.stroke {
+    text-decoration-line: overline;
+    font-style: italic !important;
+    color: #D3D3D3 !important;
+}
 tr.stroke {
     font-style: italic !important;
 }

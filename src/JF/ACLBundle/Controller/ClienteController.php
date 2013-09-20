@@ -4,6 +4,8 @@ namespace JF\ACLBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Ephp\UtilityBundle\Controller\Traits\BaseController;
+use Ephp\ACLBundle\Controller\Traits\NotifyController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,8 +23,8 @@ use JF\ACLBundle\Form\SuperadminType;
  */
 class ClienteController extends Controller {
 
-    use \Ephp\UtilityBundle\Controller\Traits\BaseController,
-        \Ephp\ACLBundle\Controller\Traits\NotifyController;
+    use BaseController,
+        NotifyController;
 
     /**
      * Lists all Cliente entities.
@@ -220,14 +222,11 @@ class ClienteController extends Controller {
      * Displays a form to edit an existing Cliente entity.
      *
      * @Route("/{id}/edit", name="eph_clienti_edit", options={"ACL": {"in_role": "R_EPH"}})
+     * @ParamConverter("id", class="JFACLBundle:Cliente")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('JFACLBundle:Cliente')->find($id);
-
+    public function editAction(Cliente $entity) {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Cliente entity.');
         }

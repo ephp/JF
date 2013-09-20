@@ -63,6 +63,7 @@ EOT
 
         if($input->getOption('verbose')) {
             $dialog->writeSection($output, 'Installazione completata');
+            print_r($out);
         } else {
             echo 'Installazione paccketti e licenze JF-SYSTEM compleatata';
         }

@@ -1,0 +1,16 @@
+
+                <ul>
+
+                {%- for action in record_actions %}
+                    {%- if has_slug %}
+                    
+                    {{ "{% include \":commons:" ~ action ~ ".html.twig\" with {'route': path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'slug': entity.slug })} %}" }}
+                    
+                    {%- else %}
+                    
+                    {{ "{% include \":commons:" ~ action ~ ".html.twig\" with {'route': path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id })} %}" }}
+                    
+                    {%- endif %}
+                {%- endfor %}
+
+                </ul>

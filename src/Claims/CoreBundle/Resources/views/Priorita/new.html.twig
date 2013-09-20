@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+{% form_theme form '::form_aries_layout.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-circle-arrow-up"></span>
+    </div>
+    <h1>Priorità <small>Claims</small></h1>
+</div>
+{{ form_start(form) }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Nuova</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.priorita) }}
+                    {{ form_row(form.onAssign) }}
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>&nbsp;</h2>
+                </div>                                        
+                <div class="data-fluid">
+                    {{ form_row(form.css) }}
+                    {{ form_row(form.show) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{{ form_end(form) }}
+<a href="{{ path('eph_priorita') }}">
+    <span class="label label-inverse">Torna indietro</span>
+</a>
+{% endblock %}

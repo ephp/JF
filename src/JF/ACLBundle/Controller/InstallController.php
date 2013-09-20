@@ -34,6 +34,7 @@ class InstallController extends Controller {
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
                     array('jf.acl.locked', 'jf.acl.licenze'),                   //Widget abilitati
                     array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
                         'max' => 1,                                             //  Numero massimo di utenti
                         'rubrica' => false,                                     //  Abilitazione rubrica
                         ),                                          
@@ -46,6 +47,7 @@ class InstallController extends Controller {
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
                     array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
                         'max' => 5,                                             //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
                         ),                                          
@@ -58,6 +60,7 @@ class InstallController extends Controller {
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
                     array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
                         'max' => 10,                                            //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
                         ),                                          
@@ -70,6 +73,7 @@ class InstallController extends Controller {
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
                     array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
                         'max' => 25,                                            //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
                         ),                                          
@@ -82,6 +86,7 @@ class InstallController extends Controller {
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
                     array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
                     array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
                         'max' => 10000,                                         //  Numero massimo di utenti
                         'rubrica' => true,                                      //  Abilitazione rubrica
                         ),                                          

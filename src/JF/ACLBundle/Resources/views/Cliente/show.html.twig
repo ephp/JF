@@ -13,10 +13,10 @@
 <div class="row-fluid">
     <div class="span12">
         <a href="{{ path('eph_clienti_edit', { 'id': entity.id }) }}">
-            <span class="label label-green">Modifica</span>
+            <span class="label label-warning">Modifica</span>
         </a>
         <a href="{{ path('eph_clienti') }}">
-            <span class="label label-inverse">Torna indietro</span>
+            <span class="label label-success">Torna indietro</span>
         </a>
         <a href="{{ path('eph_clienti_sospendi', { 'id': entity.id }) }}">
             <span class="label label-important">{% if entity.bloccato %}Riattiva{% else %}Sospendi{% endif %}</span>

@@ -54,6 +54,9 @@ class UtenzeController extends Controller {
      * @Template()
      */
     public function newAction() {
+        if($this->getUser()->get('utenze.max') <= $this->countDql('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId()))) {
+            return $this->redirect($this->generateUrl('catalogo'));
+        }
         $entity = new Gestore();
         $form = $this->createCreateForm($entity);
 
@@ -280,7 +283,7 @@ class UtenzeController extends Controller {
                         $n += $u->hasRole('R_SUPER');
                     }
                 }
-                if ($n > 1) {
+                if ($role != 'R_SUPER' || $n > 1) {
                     $roles = array_diff($roles, array($role));
                 }
             } else {

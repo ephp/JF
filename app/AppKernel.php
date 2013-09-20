@@ -26,12 +26,15 @@ class AppKernel extends Kernel
             new Ephp\UtilityBundle\EphpUtilityBundle(),
             new Ephp\ACLBundle\EphpACLBundle(),
             
+            new JF\GeneratorBundle\JFGeneratorBundle(),
             new JF\CoreBundle\JFCoreBundle(),
             new JF\ACLBundle\JFACLBundle(),
+            new JF\AndreaniBundle\JFAndreaniBundle(),
+            new Claims\CoreBundle\ClaimsCoreBundle(),
+            new Claims\HBundle\ClaimsHBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

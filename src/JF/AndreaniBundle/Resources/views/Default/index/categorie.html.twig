@@ -1,0 +1,6 @@
+<h4>Categorie</h4>
+<ul class="nav">
+    {% for key, data in gruppi%}
+        <li><a href="javascript:void();" class="menu" submenu="{{ key }}">{{ data.label }}</a></li>
+    {% endfor %}
+</ul>

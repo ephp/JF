@@ -44,9 +44,7 @@ class JFACLExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $sub_admin = $sub_prof = $sub_util = array();
-
-        $sub_admin[] = array(
+        $menu['admin']['submenu'][] = array(
             'label' => 'Utenze',
             'route' => 'utenze',
             'show' => array(
@@ -55,15 +53,14 @@ class JFACLExtension extends Extension implements IExtension {
             ),
             'order' => 10,
         );
-        $sub_admin[] = array(
+        $menu['admin']['submenu'][] = array(
             'label' => 'Clienti',
             'route' => 'eph_clienti',
             'show' => array('in_role' => array('R_EPH')),
             'order' => 1,
         );
-        $menu['admin']['submenu'] = array_merge($menu['admin']['submenu'], $sub_admin);
-
-        $menu[] = array(
+        
+        $menu['login'] = array(
             'label' => 'Login',
             'route' => 'fos_user_security_login',
             'show' => array('logged' => false),
@@ -71,33 +68,33 @@ class JFACLExtension extends Extension implements IExtension {
             'a' => array('class' => 'blyellow'),
         );
 
-        $sub_prof[] = array(
-            'label' => 'Logout',
-            'route' => '_security_logout',
-            'order' => 99,
+        $menu['profilo'] = array(
+            'label' => 'Profilo',
+            'submenu' => array(),
+            'show' => array('logged' => true),
+            'order' => 999,
+            'a' => array('class' => 'blyellow'),
         );
-
-        $sub_prof[] = array(
+        $menu['profilo']['submenu'][] = array(
             'label' => 'Visualizza',
             'route' => 'fos_user_profile_show',
             'order' => 1,
         );
 
-        $sub_prof[] = array(
+        $menu['profilo']['submenu'][] = array(
             'label' => 'Cambia Password',
             'route' => 'fos_user_change_password',
             'order' => 25,
         );
 
-        $menu[] = array(
-            'label' => 'Profilo',
-            'submenu' => $sub_prof,
-            'show' => array('logged' => true),
-            'order' => 999,
-            'a' => array('class' => 'blyellow'),
+        $menu['profilo']['submenu'][] = array(
+            'label' => 'Logout',
+            'route' => '_security_logout',
+            'order' => 99,
         );
 
-        $sub_util[] = array(
+
+        $menu['utility']['submenu'][] = array(
             'label' => 'Rubrica',
             'route' => 'rubrica',
             'show' => array(
@@ -105,13 +102,6 @@ class JFACLExtension extends Extension implements IExtension {
                 'license' => array('utenze' => array('small', 'medium', 'big', 'unlimited'))
             ),
             'order' => 90,
-        );
-
-        $menu[] = array(
-            'label' => 'Utility',
-            'submenu' => $sub_util,
-            'order' => 100,
-            'a' => array('class' => 'blgreen'),
         );
 
         $container->setParameter('jf.menu', $menu);
@@ -128,7 +118,6 @@ class JFACLExtension extends Extension implements IExtension {
     public function setRoles(ContainerBuilder $container) {
         $roles = $container->getParameter('jf.roles');
 
-        $this->newRole($roles, 'R_SUPER', 'SUP', 'Super Amministratore');
         $this->newRole($roles, 'R_ADMIN', 'ADM', 'Amministratore');
 
         $container->setParameter('jf.roles', $roles);

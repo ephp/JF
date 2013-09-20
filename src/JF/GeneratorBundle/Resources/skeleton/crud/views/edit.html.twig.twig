@@ -1,0 +1,31 @@
+{% block extends %}
+{{ "{% extends '::base.html.twig' %}" }}
+{{ "{% form_theme edit_form '::form_aries_layout.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block body -%}" }}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>{{ entity }} <small>Modifica</small></h1>
+</div>
+{{ '{{ form_start(edit_form) }}' }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>{{ entity }}</h2>
+                </div>                                        
+                <div class="data-fluid">
+                {{ '{{ form_rest(edit_form) }}' }}
+                </div>                                        
+            </div>
+        </div>
+    </div>
+{{ '{{ form_end(edit_form) }}' }}
+{% set hide_edit, hide_delete = true, false %}
+{% include 'crud/views/others/record_actions.html.twig.twig' %}
+{{ "{% endblock %}" }}
+{% endblock body %}

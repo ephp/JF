@@ -22,7 +22,7 @@ class Licenza {
     private $id;
 
     /**
-     * @var Gestore
+     * @var Cliente
      * 
      * @ORM\ManyToOne(targetEntity="Cliente")
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id", nullable=true)

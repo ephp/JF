@@ -490,6 +490,57 @@ class Cliente {
     }
 
     /**
+     * Add licenze
+     *
+     * @param Licenza $licenze
+     * @return boolean
+     */
+    public function getLicenza($licenza_id) {
+        foreach($this->getLicenze() as $licenza) {
+            /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+            if($licenza->getLicenza()->getId() == $licenza_id) {
+                return $licenza;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Add licenze
+     *
+     * @param Licenza $licenze
+     * @return boolean
+     */
+    public function getLicenzaGruppo($gruppo) {
+        foreach($this->getLicenze() as $licenza) {
+            /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+            if($licenza->getGruppo() == $gruppo) {
+                return $licenza;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Add licenze
+     *
+     * @param Licenza $licenze
+     * @return boolean
+     */
+    public function hasLicenza($licenza_id) {
+        foreach($this->getLicenze() as $licenza) {
+            /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+            if($licenza->getLicenza()->getId() == $licenza_id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Remove licenze
      *
      * @param \JF\ACLBundle\Entity\Licenza $licenze
@@ -582,4 +633,21 @@ class Cliente {
         }
         return $out;
     }
+    
+    private $cache = null;
+    
+    public function get($key, $default = null) {
+        if(!$this->cache) {
+            $this->cache = array();
+            foreach($this->getLicenze() as $licenza) {
+                $licenza = $licenza->getLicenza();
+                /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+                foreach($licenza->getParams() as $k => $v) {
+                    $this->cache[$licenza->getGruppo().'.'.$k] = $v;
+                }
+            }
+        }
+        return isset($this->cache[$key]) ? $this->cache[$key] : $default;
+    }
+    
 }

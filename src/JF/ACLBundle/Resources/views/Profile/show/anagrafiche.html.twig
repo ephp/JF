@@ -17,9 +17,7 @@
                 <b>Telefono</b>
                 <span>{{ user.telefono }}</span>
             </p>
-            <a href="{{ path('fos_user_profile_edit') }}" class="button green">
-                <span class="label label-important icon"><span class="ico-pencil"></span> Modifica</span>
-            </a>
+            {% include ":commons:edit.html.twig" with {'route': path('fos_user_profile_edit')} %}
         </div>                            
     </div>                        
 </div>
@@ -69,9 +67,7 @@
                     </p>
                 {% endif %}
                 {% if user.hasRole('R_SUPER') %}
-                    <a href="{{ path('utenze_azienda_edit') }}" class="button green">
-                        <span class="label label-important icon"><span class="ico-pencil"></span> Modifica</span>
-                    </a>
+                    {% include ":commons:edit.html.twig" with {'route': path('utenze_azienda_edit')} %}
                 {% endif %}
             </div>       
         {% else %}

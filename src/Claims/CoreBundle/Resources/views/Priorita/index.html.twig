@@ -1,0 +1,57 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-circle-arrow-up"></span>
+    </div>
+    <h1>Priorità <small>Claims</small></h1>
+</div>
+
+<div class="row-fluid">
+    <div class="span8">
+        <div class="block">
+            <a href="{{ path('eph_priorita_new') }}">
+                <span class="label label-important">Nuovo</span>
+            </a>
+            <div class="data-fluid">
+                <table class="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Priorita</th>
+                            <th width="20%">Css</th>
+                            <th width="10%">Onassign</th>
+                            <th width="10%">Menu a tendina</th>
+                            <th width="40" class="TAC">Operazioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td><span style="display: inline !important" class="label {{ entity.css }}">{{ entity.priorita }}</span></td>
+                                <td>{{ entity.css }}</td>
+                                <td>{{ entity.onAssign }}</td>
+                                <td>
+                                    {% if entity.show %}
+                                        <a href="javascript:void(0)" class="button green">
+                                            <div class="icon"><span class="ico-check"></span></div>
+                                        </a>                                        
+                                    {% else %}
+                                        <a href="javascript:void(0)" class="button red">
+                                            <div class="icon"><span class="ico-check-empty"></span></div>
+                                        </a>                                        
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% include ":commons:edit.html.twig" with {'route': path('eph_priorita_edit', { 'id': entity.id })} %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>                    
+            </div> 
+        </div>            
+    </div>            
+</div>         
+
+{% endblock %}

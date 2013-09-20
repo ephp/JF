@@ -1,0 +1,48 @@
+{% block extends %}
+{{ "{% extends '::base.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block body -%}" }}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>{{ entity }} <small>Dettagli</small></h1>
+</div>
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block">
+            <table class="table">
+                <tbody>
+                {%- for field, metadata in fields %}
+
+                    {%- if metadata.type not in ['array'] %}
+                    <tr>
+                        <th>{{ field|capitalize }}</th>
+                        
+                    {%- if metadata.type in ['date', 'datetime'] %}
+
+                        <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+                    {%- else %}
+
+                        <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                    {%- endif %}
+
+                    </tr>
+                    {%- endif %}
+
+                {%- endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% set hide_edit, hide_delete = false, false %}
+{% include 'crud/views/others/record_actions.html.twig.twig' %}
+{{ "{% endblock %}" }}
+{% endblock body %}

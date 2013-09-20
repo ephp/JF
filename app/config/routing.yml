@@ -1,3 +1,18 @@
+claims_h:
+    resource: "@ClaimsHBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+claims_core:
+    resource: "@ClaimsCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+jf_andreani:
+    resource: "@JFAndreaniBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 jf_acl:
     resource: "@JFACLBundle/Controller/"
     type:     annotation

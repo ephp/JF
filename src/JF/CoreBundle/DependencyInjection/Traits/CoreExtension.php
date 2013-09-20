@@ -25,6 +25,9 @@ trait CoreExtension {
     }
     
     protected function newWidget(&$widgets, $key, $name, $roles, $render, $params = array()) {
+        if($roles === true) {
+            $roles = array('ROLE_USER');
+        }
         foreach ($roles as $role) {
             if(!isset($widgets[$role])) {
                 $widgets[$role] = array();

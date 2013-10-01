@@ -1,8 +1,10 @@
-.label, .dblue{background: #005683 !important;}
+.label, .badge, .dblue{background: #005683 !important;}
 .label-info, .badge-info, .blue{background: #009AD7 !important;}
 .label-warning, .badge-warning, .yellow{background: #FFAA31 !important;}
 .label-success, .badge-success, .green{background: #68AF27 !important;}
-.label-important, .label-important, .red{background: #C22439 !important;}
+.label-important, .badge-important, .red{background: #C22439 !important;}
+.label-normal, .badge-normal, .gray{background: #A9A9A9 !important;}
+.label-disabled, .badge-disabled, .lgray{background: #D1D1D1 !important;}
 
 .purple{background: #673499 !important;}
 .orange{background: #D53F26 !important;}
@@ -14,6 +16,8 @@
 .cdblue{color: #005683 !important;}
 .cpurple{color: #673499 !important;}
 .corange{color: #D53F26 !important;}
+.cgray{color: #A9A9A9 !important;}
+.clgray{color: #D1D1D1 !important;}
 
 .blblue{border-left-color: #009AD7 !important;}
 .blyellow{border-left-color: #FFAA31 !important;}
@@ -22,6 +26,8 @@
 .bldblue{border-left-color: #005683 !important;}
 .blpurple{border-left-color: #673499 !important;}
 .blorange{border-left-color: #D53F26 !important;}
+.blgray{border-left-color: #A9A9A9 !important;}
+.bllgray{border-left-color: #D1D1D1 !important;}
 
 /*.block .head.blue h2, .block .head.yellow h2, .block .head.green h2, .block .head.red h2,
 .block .head.dblue h2, .block .head.purple h2, .block .head.orange h2{text-shadow: 0px 0px 1px rgba(0,0,0,0.2);}*/

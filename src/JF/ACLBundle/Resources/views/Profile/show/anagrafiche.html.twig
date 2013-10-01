@@ -17,7 +17,7 @@
                 <b>Telefono</b>
                 <span>{{ user.telefono }}</span>
             </p>
-            {% include ":commons:edit.html.twig" with {'route': path('fos_user_profile_edit')} %}
+            {% include ":commons:edit.html.twig" with {'route': path('fos_user_profile_edit'), 'label': 'Modifica'} %}
         </div>                            
     </div>                        
 </div>
@@ -67,7 +67,10 @@
                     </p>
                 {% endif %}
                 {% if user.hasRole('R_SUPER') %}
-                    {% include ":commons:edit.html.twig" with {'route': path('utenze_azienda_edit')} %}
+                    {% include ":commons:edit.html.twig" with {'route': path('utenze_azienda_edit'), 'label': 'Modifica'} %}
+                    {% if app.user.get('form_cliente') %}
+                        {% include ":commons:configure.html.twig" with {'route': path('utenze_account_edit'), 'label': 'Configura'} %}
+                    {% endif %}
                 {% endif %}
             </div>       
         {% else %}

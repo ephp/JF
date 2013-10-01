@@ -28,15 +28,19 @@
                             <td>{{ entity.nome }}</td>
                             <td>{{ entity.urlBase }}</td>
                             <td>
-                <ul>                    
-                    {% include ":commons:edit.html.twig" with {'route': path('eph_claims_h_sistemi_edit', { 'id': entity.id })} %}
-                </ul>
+                                <ul>                    
+                                    {% include ":commons:edit.html.twig" with {'route': path('eph_claims_h_sistemi_edit', { 'id': entity.id })} %}
+                                </ul>
                             </td>
                         </tr>
                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
                 
                 
-        </tbody>
-    </table>
 
 {% endblock %}

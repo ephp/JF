@@ -22,6 +22,7 @@
         
         "knplabs/knp-menu": "2.0.*@dev",
         "knplabs/knp-menu-bundle":"dev-master",
+        "knplabs/knp-paginator-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "~1.1",
         
         "stof/doctrine-extensions-bundle": "dev-master",
@@ -29,6 +30,7 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         
         "ephp/acl": "master@dev",
+        "ephp/cal": "master@dev",
         "ephp/utility": "master@dev"
     },
     "scripts": {

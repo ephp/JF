@@ -1,0 +1,40 @@
+{# default Sliding pagination control implementation #}
+
+{% if pageCount > 1 %}
+<div class="pagination pagination-centered pagination-centered center">
+    <ul>
+    {% if first is defined and current != first %}
+        <li><a href="{{ path(route, query|merge({(pageParameterName): first})) }}">&ll;</a></li>
+    {% else %}
+        <li class="disabled"><a href="javascript:void(0);">&ll;</a></li>
+    {% endif %}
+
+    {% if previous is defined %}
+        <li><a href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&lt;</a></li>
+    {% else %}
+        <li class="disabled"><a href="javascript:void(0);">&lt;</a></li>
+    {% endif %}
+
+    {% for page in pagesInRange %}
+        {% if page != current %}
+            <li><a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a></li>
+        {% else %}
+            <li><a class="active bold" href="javascript:void(0);">{{ page }}</a></li>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if next is defined %}
+        <li><a href="{{ path(route, query|merge({(pageParameterName): next})) }}">&gt;</a></li>
+    {% else %}
+        <li class="disabled"><a href="javascript:void(0);">&gt;</a></li>
+    {% endif %}
+
+    {% if last is defined and current != last %}
+        <li><a href="{{ path(route, query|merge({(pageParameterName): last})) }}">&gg;</a></li>
+    {% else %}
+        <li class="disabled"><a href="javascript:void(0);">&gg;</a></li>
+    {% endif %}
+    </ul>
+</div>
+{% endif %}

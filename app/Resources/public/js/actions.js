@@ -1,18 +1,38 @@
 var ws;
 $(document).ready(function() {
     ws = $('body').width();
-    
+
+    $('a.fancybox').each(function() {
+        if ($(this).attr('href').startsWith('#')) {
+            $(this).fancybox({
+                hideOnOverlayClick: false,
+                transitionIn: 'elastic',
+                padding: 3,
+                margin: 0
+            });
+        } else {
+            $(this).fancybox({
+                type: 'ajax',
+                hideOnOverlayClick: false,
+                transitionIn: 'elastic',
+                padding: 3,
+                margin: 0
+            });
+        }
+    });
+
+
     $('.live-filter').keyup(function() {
         var $filter = $(this);
-        var $elements = $('.'+$(this).attr('rel'));
+        var $elements = $('.' + $(this).attr('rel'));
         $elements.hide();
-        $elements.each(function(element){
-            if($(this).attr('livefilter').toLowerCase().search($filter.val().toLowerCase()) >= 0) {
+        $elements.each(function(element) {
+            if ($(this).attr('livefilter').toLowerCase().search($filter.val().toLowerCase()) >= 0) {
                 $(this).show();
             }
         });
     });
-    
+
     $('nav').each(function() {
         if ($(this).attr('append')) {
             $(this).children('ul').addClass($(this).attr('append'));
@@ -323,7 +343,7 @@ function source(doc) {
 
     $("#source").dialog({autoOpen: false,
         modal: true,
-        width: (3*$('body').width()/4),
+        width: (3 * $('body').width() / 4),
         zindex: 30,
         position: "right",
         dialogClass: 'sourcePosition',
@@ -334,13 +354,13 @@ function source(doc) {
 
     $.get(Routing.generate(doc), function(data) {
         $("#source").html(data);
-        
-        $('.rollover li').each(function(){
-            $(this).html('<a href="javascript:void(0)">'+$(this).html()+'</a>');
+
+        $('.rollover li').each(function() {
+            $(this).html('<a href="javascript:void(0)">' + $(this).html() + '</a>');
         });
-        $('.rollover li a').click(function(){
-            $('.'+$(this).closest('.rollover').attr('rel')).hide();
-            $('.'+$(this).closest('li').attr('rel')).show();
+        $('.rollover li a').click(function() {
+            $('.' + $(this).closest('.rollover').attr('rel')).hide();
+            $('.' + $(this).closest('li').attr('rel')).show();
         });
     }).fail(function() {
         $("#source").html('Unknown document');

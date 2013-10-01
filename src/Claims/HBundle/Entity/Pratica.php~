@@ -1,0 +1,420 @@
+<?php
+
+namespace Claims\HBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pratica
+ *
+ * @ORM\Table(name="claims_pratiche")
+ * @ORM\Entity(repositoryClass="Claims\HBundle\Entity\PraticaRepository")
+ */
+class Pratica {
+
+    use \Claims\CoreBundle\Entity\Traits\Pratica;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var Sistema
+     * 
+     * @ORM\ManyToOne(targetEntity="Sistema")
+     * @ORM\JoinColumn(name="sistema_id", referencedColumnName="id")
+     */
+    private $sistema;
+
+    /**
+     * @var Ospedale
+     *
+     * @ORM\ManyToOne(targetEntity="Ospedale")
+     * @ORM\JoinColumn(name="ospedale_id", referencedColumnName="id")
+     */
+    private $ospedale;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="anno", type="integer")
+     */
+    private $anno;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tpa", type="integer")
+     */
+    private $tpa;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="claimant", type="string", length=255)
+     */
+    private $claimant;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dasc", type="date", nullable=true)
+     */
+    private $dasc;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dol", type="date", nullable=true)
+     */
+    private $dol;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="don", type="date", nullable=true)
+     */
+    private $don;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_of_loss", type="string", length=5, nullable=true)
+     */
+    private $typeOfLoss;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="first_reserve_indication", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $firstReserveIndication;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="applicable_deductible", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $applicableDeductible;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="lt_fees_reserve", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $ltFeesReserve;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="profess_fees_reserve", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $professFeesReserve;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="tpa_fees_reserve", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $tpaFeesReserve;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="possible_recovery", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $possibleRecovery;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="amount_settled", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $amountSettled;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="deduc_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $deducPaid;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="profess_fees_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $professFeesPaid;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="tpa_fees_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $tpaFeesPaid;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $totalPaid;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="recovered", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $recovered;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_incurred", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $totalIncurred;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sp", type="integer", nullable=true)
+     */
+    private $sp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mpl", type="string", length=4, nullable=true)
+     */
+    private $mpl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="soi", type="string", length=2, nullable=true)
+     */
+    private $soi;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contec_all", type="string", length=4, nullable=true)
+     */
+    private $all;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="court", type="string", length=16, nullable=true)
+     */
+    private $court;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="req", type="string", length=4, nullable=true)
+     */
+    private $req;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="medical_examiner", type="date", nullable=true)
+     */
+    private $medicalExaminer;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oth_pol", type="string", length=4, nullable=true)
+     */
+    private $othPol;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
+     */
+    private $status;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ro", type="boolean", nullable=true)
+     */
+    private $ro;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="legal_team", type="date", nullable=true)
+     */
+    private $legalTeam;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comments", type="text", nullable=true)
+     */
+    private $comments;
+
+    /**
+     * DATI STUDIO
+     */
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="offerta_nostra", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $offerta_nostra;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="offerta_loro", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $offerta_loro;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="recupero_offerta_nostra", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $recupero_offerta_nostra;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="recupero_offerta_loro", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $recupero_offerta_loro;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="legali_avversari", type="text", nullable=true)
+     */
+    private $legali_avversari;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="informazioni", type="text", nullable=true)
+     */
+    private $informazioni;
+    
+    /**
+     * DATI REPORT
+     */
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="report_soi", type="string", length=2, nullable=true)
+     */
+    private $report_soi;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="report_dol", type="date", nullable=true)
+     */
+    private $report_dol;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="report_don", type="date", nullable=true)
+     */
+    private $report_don;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_descrizione", type="text", nullable=true)
+     */
+    private $report_descrizione;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_mpl", type="text", nullable=true)
+     */
+    private $report_mpl;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_giudiziale", type="text", nullable=true)
+     */
+    private $report_giudiziale;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_other_policies", type="text", nullable=true)
+     */
+    private $report_other_policies;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="report_type_of_loss", type="string", length=5, nullable=true)
+     */
+    private $report_type_of_loss;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="report_service_provider", type="string", length=5, nullable=true)
+     */
+    private $report_service_provider;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_possible_recovery", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $report_possible_recovery;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_amount_reserved", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $report_amount_reserved;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_applicable_deductable", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $report_applicable_deductable;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_future_conduct", type="text", nullable=true)
+     */
+    private $report_future_conduct;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Ephp\Bundle\GestoriBundle\Entity\Gestore")
+     * @ORM\JoinColumn(name="report_gestore_id", referencedColumnName="id")
+     */
+    private $report_gestore;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="report_old", type="text", nullable=true)
+     */
+    private $report_old;
+
+}

@@ -1,0 +1,19 @@
+<div style="display: none" id="fb_cambia_stato">
+    <form id="cambia_stato">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-bookmark-empty"></span>
+            </div>
+            <h1>Cambia priorità a<small id="cambia_stato_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <select name="stato[stato]" id="stato_stato">
+            {% for stato in stati %}
+                <option value="{{ stato.id }}">{{stato.stato}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="stato[id]" id="stato_id" value="" />    
+        <button type="button" onclick="assegnaStato();" class="btn" id="bt_cambia_stato">Cambia</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_stato"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

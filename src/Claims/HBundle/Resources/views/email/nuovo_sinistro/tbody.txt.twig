@@ -1,0 +1,7 @@
+{% if index is not defined %}
+    {% set index = 1 %}
+{% endif %}
+{% for entity in scheda.eventi %}
+    {% include 'EphpSinistriBundle:Scheda:email/nuovo_sinistro/riga_evento.txt.twig' %}
+    {% set index = index + 1 %}
+{% endfor %}

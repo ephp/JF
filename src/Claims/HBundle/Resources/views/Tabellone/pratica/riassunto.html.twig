@@ -1,0 +1,16 @@
+<div class="block icon no-margin">
+    <h3 class="ico-user">Gestore <small>{{ entity.gestore.nome }}</small></h3>
+</div>
+<div class="block icon no-margin">
+    <h3 class="ico-adjust">Stato</h3>
+</div>
+{% if entity.giudiziale %}{% set v = 'Sì (' ~ entity.court ~ ')' %}{% else %}{% set v = 'No'%}{% endif %}
+{% include 'ClaimsHBundle:Tabellone:commons/rbrick.html.twig' with {'span_label': 6, 'label': 'Giudiziale', 'span_value': 6, 'value': v} %}
+{% include 'ClaimsHBundle:Tabellone:commons/rbrick.html.twig' with {'span_label': 6, 'label': 'Franchigia', 'span_value': 6, 'value': entity.applicableDeductible, 'uumm': ' €'} %}
+{% if entity.amountReserved >= 0 %}{% set v = entity.amountReserved ~ ' €' %}{% else %}{% set v = 'N.P.'%}{% endif %}
+{% include 'ClaimsHBundle:Tabellone:commons/rbrick.html.twig' with {'span_label': 6, 'label': 'Amount Reserved', 'span_value': 6, 'value': v} %}
+{% include 'ClaimsHBundle:Tabellone:commons/ebrick.html.twig' with {'span_label': 5, 'label': 'S.A.', 'span_value': 7, 'value': entity.settlementAuthority, 'uumm': ' €', 'autoupdate': 'settlement_authority', 'class': 'currency'} %}
+{% include 'ClaimsHBundle:Tabellone:commons/ebrick.html.twig' with {'span_label': 5, 'label': 'Offerta nostra', 'span_value': 7, 'value': entity.offertaNostra, 'uumm': ' €', 'autoupdate': 'offerta_nostra', 'class': 'currency'} %}
+{% include 'ClaimsHBundle:Tabellone:commons/ebrick.html.twig' with {'span_label': 5, 'label': 'Offerta loro', 'span_value': 7, 'value': entity.offertaLoro, 'uumm': ' €', 'autoupdate': 'offerta_loro', 'class': 'currency'} %}
+{% include 'ClaimsHBundle:Tabellone:commons/ebrick.html.twig' with {'span_label': 5, 'label': 'Rec. off. nostra', 'span_value': 7, 'value': entity.recuperoOffertaNostra, 'autoupdate': 'recupero_offerta_nostra', 'class': 'currency'} %}
+{% include 'ClaimsHBundle:Tabellone:commons/ebrick.html.twig' with {'span_label': 5, 'label': 'Rec. off. loro', 'span_value': 7, 'value': entity.recuperoOffertaLoro, 'autoupdate': 'recupero_offerta_loro', 'class': 'currency'} %}

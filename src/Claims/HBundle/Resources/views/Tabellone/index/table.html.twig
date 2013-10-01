@@ -1,0 +1,28 @@
+<table class="table grid" cellpadding="0" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            {% if mode in ['personale', 'chiuso'] %}
+                <th width="20">#</th>
+            {% endif %}
+            <th width="110">Pratica</th>
+            <th width="70">DASC</th>
+            <th width="25">Giud</th>
+            <th width="15%">Claimant</th>
+            {% if mode in ['completo', 'no-dasc', 'no-gest', 'chiusi'] %}
+                <th width="40">Gestore</th>
+            {% endif %}
+            <th width="25">Soi</th>
+            <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
+            <th>Note</th>
+            <th width="10%">Stato Pratica</th>
+            <th width="80" class="TAC">Operazioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set i = 0 %}
+        {% for entity in pagination %}
+            {% set i = i + 1 %}
+            {% include "ClaimsHBundle:Tabellone:index/tr.html.twig" %}
+        {% endfor %}
+    </tbody>
+</table>    

@@ -1,0 +1,18 @@
+{% if class is not defined %}{% set class = 'tleft' %}{% endif %}
+<div class="block no-margin">
+    <div class="span{{ span_label }}">
+        <div class="block bold">
+            {{ label }}
+        </div>
+    </div>
+    <div class="span{{ span_value }}">
+        <div class="block tright input-append">
+            <input {% if uumm is not defined %}id="{{ entity.slug ~ '_' ~ autoupdate }}"{% endif %} type="text" value="{{ value }}" class="{{ class }} {% if autoupdate is defined %}autoupdate{% endif %}" {% if autoupdate is defined %}pratica="{{ entity.slug }}" name="{{ autoupdate }}"{% endif %} />
+            {% if uumm is not defined %}
+                <span class="add-on lgray um" target="{{ entity.slug ~ '_' ~ autoupdate }}">-</span>
+            {% else %}
+                <span class="add-on lgray">{{ uumm }}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>

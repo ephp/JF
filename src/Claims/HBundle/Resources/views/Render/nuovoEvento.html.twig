@@ -1,0 +1,26 @@
+<div style="display: none" id="fb_aggiungi_evento">
+    <form id="aggiungi_evento">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-calendar"></span>
+            </div>
+            <h1>Aggiungi evento a <small>{{ entity }}</small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <label for="scheda_data">Data</label>
+        <div style="clear: both"></div>
+        <input type="text" name="evento[data]" id="scheda_data" class="auto_date" value="" />
+        <small>Inserire la data nel formato <b>gg/mm/aaaa</b> o le parole chiave <b>oggi</b>, <b>domani</b> o un numero seguito da <b>gg</b> (es: 5gg)</small>
+        <div style="clear: both"></div>
+        <label for="scheda_titolo">Titolo</label>
+        <div style="clear: both"></div>
+        <input type="text" name="evento[titolo]" id="scheda_titolo" style="width: 400px;" value=""/>  
+        <div style="clear: both"></div>
+        <label for="scheda_note">Note</label>
+        <div style="clear: both"></div>
+        <textarea style="background-color: #ffffff; border: 1px solid #dadada; width: 400px;" class="autogrow" name="evento[note]" id="scheda_note" placeholder="Inserisci qui le tue note"></textarea>
+        <div style="clear: both"></div>
+        <button type="button" class="btn" onclick="aggiungiEvento();" id="bt_aggiungi_evento">Aggiungi</button>
+        <div style="text-align:center;" class="no-display" id="wait_aggiungi_evento"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

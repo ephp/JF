@@ -1,0 +1,21 @@
+<div style="display: none" id="fb_aggiungi_link">
+    <form id="aggiungi_link">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-link"></span>
+            </div>
+            <h1>Aggiungi link a <small>{{ entity }}</small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <label for="scheda_data">Sito</label>
+        <div style="clear: both"></div>
+        <input type="text" name="link[sito]" id="link_sito" placeholder="Inserire il nome del sito" value="" />
+        <div style="clear: both"></div>
+        <label for="scheda_titolo">Indirizzo</label>
+        <div style="clear: both"></div>
+        <input type="text" name="link[url]" id="link_url" style="width: 400px;" class="auto_url" placeholder="Inserire il link da aprire (es: http://www.google.it)" value=""/>  
+        <div style="clear: both"></div>
+        <button type="button" class="btn" onclick="aggiungiLink();" id="bt_aggiungi_link">Aggiungi</button>
+        <div style="text-align:center;" class="no-display" id="wait_aggiungi_link"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

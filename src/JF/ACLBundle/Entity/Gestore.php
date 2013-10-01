@@ -145,6 +145,23 @@ class Gestore extends BaseUser {
     }
 
     public function hasRole($role) {
+        if (is_array($role)) {
+            $roles = $role;
+            foreach ($roles as $role) {
+                if (in_array($role, array('R_EPH', 'R_SUPER')) || !$this->getCliente()) {
+                    return parent::hasRole($roles);
+                }
+            }
+            $_roles = array_intersect($this->getCliente()->getRoles(), $this->getRoles());
+            foreach ($roles as $role) {
+                foreach ($_roles as $_role) {
+                    if (strtoupper($_role) == strtoupper($role)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         if (in_array($role, array('R_EPH', 'R_SUPER')) || !$this->getCliente()) {
             return parent::hasRole($role);
         }
@@ -155,6 +172,7 @@ class Gestore extends BaseUser {
                 return true;
             }
         }
+        return false;
     }
 
     public function isCredentialsNonExpired() {

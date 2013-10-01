@@ -158,6 +158,13 @@ class Cliente {
     private $bloccato;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dati", type="array", nullable=null)
+     */
+    protected $dati;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -559,6 +566,27 @@ class Cliente {
     }
 
     /**
+     * Set dati
+     *
+     * @param Data $dati
+     * @return array
+     */
+    public function setDati($dati) {
+        $this->dati = $dati;
+
+        return $this;
+    }
+
+    /**
+     * Get dati
+     *
+     * @return array 
+     */
+    public function getDati() {
+        return $this->dati;
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist() {
@@ -643,7 +671,11 @@ class Cliente {
                 $licenza = $licenza->getLicenza();
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
                 foreach($licenza->getParams() as $k => $v) {
-                    $this->cache[$licenza->getGruppo().'.'.$k] = $v;
+                    if($k == 'form_cliente') {
+                        $this->cache[$k][$licenza->getGruppo()] = $v;
+                    } else {
+                        $this->cache[$licenza->getGruppo().'.'.$k] = $v;
+                    }
                 }
             }
         }

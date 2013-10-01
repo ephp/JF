@@ -1,0 +1,11 @@
+{% set titolo = 'Sinistro '~pratica~' assegnato a '~user.nome %}
+
+*{{titolo}}*
+{#
+{% if pratica.eventi|length > 0 %}
+| # | * | Data | Titolo | Note |
+{% include 'EphpSinistriBundle:Scheda:email/nuovo_sinistro/tbody.txt.twig' %}
+
+Apri scheda: {{ url('tabellone_show', {'slug': pratica.slug}) }}
+{% endif %}
+#}

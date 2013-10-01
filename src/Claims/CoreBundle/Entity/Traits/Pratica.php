@@ -51,6 +51,19 @@ trait Pratica
     private $note;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="logs", type="array", nullable=true)
+     */
+    private $logs;
+        
+    /**
+     * @Gedmo\Slug(fields={"codice"}, style="default", separator="-", updatable=true, unique=true)    
+     * @ORM\Column(name="slug", type="string", length=64, unique=true)
+     */
+    protected $slug;
+    
+    /**
      * Set codice
      *
      * @param string $codice
@@ -145,7 +158,7 @@ trait Pratica
     /**
      * Set priorita
      *
-     * @param integer $priorita
+     * @param \Claims\CoreBundle\Entity\Priorita $priorita
      * @return Pratica
      */
     public function setPriorita($priorita)
@@ -158,7 +171,7 @@ trait Pratica
     /**
      * Get priorita
      *
-     * @return integer 
+     * @return \Claims\CoreBundle\Entity\Priorita 
      */
     public function getPriorita()
     {
@@ -186,5 +199,82 @@ trait Pratica
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Pratica
+     */
+    public function setSlug($slug) {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+    
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug() {
+        return $this->slug;
+    }
+    
+    /**
+     * Set logs
+     *
+     * @param array $logs
+     * @return Pratica
+     */
+    public function setLogs($logs)
+    {
+        $this->logs = $logs;
+    
+        return $this;
+    }
+
+    /**
+     * Get logs
+     *
+     * @return array 
+     */
+    public function getLogs()
+    {
+        return $this->logs;
+    }
+    
+    /**
+     * Add log
+     *
+     * @param array $logs
+     * @return Pratica
+     */
+    public function addLog($log) {
+        if(!$this->logs) {
+            $this->logs = array();
+        }
+        $oggi = new \DateTime();
+        if(isset($this->logs[$oggi->format('Y-m-d')])) {
+            $this->logs[$oggi->format('Y-m-d')]['info'] = array_merge($this->logs[$oggi->format('Y-m-d')]['info'], $log);            
+        } else {
+            $this->logs[$oggi->format('Y-m-d')] = array(
+                'data' => $oggi->format('d-m-Y'),
+                'info' => $log,
+            );
+        }
+        krsort($this->logs);
+        
+        return $this;
+    }
+    
+    public function getLastLog() {
+        if(is_array($this->logs) && count($this->logs) > 0) {
+            $tmp = $this->logs;
+            $log = array_shift($tmp);
+            return "<ul class=\"nav\"><li>".implode("</li><li>", $log['info'])."</li></ul>";
+        }
+        return 'No log';
     }
 }

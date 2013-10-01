@@ -1,0 +1,37 @@
+{% if entity.ospedale.sistema.nome == 'Contec' %}
+    <div class="row-fluid todo">
+        <div class="span12">
+            <div class="block icon no-margin">
+                <h3 class="ico-inbox-2">Contec</h3>
+            </div>
+            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_ravinale" onsubmit="return false;">
+                <textarea class="autogrow" pratica="{{ entity.slug }}" name="import" style="height: 350px;" placeholder="Incolla calendario da Contec"></textarea>
+                <button class="btn" type="button" onclick="importaRavinale();">Importa</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% if entity.ospedale.sistema.nome == 'Ravinale' %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block icon no-margin">
+                <h3 class="ico-inbox-2">Ravinale</h3>
+            </div>
+            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_ravinale" onsubmit="return false;">
+                <textarea class="autogrow" pratica="{{ entity.slug }}" name="import" style="height: 350px;" placeholder="Incolla calendario da Ravinale"></textarea>
+                <button class="btn" type="button" onclick="importaRavinale();">Importa</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+<div class="row-fluid todo">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-inbox-2">Cancelleria telematica</h3>
+        </div>
+            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_ravinale" onsubmit="return false;">
+                <textarea class="autogrow" pratica="{{ entity.slug }}" name="import" style="height: 350px;" placeholder="Incolla calendario da Cancelleria Telematica"></textarea>
+                <button class="btn" type="button" onclick="importaRavinale();">Importa</button>
+            </form>
+    </div>
+</div>

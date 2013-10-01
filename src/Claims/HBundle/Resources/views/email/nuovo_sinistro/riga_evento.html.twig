@@ -1,0 +1,7 @@
+<tr style="background-color: #{{ entity.tipo.colore }}; {% if oggi|date('d-m-Y') ==  entity.dataOra|date('d-m-Y') %}font-weight: bold;{% endif %}">
+    <th style="text-align: right;">{{ index }}</th>
+    <td style="background-color: transparent;" title="{{entity.tipo.sigla}}">{% if entity.importante %}*{% else %}&nbsp;{% endif %}</td>
+    <td style="text-align: center; background-color: transparent;">{{ entity.dataOra|date('d/m/Y') }}</td>
+    <td style="background-color: transparent;">{{ entity.titolo }}</td>
+    <td style="background-color: transparent;">{{ entity.note }}</td>
+</tr>

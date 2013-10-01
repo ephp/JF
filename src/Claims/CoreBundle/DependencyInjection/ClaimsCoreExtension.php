@@ -45,7 +45,6 @@ class ClaimsCoreExtension extends Extension implements IExtension {
         $menu['claims'] = array(
             'label' => 'Claims',
             'submenu' => array(),
-            'show' => array('in_role' => array('C_GESTORE')),
             'order' => 10,
             'a' => array('class' => 'blblue'),
         );
@@ -55,7 +54,7 @@ class ClaimsCoreExtension extends Extension implements IExtension {
             'submenu' => array(),
             'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
             'order' => 110,
-            'a' => array('class' => 'blblue'),
+            'a' => array('class' => 'bldblue'),
         );
 
         if (true) {

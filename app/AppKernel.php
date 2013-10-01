@@ -20,18 +20,22 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 //            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             
             new Ephp\UtilityBundle\EphpUtilityBundle(),
+            new Ephp\CalendarBundle\EphpCalendarBundle(),
             new Ephp\ACLBundle\EphpACLBundle(),
             
             new JF\GeneratorBundle\JFGeneratorBundle(),
             new JF\CoreBundle\JFCoreBundle(),
+            new JF\CalendarBundle\JFCalendarBundle(),
             new JF\ACLBundle\JFACLBundle(),
             new JF\AndreaniBundle\JFAndreaniBundle(),
             new Claims\CoreBundle\ClaimsCoreBundle(),
             new Claims\HBundle\ClaimsHBundle(),
+            new Claims\RavinaleBundle\ClaimsRavinaleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

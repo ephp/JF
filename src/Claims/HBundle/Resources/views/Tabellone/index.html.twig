@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+{% block js %}
+{% javascripts  
+    '@ClaimsHBundle/Resources/public/js/tabellone/index.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-files"></span>
+    </div>
+    <h1>JF-Claims <small>Hospital</small></h1>
+</div>
+
+    
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                {% for linkmode, link in links %}
+                    <a href="{{ path(link.route) }}"><span class="label {% if linkmode == mode %}label-success{% else %}label-green{% endif %}">{{ link.label }}</span></a>
+                {% endfor %}
+            </div>            
+        </div>            
+    </div>       
+</div>       
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                {% include "ClaimsHBundle:Tabellone:index/table.html.twig" %}
+            </div> 
+        </div>            
+    </div>            
+</div>         
+<div class="row-fluid">
+    <div class="span12">
+        {{ knp_pagination_render(pagination) }}
+    </div>            
+</div>         
+{% render(controller("ClaimsHBundle:Render:dettagli")) %}
+{% render(controller("ClaimsHBundle:Render:cambiaPriorita")) %}
+{% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaStato")) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaNote")) %}
+{% endif %}
+{% if app.user.hasRole('C_ADMIN') %}
+    {% render(controller("ClaimsHBundle:Render:cambiaDasc")) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaGestore")) %}
+{% endif %}
+{% endblock %}

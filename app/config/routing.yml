@@ -1,3 +1,13 @@
+jf_calendar:
+    resource: "@JFCalendarBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+claims_ravinale:
+    resource: "@ClaimsRavinaleBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 claims_h:
     resource: "@ClaimsHBundle/Controller/"
     type:     annotation

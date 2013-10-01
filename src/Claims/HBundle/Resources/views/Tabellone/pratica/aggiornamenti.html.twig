@@ -1,0 +1,15 @@
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-upload">Aggiornamenti da Borderaux</h3>
+        </div>
+        {% for aggiornamento in entity.logs %}
+            <dl>
+                <dt>{{ aggiornamento.data }}</dt>
+                {% for info in aggiornamento.info %}
+                    <dd>{{ info }}</dd>
+                {% endfor %}
+            </dl>
+        {% endfor %}
+    </div>
+</div>

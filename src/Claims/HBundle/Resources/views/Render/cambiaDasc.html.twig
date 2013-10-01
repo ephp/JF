@@ -1,0 +1,41 @@
+<div style="display: none" id="fb_cambia_dasc">
+    <form id="cambia_dasc">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-calendar"></span>
+            </div>
+            <h1>Cambia DASC a<small id="cambia_dasc_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <input type="date" name="dasc[dasc]" id="dasc_dasc" />
+        <input type="hidden" name="dasc[id]" id="dasc_id" value="" />    
+        <button type="button" onclick="assegnaDasc();" class="btn" id="bt_cambia_dasc">Cambia</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_dasc"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $('td.dasc').click(function() {
+        var tr = $(this).closest('tr');
+        $('#cambia_dasc_a').text(tr.attr('title'));
+        $('#dasc_id').val(tr.attr('id'));
+        $('#dasc_dasc').val($(this).text());
+        $('#bt_cambia_dasc').show();
+        $('#wait_cambia_dasc').hide();
+    });
+    
+});
+
+function assegnaDasc() {
+    $('#bt_cambia_dasc').hide();
+    $('#wait_cambia_dasc').show();
+    var form = $('#cambia_dasc');
+    $.post(Routing.generate('claims_hospital_cambia_dasc'), form.serialize(), function(out) {
+        var riga = $('#' + $('#dasc_id').val());
+        var dasc = riga.find('.dasc').find('a');
+        dasc.text(out.dasc);
+        $.fancybox.close();
+    });
+}
+</script>

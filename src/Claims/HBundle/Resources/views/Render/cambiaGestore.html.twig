@@ -1,0 +1,19 @@
+<div style="display: none" id="fb_cambia_gestore">
+    <form id="cambia_gestore">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-user"></span>
+            </div>
+            <h1>Assegna gestore a<small id="cambia_gestore_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <select name="gestore[gestore]" id="gestore_gestore">
+            {% for gestore in gestori %}
+                <option value="{{ gestore.slug }}">{{gestore.nome}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="gestore[id]" id="gestore_id" value="" />    
+        <button type="button" onclick="assegnaGestore();" class="btn" id="bt_cambia_gestore">Assegna</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_gestore"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

@@ -50,6 +50,13 @@ class ClaimsHExtension extends Extension implements IExtension {
                 'show' => array('in_role' => array('R_EPH')),
                 'order' => 10,
             );
+            
+            $menu['claims']['submenu'][] = array(
+                'label' => 'Hospital',
+                'route' => 'claims_hospital',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE', 'C_GESTORE_H')),
+                'order' => 10,
+            );
 
         } else {
 

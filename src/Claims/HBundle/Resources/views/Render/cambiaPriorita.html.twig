@@ -1,0 +1,19 @@
+<div style="display: none" id="fb_cambia_priorita">
+    <form id="cambia_priorita">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-warning-sign"></span>
+            </div>
+            <h1>Cambia priorità a<small id="cambia_priorita_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <select name="priorita[priorita]" id="priorita_priorita">
+            {% for pri in priorita %}
+                <option value="{{ pri.id }}">{{pri.priorita}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="priorita[id]" id="priorita_id" value="" />    
+        <button type="button" onclick="assegnaPriorita();" class="btn" id="bt_cambia_priorita">Cambia</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_priorita"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

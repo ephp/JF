@@ -1,0 +1,70 @@
+{% extends '::base.html.twig' %}
+{% block js %}
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@ClaimsHBundle/Resources/public/js/tabellone/pratica.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+{% block inline_js %}
+    // '../app/Resources/public/js/plugins/jquery.autogrow-textarea.js'
+    var slug = "{{ entity.slug }}";
+{% endblock %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-file-3"></span>
+    </div>
+    <h1>{{ entity.codice }}<small>{{ entity.claimant }}</small></h1>
+</div>        
+<div style="clear: both"></div>
+
+<div class="row-fluid">
+    <div class="span3">
+        {% include 'ClaimsHBundle:Tabellone:pratica/riassunto.html.twig' %}
+    </div>
+    <div class="span9">
+        <div class="block">
+            <div class="data-fluid tabbable">                    
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_cal" data-toggle="tab">Calendario</a></li>
+                    <li class=""><a href="#tab_imp" data-toggle="tab">Importa</a></li>
+                    <li class=""><a href="#tab_info" data-toggle="tab">Scheda</a></li>
+                    <li class=""><a href="#tab_repo" data-toggle="tab">Report</a></li>
+                    <li class=""><a href="#tab_note" data-toggle="tab">Note</a></li>
+                    <li class=""><a href="#tab_link" data-toggle="tab">Link e Documenti</a></li>
+                    <li class=""><a href="#tab_upd" data-toggle="tab">Aggiornamenti</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_cal">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/calendario.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_imp">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/import.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_info">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/body.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_repo">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/report.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_note">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/note.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_link">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/links.html.twig' %}
+                    </div>
+                    <div class="tab-pane" id="tab_upd">
+                        {% include 'ClaimsHBundle:Tabellone:pratica/aggiornamenti.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% render(controller("ClaimsHBundle:Render:nuovoEvento", {'id': entity.id})) %}
+{% render(controller("ClaimsHBundle:Render:nuovoLink", {'id': entity.id})) %}
+
+{% endblock %}

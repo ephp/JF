@@ -40,3 +40,47 @@ tr.stroke {
 tr.stroke td {
     color: #D3D3D3 !important;
 }
+div.user {
+    margin: 0px; 
+    text-align: center; 
+    line-height: 38px; 
+    color: #FFFFFF; 
+    font-weight: bold;
+}
+a.fancybox {
+    color: #000000;
+    text-decoration: none;
+}
+.bold {
+    font-weight: bold;
+}
+th.left, td.left, .tleft {
+    text-align: left;
+}
+th.center, td.center, .tcenter {
+    text-align: center;
+}
+th.right, td.right, .tright {
+    text-align: right;
+}
+.central {
+    vertical-align: central;
+}
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+.nav-tabs {
+    margin-bottom: 0px;
+}
+input.auto_date {
+    width: 75px !important;
+    text-align: right;
+}
+input.currency {
+    text-align: right;
+}
+textarea.autogrow {
+    min-height: 65px !important;
+}

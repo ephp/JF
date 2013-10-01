@@ -105,3 +105,7 @@ ephp_acl:
 knp_menu:
     twig: 
         template: ::knp_menu_sidebar.html.twig
+
+knp_paginator:
+    template:
+        pagination: ::sliding.html.twig       

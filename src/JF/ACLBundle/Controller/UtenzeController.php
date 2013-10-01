@@ -12,6 +12,7 @@ use JF\ACLBundle\Entity\Gestore;
 use JF\ACLBundle\Entity\Cliente;
 use JF\ACLBundle\Form\GestoreAdminType;
 use JF\ACLBundle\Form\ClienteType;
+use JF\ACLBundle\Form\AccountType;
 
 /**
  * Gestore controller.
@@ -54,7 +55,7 @@ class UtenzeController extends Controller {
      * @Template()
      */
     public function newAction() {
-        if($this->getUser()->get('utenze.max') <= $this->countDql('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId()))) {
+        if ($this->getUser()->get('utenze.max') <= $this->countDql('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId()))) {
             return $this->redirect($this->generateUrl('catalogo'));
         }
         $entity = new Gestore();
@@ -183,6 +184,65 @@ class UtenzeController extends Controller {
 
         $form->add('submit', 'submit', array('label' => 'Aggiorna', 'attr' => array('class' => 'btn')));
 
+        return $form;
+    }
+
+    /**
+     * Displays a form to edit an existing Gestore entity.
+     *
+     * @Route("-edit-account", name="utenze_account_edit", options={"ACL": {"in_role": "R_SUPER"}})
+     * @ParamConverter("comment", options={"mapping": {"slug": "slug"}})
+     * @Template()
+     */
+    public function editAccountAction() {
+        $entity = $this->getUser()->getCliente();
+        $editForm = $this->createAccountEditForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Gestore entity.
+     *
+     * @Route("-update-account", name="utenze_account_update", options={"ACL": {"in_role": "R_SUPER"}})
+     * @Method("put")
+     * @Template("JFACLBundle:Utenze:editAccount.html.twig")
+     */
+    public function updateAccountAction() {
+        $entity = $this->getUser()->getCliente();
+        /* @var $entity \JF\ACLBundle\Entity\Cliente */
+        $dati = $this->getRequest()->get('jf_cliente');
+        unset($dati['submit'],$dati['_token']);
+        $entity->setDati($dati);
+        $this->persist($entity);
+
+        return $this->redirect($this->generateUrl('index'));
+    }
+
+    /**
+     * Creates a form to edit a Cliente entity.
+     *
+     * @param Cliente $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createAccountEditForm(Cliente $entity) {
+        $form = $this->createForm(new AccountType($this->getUser()->get('form_cliente')), $entity, array(
+            'action' => $this->generateUrl('utenze_account_update'),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Aggiorna', 'attr' => array('class' => 'btn')));
+
+        foreach($this->getUser()->getCliente()->getDati() as $key => $dati) {
+            foreach($dati as $k => $v) {
+                $form->get($key)->get($k)->setData($v);
+            }
+        }
+        
         return $form;
     }
 

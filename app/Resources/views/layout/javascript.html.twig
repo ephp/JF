@@ -8,6 +8,7 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 {% javascripts  
+    '../app/Resources/public/js/sugar.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-1.9.1.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-ui-1.10.1.custom.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-migrate-1.1.1.min.js'
@@ -19,6 +20,8 @@
     '../app/Resources/public/js/plugins/bootstrap/bootstrap.min.js'
     
     '../app/Resources/public/js/plugins/cookies/jquery.cookies.2.2.0.min.js'    
+    
+    '../app/Resources/public/js/plugins/fancybox/jquery.fancybox.pack.js'    
     
     '../app/Resources/public/js/plugins/jflot/jquery.flot.js'    
     '../app/Resources/public/js/plugins/jflot/jquery.flot.stack.js'    
@@ -41,7 +44,6 @@
     '../app/Resources/public/js/plugins.js'
     '../app/Resources/public/js/charts.js'
 
-    '../app/Resources/public/js/sugar.min.js'
     '@EphpUtilityBundle/Resources/public/js/environment.js'
     
     '../app/Resources/public/js/actions.js'

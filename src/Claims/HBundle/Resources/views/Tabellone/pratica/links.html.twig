@@ -1,0 +1,73 @@
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block">
+            <div class="block icon no-margin">
+                <h3 class="ico-link">Link utili</h3>
+            </div>
+            <a href="#fb_aggiungi_link" class="fancybox icon"><span class="label label-success ico-link"> Aggiungi link</span></a>
+            <table class="table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Titolo</th>
+                        <th width="40px">Apri</th>
+                        <th width="40px">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in entity.links %}
+                        {% if link.sito|trim != '' %}
+                            <tr>
+                                <td class="left" nowrap>
+                                    {{ link.sito }}
+                                </td>
+                                <td class="center">
+                                    {% include ":commons:show.html.twig" with {'route': link.url, 'target': '_blank'} %}
+                                </td>
+                                <td class="center">
+                                    {% include ":commons:delete.html.twig" with {'route': 'javascript:cancellaLink(' ~ link.id ~ ', "' ~ link.sito ~'");'} %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>        
+            <a href="#fb_aggiungi_link" class="fancybox icon"><span class="label label-success ico-link"> Aggiungi link</span></a>
+        </div>
+    </div>
+    <div class="span6 todo">
+        <div class="block">
+            <div class="block icon no-margin">
+                <h3 class="ico-file-3">Documenti</h3>
+            </div>
+            <a href="#fb_aggiungi_documento" class="fancybox icon"><span class="label label-success ico-file"> Aggiungi documento</span></a>
+            <table class="table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Titolo</th>
+                        <th><abbr title="Dimensione">Dim.</abbr></th>
+                        <th width="40px">Apri</th>
+                        <th width="40px">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#% for link in entity.links %}
+                        {% if link.sito|trim != '' %}
+                            <tr>
+                                <td class="left" nowrap>
+                                    {{ link.sito }}
+                                </td>
+                                <td class="center">
+                                    {% include ":commons:show.html.twig" with {'route': link.url, 'target': '_blank'} %}
+                                </td>
+                                <td class="center">
+                                    {% include ":commons:delete.html.twig" with {'route': 'javascript:cancellaLink(' ~ link.id ~ ', "' ~ link.sito ~'");'} %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %#}
+                </tbody>
+            </table>        
+            <a href="#fb_aggiungi_documento" class="fancybox icon"><span class="label label-success ico-file-2"> Aggiungi documento</span></a>
+        </div>
+    </div>
+</div>

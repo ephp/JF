@@ -10,6 +10,8 @@ use Claims\CoreBundle\Entity\StatoPratica;
 use Claims\HBundle\Entity\Pratica;
 use Claims\HBundle\Entity\Evento;
 use Claims\HBundle\Entity\Link;
+use Claims\HBundle\Entity\Report;
+use Claims\HBundle\Form\ReportType;
 use JF\ACLBundle\Entity\Gestore;
 use Ephp\UtilityBundle\Utility\Time;
 
@@ -43,6 +45,26 @@ class TabelloneController extends Controller {
             'mode' => $mode,
         );
     }
+    
+    /**
+     * @Route("-stampa",                  name="claims_hospital_stampa",               defaults={"mode": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-completo/",        name="claims_hospital_completo_stampa",      defaults={"mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-personale/",       name="claims_hospital_personale_stampa",     defaults={"mode": "personale"}, options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-chiusi/",          name="claims_hospital_chiuso_stampa",        defaults={"mode": "chiuso"},    options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-senza-dasc/",      name="claims_hospital_senza_dasc_stampa",    defaults={"mode": "no-dasc"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-senza-gestore/",   name="claims_hospital_senza_gestore_stampa", defaults={"mode": "no-gest"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-chiusi-completo/", name="claims_hospital_chiusi_stampa",        defaults={"mode": "chiusi"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Template()
+     */
+    public function stampaAction($mode) {
+        $filtri = $this->buildFiltri($mode);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        return array(
+            'entities' => $entities,
+            'show_gestore' => true,
+            'mode' => $mode,
+        );
+    }
 
     private function buildLinks() {
         $out = array();
@@ -57,6 +79,7 @@ class TabelloneController extends Controller {
             $out['no-gest'] = array('route' => 'claims_hospital_senza_gestore', 'label' => 'Senza gestore');
         }
         $out['search'] = array('route' => 'claims_hospital_senza_gestore', 'label' => 'Ricerca');
+        $out['stampa'] = array('route' => $this->getParam('_route').'_stampa', 'label' => 'Versione per la stampa', 'icon' => 'ico-printer', 'class' => 'label-warning', 'target' => '_blank');
         return $out;
     }
 
@@ -137,12 +160,10 @@ class TabelloneController extends Controller {
 
         try {
             $this->getEm()->beginTransaction();
-            /*
-              if ($priorita->getOnAssign() == 'cal') {
-              $evento = $this->newEvento($this->PRIORITA, $pratica, $priorita->getPriorita(), "Cambio priorità da {$pratica->getPriorita()->getPriorita()} a {$priorita->getPriorita()}");
-              $this->persist($evento);
-              }
-             */
+            if ($priorita->getOnAssign() == 'cal') {
+                $evento = $this->newEvento($this->PRIORITA, $pratica, $priorita->getPriorita(), "Cambio priorità da {$pratica->getPriorita()->getPriorita()} a {$priorita->getPriorita()}");
+                $this->persist($evento);
+            }
             $pratica->setPriorita($priorita);
             $this->persist($pratica);
             $this->getEm()->commit();
@@ -164,24 +185,25 @@ class TabelloneController extends Controller {
         $gestore = $this->findOneBy('JFACLBundle:Gestore', array('slug' => $req['gestore']));
         /* @var $gestore Gestore */
 
+        $genera = false;
         try {
             $this->getEm()->beginTransaction();
-            /*
-              if ($priorita->getOnAssign() == 'cal') {
-              $evento = $this->newEvento($this->PRIORITA, $pratica, $priorita->getPriorita(), "Cambio priorità da {$pratica->getPriorita()->getPriorita()} a {$priorita->getPriorita()}");
-              $this->persist($evento);
-              }
-             */
+            if ($pratica->getGestore()) {
+                $evento = $this->newEvento($this->CAMBIO_GESTORE, $pratica, "Cambio gestore", "Da {$pratica->getGestore()->getNome()} a {$gestore->getNome()}");
+                $this->persist($evento);
+            } else {
+                $genera = true;
+            }
             if (!$pratica->getDasc()) {
                 $pratica->setDasc(new \DateTime());
             }
             if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Normale'))) {
                 $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Assegnato')));
             }
-            /*
-             * GENERA DATE AUTOMATICHE
-             */
             $pratica->setGestore($gestore);
+            if ($genera) {
+                $this->checkAttivita($pratica);
+            }
             $this->persist($pratica);
             $this->getEm()->commit();
         } catch (\Exception $e) {
@@ -191,7 +213,7 @@ class TabelloneController extends Controller {
         try {
             $this->notify($gestore, '[JF-CLAIMS Hospital] Ti è stato assegnata la pratica ' . $pratica, 'ClaimsHBundle:email:nuovo_sinistro', array('pratica' => $pratica));
         } catch (\Exception $e) {
-            
+            throw $e;
         }
         $priorita = $pratica->getPriorita();
         return $this->jsonResponse(array('nome' => $gestore->getNome(), 'slug' => $gestore->getSlug(), 'sigla' => $gestore->getSigla(), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss(), 'dasc' => $pratica->getDasc()->format('d-m-Y')));
@@ -275,25 +297,23 @@ class TabelloneController extends Controller {
         try {
             $this->getEm()->beginTransaction();
 
-            $changePriorita = false;
+            $oldPriorita = false;
             if ($stato->getChiudi()) {
+                $oldPriorita = $pratica->getPriorita();
                 $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso')));
-                $changePriorita = true;
             } elseif (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $oldPriorita = $pratica->getPriorita();
                 $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
-                $changePriorita = true;
             }
 
-            /*
-              if ($stato->getAnnota()) {
-              $evento = $this->newEvento($this->PRIORITA, $pratica, $priorita->getPriorita(), "Cambio priorità da {$pratica->getPriorita()->getPriorita()} a {$priorita->getPriorita()}");
-              $this->persist($evento);
-              }
-              if ($changePriorita && $pratica->getPriorita()->onAssign() == 'cal') {
-              $evento = $this->newEvento($this->PRIORITA, $pratica, $priorita->getPriorita(), "Cambio priorità da {$pratica->getPriorita()->getPriorita()} a {$priorita->getPriorita()}");
-              $this->persist($evento);
-              }
-             */
+            if ($stato->getAnnota()) {
+                $evento = $this->newEvento($this->CAMBIO_STATO_OPERATIVO, $pratica, $stato->getStato(), "Cambio stato pratica da {$pratica->getStatoPratica()->getStato()} a {$stato->getStato()}");
+                $this->persist($evento);
+            }
+            if ($oldPriorita && $pratica->getPriorita()->getOnAssign() == 'cal') {
+                $evento = $this->newEvento($this->PRIORITA, $pratica, $pratica->getPriorita()->getPriorita(), "Cambio priorità da {$oldPriorita->getPriorita()} a {$pratica->getPriorita()->getPriorita()}");
+                $this->persist($evento);
+            }
 
             $pratica->setStatoPratica($stato);
             $this->persist($pratica);
@@ -309,6 +329,9 @@ class TabelloneController extends Controller {
     /**
      * @Route("-pratica/{slug}", name="claims_hospital_pratica", options={"expose": true, "ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
      * @Route("-dettagli/{slug}", name="claims_hospital_dettagli", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-report/{slug}", name="claims_hospital_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-report/{slug}", name="claims_hospital_stampa_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-pratica/{slug}", name="claims_hospital_stampa_pratica", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
      */
     public function praticaAction($slug) {
 
@@ -322,6 +345,15 @@ class TabelloneController extends Controller {
         switch ($this->getParam('_route')) {
             case "claims_hospital_dettagli":
                 $twig = 'ClaimsHBundle:Tabellone:dettagli.html.twig';
+                break;
+            case "claims_hospital_report":
+                $twig = 'ClaimsHBundle:Tabellone:pratica/report.html.twig';
+                break;
+            case "claims_hospital_stampa_pratica":
+                $twig = 'ClaimsHBundle:Tabellone:stampaPratica.html.twig';
+                break;
+            case "claims_hospital_stampa_report":
+                $twig = 'ClaimsHBundle:Tabellone:stampaReport.html.twig';
                 break;
             case "claims_hospital_pratica":
             default:
@@ -351,17 +383,27 @@ class TabelloneController extends Controller {
                     $data = \DateTime::createFromFormat('d/m/Y', $req['value']);
                     $pratica->$fx($data);
                     break;
+                case 'report_amount_reserved':
+                    if ($req['value'] == 'N.P.') {
+                        $pratica->$fx(-1);
+                        break;
+                    }
                 default:
                     $pratica->$fx($req['value']);
                     break;
             }
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            }
+
             $this->persist($pratica);
         } catch (\Exception $e) {
             throw $e;
         }
         return new \Symfony\Component\HttpFoundation\Response(json_encode($req));
     }
-    
+
     /**
      * Lists all Scheda entities.
      *
@@ -370,16 +412,22 @@ class TabelloneController extends Controller {
      */
     public function aggiungiLinkAction($slug) {
         $req = $this->getParam('link');
-        $entity = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $entity Pratica */
-        if (!$entity) {
+        if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Scheda entity.');
         }
         $link = new Link();
-        $link->setPratica($entity);
+        $link->setPratica($pratica);
         $link->setUrl($req['url']);
         $link->setSito($req['sito']);
         $this->persist($link);
+
+        if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            $this->persist($pratica);
+        }
+
         return array('entity' => $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug)));
     }
 
@@ -400,7 +448,7 @@ class TabelloneController extends Controller {
         $this->remove($entity);
         return array('entity' => $this->find('ClaimsHBundle:Pratica', $id));
     }
-    
+
     /**
      * Lists all Scheda entities.
      *
@@ -409,19 +457,25 @@ class TabelloneController extends Controller {
      */
     public function aggiungiEventoAction($slug) {
         $req = $this->getParam('evento');
-        $entity = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $entity Pratica */
-        if (!$entity) {
+        if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Scheda entity.');
         }
 
         $data = \DateTime::createFromFormat('d/m/Y', $req['data']);
-        $evento = $this->newEvento($this->ATTIVITA_MANUALE, $entity, $req['titolo'], $req['note']);
+        $evento = $this->newEvento($this->ATTIVITA_MANUALE, $pratica, $req['titolo'], $req['note']);
         $evento->setDataOra($data);
         $this->persist($evento);
+
+        if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            $this->persist($pratica);
+        }
+
         return array('entity' => $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug)));
     }
-    
+
     /**
      * Lists all Scheda entities.
      *
@@ -439,7 +493,7 @@ class TabelloneController extends Controller {
         $this->remove($entity);
         return array('entity' => $this->find('ClaimsHBundle:Pratica', $id));
     }
-    
+
     /**
      * Lists all Scheda entities.
      *
@@ -457,7 +511,7 @@ class TabelloneController extends Controller {
         $out = array('id' => 'star_' . $req['id'], 'color' => $evento->getImportante() ? '#FFAA31 !important;' : '#D1D1D1 !important;', 'remove' => $evento->getImportante() ? 'ico-star-empty' : 'ico-star', 'add' => $evento->getImportante() ? 'ico-star' : 'ico-star-empty');
         return $this->jsonResponse($out);
     }
-    
+
     /**
      * Lists all Scheda entities.
      *
@@ -520,6 +574,191 @@ class TabelloneController extends Controller {
         return new \Symfony\Component\HttpFoundation\Response(json_encode($req));
     }
 
+    /**
+     * Displays a form to create a new Report entity.
+     *
+     * @Route("-report-pratica/{slug}", name="claims_hospital_report_pratica_new", options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     */
+    public function newReportAction($slug) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        $old = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId()), array('number' => 'DESC'));
+        /* @var $old Report */
+
+        $entity = new Report();
+        if ($old) {
+            $entity->setNumber($old->getNumber() + 1);
+            $entity->setAnalisiDanno($old->getAnalisiDanno());
+            $entity->setAzioni($old->getAzioni());
+            $entity->setCopertura($old->getCopertura());
+            $entity->setDescrizioneInFatto($old->getDescrizioneInFatto());
+            $entity->setMedicoLegale1($old->getMedicoLegale1());
+            $entity->setMedicoLegale2($old->getMedicoLegale2());
+            $entity->setMedicoLegale3($old->getMedicoLegale3());
+            $entity->setNote($old->getNote());
+            $entity->setPossibileRivalsa($old->getPossibileRivalsa());
+            $entity->setRelazioneAvversaria($old->getRelazioneAvversaria());
+            $entity->setRelazioneExAdverso($old->getRelazioneExAdverso());
+            $entity->setRichiestaSa($old->getRichiestaSa());
+            $entity->setRiserva($old->getRiserva());
+            $entity->setStato($old->getStato());
+            $entity->setValutazioneResponsabilita($old->getValutazioneResponsabilita());
+        } else {
+            $entity->setNumber('1');
+        }
+        $entity->setPratica($pratica);
+        $entity->setData(new \DateTime());
+        $entity->setValidato(false);
+
+        $this->persist($entity);
+        return $this->redirect($this->generateUrl('claims_hospital_report_pratica_edit', array('slug' => $slug, 'numero' => $entity->getNumber())));
+    }
+
+    /**
+     * Displays a form to edit an existing Report entity.
+     *
+     * @Route("-report-pratica-modifica/{slug}/{numero}", name="claims_hospital_report_pratica_edit", options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Template()
+     */
+    public function editReportAction($slug, $numero) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
+        /* @var $entity Report */
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Report entity.');
+        }
+
+        $editForm = $this->createEditReportForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing Report entity.
+     *
+     * @Route("-report-pratica/{slug}/{numero}", name="claims_hospital_report_pratica_show", options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Template()
+     */
+    public function showReportAction($slug, $numero) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
+        /* @var $entity Report */
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Report entity.');
+        }
+
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    /**
+     * Creates a form to edit a Report entity.
+     *
+     * @param Report $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditReportForm(Report $entity) {
+        $form = $this->createForm(new ReportType(), $entity, array(
+            'action' => $this->generateUrl('claims_hospital_report_pratica_update', array('slug' => $entity->getPratica()->getSlug(), 'numero' => $entity->getNumber())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Conferma', 'attr' => array('class' => 'btn no-display')));
+
+        return $form;
+    }
+
+    /**
+     * Edits an existing Report entity.
+     *
+     * @Route("-report-pratica-salva/{slug}/{numero}", name="claims_hospital_report_pratica_update", options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Template("ClaimsHBundle:Report:edit.html.twig")
+     */
+    public function updateReportAction($slug, $numero) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
+        /* @var $entity Report */
+        
+        $editForm = $this->createEditReportForm($entity);
+        $editForm->handleRequest($this->getRequest());
+
+        if ($editForm->isValid()) {
+            $this->persist($entity);
+
+            return $this->redirect($this->generateUrl('claims_hospital_report', array('slug', $pratica->getSlug())));
+        }
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Report entity.
+     *
+     * @Route("-report-pratica-autoupdate/{slug}/{numero}", name="claims_hospital_report_pratica_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Template("ClaimsHBundle:Report:edit.html.twig")
+     */
+    public function autoupdateReportAction($slug, $numero) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
+        /* @var $entity Report */
+        
+        $req = $this->getParam('report');
+
+        try {
+            $fx = \Doctrine\Common\Util\Inflector::camelize("set_{$req['field']}");
+            $entity->$fx($req['value']);
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+                $this->persist($pratica);
+            }
+
+            $this->persist($entity);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($req));
+    }
+
     private function checkAttivita(Pratica &$pratica) {
         if (!$pratica->getGestore()) {
             throw new \Exception('Assegnare gestore');
@@ -553,6 +792,7 @@ class TabelloneController extends Controller {
             $pratica = $this->find('ClaimsHBundle:Pratica', $pratica->getId());
         }
     }
+
     private function checkReport(Pratica $pratica) {
         if (!$pratica->getReportGestore()) {
             $pratica->setReportAmountReserved($pratica->getAmountReserved());

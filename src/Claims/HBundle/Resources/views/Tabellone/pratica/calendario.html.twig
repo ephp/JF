@@ -2,7 +2,7 @@
     <div class="span12">
         <div class="block">
             <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-success ico-calendar"> Aggiungi data</span></a>
-            <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
+            <a href="{{ path('claims_hospital_stampa_pratica', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
             <table class="table" style="width: 100%;">
                 <thead>
                     <tr>
@@ -65,7 +65,7 @@
                 </tbody>
             </table>        
             <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-success ico-calendar"> Aggiungi data</span></a>
-            <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
+            <a href="{{ path('claims_hospital_stampa_pratica', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
         </div>
     </div>
 </div>

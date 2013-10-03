@@ -459,6 +459,14 @@ class Pratica {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="Report", mappedBy="pratica", cascade="all")
+     * @ORM\OrderBy({"number" = "DESC"})
+     */
+    private $reports;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Link", mappedBy="pratica", cascade="all")
      * @ORM\OrderBy({"sito" = "ASC"})
      */
@@ -470,6 +478,7 @@ class Pratica {
     public function __construct() {
         $this->links = new \Doctrine\Common\Collections\ArrayCollection();
         $this->eventi = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reports = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1011,7 +1020,7 @@ class Pratica {
      * @return string 
      */
     public function getMpl($encode = false) {
-        if($encode) {
+        if ($encode) {
             $mpl = $this->fasceMpl();
             return $mpl[$this->mpl];
         }
@@ -1063,7 +1072,7 @@ class Pratica {
     public function getAll($encode = false) {
         if ($encode) {
             $all = $this->allegati();
-            if($this->all) {
+            if ($this->all) {
                 return $all[intval($this->all)];
             }
         }
@@ -1491,9 +1500,11 @@ class Pratica {
      * @return string 
      */
     public function getReportMpl($encode = false) {
-        if($encode) {
+        if ($encode) {
             $mpl = $this->fasceMpl();
-            return $mpl[$this->reportMpl];
+            if (isset($mpl[$this->reportMpl])) {
+                return $mpl[$this->reportMpl];
+            }
         }
         return $this->reportMpl;
     }
@@ -1557,7 +1568,11 @@ class Pratica {
      *
      * @return string 
      */
-    public function getReportTypeOfLoss() {
+    public function getReportTypeOfLoss($encode = true) {
+        if ($encode) {
+            $tpl = $this->tpl();
+            return $tpl[intval($this->reportTypeOfLoss)];
+        }
         return $this->reportTypeOfLoss;
     }
 
@@ -1785,6 +1800,36 @@ class Pratica {
     }
 
     /**
+     * Add reports
+     *
+     * @param Wvwnro $reports
+     * @return Cliente
+     */
+    public function addReports(Evento $reports) {
+        $this->reports[] = $reports;
+
+        return $this;
+    }
+
+    /**
+     * Remove reports
+     *
+     * @param Evento $reports
+     */
+    public function removeReports(Evento $reports) {
+        $this->reports->removeElement($reports);
+    }
+
+    /**
+     * Get reports
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReports() {
+        return $this->reports;
+    }
+
+    /**
      * Add links
      *
      * @param Wvwnro $links
@@ -1883,18 +1928,18 @@ class Pratica {
             "B2" => "B2 - Baby Case - Neonato con distocia alle spalle e/o danni minori a seguito parto.",
         );
     }
-    
+
     public function fasceMpl() {
         return array(
-            "A" => "da 800.000 in poi",
-            "B" => "da 400.000 a 800.000",
-            "C" => "da 150.000 a 400.000",
-            "D" => "da 40.000 a 150.000",
-            "E" => "da 10.000 a 40.000",
-            "F" => "da 0 a 10.000",
+            "A" => "A - da 800.000 in poi",
+            "B" => "B - da 400.000 a 800.000",
+            "C" => "C - da 150.000 a 400.000",
+            "D" => "D - da 40.000 a 150.000",
+            "E" => "E - da 10.000 a 40.000",
+            "F" => "F - da 0 a 10.000",
         );
     }
-    
+
     public function allegati() {
         return array(
             1 => "Provvedimenti opportuni non presi",

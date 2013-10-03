@@ -1,0 +1,31 @@
+<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{{ entity.priorita.id }}" stato="{{ entity.statoPratica.id }}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
+    {% if mode in ['personale', 'chiuso'] %}
+        <th class="right">{{ i }}</th>
+    {% endif %}
+        <td class="center" nowrap>
+            {{ entity.codice }}<br/>
+            {% if entity.dasc %}
+                {{ entity.dasc|date('d-m-Y') }}
+            {% else %}
+                n.d.
+            {% endif %}
+        </td>
+    <td>{{ entity.claimant }}{% if entity.giudiziale %} (Giud){% endif %}</td>
+    {% if mode in ['completo', 'no-dasc', 'no-gest', 'chiusi'] %}
+        <td>
+        {% if entity.gestore %}
+                {{ entity.gestore.sigla }}
+        {% else %}
+                N.A.
+        {% endif %}
+    </td>
+    {% endif %}
+    <td class="center">{{ entity.soi }}</td>
+    <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
+    <td class="note">
+        {{ entity.note|raw }}
+    </td>
+    <td class="center">
+        {{ entity.statoPratica.stato }}
+    </td>
+</tr>

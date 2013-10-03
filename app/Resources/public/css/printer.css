@@ -1,0 +1,20 @@
+div.block {
+    font-size: 0.7em;
+    margin-bottom: 5px !important;
+    padding: 2px;
+}
+
+table {
+}
+
+.table-bordered {
+    font-size: 0.7em;
+    width: 100%;
+    background-color: #FFFFFF !important;
+}
+
+.table-bordered td {
+    padding: 3px;
+    border-top: 1px solid #DDDDDD; 
+    background-color: #FFFFFF !important;
+}

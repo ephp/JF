@@ -1,0 +1,42 @@
+{% form_theme edit_form '::form_aries_layout.html.twig' %}
+
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>Report <small>{{ entity.pratica }}</small></h1>
+</div>
+{{ form_start(edit_form) }}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Report {{ entity.number }}</h2>
+                </div>                                        
+                <div class="data-fluid">
+                {{ form_rest(edit_form) }}
+                </div>                                        
+            </div>
+        </div>
+    </div>
+{{ form_end(edit_form) }}
+<a href="{{ path('claims_hospital_report', {'slug': entity.pratica.slug}) }}" onclick="return loadAjax($(this));">
+    <span class="label label-inverse">Concludi</span>
+</a>
+<script type="text/javascript">
+    var id = null;
+    $('.timing').focus(function(){
+        id = $(this).attr('id');
+    }).change(function(){
+        id = null;
+    });
+    window.setInterval( function() {
+        if(id) {
+            var $this = $('#'+id);
+            val = $this.val();
+            field = $this.attr('name').from(7).to(-1);
+            report = $this.attr('report');
+            $.post(Routing.generate('claims_hospital_report_pratica_autoupdate', {'slug': slug, 'numero': $('#'+report).val()}), {'report': {'field': field, 'value': val}}, function(out) {});
+        }
+    }, 30000);
+</script>

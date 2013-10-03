@@ -55,11 +55,11 @@
 
                             <td width="40" class="no-padding js-{{ field }}">
                                 {{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}' }}
-                                    <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button green role">
+                                    <a href="javascript:void()" class="button green role">
                                         <div class="icon"><span class="ico-check"></span></div>
                                     </a>
                                 {{ '{% else %}' }}
-                                    <a href="javascript:void()" slug="{{ entity.slug}}" role="{{ role.abbr }}" class="button red role">
+                                    <a href="javascript:void()" class="button red role">
                                         <div class="icon"><span class="ico-check-empty"></span></div>
                                     </a>
                                 {{ '{% endif %}' }}

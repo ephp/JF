@@ -88,10 +88,10 @@ trait CalendarController {
                     $tipo = $_tipo->createTipo($this->EMAIL_MANUALE, 'Email', 'aaaa22', $cal, true, false, true);
                     break;
                 case $this->RISCHEDULAZIONE:
-                    $tipo = $_tipo->createTipo($this->RISCHEDULAZIONE, 'Rischedulazione', '444444', $cal, true, false, false);
+                    $tipo = $_tipo->createTipo($this->RISCHEDULAZIONE, 'Rischedulazione', 'aaaaaa', $cal, true, false, false);
                     break;
                 case $this->PRIORITA:
-                    $_tipo->createTipo($this->PRIORITA, 'Priorita', '444444', $cal, false, false, false);
+                    $_tipo->createTipo($this->PRIORITA, 'Priorita', 'aaaaaa', $cal, false, false, false);
                     break;
                 case $this->VERIFICA_PERIODICA:
                     $tipo = $_tipo->createTipo($this->VERIFICA_PERIODICA, 'Verifica periodica', '44aa44', $cal);
@@ -100,7 +100,7 @@ trait CalendarController {
                     $tipo = $_tipo->createTipo($this->CAMBIO_STATO_OPERATIVO, 'Cambio Stato Operativo', '4444aa', $cal, true, false, false);
                     break;
                 case $this->CAMBIO_GESTORE:
-                    $tipo = $_tipo->createTipo($this->CAMBIO_GESTORE, 'Cambio Gestore', '444444', $cal, false, false, false);
+                    $tipo = $_tipo->createTipo($this->CAMBIO_GESTORE, 'Cambio Gestore', 'aaaaaa', $cal, false, false, false);
                     break;
             }
         }

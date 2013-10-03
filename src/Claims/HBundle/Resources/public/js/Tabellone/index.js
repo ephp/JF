@@ -16,22 +16,22 @@ $(document).ready(function() {
         $('#bt_cambia_gestore').show();
         $('#wait_cambia_gestore').hide();
     });
-    
-    $('td.note').click(function() {
-        $('#bt_cambia_note').hide();
-        $('#wait_cambia_note').show();
-        var tr = $(this).closest('tr');
-        $('#cambia_note_a').text(tr.attr('titolo'));
-        $('#note_id').val(tr.attr('id'));
-        $('#note_note').val('').attr('placeholder', 'Attendere il caricamento delle note');
-        $.post(Routing.generate('claims_hospital_get_note', {'slug': tr.attr('id')}), function(out) {
-            $('#note_note').val(out.note).attr('placeholder', 'Scrivere qui le note');
-            $('#bt_cambia_note').show();
-            $('#wait_cambia_note').hide();
-        });
+
+    var tipografy = '';
+    $('.typography').focus(function() {
+        tipografy = $(this).html();
+    }).blur(function() {
+        if (tipografy !== $(this).html()) {
+            var tr = $(this).closest('tr');
+            $('#cambia_note_a').text(tr.attr('titolo'));
+            $('#note_id').val(tr.attr('id'));
+            $('#note_note').val($(this).html().trim());
+            assegnaNote();
+        }
     });
-    
-    $('td.stato').click(function() {
+
+    $('td.stato_pratica').click(function() {
+        var i = 0;
         var tr = $(this).closest('tr');
         $('#cambia_stato_a').text(tr.attr('titolo'));
         $('#stato_id').val(tr.attr('id'));
@@ -120,7 +120,7 @@ function assegnaStato() {
     var form = $('#cambia_stato');
     $.post(Routing.generate('claims_hospital_cambia_stato'), form.serialize(), function(out) {
         var riga = $('#' + $('#stato_id').val());
-        var stato = riga.find('.stato').find('a');
+        var stato = riga.find('.stato_pratica').find('a');
         stato.text(out.stato);
         riga.attr('stato', out.stato_id);
         var label = riga.find('.label');

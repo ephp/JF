@@ -113,7 +113,7 @@
     </div>
     <div class="span6">
         <div class="block">
-            Amount Reserved:<input type="text" class="autoupdate currency" pratica="{{ entity.slug }}" name="report_amount_reserved" value="{{ entity.reportAmountReserved }}"/>
+            Amount Reserved:<input type="text" class="autoupdate currencynp" pratica="{{ entity.slug }}" name="report_amount_reserved" value="{% if entity.reportAmountReserved < 0 %}N.P.{% else %}{{ entity.reportAmountReserved }}{% endif %}"/>
         </div>
     </div>
 </div>
@@ -143,6 +143,45 @@
     <div class="span6">
         <div class="block">
             AVV. {{ entity.gestore.nome|upper }}
+        </div>
+    </div>
+</div>
+
+
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block">
+            <table class="table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Numero</th>
+                        <th width="80px">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in entity.reports %}
+                        <tr>
+                            <td class="center">{{ report.data|date('d/m/Y') }}</td>
+                            <td class="center">{{ report.number }}</td>
+                            <td width="80px">
+                                <a href="{{ path('claims_hospital_report_pratica_show', {'slug': entity.slug, 'numero': report.number}) }}" class="button green" onclick="return loadAjax($(this));">
+                                    <div class="icon"><span class="ico-eye"></span></div>
+                                </a>
+                                <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': report.number}) }}" class="button yellow" onclick="return loadAjax($(this));">
+                                    <div class="icon"><span class="ico-pencil"></span></div>
+                                </a>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="block">
+            <a href="{{ path('claims_hospital_report_pratica_new', {'slug': entity.slug}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label label-success ico-pen"> Aggiungi report</span></a>
+            <a href="{{ path('claims_hospital_stampa_report', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
         </div>
     </div>
 </div>

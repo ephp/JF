@@ -1,5 +1,6 @@
 $(document).ready(function() {
     sanitizeCurrency([$('.currency')]);
+    sanitizeCurrencyNp([$('.currencynp')]);
     sanitizeDate([$('.auto_date')]);
     sanitizeUrl([$('.auto_url')]);
 //    $(".autogrow").autoGrow();
@@ -26,7 +27,7 @@ function evidenziaEvento(id) {
         var span = $('#' + out.id).find('span');
         span.removeClass(out.remove);
         span.addClass(out.add);
-        span.attr('style', 'background-color: '+out.color);
+        span.attr('style', 'background-color: ' + out.color);
     });
 }
 
@@ -66,10 +67,14 @@ function autoupdate() {
         pratica = $(this).attr('pratica');
         evento = $(this).attr('evento');
         field = $(this).attr('name');
+        report = $(this).attr('report');
         if (pratica) {
-            $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug' : slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
+            $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
                 checkUm();
             });
+        } else if (report) {
+            field = field.from(7).to(-1);
+            $.post(Routing.generate('claims_hospital_report_pratica_autoupdate', {'slug': slug, 'numero': $('#'+report).val()}), {'report': {'field': field, 'value': val}}, function(out) {});
         } else {
             $.post(Routing.generate('claims_hospital_evento_autoupdate'), {'evento': {'id': evento, 'field': field, 'value': val}}, function(out) {
                 if (out.reload === 1) {
@@ -78,8 +83,8 @@ function autoupdate() {
             });
         }
     });
-    
-    $('.star').click(function(){
+
+    $('.star').click(function() {
         evidenziaEvento($(this).attr('evento'));
     });
 }
@@ -104,7 +109,52 @@ function importaRavinale() {
     $.post(form.attr('action'), form.serialize(), function(out) {
         $('#tab_cal').html(out);
         autoupdate();
-        $( ".tabbable" ).tabs({ active: 0 });
+        $(".tabbable").tabs({active: 0});
         form[0].reset();
     });
+}
+
+function sanitizeCurrencyNp(fields) {
+    fields.forEach(function(field) {
+        field.change(function() {
+            if ($(this).val().match(/N(.)?P(.)?/i)) {
+                $(this).val('N.P.');
+            } else {
+                value = $(this).val().replace(",", ".").remove(/[^0-9\.]/g);
+                n = 0;
+                i = 0;
+                nc = 0;
+                value.chars(function(c) {
+                    if (c === '.') {
+                        n++;
+                    }
+                    if (n === 2) {
+                        i = nc;
+                        n++;
+                    }
+                    nc++;
+                });
+                if (n > 1) {
+                    value = value.substring(0, i);
+                    value = Math.abs(parseFloat(value === '' || value === '.' ? 0 : value));
+                    $(this).val(value.toFixed(2));
+                } else {
+                    value = Math.abs(parseFloat(value === '' || value === '.' ? 0 : value));
+                    $(this).val(value.toFixed(2));
+                }
+            }
+        });
+    });
+}
+
+function loadAjax(a) {
+    var url = a.attr('href');
+    var tab = a.closest('.tab-pane');
+    tab.addClass('wait');
+    $.post(url, function(out) {
+        tab.html(out);
+        tab.removeClass('wait');
+        autoupdate();
+    });
+    return false;
 }

@@ -1,0 +1,121 @@
+{% extends '::stampa.html.twig' %}
+{% block body -%}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-file-3">Scheda {{ entity }}</h3>
+        </div>
+    </div>
+</div>
+<div class="row-fluid bordered">
+    <div class="span3">
+        <div class="block bold">
+            Gestore:
+        </div>
+    </div>
+    <div class="span9">
+        <div class="block">
+            {{ entity.gestore.nome }}
+        </div>
+    </div>
+</div>
+<div class="row-fluid bordered">
+    <div class="span3">
+        <div class="block bold">
+            Amount Reserved:
+        </div>
+    </div>
+    <div class="span3 bordered-right">
+        <div class="block tcenter">
+            {% if entity.amountReserved >= 0 %}{{ entity.amountReserved ~ ' €' }}{% else %}N.P.{% endif %}
+        </div>
+    </div>
+    <div class="span3 no-margin">
+        <div class="block bold">
+            S.A.:
+        </div>
+    </div>
+    <div class="span3">
+        <div class="block tcenter">
+            {{ entity.settlementAuthority }} €
+        </div>
+    </div>
+</div>
+<div class="row-fluid bordered">
+    <div class="span3">
+        <div class="block bold">
+            Offerta nostra:
+        </div>
+    </div>
+    <div class="span3 bordered-right">
+        <div class="block tcenter">
+            {{ entity.offertaNostra }} €
+        </div>
+    </div>
+    <div class="span3 no-margin">
+        <div class="block bold">
+            Offerta Loro:
+        </div>
+    </div>
+    <div class="span3">
+        <div class="block tcenter">
+            {{ entity.offertaLoro }} €
+        </div>
+    </div>
+</div>
+<div class="row-fluid bordered">
+    <div class="span3">
+        <div class="block bold">
+            Recupero offerta nostra:
+        </div>
+    </div>
+    <div class="span3 bordered-right">
+        <div class="block tcenter">
+            {{ entity.recuperoOffertaNostra }} {% if entity.recuperoOffertaNostra %}{% if entity.recuperoOffertaNostra <= 100 %}%{% else %}€{% endif %}{% endif %}
+        </div>
+    </div>
+    <div class="span3 no-margin">
+        <div class="block bold">
+            Recupero offerta Loro:
+        </div>
+    </div>
+    <div class="span3">
+        <div class="block tcenter">
+            {{ entity.recuperoOffertaLoro }} {% if entity.recuperoOffertaLoro %}{% if entity.recuperoOffertaLoro <= 100 %}%{% else %}€{% endif %}{% endif %}
+        </div>
+    </div>
+</div>
+<div class="row-fluid bordered bordered-bottom">
+    <div class="span2">
+        <div class="block bold">
+            Note:
+        </div>
+    </div>
+    <div class="span10">
+        <div class="block">
+            {{ entity.note|nl2br }} 
+        </div>
+    </div>
+</div>
+
+<table class="table-bordered">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Titolo</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for evento in entity.eventi %}
+            {% if evento.tipo.pubblico %}
+                <tr>
+                    <td width="10%" class="center" nowrap>{{ evento.dataOra|date('d/m/Y') }}</td>
+                    <td width="25%">{{ evento.titolo }}</td>
+                    <td width="65%">{{ evento.note|nl2br }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

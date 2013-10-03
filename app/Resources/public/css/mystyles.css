@@ -1,4 +1,4 @@
-.todo:hover { 
+.wait, .todo:hover { 
     opacity:0.4;
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
@@ -32,7 +32,7 @@
 .stroke {
     text-decoration-line: overline;
     font-style: italic !important;
-    color: #D3D3D3 !important;
+    color: #DDDDDD !important;
 }
 tr.stroke {
     font-style: italic !important;
@@ -78,9 +78,40 @@ input.auto_date {
     width: 75px !important;
     text-align: right;
 }
-input.currency {
+input.currency, input.currencynp {
     text-align: right;
 }
 textarea.autogrow {
     min-height: 65px !important;
+}
+div.bordered {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border: 1px solid #DDDDDD !important;
+    border-bottom: 0px solid #DDDDDD !important;
+}
+div.bordered div {
+    padding: 3px;
+}
+div.bordered-left {
+    border-left: 1px solid #DDDDDD !important;
+}
+div.bordered-right {
+    border-right: 1px solid #DDDDDD !important;
+}
+div.bordered-bottom {
+    border-bottom: 1px solid #DDDDDD !important;
+    margin-bottom: 10px !important;;
+}
+div.typography {
+    line-height: 15px !important;
+    min-height: 45px;
+    max-height: 45px;
+    overflow-y: auto;
+}
+div.typography:focus {
+    line-height: 15px !important;
+    min-height: 45px;
+    max-height: 225px;
+    background-color: #FFFFFF;
 }

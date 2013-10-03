@@ -20,7 +20,7 @@
         <div class="block">
             <div class="data-fluid">
                 {% for linkmode, link in links %}
-                    <a href="{{ path(link.route) }}"><span class="label {% if linkmode == mode %}label-success{% else %}label-green{% endif %}">{{ link.label }}</span></a>
+                    <a href="{{ path(link.route) }}" {% if link.target is defined %}target="{{ link.target }}"{% endif %}><span class="label {% if linkmode == mode %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}">{{ link.label }}</span></a>
                 {% endfor %}
             </div>            
         </div>            

@@ -35,6 +35,6 @@ class SistemaType extends AbstractType
      */
     public function getName()
     {
-        return 'claims_hbundle_sistema';
+        return 'sistema';
     }
 }

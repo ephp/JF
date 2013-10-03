@@ -1,0 +1,12 @@
+{% extends '::stampa.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-files"></span>
+    </div>
+    <h1>JF-Claims <small>Hospital</small></h1>
+</div>
+    
+{% include "ClaimsHBundle:Tabellone:stampa/table.html.twig" %}
+
+{% endblock %}

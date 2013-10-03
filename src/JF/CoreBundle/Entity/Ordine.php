@@ -162,10 +162,10 @@ class Ordine {
     /**
      * Add prodotti
      *
-     * @param \JF\CoreBundle\Entity\Prodotti $prodotti
+     * @param \JF\CoreBundle\Entity\Prodotto $prodotti
      * @return Ordine
      */
-    public function addProdotti(\JF\CoreBundle\Entity\Prodotti $prodotti)
+    public function addProdotti(\JF\CoreBundle\Entity\Prodotto $prodotti)
     {
         $this->prodotti[] = $prodotti;
     
@@ -175,9 +175,9 @@ class Ordine {
     /**
      * Remove prodotti
      *
-     * @param \JF\CoreBundle\Entity\Prodotti $prodotti
+     * @param \JF\CoreBundle\Entity\Prodotto $prodotti
      */
-    public function removeProdotti(\JF\CoreBundle\Entity\Prodotti $prodotti)
+    public function removeProdotti(\JF\CoreBundle\Entity\Prodotto $prodotti)
     {
         $this->prodotti->removeElement($prodotti);
     }

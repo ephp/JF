@@ -8,7 +8,6 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 {% javascripts  
-    '../app/Resources/public/js/sugar.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-1.9.1.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-ui-1.10.1.custom.min.js'
     '../app/Resources/public/js/plugins/jquery/jquery-migrate-1.1.1.min.js'
@@ -33,7 +32,6 @@
     '../app/Resources/public/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js'
     
     '../app/Resources/public/js/plugins/uniform/jquery.uniform.min.js'
-    '../app/Resources/public/js/plugins/datatables/jquery.dataTables.min.js'
     
     '../app/Resources/public/js/plugins/shbrush/XRegExp.js'
     '../app/Resources/public/js/plugins/shbrush/shCore.js'
@@ -44,6 +42,8 @@
     '../app/Resources/public/js/plugins.js'
     '../app/Resources/public/js/charts.js'
 
+    '../app/Resources/public/js/sugar.min.js'
+
     '@EphpUtilityBundle/Resources/public/js/environment.js'
     
     '../app/Resources/public/js/actions.js'
@@ -51,4 +51,6 @@
 %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-    
+{# 
+    '../app/Resources/public/js/plugins/datatables/jquery.dataTables.min.js'
+#} 

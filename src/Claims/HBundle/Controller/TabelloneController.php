@@ -99,14 +99,15 @@ class TabelloneController extends Controller {
         $out['search'] = array(
             'fancybox' => 'fb_ricerca',
             'label' => 'Ricerca',
+            'class' => $this->getParam('ricerca') ? 'label-success' : 'label-info', 
             'icon' => 'ico-search'
         );
         $out['stampa'] = array(
             'route' => $this->getParam('_route') . '_stampa',
             'label' => 'Versione per la stampa',
             'icon' => 'ico-printer',
-            'class' =>
-            'label-warning', 'target' => '_blank'
+            'class' => 'label-warning', 
+            'target' => '_blank'
         );
         return $out;
     }

@@ -109,6 +109,9 @@ class TabelloneController extends Controller {
             'class' => 'label-warning', 
             'target' => '_blank'
         );
+        if($this->getParam('ricerca')) {
+            $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
+        }
         return $out;
     }
 

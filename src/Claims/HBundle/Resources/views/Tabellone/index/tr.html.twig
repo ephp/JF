@@ -46,7 +46,7 @@
         {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
             <div class="typography" contenteditable="true">
         {% endif %}
-        {{ entity.note|raw }}
+        {{ entity.note|raw|nl2br }}
         {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
             </div>
         {% endif %}

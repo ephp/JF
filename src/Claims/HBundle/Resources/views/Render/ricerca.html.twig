@@ -35,7 +35,8 @@
                         {{ form_row(form.soi) }}
                         {{ form_row(form.amountReserved) }}
                         {{ form_row(form.court) }}
-                        {{ form_row(form.statoPratica) }}
+                        &nbsp;<br/>
+                        {{ form_row(form.submit) }}
                     </div>
                 </div>
             </div>
@@ -44,11 +45,12 @@
                     <div class="data-fluid">
                         {{ form_row(form.ospedale) }}
                         {{ form_row(form.anno) }}
-                        {{ form_row(form.gestore) }}
+                        {% if form.gestore is defined %}
+                            {{ form_row(form.gestore) }}
+                        {% endif %}
+                        {{ form_row(form.statoPratica) }}
                         {{ form_row(form.priorita) }}
                         {{ form_row(form.status) }}
-                        &nbsp;<br/>
-                        {{ form_row(form.submit) }}
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@
         <div class="block">
             <div class="data-fluid">
                 {% for linkmode, link in links %}
-                    <a href="{% if link.fancybox is defined %}#{{ link.fancybox }}{% else %}{{ path(link.route) }}{% endif %}" {% if link.target is defined %}target="{{ link.target }}"{% endif %} {% if link.fancybox is defined %}class="fancybox"{% endif %}><span class="label {% if linkmode == mode %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
+                    <a href="{% if link.fancybox is defined %}#{{ link.fancybox }}{% else %}{% if link.params is defined %}{{ path(link.route, link.params) }}{% else %}{{ path(link.route) }}{% endif %}{% endif %}" {% if link.target is defined %}target="{{ link.target }}"{% endif %} {% if link.fancybox is defined %}class="fancybox"{% endif %}><span class="label {% if linkmode == mode %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
                 {% endfor %}
             </div>            
         </div>            

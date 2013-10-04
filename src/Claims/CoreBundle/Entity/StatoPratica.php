@@ -242,4 +242,8 @@ class StatoPratica
     {
         return $this->chiudi;
     }
+    
+        public function __toString() {
+        return $this->stato;
+    }
 }

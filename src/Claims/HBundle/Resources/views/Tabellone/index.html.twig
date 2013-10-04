@@ -20,12 +20,13 @@
         <div class="block">
             <div class="data-fluid">
                 {% for linkmode, link in links %}
-                    <a href="{{ path(link.route) }}" {% if link.target is defined %}target="{{ link.target }}"{% endif %}><span class="label {% if linkmode == mode %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}">{{ link.label }}</span></a>
+                    <a href="{% if link.fancybox is defined %}#{{ link.fancybox }}{% else %}{{ path(link.route) }}{% endif %}" {% if link.target is defined %}target="{{ link.target }}"{% endif %} {% if link.fancybox is defined %}class="fancybox"{% endif %}><span class="label {% if linkmode == mode %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
                 {% endfor %}
             </div>            
         </div>            
     </div>       
 </div>       
+{% render(controller("ClaimsHBundle:Render:ricerca", {'mode': mode, 'ricerca': app.request.get('ricerca')})) %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">

@@ -334,6 +334,13 @@ class Pratica {
     /**
      * @var text
      *
+     * @ORM\Column(name="dati_recupero", type="text", nullable=true)
+     */
+    private $datiRecupero;
+
+    /**
+     * @var text
+     *
      * @ORM\Column(name="informazioni", type="text", nullable=true)
      */
     private $informazioni;
@@ -1047,7 +1054,7 @@ class Pratica {
     public function getSoi($encode = false) {
         if ($encode) {
             $soi = $this->severityOfInjury();
-            return $soi[intval($this->soi)];
+            return $soi[$this->soi];
         }
         return $this->soi;
     }
@@ -1374,6 +1381,27 @@ class Pratica {
     }
 
     /**
+     * Set datiRecupero
+     *
+     * @param string $datiRecupero
+     * @return Pratica
+     */
+    public function setDatiRecupero($datiRecupero) {
+        $this->datiRecupero = $datiRecupero;
+
+        return $this;
+    }
+
+    /**
+     * Get datiRecupero
+     *
+     * @return string 
+     */
+    public function getDatiRecupero() {
+        return $this->datiRecupero;
+    }
+
+    /**
      * Set informazioni
      *
      * @param string $informazioni
@@ -1414,7 +1442,7 @@ class Pratica {
     public function getReportSoi($encode = false) {
         if ($encode) {
             $soi = $this->severityOfInjury();
-            return $soi[intval($this->reportSoi)];
+            return $soi[$this->reportSoi];
         }
         return $this->reportSoi;
     }

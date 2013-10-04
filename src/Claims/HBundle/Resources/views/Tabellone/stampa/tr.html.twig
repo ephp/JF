@@ -11,7 +11,7 @@
             {% endif %}
         </td>
     <td>{{ entity.claimant }}{% if entity.giudiziale %} (Giud){% endif %}</td>
-    {% if mode in ['completo', 'no-dasc', 'no-gest', 'chiusi'] %}
+    {% if mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
         <td>
         {% if entity.gestore %}
                 {{ entity.gestore.sigla }}

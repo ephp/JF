@@ -26,13 +26,13 @@ class TabelloneController extends Controller {
         Traits\CalendarController;
 
     /**
-     * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"}, options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},    options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "no-dasc"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "no-gest"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function indexAction($mode) {
@@ -45,15 +45,15 @@ class TabelloneController extends Controller {
             'mode' => $mode,
         );
     }
-    
+
     /**
-     * @Route("-stampa",                  name="claims_hospital_stampa",               defaults={"mode": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-stampa-completo/",        name="claims_hospital_completo_stampa",      defaults={"mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-stampa-personale/",       name="claims_hospital_personale_stampa",     defaults={"mode": "personale"}, options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-stampa-chiusi/",          name="claims_hospital_chiuso_stampa",        defaults={"mode": "chiuso"},    options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
-     * @Route("-stampa-senza-dasc/",      name="claims_hospital_senza_dasc_stampa",    defaults={"mode": "no-dasc"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stampa-senza-gestore/",   name="claims_hospital_senza_gestore_stampa", defaults={"mode": "no-gest"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stampa-chiusi-completo/", name="claims_hospital_chiusi_stampa",        defaults={"mode": "chiusi"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa",                  name="claims_hospital_stampa",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-completo/",        name="claims_hospital_completo_stampa",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-personale/",       name="claims_hospital_personale_stampa",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-chiusi/",          name="claims_hospital_chiuso_stampa",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stampa-senza-dasc/",      name="claims_hospital_senza_dasc_stampa",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-senza-gestore/",   name="claims_hospital_senza_gestore_stampa", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-chiusi-completo/", name="claims_hospital_chiusi_stampa",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function stampaAction($mode) {
@@ -69,17 +69,45 @@ class TabelloneController extends Controller {
     private function buildLinks() {
         $out = array();
         if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
-            $out['personale'] = array('route' => 'claims_hospital_personale', 'label' => 'Personale');
-            $out['chiuso'] = array('route' => 'claims_hospital_chiuso', 'label' => 'Chiusi');
+            $out['personale'] = array(
+                'route' => 'claims_hospital_personale',
+                'label' => 'Personale'
+            );
+            $out['chiuso'] = array(
+                'route' => 'claims_hospital_chiuso',
+                'label' => 'Chiusi'
+            );
         }
-        $out['completo'] = array('route' => 'claims_hospital_completo', 'label' => 'Completo');
+        $out['completo'] = array(
+            'route' => 'claims_hospital_completo',
+            'label' => 'Completo'
+        );
         if ($this->getUser()->hasRole('C_ADMIN')) {
-            $out['chiusi'] = array('route' => 'claims_hospital_chiusi', 'label' => 'Tutti i chiusi');
-            $out['no-dasc'] = array('route' => 'claims_hospital_senza_dasc', 'label' => 'Senza DASC');
-            $out['no-gest'] = array('route' => 'claims_hospital_senza_gestore', 'label' => 'Senza gestore');
+            $out['chiusi'] = array(
+                'route' => 'claims_hospital_chiusi',
+                'label' => 'Tutti i chiusi'
+            );
+            $out['senza_dasc'] = array(
+                'route' => 'claims_hospital_senza_dasc',
+                'label' => 'Senza DASC'
+            );
+            $out['senza_gestore'] = array(
+                'route' => 'claims_hospital_senza_gestore',
+                'label' => 'Senza gestore'
+            );
         }
-        $out['search'] = array('route' => 'claims_hospital_senza_gestore', 'label' => 'Ricerca');
-        $out['stampa'] = array('route' => $this->getParam('_route').'_stampa', 'label' => 'Versione per la stampa', 'icon' => 'ico-printer', 'class' => 'label-warning', 'target' => '_blank');
+        $out['search'] = array(
+            'fancybox' => 'fb_ricerca',
+            'label' => 'Ricerca',
+            'icon' => 'ico-search'
+        );
+        $out['stampa'] = array(
+            'route' => $this->getParam('_route') . '_stampa',
+            'label' => 'Versione per la stampa',
+            'icon' => 'ico-printer',
+            'class' =>
+            'label-warning', 'target' => '_blank'
+        );
         return $out;
     }
 
@@ -98,7 +126,7 @@ class TabelloneController extends Controller {
                 $dati = $this->getUser()->getDati();
                 $set_default = false;
                 if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
-                    if (!isset($dati['claims_h']) || (!$this->getUser()->hasRole(array('C_ADMIN')) && in_array($dati['claims_h'], array('no-dasc', 'no-gest', 'chiusi')))) {
+                    if (!isset($dati['claims_h']) || (!$this->getUser()->hasRole(array('C_ADMIN')) && in_array($dati['claims_h'], array('senza_dasc', 'senza_gestore', 'chiusi')))) {
                         $set_default = true;
                     }
                     $default = 'personale';
@@ -128,11 +156,11 @@ class TabelloneController extends Controller {
             case 'chiusi':
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 break;
-            case 'no-dasc':
+            case 'senza_dasc':
                 $filtri['in']['dasc'] = null;
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 break;
-            case 'no-gest':
+            case 'senza_gestore':
                 $filtri['in']['gestore'] = null;
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 $filtri['out']['dasc'] = null;
@@ -140,6 +168,7 @@ class TabelloneController extends Controller {
             default:
                 break;
         }
+        $filtri['ricerca'] = $this->getParam('ricerca', array());
         $dati = $this->getUser()->getDati();
         $dati['claims_h'] = $mode;
         $this->getUser()->setDati($dati);
@@ -708,7 +737,7 @@ class TabelloneController extends Controller {
 
         $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
         /* @var $entity Report */
-        
+
         $editForm = $this->createEditReportForm($entity);
         $editForm->handleRequest($this->getRequest());
 
@@ -740,7 +769,7 @@ class TabelloneController extends Controller {
 
         $entity = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $numero));
         /* @var $entity Report */
-        
+
         $req = $this->getParam('report');
 
         try {

@@ -181,4 +181,8 @@ class Ospedale
     {
         return $this->sistema;
     }
+    
+    public function __toString() {
+        return "{$this->sigla} - {$this->ospedale}";
+    }
 }

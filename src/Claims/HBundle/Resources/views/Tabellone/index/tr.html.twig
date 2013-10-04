@@ -24,7 +24,7 @@
     </td>
     <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
     <td>{{ entity.claimant }}</td>
-    {% if mode in ['completo', 'no-dasc', 'no-gest', 'chiusi'] %}
+    {% if mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
         <td>
         {% if app.user.hasRole('C_ADMIN') %}
             <a href="#fb_cambia_gestore" class="fancybox button {% if entity.gestore %}gray{% else %}lgray{% endif %} gestore">
@@ -40,7 +40,7 @@
         {% endif %}
     </td>
     {% endif %}
-    <td class="center">{{ entity.soi }}</td>
+    <td class="center"><abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr></td>
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
         {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}

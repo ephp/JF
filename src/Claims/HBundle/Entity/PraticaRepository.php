@@ -48,6 +48,7 @@ class PraticaRepository extends EntityRepository {
                     case 'legal_team':
                         $q->andWhere("p.{$field} = :{$field}")
                                 ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
+                        break;
                     default:
                         if (is_array($value)) {
                             if (count($value) == 0) {
@@ -78,6 +79,7 @@ class PraticaRepository extends EntityRepository {
                     case 'legal_team':
                         $q->andWhere("p.{$field} != :{$field}")
                                 ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
+                        break;
                     default:
                         if (is_array($value)) {
                             if (count($value) == 0) {
@@ -140,6 +142,45 @@ class PraticaRepository extends EntityRepository {
                             ->setParameter($field . '_from', $value[0])
                             ->setParameter($field . '_to', $value[1]);
                     break;
+            }
+        }
+        foreach ($filtri['ricerca'] as $field => $value) {
+            if ($value) {
+                switch ($field) {
+                    case 'submit':
+                    case '_token':
+                        break;
+                    case 'claimant':
+                    case 'codice':
+                    case 'status':
+                        $q->andWhere("p.{$field} LIKE :{$field}")
+                                ->setParameter($field, "%{$value}%");
+                        break;
+                    case 'amountReserved':
+                        if($value == 'N.P.') {
+                            $q->andWhere("p.amount_reserved < :{$field}")
+                                    ->setParameter($field, 0);
+                        } else {
+                            $q->andWhere("p.amount_reserved >= :{$field}")
+                                    ->setParameter($field, 0);
+                        }
+                        break;
+                    case 'court':
+                        if($value == 'Sì') {
+                            $q->andWhere("p.court != :{$field}")
+                                    ->setParameter($field, '');
+                        } else {
+                            $q->andWhere("p.court = :{$field}")
+                                    ->setParameter($field, '');
+                        }
+                        break;
+                    case 'statoPratica':
+                        $field = 'stato_pratica';
+                    default:
+                        $q->andWhere("p.{$field} = :{$field}")
+                                ->setParameter($field, $value);
+                        break;
+                }
             }
         }
         $q->orderBy($filtri['ob'][0], $filtri['ob'][1]);

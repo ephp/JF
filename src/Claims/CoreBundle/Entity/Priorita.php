@@ -149,5 +149,8 @@ class Priorita
         return $this->show;
     }
 
+    public function __toString() {
+        return $this->priorita;
+    }
 
 }

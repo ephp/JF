@@ -72,7 +72,7 @@ class MenuBuilder {
             if ($this->show($voce['show'])) {
                 if (isset($voce['route'])) {
                     $vm = $menu->addChild($voce['label'], array('route' => $voce['route']));
-                    if($route == $voce['route']) {
+                    if(strpos($route, $voce['route']) !== false) {
                         $this->active($vm);
                     }
                 } else {

@@ -47,7 +47,26 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-stampa",                  name="claims_hospital_stampa",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stati/{stato}",           name="claims_stati_hospital",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stati-completo/{stato}",  name="claims_stati_hospital_completo",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stati-personale/{stato}", name="claims_stati_hospital_personale", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Template("ClaimsHBundle:Tabellone:index.html.twig")
+     */
+    public function statiAction($mode, $stato) {
+        $filtri = $this->buildFiltri($mode, $stato);
+        $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+        return array(
+            'pagination' => $pagination,
+            'show_gestore' => true,
+            'links' => $this->buildLinks(false),
+            'mode' => $mode,
+            'stati' => $this->findBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true)),
+            'stato' => $stato,
+        );
+    }
+
+    /**
+     * @Route("-stampa/",                 name="claims_hospital_stampa",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
      * @Route("-stampa-completo/",        name="claims_hospital_completo_stampa",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
      * @Route("-stampa-personale/",       name="claims_hospital_personale_stampa",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
      * @Route("-stampa-chiusi/",          name="claims_hospital_chiuso_stampa",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
@@ -66,56 +85,87 @@ class TabelloneController extends Controller {
         );
     }
 
-    private function buildLinks() {
-        $out = array();
-        if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
-            $out['personale'] = array(
-                'route' => 'claims_hospital_personale',
-                'label' => 'Personale'
-            );
-            $out['chiuso'] = array(
-                'route' => 'claims_hospital_chiuso',
-                'label' => 'Chiusi'
-            );
-        }
-        $out['completo'] = array(
-            'route' => 'claims_hospital_completo',
-            'label' => 'Completo'
+    /**
+     * @Route("-stati-stampa/{stato}",           name="claims_stati_hospital_stampa",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE", "C_GESTORE_H"}}})
+     * @Route("-stati-stampa-completo/{stato}",  name="claims_stati_hospital_completo_stampa",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stati-stampa-personale/{stato}", name="claims_stati_hospital_personale_stampa", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE", "C_GESTORE_H"}}})
+     * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
+     */
+    public function stampaStatiAction($mode, $stato) {
+        $filtri = $this->buildFiltri($mode, $stato);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        return array(
+            'entities' => $entities,
+            'show_gestore' => true,
+            'mode' => $mode,
         );
-        if ($this->getUser()->hasRole('C_ADMIN')) {
-            $out['chiusi'] = array(
-                'route' => 'claims_hospital_chiusi',
-                'label' => 'Tutti i chiusi'
+    }
+
+    private function buildLinks($full = true) {
+        $out = array();
+        if ($full) {
+            if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
+                $out['personale'] = array(
+                    'route' => 'claims_hospital_personale',
+                    'label' => 'Personale'
+                );
+                $out['chiuso'] = array(
+                    'route' => 'claims_hospital_chiuso',
+                    'label' => 'Chiusi'
+                );
+            }
+            $out['completo'] = array(
+                'route' => 'claims_hospital_completo',
+                'label' => 'Completo'
             );
-            $out['senza_dasc'] = array(
-                'route' => 'claims_hospital_senza_dasc',
-                'label' => 'Senza DASC'
-            );
-            $out['senza_gestore'] = array(
-                'route' => 'claims_hospital_senza_gestore',
-                'label' => 'Senza gestore'
-            );
+            if ($this->getUser()->hasRole('C_ADMIN')) {
+                $out['chiusi'] = array(
+                    'route' => 'claims_hospital_chiusi',
+                    'label' => 'Tutti i chiusi'
+                );
+                $out['senza_dasc'] = array(
+                    'route' => 'claims_hospital_senza_dasc',
+                    'label' => 'Senza DASC'
+                );
+                $out['senza_gestore'] = array(
+                    'route' => 'claims_hospital_senza_gestore',
+                    'label' => 'Senza gestore'
+                );
+            }
+        } else {
+            if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
+                $out['personale'] = array(
+                    'route' => 'claims_stati_hospital_personale',
+                    'label' => 'Personale'
+                );
+            }
+            if ($this->getUser()->hasRole('C_ADMIN')) {
+                $out['completo'] = array(
+                    'route' => 'claims_stati_hospital_completo',
+                    'label' => 'Completo'
+                );
+            }
         }
         $out['search'] = array(
             'fancybox' => 'fb_ricerca',
             'label' => 'Ricerca',
-            'class' => $this->getParam('ricerca') ? 'label-success' : 'label-info', 
+            'class' => $this->getParam('ricerca') ? 'label-success' : 'label-info',
             'icon' => 'ico-search'
         );
         $out['stampa'] = array(
             'route' => $this->getParam('_route') . '_stampa',
             'label' => 'Versione per la stampa',
             'icon' => 'ico-printer',
-            'class' => 'label-warning', 
+            'class' => 'label-warning',
             'target' => '_blank'
         );
-        if($this->getParam('ricerca')) {
+        if ($this->getParam('ricerca')) {
             $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
         }
         return $out;
     }
 
-    private function buildFiltri(&$mode) {
+    private function buildFiltri(&$mode, &$stato = null) {
         $cliente = $this->getUser()->getCliente();
         $filtri = array(
             'in' => array(
@@ -124,10 +174,22 @@ class TabelloneController extends Controller {
             'out' => array(
             ),
         );
+        $dati = $this->getUser()->getDati();
+        if ($stato) {
+            if (!in_array($mode, array("default", "completo", "personale"))) {
+                $mode = 'default';
+            }
+            if ($stato == 'default') {
+                if(isset($dati['claims_h_stato'])) {
+                    $stato = $dati['claims_h_stato'];
+                } else {
+                    $stato = $this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true))->getId();
+                }
+            }
+        }
         switch ($mode) {
             // Legge in cache l'ultimo tipo di visualizzazione
             case 'default':
-                $dati = $this->getUser()->getDati();
                 $set_default = false;
                 if ($this->getUser()->hasRole(array('C_GESTORE', 'C_GESTORE_H'))) {
                     if (!isset($dati['claims_h']) || (!$this->getUser()->hasRole(array('C_ADMIN')) && in_array($dati['claims_h'], array('senza_dasc', 'senza_gestore', 'chiusi')))) {
@@ -141,7 +203,7 @@ class TabelloneController extends Controller {
                     $default = 'completo';
                 }
                 $mode = $set_default ? $default : $dati['claims_h'];
-                return $this->buildFiltri($mode);
+                return $this->buildFiltri($mode, $stato);
             // Vede solo 
             case 'personale':
                 $filtri['in']['gestore'] = $this->getUser()->getId();
@@ -172,8 +234,11 @@ class TabelloneController extends Controller {
             default:
                 break;
         }
+        if ($stato) {
+            $dati['claims_h_stato'] = $stato;
+            $filtri['in']['statoPratica'] = $stato;
+        }
         $filtri['ricerca'] = $this->getParam('ricerca', array());
-        $dati = $this->getUser()->getDati();
         $dati['claims_h'] = $mode;
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());

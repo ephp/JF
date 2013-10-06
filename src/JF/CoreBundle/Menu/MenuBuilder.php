@@ -133,7 +133,9 @@ class MenuBuilder {
             if ($this->user->getCliente() && isset($rules['license'])) {
                 $active = $this->user->getCliente()->getLicenzeAttive();
                 foreach ($rules['license'] as $gruppo => $licenses) {
-                    $out &= in_array($active[$gruppo], $licenses);
+                    if(isset($active[$gruppo])) {
+                        $out &= in_array($active[$gruppo], $licenses);
+                    }
                 }
             }
         }

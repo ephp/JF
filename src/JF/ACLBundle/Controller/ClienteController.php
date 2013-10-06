@@ -59,7 +59,7 @@ class ClienteController extends Controller {
             $entity->setPresentatore($this->getUser());
             $this->persist($entity);
             
-            foreach($this->findBy('JFCoreBindle:Licenza', array('autoinstall' => true)) as $licenza) {
+            foreach($this->findBy('JFCoreBundle:Licenza', array('autoinstall' => true)) as $licenza) {
                 $_licenza = new Licenza();
                 $_licenza->setLicenza($licenza);
                 $_licenza->setCliente($entity);

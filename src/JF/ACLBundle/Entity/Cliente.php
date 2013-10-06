@@ -130,6 +130,14 @@ class Cliente {
     private $referente;
 
     /**
+     * @var User
+     *
+     * @ORM\OneToOne(targetEntity="Gestore")
+     * @ORM\JoinColumn(name="presentatore_id", referencedColumnName="id", nullable=true)
+     */
+    private $presentatore;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Gestore", mappedBy="cliente", cascade="all")
@@ -410,6 +418,27 @@ class Cliente {
      */
     public function getReferente() {
         return $this->referente;
+    }
+
+    /**
+     * Set presentatore
+     *
+     * @param Geastore $presentatore
+     * @return Studio
+     */
+    public function setPresentatore($presentatore) {
+        $this->presentatore = $presentatore;
+
+        return $this;
+    }
+
+    /**
+     * Get presentatore
+     *
+     * @return Gestore
+     */
+    public function getPresentatore() {
+        return $this->presentatore;
     }
 
     /**

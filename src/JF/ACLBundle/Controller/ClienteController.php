@@ -56,6 +56,7 @@ class ClienteController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $entity->setPresentatore($this->gerUser());
             $this->persist($entity);
             
             foreach($this->findBy('JFCoreBindle:Licenza', array('autoinstall' => true)) as $licenza) {

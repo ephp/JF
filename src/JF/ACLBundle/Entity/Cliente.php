@@ -132,7 +132,7 @@ class Cliente {
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="Gestore")
+     * @ORM\ManyToOne(targetEntity="Gestore")
      * @ORM\JoinColumn(name="presentatore_id", referencedColumnName="id", nullable=true)
      */
     private $presentatore;

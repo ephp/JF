@@ -38,6 +38,14 @@ class Licenza {
     private $licenza;
 
     /**
+     * @var \JF\CoreBundle\Entity\Licenza
+     * 
+     * @ORM\ManyToOne(targetEntity="JF\CoreBundle\Entity\Licenza")
+     * @ORM\JoinColumn(name="licenza_precedente_id", referencedColumnName="id", nullable=true)
+     */
+    private $licenzaPrecedente;
+
+    /**
      * @var \JF\CoreBundle\Entity\Gruppo
      *
      * @ORM\ManyToOne(targetEntity="JF\CoreBundle\Entity\Gruppo")
@@ -236,6 +244,27 @@ class Licenza {
      */
     public function getLicenza() {
         return $this->licenza;
+    }
+    
+    /**
+     * Set licenzaPrecedente
+     *
+     * @param \JF\CoreBundle\Entity\LicenzaPrecedente $licenzaPrecedente
+     * @return LicenzaPrecedente
+     */
+    public function setLicenzaPrecedente(\JF\CoreBundle\Entity\LicenzaPrecedente $licenzaPrecedente = null) {
+        $this->licenzaPrecedente = $licenzaPrecedente;
+
+        return $this;
+    }
+
+    /**
+     * Get licenzaPrecedente
+     *
+     * @return \JF\CoreBundle\Entity\LicenzaPrecedente 
+     */
+    public function getLicenzaPrecedente() {
+        return $this->licenzaPrecedente;
     }
 
     public function isExpired() {

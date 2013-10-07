@@ -32,7 +32,7 @@
                         <strong><span>Totale:</span> {{ (entity.prezzo*1.21)|number_format(2) }} €</strong>
                     </div>
                     <p>
-                        <a href="{{ path('eph_licenze_buy', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}">
+                        <a href="{{ path('eph_licenze_buy', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla, 'cliente': cliente.id}) }}">
                             <span class="label label-success">Acquista</span>
                         </a>
                     </p>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="span4">
-        {% include "JFCoreBundle:Catalogo:commons/carrello.html.twig" %}
+        {% include "JFCoreBundle:Licenze:commons/carrello.html.twig" %}
     </div>
 </div>
 

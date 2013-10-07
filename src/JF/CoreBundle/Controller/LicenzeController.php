@@ -11,54 +11,47 @@ use JF\CoreBundle\Entity\Licenza;
 /**
  * Licenza controller.
  *
- * @Route("/catalogo")
+ * @Route("/eph/licenze")
  */
-class CatalogoController extends Controller {
+class LicenzeController extends Controller {
 
     use \Ephp\UtilityBundle\Controller\Traits\BaseController;
 
     /**
      * Lists all Licenza entities.
      *
-     * @Route("/", name="catalogo", options={"ACL": {"in_role": {"R_SUPER"}}})
+     * @Route("/{cliente}", name="eph_licenze", options={"ACL": {"in_role": {"R_EPH"}}})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
-
+    public function indexAction($cliente) {
+        $cliente = $this->find('JFACLBundle:Cliente', $cliente);
         $entities = array();
-        foreach($this->getUser()->getCliente()->getLicenze() as $_licenza) {
-            $licenza = $_licenza->getLicenza();
-            if (!isset($entities[$licenza->getGruppo()->getSiglaCompleta()])) {
-                $entities[$licenza->getGruppo()->getSiglaCompleta()] = array('gruppo' => $licenza->getGruppo(), 'licenze' => array(), 'max' => $licenza->getOrdine());
-            }
-            $entities[$licenza->getGruppo()->getSiglaCompleta()]['licenze'][] = $licenza;
-        }
         
-        $licenze = $this->findBy('JFCoreBundle:Licenza', array('market' => true));
+        $licenze = $this->findBy('JFCoreBundle:Licenza', array());
         foreach ($licenze as $licenza) {
             if (!isset($entities[$licenza->getGruppo()->getSiglaCompleta()])) {
                 $entities[$licenza->getGruppo()->getSiglaCompleta()] = array('gruppo' => $licenza->getGruppo(), 'licenze' => array(), 'max' => 0);
             }
-            if($licenza->getOrdine() > $entities[$licenza->getGruppo()->getSiglaCompleta()]['max']) {
-                $entities[$licenza->getGruppo()->getSiglaCompleta()]['licenze'][] = $licenza;
-            }
+            $entities[$licenza->getGruppo()->getSiglaCompleta()]['licenze'][] = $licenza;
         }
 
         return array(
             'entities' => $entities,
-            'ordine' => $this->getUltimoOrdine(),
+            'ordine' => $this->getUltimoOrdine($cliente),
+            'cliente' => $cliente,
         );
     }
 
     /**
      * Finds and displays a Licenza entity.
      *
-     * @Route("/{package}-{gruppo}-{sigla}", name="catalogo_show", options={"ACL": {"in_role": {"R_SUPER"}}})
+     * @Route("/{package}-{gruppo}-{sigla}/{cliente}", name="eph_licenze_show", options={"ACL": {"in_role": {"R_EPH"}}})
      * @Method("GET")
      * @Template()
      */
-    public function showAction($package, $gruppo, $sigla) {
+    public function showAction($package, $gruppo, $sigla, $cliente) {
+        $cliente = $this->find('JFACLBundle:Cliente', $cliente);
         $package = $this->findOneBy('JFCoreBundle:Package', array('sigla' => $package));
         $gruppo = $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $gruppo));
         $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo->getId(), 'sigla' => $sigla));
@@ -69,18 +62,20 @@ class CatalogoController extends Controller {
 
         return array(
             'entity' => $entity,
-            'ordine' => $this->getUltimoOrdine(),
+            'ordine' => $this->getUltimoOrdine($cliente),
+            'cliente' => $cliente,
         );
     }
 
     /**
      * Finds and displays a Licenza entity.
      *
-     * @Route("/{package}-{gruppo}-{sigla}/buy", name="catalogo_buy", options={"ACL": {"in_role": {"R_SUPER"}}})
+     * @Route("/{package}-{gruppo}-{sigla}/buy/{cliente}", name="eph_licenze_buy", options={"ACL": {"in_role": {"R_EPH"}}})
      * @Method("GET")
      * @Template()
      */
-    public function buyLicenzaAction($package, $gruppo, $sigla) {
+    public function buyLicenzaAction($package, $gruppo, $sigla, $cliente) {
+        $cliente = $this->find('JFACLBundle:Cliente', $cliente);
         $package = $this->findOneBy('JFCoreBundle:Package', array('sigla' => $package));
         $gruppo = $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $gruppo));
         $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo->getId(), 'sigla' => $sigla));
@@ -89,7 +84,7 @@ class CatalogoController extends Controller {
             throw $this->createNotFoundException('Unable to find Licenza entity.');
         }
 
-        $ordine = $this->getUltimoOrdine();
+        $ordine = $this->getUltimoOrdine($cliente);
 
         foreach ($ordine->getProdotti() as $prodotto) {
             /* @var $prodotto \JF\CoreBundle\Entity\Prodotto */
@@ -106,21 +101,20 @@ class CatalogoController extends Controller {
 
         $this->persist($prodotto);
 
-        return $this->redirect($this->generateUrl('catalogo'));
+        return $this->redirect($this->generateUrl('eph_licenze', array('cliente' => $cliente->getId())));
     }
 
     /**
      * Finds and displays a Licenza entity.
      *
-     * @Route("/buy", name="catalogo_carrello_buy", options={"ACL": {"in_role": {"R_SUPER"}}})
+     * @Route("/buy/{cliente}", name="eph_licenze_carrello_buy", options={"ACL": {"in_role": {"R_EPH"}}})
      * @Method("GET")
      * @Template()
      */
-    public function buyAction() {
-        $ordine = $this->getUltimoOrdine();
+    public function buyAction($cliente) {
+        $cliente = $this->find('JFACLBundle:Cliente', $cliente);
+        $ordine = $this->getUltimoOrdine($cliente);
 
-        //TODO Dividere il processo in: pagamento, attivazione e fatturazione
-        $cliente = $this->getUser()->getCliente();
         /* @var $cliente \JF\ACLBundle\Entity\Cliente */
 
         try {
@@ -146,20 +140,20 @@ class CatalogoController extends Controller {
             $this->getEm()->rollback();
         }
 
-        return $this->redirect($this->generateUrl('index'));
+        return $this->redirect($this->generateUrl('eph_clienti_show', array('id' => $cliente->getId())));
     }
 
     /**
      * 
      * @return \JF\CoreBundle\Entity\Ordine
      */
-    private function getUltimoOrdine() {
-        $ordine = $this->findOneBy('JFCoreBundle:Ordine', array('cliente' => $this->getUser()->getCliente()->getId(), 'omaggio' => false, 'cancellazione' => null, 'ordinato' => null));
+    private function getUltimoOrdine(\JF\ACLBundle\Entity\Cliente $cliente) {
+        $ordine = $this->findOneBy('JFCoreBundle:Ordine', array('cliente' => $cliente->getId(), 'omaggio' => true, 'cancellazione' => null, 'ordinato' => null));
 
         if (!$ordine) {
             $ordine = new \JF\CoreBundle\Entity\Ordine();
-            $ordine->setCliente($this->getUser()->getCliente());
-            $ordine->setOmaggio(false);
+            $ordine->setCliente($cliente);
+            $ordine->setOmaggio(true);
             $this->persist($ordine);
         }
 

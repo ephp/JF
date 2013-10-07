@@ -56,7 +56,7 @@ class InstallController extends Controller {
                     1500, null,                                                 //Prezzo-Prezzo scontato
                     false, true);                                               //Autoinstall-Market
             $licenze[] = $this->newLicenza(
-                    $package, $g_import, 'slc', 100, 'Importazione Ravinale',   //Anagrafica licenza 
+                    $package, $g_import, 'slc', 100, 'Importazione Contec',     //Anagrafica licenza 
                     'ClaimsContecBundle:Install:import_slc.txt.twig',           //TWIG descrizione
                     null,                                                       //Durata
                     array('C_ADMIN'),                                           //Ruoli abilitati

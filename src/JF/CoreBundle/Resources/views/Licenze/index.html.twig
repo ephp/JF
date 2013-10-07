@@ -5,7 +5,7 @@
     <div class="icon">
         <span class="ico-box"></span>
     </div>
-    <h1>Catalogo servizi <small>Licenze</small></h1>
+    <h1>Licenze <small>{{ cliente.nome }}</small></h1>
 </div>
 
 <div class="row-fluid">
@@ -36,8 +36,8 @@
                                         <span class="label {{ licenza.statoClasse }}">{{ licenza.statoTestuale }}</span>
                                     </td>
                                     <td>{{ licenza.descrizione|raw }}</td>
-                                    {% if app.user.cliente.hasLicenza(licenza.id) %}
-                                        {% set lic = app.user.cliente.getLicenza(licenza.id) %}
+                                    {% if cliente.hasLicenza(licenza.id) %}
+                                        {% set lic = cliente.getLicenza(licenza.id) %}
                                         <td>{% if lic.scadenza %}Scadenza: {{ lic.scadenza|date('d-m-Y') }}{% else %}Illimitato{% endif %}</td>
                                         <td>Acquistato</td>
                                         <td>
@@ -59,10 +59,10 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('catalogo_show', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button dblue">
+                                            <a href="{{ path('eph_licenze_show', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla, 'cliente': cliente.id}) }}" class="button dblue">
                                                 <div class="icon"><span class="ico-eye"></span></div>
                                             </a>
-                                            <a href="{{ path('catalogo_buy', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button green">
+                                            <a href="{{ path('eph_licenze_buy', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla, 'cliente': cliente.id}) }}" class="button green">
                                                 <div class="icon"><span class="ico-shopping-cart"></span></div>
                                             </a>
                                         </td>
@@ -76,7 +76,7 @@
         </div>            
     </div>            
     <div class="span4">
-        {% include "JFCoreBundle:Catalogo:commons/carrello.html.twig" %}
+        {% include "JFCoreBundle:Licenze:commons/carrello.html.twig" %}
     </div>
 </div>            
 

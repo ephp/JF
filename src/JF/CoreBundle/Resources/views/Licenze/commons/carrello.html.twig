@@ -1,0 +1,49 @@
+{% if ordine.prodotti|length > 0 %}
+    <div class="block">
+        <div class="data invoice">
+            <h3>Ordine #{{ ordine.id }}</h3>
+            del {{ ordine.creazione|date('d-m-Y h-i') }}
+        </div>
+    </div>    
+    <div class="block">
+        <div class="data invoice">
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th width="50%">Codice</th>
+                        <th width="50%">Nome</th>
+                    <tr>
+                </thead>
+                <tbody>
+                    {% set totale = 0 %}
+                    {% for prodotto in ordine.prodotti %}
+                        <tr>
+                            <td class="padding-3">{{ prodotto.licenza.codiceEsteso }}</td>
+                            <td class="padding-3">{{ prodotto.licenza.gruppo.nome|capitalize }} - {{ prodotto.licenza.nome }}</td>
+                        </tr>
+                        <tr>
+                            <td class="padding-3">{{ prodotto.totale|number_format(2) }} € + {{ (prodotto.totale*0.21)|number_format(2) }} €</td>
+                            <td class="padding-3">{{ (prodotto.totale*1.21)|number_format(2) }} €</td>
+                        </tr>
+                        {% set totale = totale + prodotto.licenza.prezzo*1.21 %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th width="50%">TOTALE:</th>
+                        <th width="50%">{{ totale|number_format(2) }} €</th>
+                    <tr>
+                </tfoot>
+            </table>
+            <a href="{{ path('eph_licenze_carrello_buy', {'cliente': cliente.id}) }}">
+                <span class="label label-success">Conferma acquisto</span>
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="block">
+        <div class="data invoice">
+            <h3>Carrello vuoto</h3>
+        </div>
+    </div>    
+{% endif %}

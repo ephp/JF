@@ -50,6 +50,13 @@ class Ordine {
      * @ORM\Column(name="ordinato", type="datetime", nullable=true)
      */
     private $ordinato;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="omaggio", type="boolean", nullable=true)
+     */
+    private $omaggio;
     
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -190,6 +197,14 @@ class Ordine {
     public function getProdotti()
     {
         return $this->prodotti;
+    }
+
+    public function getOmaggio() {
+        return $this->omaggio;
+    }
+
+    public function setOmaggio($omaggio) {
+        $this->omaggio = $omaggio;
     }
 
     /**

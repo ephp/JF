@@ -701,9 +701,9 @@ class Cliente {
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
                 foreach($licenza->getParams() as $k => $v) {
                     if($k == 'form_cliente') {
-                        $this->cache[$k][$licenza->getGruppo()] = $v;
+                        $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
                     } else {
-                        $this->cache[$licenza->getGruppo().'.'.$k] = $v;
+                        $this->cache[$licenza->getGruppo()->getSiglaCompleta().'.'.$k] = $v;
                     }
                 }
             }

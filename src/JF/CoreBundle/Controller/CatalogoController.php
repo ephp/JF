@@ -29,7 +29,7 @@ class CatalogoController extends Controller {
 
         $entities = array();
         foreach ($licenze as $licenza) {
-            if (!isset($entities[$licenza->getGruppo()])) {
+            if (!isset($entities[$licenza->getGruppo()->getSiglaCompleta()])) {
                 $entities[$licenza->getGruppo()->getSiglaCompleta()] = array();
             }
             $entities[$licenza->getGruppo()->getSiglaCompleta()][] = $licenza;

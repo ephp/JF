@@ -611,12 +611,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/ACL.git",
-                "reference": "1fa348dcc2adcd71f1263b8446264c9fa91bb418"
+                "reference": "49915d39b3b685b94a1c6248388a958b576c4ad7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/ACL/zipball/1fa348dcc2adcd71f1263b8446264c9fa91bb418",
-                "reference": "1fa348dcc2adcd71f1263b8446264c9fa91bb418",
+                "url": "https://api.github.com/repos/ephp/ACL/zipball/49915d39b3b685b94a1c6248388a958b576c4ad7",
+                "reference": "49915d39b3b685b94a1c6248388a958b576c4ad7",
                 "shasum": ""
             },
             "require": {
@@ -652,7 +652,7 @@
                 "symfony",
                 "symfony-2.1"
             ],
-            "time": "2013-09-25 08:44:54"
+            "time": "2013-09-29 17:56:50"
         },
         {
             "name": "ephp/cal",
@@ -661,12 +661,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/cal.git",
-                "reference": "97d5ba55b869dc7c65031b8df86ac99ea2b08310"
+                "reference": "4b57f912400c3264973a48adb53ae2d915fed7c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/cal/zipball/97d5ba55b869dc7c65031b8df86ac99ea2b08310",
-                "reference": "97d5ba55b869dc7c65031b8df86ac99ea2b08310",
+                "url": "https://api.github.com/repos/ephp/cal/zipball/4b57f912400c3264973a48adb53ae2d915fed7c9",
+                "reference": "4b57f912400c3264973a48adb53ae2d915fed7c9",
                 "shasum": ""
             },
             "require": {
@@ -696,7 +696,7 @@
                 "debug",
                 "symfony-2.1"
             ],
-            "time": "2013-08-13 12:34:38"
+            "time": "2013-10-05 11:35:02"
         },
         {
             "name": "ephp/utility",
@@ -748,17 +748,17 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "target-dir": "FOS/JsRoutingBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5"
+                "reference": "052ab23e7233493494b26c4eca3c13a14df7e08a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/73fd9994ee85e57e778e059c28beb1b963679fa5",
-                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/052ab23e7233493494b26c4eca3c13a14df7e08a",
+                "reference": "052ab23e7233493494b26c4eca3c13a14df7e08a",
                 "shasum": ""
             },
             "require": {
@@ -798,7 +798,7 @@
             "keywords": [
                 "Js Routing"
             ],
-            "time": "2013-09-10 15:45:38"
+            "time": "2013-10-04 08:52:27"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -807,12 +807,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "b4840d8b3293386dba685d91169559eb20f2d767"
+                "reference": "5e236332c3934fbc16b79eff3cf6ee9ee21b7519"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/b4840d8b3293386dba685d91169559eb20f2d767",
-                "reference": "b4840d8b3293386dba685d91169559eb20f2d767",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/5e236332c3934fbc16b79eff3cf6ee9ee21b7519",
+                "reference": "5e236332c3934fbc16b79eff3cf6ee9ee21b7519",
                 "shasum": ""
             },
             "require": {
@@ -867,7 +867,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-09-23 12:09:51"
+            "time": "2013-10-02 23:38:05"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -956,12 +956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "3096289662eb879cb14b80dfa86def09df34e233"
+                "reference": "630d61ca64dfcafd02a13b61698fa99d7ec2c74e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/3096289662eb879cb14b80dfa86def09df34e233",
-                "reference": "3096289662eb879cb14b80dfa86def09df34e233",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/630d61ca64dfcafd02a13b61698fa99d7ec2c74e",
+                "reference": "630d61ca64dfcafd02a13b61698fa99d7ec2c74e",
                 "shasum": ""
             },
             "require": {
@@ -1058,7 +1058,7 @@
                 "yahoo",
                 "yandex"
             ],
-            "time": "2013-09-26 19:07:00"
+            "time": "2013-09-28 12:37:04"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2250,16 +2250,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.13.2",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "6d6a1009427d1f398c9d40904147bf9f723d5755"
+                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6d6a1009427d1f398c9d40904147bf9f723d5755",
-                "reference": "6d6a1009427d1f398c9d40904147bf9f723d5755",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/224fc55635d544a2ec8edb3592be18db5a093f59",
+                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59",
                 "shasum": ""
             },
             "require": {
@@ -2268,7 +2268,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -2295,7 +2295,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-08-03 15:35:31"
+            "time": "2013-10-03 06:41:20"
         }
     ],
     "packages-dev": [

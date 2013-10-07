@@ -138,6 +138,7 @@ class LicenzeController extends Controller {
             $this->getEm()->commit();
         } catch (\Exception $e) {
             $this->getEm()->rollback();
+            throw $e;
         }
 
         return $this->redirect($this->generateUrl('eph_clienti_show', array('id' => $cliente->getId())));

@@ -249,10 +249,10 @@ class Licenza {
     /**
      * Set licenzaPrecedente
      *
-     * @param \JF\CoreBundle\Entity\LicenzaPrecedente $licenzaPrecedente
+     * @param \JF\CoreBundle\Entity\Licenza $licenzaPrecedente
      * @return LicenzaPrecedente
      */
-    public function setLicenzaPrecedente(\JF\CoreBundle\Entity\LicenzaPrecedente $licenzaPrecedente = null) {
+    public function setLicenzaPrecedente(\JF\CoreBundle\Entity\Licenzae $licenzaPrecedente = null) {
         $this->licenzaPrecedente = $licenzaPrecedente;
 
         return $this;
@@ -261,7 +261,7 @@ class Licenza {
     /**
      * Get licenzaPrecedente
      *
-     * @return \JF\CoreBundle\Entity\LicenzaPrecedente 
+     * @return \JF\CoreBundle\Entity\Licenza 
      */
     public function getLicenzaPrecedente() {
         return $this->licenzaPrecedente;

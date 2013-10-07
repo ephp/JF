@@ -25,14 +25,24 @@ class CatalogoController extends Controller {
      * @Template()
      */
     public function indexAction() {
-        $licenze = $this->findBy('JFCoreBundle:Licenza', array('market' => true));
 
         $entities = array();
+        foreach($this->getUser()->getCliente()->getLicenze() as $_licenza) {
+            $licenza = $_licenza->getLicenza();
+            if (!isset($entities[$licenza->getGruppo()->getSiglaCompleta()])) {
+                $entities[$licenza->getGruppo()->getSiglaCompleta()] = array('gruppo' => $licenza->getGruppo(), 'licenze' => array(), 'max' => $licenza->getOrdine());
+            }
+            $entities[$licenza->getGruppo()->getSiglaCompleta()]['licenze'][] = $licenza;
+        }
+        
+        $licenze = $this->findBy('JFCoreBundle:Licenza', array('market' => true));
         foreach ($licenze as $licenza) {
             if (!isset($entities[$licenza->getGruppo()->getSiglaCompleta()])) {
-                $entities[$licenza->getGruppo()->getSiglaCompleta()] = array();
+                $entities[$licenza->getGruppo()->getSiglaCompleta()] = array('gruppo' => $licenza->getGruppo(), 'licenze' => array(), 'max' => 0);
             }
-            $entities[$licenza->getGruppo()->getSiglaCompleta()][] = $licenza;
+            if($licenza->getOrdine() > $entities[$licenza->getGruppo()->getSiglaCompleta()]['max']) {
+                $entities[$licenza->getGruppo()->getSiglaCompleta()]['licenze'][] = $licenza;
+            }
         }
 
         return array(
@@ -44,12 +54,14 @@ class CatalogoController extends Controller {
     /**
      * Finds and displays a Licenza entity.
      *
-     * @Route("/{gruppo}/{sigla}", name="catalogo_show")
+     * @Route("/{package}-{gruppo}-{sigla}", name="catalogo_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($gruppo, $sigla) {
-        $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo, 'sigla' => $sigla));
+    public function showAction($package, $gruppo, $sigla) {
+        $package = $this->findOneBy('JFCoreBundle:Package', array('sigla' => $package));
+        $gruppo = $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $gruppo));
+        $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo->getId(), 'sigla' => $sigla));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Licenza entity.');
@@ -64,12 +76,14 @@ class CatalogoController extends Controller {
     /**
      * Finds and displays a Licenza entity.
      *
-     * @Route("/{gruppo}/{sigla}/buy", name="catalogo_buy")
+     * @Route("/{package}-{gruppo}-{sigla}/buy", name="catalogo_buy")
      * @Method("GET")
      * @Template()
      */
-    public function buyLicenzaAction($gruppo, $sigla) {
-        $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo, 'sigla' => $sigla));
+    public function buyLicenzaAction($package, $gruppo, $sigla) {
+        $package = $this->findOneBy('JFCoreBundle:Package', array('sigla' => $package));
+        $gruppo = $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $gruppo));
+        $entity = $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo->getId(), 'sigla' => $sigla));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Licenza entity.');

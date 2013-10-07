@@ -14,8 +14,9 @@
             {% for gruppo, licenze in entities %}
                 <div class="head blue">
                     <div class="icon"><i class="ico-box"></i></div>
-                    <h2>{{ gruppo|capitalize }}</h2>
+                    <h2>{{ licenza.gruppo.nome|capitalize }}</h2>
                 </div>                
+                <p>{{ licenza.gruppo.descrizione|nl2br }}</p>
                 <div class="data-fluid">
                     <table class="table" cellpadding="0" cellspacing="0" width="100%">
                         <thead>
@@ -28,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for licenza in licenze %}
+                            {% for licenza in licenze.licenze %}
                                 <tr>
                                     <td style="text-align: center;">
                                         <h5>{{ licenza.nome }}</h5>
@@ -45,10 +46,10 @@
                                             </a>
                                         </td>
                                     {% else %}
-                                        <td>{% if licenza.durata %}{{ licenza.durata }} gg{% else %}n.s.{% endif %}</td>
+                                        <td>{% if licenza.durata %}{{ licenza.durata }} gg{% else %}<abbr title="Nessuna scadenza">n.s.</abbr>{% endif %}</td>
                                         <td>
                                             {% if licenza.prezzo > 0 %}
-                                                {% if licenza.prezzo > 0 %}
+                                                {% if licenza.prezzo > licenza.sconto %}
                                                     <span class="stroke">{{ licenza.prezzo|number_format(2) }} €</span>
                                                 {% endif %}
                                                     {{ licenza.sconto|number_format(2) }} €<br/>
@@ -58,10 +59,10 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('catalogo_show', {'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button dblue">
+                                            <a href="{{ path('catalogo_show', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button dblue">
                                                 <div class="icon"><span class="ico-eye"></span></div>
                                             </a>
-                                            <a href="{{ path('catalogo_buy', {'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button green">
+                                            <a href="{{ path('catalogo_buy', {'package': licenza.gruppo.package.sigla, 'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button green">
                                                 <div class="icon"><span class="ico-shopping-cart"></span></div>
                                             </a>
                                         </td>

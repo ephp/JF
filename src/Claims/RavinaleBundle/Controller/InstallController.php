@@ -29,7 +29,7 @@ class InstallController extends Controller {
             
             $this->installPackage($package, 'JF-Claims Ravinale', 'ClaimsRavinaleBundle:Install:package.txt.twig');
             
-            $this->installGruppo($package, $g_import, 'Importazione', 'ClaimsRavinaleBundle:Install:import.txt.twig');
+            $this->installGruppo($package, $g_import, 'Importazione Ravinale', 'ClaimsRavinaleBundle:Install:import.txt.twig');
             
             $licenze[] = $this->newLicenza(
                     $package, $g_import, 'manual', 10, 'Importazione Manuale',  //Anagrafica licenza 

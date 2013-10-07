@@ -69,8 +69,8 @@ class InstallController extends Controller {
                         ),                                          
                     3000);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
-                    $package, $g_pratiche, 'trial', 10, 'Completa - prova 30gg',//Anagrafica licenza 
-                    'ClaimsHBundle:Install:pratiche_trial.txt.twig',             //TWIG descrizione
+                    $package, $g_pratiche, 'trial', 5, 'Completa - prova 30gg', //Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_trial.txt.twig',            //TWIG descrizione
                     30,                                                         //Durata
                     array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
                     array(),                                                    //Widget abilitati

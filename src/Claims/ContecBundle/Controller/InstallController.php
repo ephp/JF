@@ -29,7 +29,7 @@ class InstallController extends Controller {
             
             $this->installPackage($package, 'JF-Claims Contec', 'ClaimsContecBundle:Install:package.txt.twig');
             
-            $this->installGruppo($package, $g_import, 'Importazione', 'ClaimsContecBundle:Install:import.txt.twig');
+            $this->installGruppo($package, $g_import, 'Importazione Contec', 'ClaimsContecBundle:Install:import.txt.twig');
             
             $licenze[] = $this->newLicenza(
                     $package, $g_import, 'manual', 10, 'Importazione Manuale',  //Anagrafica licenza 

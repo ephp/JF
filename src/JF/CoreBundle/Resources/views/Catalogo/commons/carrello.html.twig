@@ -19,7 +19,7 @@
                     {% for prodotto in ordine.prodotti %}
                         <tr>
                             <td class="padding-3">{{ prodotto.licenza.codiceEsteso }}</td>
-                            <td class="padding-3">{{ prodotto.licenza.gruppo|capitalize }} - {{ prodotto.licenza.nome }}</td>
+                            <td class="padding-3">{{ prodotto.licenza.gruppo.nome|capitalize }} - {{ prodotto.licenza.nome }}</td>
                         </tr>
                         <tr>
                             <td class="padding-3">{{ prodotto.totale|number_format(2) }} € + {{ (prodotto.totale*0.21)|number_format(2) }} €</td>

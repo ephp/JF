@@ -30,9 +30,9 @@ class CatalogoController extends Controller {
         $entities = array();
         foreach ($licenze as $licenza) {
             if (!isset($entities[$licenza->getGruppo()])) {
-                $entities[$licenza->getGruppo()] = array();
+                $entities[$licenza->getGruppo()->getNome()] = array();
             }
-            $entities[$licenza->getGruppo()][] = $licenza;
+            $entities[$licenza->getGruppo()->getNome()][] = $licenza;
         }
 
         return array(

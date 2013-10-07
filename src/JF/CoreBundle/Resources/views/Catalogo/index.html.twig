@@ -58,10 +58,10 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('catalogo_show', {'gruppo': licenza.gruppo, 'sigla': licenza.sigla}) }}" class="button dblue">
+                                            <a href="{{ path('catalogo_show', {'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button dblue">
                                                 <div class="icon"><span class="ico-eye"></span></div>
                                             </a>
-                                            <a href="{{ path('catalogo_buy', {'gruppo': licenza.gruppo, 'sigla': licenza.sigla}) }}" class="button green">
+                                            <a href="{{ path('catalogo_buy', {'gruppo': licenza.gruppo.sigla, 'sigla': licenza.sigla}) }}" class="button green">
                                                 <div class="icon"><span class="ico-shopping-cart"></span></div>
                                             </a>
                                         </td>

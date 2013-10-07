@@ -124,7 +124,7 @@ class LicenzeController extends Controller {
                 $_licenza = new \JF\ACLBundle\Entity\Licenza();
                 while ($licenza = $cliente->getLicenzaGruppo($prodotto->getLicenza()->getGruppo())) {
                     if ($licenza) {
-                        $_licenza->setLicenzaPrecedente($licenza);
+                        $_licenza->setLicenzaPrecedente($licenza->getLicenza());
                         $this->remove($licenza);
                     }
                 }

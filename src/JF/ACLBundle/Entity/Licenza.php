@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Licenza
  *
- * @ORM\Table(name="alc_licenze")
+ * @ORM\Table(name="acl_licenze")
  * @ORM\Entity(repositoryClass="JF\ACLBundle\Entity\LicenzaRepository")
  */
 class Licenza {

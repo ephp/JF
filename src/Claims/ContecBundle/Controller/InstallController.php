@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\RavinaleBundle\Controller;
+namespace Claims\ContecBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,7 +19,7 @@ class InstallController extends Controller {
      * @Route("-claims-ravinale", name="install_claims_ravinale", defaults={"_format": "json"})
      */
     public function indexAction() {
-        $package = 'cl.h.ravinale';
+        $package = 'cl.h.contec';
         $g_import = 'import';
         $status = 200;
         $message = 'Ok';
@@ -27,13 +27,13 @@ class InstallController extends Controller {
         try {
             $this->getEm()->beginTransaction();
             
-            $this->installPackage($package, 'JF-Claims Ravinale', 'ClaimsRavinaleBundle:Install:package.txt.twig');
+            $this->installPackage($package, 'JF-Claims Contec', 'ClaimsContecBundle:Install:package.txt.twig');
             
-            $this->installGruppo($package, $g_import, 'Importazione', 'ClaimsRavinaleBundle:Install:import.txt.twig');
+            $this->installGruppo($package, $g_import, 'Importazione', 'ClaimsContecBundle:Install:import.txt.twig');
             
             $licenze[] = $this->newLicenza(
                     $package, $g_import, 'manual', 10, 'Importazione Manuale',  //Anagrafica licenza 
-                    'ClaimsRavinaleBundle:Install:import_manual.txt.twig',      //TWIG descrizione
+                    'ClaimsContecBundle:Install:import_manual.txt.twig',        //TWIG descrizione
                     null,                                                       //Durata
                     array('C_ADMIN'),                                           //Ruoli abilitati
                     array(),                                                    //Widget abilitati
@@ -44,26 +44,26 @@ class InstallController extends Controller {
                     false, true);                                               //Autoinstall-Market
             $licenze[] = $this->newLicenza(
                     $package, $g_import, 'auto', 20, 'Importazione Automatica', //Anagrafica licenza 
-                    'ClaimsRavinaleBundle:Install:import_auto.txt.twig',        //TWIG descrizione
+                    'ClaimsContecBundle:Install:import_auto.txt.twig',          //TWIG descrizione
                     null,                                                       //Durata
                     array('C_ADMIN'),                                           //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        'form_cliente' => '\Claims\RavinaleBundle\Form\AccountType',
+                        'form_cliente' => '\Claims\ContecBundle\Form\AccountType',
                                                                                 //  Form per opzioni personalizzate
                         ),                                          
                     1500, null,                                                 //Prezzo-Prezzo scontato
                     false, true);                                               //Autoinstall-Market
             $licenze[] = $this->newLicenza(
                     $package, $g_import, 'slc', 100, 'Importazione Ravinale',   //Anagrafica licenza 
-                    'ClaimsRavinaleBundle:Install:import_slc.txt.twig',         //TWIG descrizione
+                    'ClaimsContecBundle:Install:import_slc.txt.twig',           //TWIG descrizione
                     null,                                                       //Durata
                     array('C_ADMIN'),                                           //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        'form_cliente' => '\Claims\RavinaleBundle\Form\AccountType',
+                        'form_cliente' => '\Claims\ContecBundle\Form\AccountType',
                                                                                 //  Form per opzioni personalizzate
                         ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato

@@ -38,9 +38,10 @@ class Licenza {
     private $licenza;
 
     /**
-     * @var string
+     * @var \JF\CoreBundle\Entity\Gruppo
      *
-     * @ORM\Column(name="gruppo", type="string", length=8)
+     * @ORM\ManyToOne(targetEntity="JF\CoreBundle\Entity\Gruppo")
+     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id", nullable=true)
      */
     private $gruppo;
 
@@ -88,10 +89,10 @@ class Licenza {
     /**
      * Set gruppo
      *
-     * @param string $gruppo
+     * @param \JF\CoreBundle\Entity\Gruppo $gruppo
      * @return Licenza
      */
-    public function setGruppo($gruppo) {
+    public function setGruppo(\JF\CoreBundle\Entity\Gruppo $gruppo) {
         $this->gruppo = $gruppo;
 
         return $this;
@@ -100,7 +101,7 @@ class Licenza {
     /**
      * Get gruppo
      *
-     * @return string 
+     * @return \JF\CoreBundle\Entity\Gruppo 
      */
     public function getGruppo() {
         return $this->gruppo;

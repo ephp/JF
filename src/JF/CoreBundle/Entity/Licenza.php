@@ -80,15 +80,8 @@ class Licenza {
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Package")
-     * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
-     */
-    private $package;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gruppo", type="string", length=8)
+     * @ORM\ManyToOne(targetEntity="Gruppo")
+     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id", nullable=true)
      */
     private $gruppo;
 
@@ -126,7 +119,7 @@ class Licenza {
      * @ORM\Column(name="widgets", type="array", nullable=true)
      */
     private $widgets;
-    
+
     /**
      * @var array
      *
@@ -170,11 +163,18 @@ class Licenza {
     private $sconto;
 
     /**
-     * @var decimal
+     * @var integer
      *
      * @ORM\Column(name="stato", type="integer")
      */
     private $stato;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ordine", type="integer")
+     */
+    private $ordine;
 
     function __construct() {
         $this->roles = array();
@@ -389,7 +389,7 @@ class Licenza {
     public function getParams() {
         return $this->params;
     }
-    
+
     /**
      * Get params
      *
@@ -397,27 +397,6 @@ class Licenza {
      */
     public function getParam($name, $default = null) {
         return isset($this->params[$name]) ? $this->params[$name] : $default;
-    }
-
-    /**
-     * Set package
-     *
-     * @param \JF\CoreBundle\Entity\Package $package
-     * @return Licenza
-     */
-    public function setPackage(\JF\CoreBundle\Entity\Package $package = null) {
-        $this->package = $package;
-
-        return $this;
-    }
-
-    /**
-     * Get package
-     *
-     * @return \JF\CoreBundle\Entity\Package 
-     */
-    public function getPackage() {
-        return $this->package;
     }
 
     /**
@@ -465,10 +444,10 @@ class Licenza {
     /**
      * Set gruppo
      *
-     * @param string $gruppo
+     * @param Gruppo $gruppo
      * @return Licenza
      */
-    public function setGruppo($gruppo) {
+    public function setGruppo(\JF\CoreBundle\Entity\Gruppo $gruppo) {
         $this->gruppo = $gruppo;
 
         return $this;
@@ -477,7 +456,7 @@ class Licenza {
     /**
      * Get gruppo
      *
-     * @return string 
+     * @return Gruppo 
      */
     public function getGruppo() {
         return $this->gruppo;
@@ -526,9 +505,14 @@ class Licenza {
     }
 
     public function getCodiceEsteso() {
-        return "{$this->getPackage()->getSigla()}-{$this->getGruppo()}-{$this->getSigla()}";
+        $sigla = array(
+            $this->getGruppo()->getPackage()->getSigla(),
+            $this->getGruppo()->getSigla(),
+            $this->getSigla(),
+        );
+        return implode('-', $sigla);
     }
-    
+
     public function getStatoTestuale() {
         switch ($this->stato) {
             case self::$S_DEL:
@@ -551,7 +535,7 @@ class Licenza {
                 return '-';
         }
     }
-    
+
     public function getStatoClasse() {
         switch ($this->stato) {
             case self::$S_DEL:
@@ -574,7 +558,27 @@ class Licenza {
                 return '-';
         }
     }
-    
+
+    /**
+     * Set ordine
+     *
+     * @param integer $ordine
+     * @return Licenza
+     */
+    public function setOrdine($ordine) {
+        $this->ordine = $ordine;
+
+        return $this;
+    }
+
+    /**
+     * Get ordine
+     *
+     * @return integer 
+     */
+    public function getOrdine() {
+        return $this->ordine;
+    }
 
     /**
      * Set autoinstall
@@ -582,10 +586,9 @@ class Licenza {
      * @param boolean $autoinstall
      * @return Licenza
      */
-    public function setAutoinstall($autoinstall)
-    {
+    public function setAutoinstall($autoinstall) {
         $this->autoinstall = $autoinstall;
-    
+
         return $this;
     }
 
@@ -594,8 +597,8 @@ class Licenza {
      *
      * @return boolean 
      */
-    public function getAutoinstall()
-    {
+    public function getAutoinstall() {
         return $this->autoinstall;
     }
+
 }

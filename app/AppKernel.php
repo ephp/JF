@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new JF\AndreaniBundle\JFAndreaniBundle(),
             new Claims\CoreBundle\ClaimsCoreBundle(),
             new Claims\HBundle\ClaimsHBundle(),
+            new Claims\ContecBundle\ClaimsContecBundle(),
             new Claims\RavinaleBundle\ClaimsRavinaleBundle(),
         );
 

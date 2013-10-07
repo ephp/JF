@@ -43,25 +43,25 @@
     <td class="center"><abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr></td>
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
-        {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
             <div class="typography" contenteditable="true">
         {% endif %}
         {{ entity.note|raw|nl2br }}
-        {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
             </div>
         {% endif %}
     </td>
     <td class="center stato_pratica">
-        {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
             <a href="#fb_cambia_stato" class="fancybox">
         {% endif %}
         {{ entity.statoPratica.stato }}
-        {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
             </a>
         {% endif %}
     </td>
     <td class="TAC">
-        {% if app.user.hasRole(['C_GESTORE', 'C_GESTORE_H']) %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
             {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.slug })} %}
         {% endif %}
         {% include ":commons:show.html.twig" with {'class' : 'fancybox', 'route': path('claims_hospital_dettagli', { 'slug': entity.slug })} %}

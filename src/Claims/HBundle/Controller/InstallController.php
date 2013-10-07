@@ -20,6 +20,7 @@ class InstallController extends Controller {
      */
     public function indexAction() {
         $package = 'cl.h';
+        $g_pratiche = "pratiche";
         $status = 200;
         $message = 'Ok';
         $licenze = array();
@@ -27,17 +28,72 @@ class InstallController extends Controller {
             $this->getEm()->beginTransaction();
             
             $this->installPackage($package, 'JF-Claims Hospital', 'ClaimsHBundle:Install:package.txt.twig');
+
+            $this->installGruppo($package, $g_pratiche, 'Gestione sinistri ospedalieri', 'ClaimsHBundle:Install:pratiche.txt.twig');
             
             $licenze[] = $this->newLicenza(
-                    $package, 'hospital', 'slc', 'Studio Legale Carlesi',       //Anagrafica licenza 
-                    'ClaimsHBundle:Install:hospital_slc.txt.twig',              //TWIG descrizione
+                    $package, $g_pratiche, 'base', 10, 'Gestione base',         //Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_base.txt.twig',             //TWIG descrizione
+                    365,                                                        //Durata
+                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array(),                                                    //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        'daily_email' => false,                                 //  Invio email giornaliere
+                        'status_view' => false,                                 //  Visione per stati operativi
+                        ),                                          
+                    1500);                                                      //Prezzo
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'cal', 20, 'Con gestione attività giornaliere',
+                                                                                //Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_cal.txt.twig',              //TWIG descrizione
+                    365,                                                        //Durata
+                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array(),                                                    //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        'daily_email' => true,                                  //  Invio email giornaliere
+                        'status_view' => false,                                 //  Visione per stati operativi
+                        ),                                          
+                    2500);                                                      //Prezzo
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'full', 30, 'Completa',              //Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_full.txt.twig',             //TWIG descrizione
+                    365,                                                        //Durata
+                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array(),                                                    //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        'daily_email' => true,                                  //  Invio email giornaliere
+                        'status_view' => true,                                  //  Visione per stati operativi
+                        ),                                          
+                    3000);                                                      //Prezzo
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'trial', 10, 'Completa - prova 30gg',//Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_trial.txt.twig',             //TWIG descrizione
+                    30,                                                         //Durata
+                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array(),                                                    //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        'daily_email' => true,                                  //  Invio email giornaliere
+                        'status_view' => true,                                  //  Visione per stati operativi
+                        ),                                          
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'slc', 100, 'Studio Legale Carlesi', //Anagrafica licenza 
+                    'ClaimsHBundle:Install:pratiche_slc.txt.twig',              //TWIG descrizione
                     null,                                                       //Durata
                     array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
+                        'daily_email' => true,                                  //  Invio email giornaliere
+                        'status_view' => true,                                  //  Visione per stati operativi
                         ),                                          
-                    0, null, false, true);                                      //Prezzo
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();
         } catch (\Exception $e) {
             $this->getEm()->rollback();

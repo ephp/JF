@@ -54,14 +54,14 @@ class ClaimsHExtension extends Extension implements IExtension {
             $menu['claims']['submenu'][] = array(
                 'label' => 'Hospital',
                 'route' => 'claims_hospital',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE', 'C_GESTORE_H')),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
                 'order' => 10,
             );
             
             $menu['claims']['submenu'][] = array(
                 'label' => 'Stati pratiche Hospital',
                 'route' => 'claims_stati_hospital',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE', 'C_GESTORE_H')),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
                 'order' => 20,
             );
 
@@ -91,6 +91,7 @@ class ClaimsHExtension extends Extension implements IExtension {
         $roles = $container->getParameter('jf.roles');
 
         $this->newRole($roles, 'C_GESTORE_H', 'H-GEST', 'Gestore Claims Hospital');
+        $this->newRole($roles, 'C_RECUPERI_H', 'H-REC', 'Addetto ai recuperi Claims Hospital');
 
         $container->setParameter('jf.roles', $roles);
     }

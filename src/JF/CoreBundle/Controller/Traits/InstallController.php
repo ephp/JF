@@ -4,6 +4,18 @@ namespace JF\CoreBundle\Controller\Traits;
 
 trait InstallController {
 
+    protected function findPackage($sigla) {
+        return $this->findOneBy('JFCoreBundle:Package', array('sigla' => $sigla));
+    }
+    
+    protected function findGruppo(\JF\CoreBundle\Entity\Package $package, $sigla) {
+        return $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $sigla));
+    }
+
+    protected function findLicenza(\JF\CoreBundle\Entity\Gruppo $gruppo, $sigla) {
+        return $this->findOneBy('JFCoreBundle:Licenza', array('gruppo' => $gruppo->getId(), 'sigla' => $sigla));
+    }
+
     protected function installPackage($sigla, $nome, $descrizione) {
         $package = $this->findPackage($sigla);
         if (!$package) {
@@ -20,17 +32,32 @@ trait InstallController {
         
     }
 
-    protected function findPackage($sigla) {
-        return $this->findOneBy('JFCoreBundle:Package', array('sigla' => $sigla));
+    protected function installGruppo($package, $sigla, $nome, $descrizione) {
+        $package = $this->findPackage($package);
+        $gruppo = $this->findGruppo($package, $sigla);
+        if (!$gruppo) {
+            $gruppo = new \JF\CoreBundle\Entity\Gruppo();
+            $gruppo->setSigla($sigla)
+                    ->setPackage($package)
+                    ->setNome($nome)
+                    ->setDescrizione($this->renderView($descrizione));
+            $this->persist($gruppo);
+        } else {
+            $gruppo->setNome($nome)
+                    ->setDescrizione($this->renderView($descrizione));
+            $this->persist($gruppo);
+        }
+        
     }
 
-    protected function newLicenza($package, $gruppo, $sigla, $nome, $descrizione, $durata, $roles, $widgets, $params, $prezzo, $sconto = null, $autoinstall = false, $market = true) {
+    protected function newLicenza($package, $gruppo, $sigla, $ordine, $nome, $descrizione, $durata, $roles, $widgets, $params, $prezzo, $sconto = null, $autoinstall = false, $market = true) {
         $package = $this->findPackage($package);
-        $licenza = $this->findLicenza($package, $gruppo, $sigla);
+        $gruppo = $this->findGruppo($package, $gruppo);
+        $licenza = $this->findLicenza($gruppo, $sigla);
         if (!$licenza) {
             $licenza = new \JF\CoreBundle\Entity\Licenza();
-            $licenza->setPackage($package)
-                    ->setGruppo($gruppo)
+            $licenza->setGruppo($gruppo)
+                    ->setOrdine($ordine)
                     ->setSigla($sigla)
                     ->setNome($nome)
                     ->setDescrizione($this->renderView($descrizione))
@@ -53,6 +80,10 @@ trait InstallController {
             $descrizione = $this->renderView($descrizione);
             if($licenza->getDescrizione() != $descrizione) {
                 $licenza->setDescrizione($descrizione);
+                $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
+            }
+            if($licenza->getOrdine() != $ordine) {
+                $licenza->setOrdine($ordine);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
             if($licenza->getNome() != $nome) {
@@ -113,10 +144,6 @@ trait InstallController {
         }
         
         return array('codice' => $licenza->getCodiceEsteso(), 'stato' => $licenza->getStatoTestuale());
-    }
-
-    protected function findLicenza(\JF\CoreBundle\Entity\Package $package, $gruppo, $sigla) {
-        return $this->findOneBy('JFCoreBundle:Licenza', array('package' => $package->getId(), 'gruppo' => $gruppo, 'sigla' => $sigla));
     }
 
 }

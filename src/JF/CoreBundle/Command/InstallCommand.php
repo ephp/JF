@@ -47,26 +47,19 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $dialog = $this->getDialogHelper();
-        if($input->getOption('verbose')) {
             $dialog->writeSection($output, 'Installazione paccketti e licenze JF-SYSTEM');
-        }
 
         $out = array();
         foreach ($this->getContainer()->getParameter('jf.install') as $controller => $action) {
-            if($input->getOption('verbose')) {
-                $dialog->writeSection($output, $controller . '::' . $action, 'bg=white;fg=black');
-            }
+            $dialog->writeSection($output, $controller . '::' . $action, 'bg=white;fg=black');
             $_controller = new $controller();
             $_controller->setContainer($this->getContainer());
-            $out[] = $_controller->$action();
+            $temp = $_controller->$action();
+            print_r(json_encode($temp));
+            $out[] = $temp;
         }
-
-        if($input->getOption('verbose')) {
-            $dialog->writeSection($output, 'Installazione completata');
-            print_r($out);
-        } else {
-            echo 'Installazione paccketti e licenze JF-SYSTEM compleatata';
-        }
+        
+        $dialog->writeSection($output, 'Installazione pacchetti e licenze JF-SYSTEM compleatata');
     }
 
     /**

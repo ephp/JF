@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\CoreBundle\DependencyInjection;
+namespace Claims\ContecBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -14,7 +14,7 @@ use JF\CoreBundle\DependencyInjection\Traits\CoreExtension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class ClaimsCoreExtension extends Extension implements IExtension {
+class ClaimsContecExtension extends Extension implements IExtension {
 
     use CoreExtension;
 
@@ -34,7 +34,7 @@ class ClaimsCoreExtension extends Extension implements IExtension {
     public function setInstall(ContainerBuilder $container) {
         $install = $container->getParameter('jf.install');
 
-        $this->newInstall($install, '\Claims\CoreBundle\Controller\InstallController', 'indexAction');
+        $this->newInstall($install, '\Claims\ContecBundle\Controller\InstallController', 'indexAction');
 
         $container->setParameter('jf.install', $install);
     }
@@ -42,58 +42,19 @@ class ClaimsCoreExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $menu['claims'] = array(
-            'label' => 'Claims',
-            'submenu' => array(),
-            'order' => 10,
-            'a' => array('class' => 'blblue'),
-        );
-        
-        $menu['a_claims'] = array(
-            'label' => 'Gestione Claims',
-            'submenu' => array(),
-            'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
-            'order' => 110,
-            'a' => array('class' => 'bldblue'),
-        );
-
         if (true) {
-
             $menu['a_claims']['submenu'][] = array(
-                'label' => 'Priorita',
-                'route' => 'eph_priorita',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 10,
-            );
-
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Stato delle pratiche',
-                'route' => 'claims_stato_pratica',
+                'label' => 'Importazione Contec',
+                'route' => 'ravinale_import_manuale',
                 'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 10,
+                'order' => 90,
             );
-
         } else {
-
-            $menu['admin']['submenu']['claims'] = array(
-                'label' => 'Claims',
-                'submenu' => array(),
-                'show' => array('in_role' => array('R_EPH', 'C_ADMIN')),
-                'order' => 100,
-            );
-
             $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Priorita',
-                'route' => 'eph_priorita',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 10,
-            );
-
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Stato delle pratiche',
-                'route' => 'claims_stato_pratica',
+                'label' => 'Importazione Contec',
+                'route' => 'ravinale_import_manuale',
                 'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 10,
+                'order' => 90,
             );
         }
 
@@ -103,17 +64,13 @@ class ClaimsCoreExtension extends Extension implements IExtension {
     public function setPackage(ContainerBuilder $container) {
         $package = $container->getParameter('jf.package');
 
-        $this->newPackage($package, 'cl.core', 'Claims', 0, true);
+        $this->newPackage($package, 'cl.h.contec', 'Claims Contec', 0, true);
 
         $container->setParameter('jf.package', $package);
     }
 
     public function setRoles(ContainerBuilder $container) {
-        $roles = $container->getParameter('jf.roles');
-
-        $this->newRole($roles, 'C_ADMIN', 'C-ADM', 'Amministratore Claims');
-
-        $container->setParameter('jf.roles', $roles);
+        
     }
 
     public function setWidgets(ContainerBuilder $container) {

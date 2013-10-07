@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\RavinaleBundle\Controller;
+namespace Claims\ContecBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

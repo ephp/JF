@@ -14,10 +14,12 @@
             </thead>
             <tbody>
                 {% for licenza in entity.licenze %}
-                    <tr>
-                        <td><abbr title="{{ licenza.licenza.nome }}">{{ licenza.gruppo.nome|capitalize }}</abbr></td>
-                        <td nowrap>{% if licenza.scadenza %}{{ licenza.scadenza|date('d-m-Y') }}{% else%}<abbr title="Nessuna Scadenza">n.s.</abbr>{% endif %}</td>
-                    </tr>
+                    {% if loop.index <= 3 %}
+                        <tr>
+                            <td><abbr title="{{ licenza.licenza.nome }}">{{ licenza.gruppo.nome|capitalize }}</abbr></td>
+                            <td nowrap>{% if licenza.scadenza %}{{ licenza.scadenza|date('d-m-Y') }}{% else%}<abbr title="Nessuna Scadenza">n.s.</abbr>{% endif %}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>

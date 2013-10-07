@@ -686,7 +686,7 @@ class Cliente {
     private function ordinaLicenze($licenze) {
         $out = array();
         foreach($licenze as $licenza) {
-            $out[$licenza['gruppo']] = $licenza['codice'];
+            $out[$licenza['gruppo']->getSiglaCompleta()] = $licenza['codice'];
         }
         return $out;
     }

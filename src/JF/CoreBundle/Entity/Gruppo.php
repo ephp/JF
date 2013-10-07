@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="jf_gruppi_licenze")
  * @ORM\Entity(repositoryClass="JF\CoreBundle\Entity\GruppoRepository")
  */
-class Gruppo
-{
+class Gruppo {
+
     /**
      * @var integer
      *
@@ -28,7 +28,7 @@ class Gruppo
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
     private $package;
-    
+
     /**
      * @var string
      *
@@ -50,14 +50,12 @@ class Gruppo
      */
     private $descrizione;
 
-
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -88,10 +86,9 @@ class Gruppo
      * @param string $sigla
      * @return Package
      */
-    public function setSigla($sigla)
-    {
+    public function setSigla($sigla) {
         $this->sigla = $sigla;
-    
+
         return $this;
     }
 
@@ -100,9 +97,21 @@ class Gruppo
      *
      * @return string 
      */
-    public function getSigla()
-    {
+    public function getSigla() {
         return $this->sigla;
+    }
+
+    /**
+     * Get sigla
+     *
+     * @return string 
+     */
+    public function getSiglaCompleta() {
+        $sigla = array(
+            $this->getPackage()->getSigla(),
+            $this->sigla,
+        );
+        return implode('-', $sigla);
     }
 
     /**
@@ -111,10 +120,9 @@ class Gruppo
      * @param string $nome
      * @return Package
      */
-    public function setNome($nome)
-    {
+    public function setNome($nome) {
         $this->nome = $nome;
-    
+
         return $this;
     }
 
@@ -123,8 +131,7 @@ class Gruppo
      *
      * @return string 
      */
-    public function getNome()
-    {
+    public function getNome() {
         return $this->nome;
     }
 
@@ -134,10 +141,9 @@ class Gruppo
      * @param string $descrizione
      * @return Package
      */
-    public function setDescrizione($descrizione)
-    {
+    public function setDescrizione($descrizione) {
         $this->descrizione = $descrizione;
-    
+
         return $this;
     }
 
@@ -146,8 +152,8 @@ class Gruppo
      *
      * @return string 
      */
-    public function getDescrizione()
-    {
+    public function getDescrizione() {
         return $this->descrizione;
     }
+
 }

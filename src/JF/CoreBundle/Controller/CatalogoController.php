@@ -25,14 +25,14 @@ class CatalogoController extends Controller {
      * @Template()
      */
     public function indexAction() {
-        $licenze = $this->findBy('JFCoreBundle:Licenza', array('market' => true), array('gruppo' => 'ASC'));
+        $licenze = $this->findBy('JFCoreBundle:Licenza', array('market' => true));
 
         $entities = array();
         foreach ($licenze as $licenza) {
             if (!isset($entities[$licenza->getGruppo()])) {
-                $entities[$licenza->getGruppo()->getNome()] = array();
+                $entities[$licenza->getGruppo()->getSiglaCompleta()] = array();
             }
-            $entities[$licenza->getGruppo()->getNome()][] = $licenza;
+            $entities[$licenza->getGruppo()->getSiglaCompleta()][] = $licenza;
         }
 
         return array(

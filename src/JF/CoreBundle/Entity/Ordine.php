@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="jf_ordini")
  * @ORM\Entity(repositoryClass="JF\CoreBundle\Entity\OrdineRepository")
- * @ORM\HasLifeCycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class Ordine {
 

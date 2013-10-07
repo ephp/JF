@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="acl_clienti")
  * @ORM\Entity(repositoryClass="JF\ACLBundle\Entity\ClienteRepository")
- * @ORM\HasLifeCycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class Cliente {
 

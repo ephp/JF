@@ -104,7 +104,7 @@ class StatoPraticaController extends Controller {
     public function editAction($id) {
         $entity = $this->find('ClaimsCoreBundle:StatoPratica', $id);
 
-        if (!$entity || $entity->getCliente()->detId() != $this->getUser()->getCliente()->getId()) {
+        if (!$entity || $entity->getCliente()->getId() != $this->getUser()->getCliente()->getId()) {
             throw $this->createNotFoundException('Unable to find StatoPratica entity.');
         }
 
@@ -146,7 +146,7 @@ class StatoPraticaController extends Controller {
     public function updateAction(Request $request, $id) {
         $entity = $this->find('ClaimsCoreBundle:StatoPratica', $id);
 
-        if (!$entity || $entity->getCliente()->detId() != $this->getUser()->getCliente()->getId()) {
+        if (!$entity || $entity->getCliente()->getId() != $this->getUser()->getCliente()->getId()) {
             throw $this->createNotFoundException('Unable to find StatoPratica entity.');
         }
 
@@ -180,7 +180,7 @@ class StatoPraticaController extends Controller {
         if ($form->isValid()) {
             $entity = $this->find('ClaimsCoreBundle:StatoPratica', $id);
 
-            if (!$entity || $entity->getCliente()->detId() != $this->getUser()->getCliente()->getId()) {
+            if (!$entity || $entity->getCliente()->getId() != $this->getUser()->getCliente()->getId()) {
                 throw $this->createNotFoundException('Unable to find StatoPratica entity.');
             }
 

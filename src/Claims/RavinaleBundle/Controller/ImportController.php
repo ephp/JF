@@ -66,7 +66,7 @@ class ImportController extends Controller {
     }
 
     private function enterBdx($dati) {
-        $sistema = $this->findOneBy('ClaimsHBundle:sistema', array('nome' => 'Ravinale'));
+        $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Ravinale'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
         $p = array(
             'Username=' . $dati['username'],
@@ -87,7 +87,7 @@ class ImportController extends Controller {
         foreach ($matchs[0] as $match) {
             $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
         }
-
+        
         // https://sistema.ravinalepartners.com/Moduli/San1/Riepilogo/
         sleep(rand(3, 6));
         $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));

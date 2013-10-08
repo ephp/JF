@@ -86,7 +86,7 @@ class ImportController extends Controller {
     }
 
     private function enterBdx($dati) {
-        $sistema = $this->findOneBy('ClaimsHBundle:sistema', array('nome' => 'Ravinale'));
+        $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
         $p = array(
             'Username=' . $dati['username'],

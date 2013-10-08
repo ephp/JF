@@ -24,6 +24,7 @@
         "knplabs/knp-menu-bundle":"dev-master",
         "knplabs/knp-paginator-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "~1.1",
+        "punkave/symfony2-file-uploader-bundle": "1.0.*@dev",
         
         "stof/doctrine-extensions-bundle": "dev-master",
         "hwi/oauth-bundle": "0.3.*@dev",
@@ -31,6 +32,7 @@
         
         "ephp/acl": "master@dev",
         "ephp/cal": "master@dev",
+        "ephp/dragdrop": "master@dev",
         "ephp/utility": "master@dev"
     },
     "scripts": {

@@ -19,7 +19,8 @@ class ImportController extends Controller {
     use \Ephp\UtilityBundle\Controller\Traits\BaseController,
         \Ephp\ACLBundle\Controller\Traits\NotifyController,
         \Ephp\UtilityBundle\Controller\Traits\CurlController,
-        \Claims\HBundle\Controller\Traits\CalendarController;
+        \Claims\HBundle\Controller\Traits\CalendarController,
+        \Claims\HBundle\Controller\Traits\ImportController;
 
     /**
      * @Route("-manuale", name="ravinale_import_manuale")
@@ -30,8 +31,8 @@ class ImportController extends Controller {
         $cliente = $this->getUser()->getCliente();
         $dati = $cliente->getDati();
         $logs = array();
-        if (isset($dati['ravinale'])) {
-            $bdxs = $this->enterBdx($dati['ravinale']);
+        if (isset($dati['cl_h_ravinale-import'])) {
+            $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
             foreach ($bdxs as $bdx) {
                 $logs[] = $this->importBdx($cliente, $bdx);
             }
@@ -55,8 +56,8 @@ class ImportController extends Controller {
         foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             $dati = $cliente->getDati();
-            if (isset($dati['ravinale'])) {
-                $bdxs = $this->enterBdx($dati['ravinale']);
+            if (isset($dati['cl_h_ravinale-import'])) {
+                $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
                 foreach ($bdxs as $bdx) {
                     $this->importBdx($cliente, $bdx);
                 }
@@ -335,141 +336,7 @@ class ImportController extends Controller {
                             default: break;
                         }
                     }
-                    $old = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'codice' => $pratica->getCodice()));
-                    /* @var $old Pratica */
-                    if ($old) {
-                        $log = array();
-                        if ($old->getPriorita() && $old->getPriorita()->getPriorita() == 'Chiuso') {
-                            if ($old->getStatus() != $pratica->getStatus()) {
-                                $log[] = "Pratica messa in priorità 'Riaperta'";
-                                $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Riaperto')));
-                            }
-                        }
-                        if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
-                            $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
-                            $old->setDol($pratica->getDol());
-                        }
-                        if ($old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
-                            $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
-                            ;
-                            $old->setDon($pratica->getDon());
-                        }
-                        if ($old->getTypeOfLoss() != $pratica->getTypeOfLoss()) {
-                            $log[] = "TYPE OF LOSS: da '" . $old->getTypeOfLoss() . "' a '" . $pratica->getTypeOfLoss() . "'";
-                            ;
-                            $old->setTypeOfLoss($pratica->getTypeOfLoss());
-                        }
-                        if ($old->getFirstReserveIndication() != $pratica->getFirstReserveIndication()) {
-                            $log[] = "FIRST RESERVE INDICATION: da '" . $old->getFirstReserveIndication() . "' a '" . $pratica->getFirstReserveIndication() . "'";
-                            ;
-                            $old->setFirstReserveIndication($pratica->getFirstReserveIndication());
-                        }
-                        if ($old->getApplicableDeductible() != $pratica->getApplicableDeductible()) {
-                            $log[] = "APPLICABLE DEDUCTIBLE: da '" . $old->getApplicableDeductible() . "' a '" . $pratica->getApplicableDeductible() . "'";
-                            ;
-                            $old->setApplicableDeductible($pratica->getApplicableDeductible());
-                        }
-                        if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
-                            $log[] = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
-                            ;
-                            $old->setAmountReserved($pratica->getAmountReserved());
-                        }
-                        if (($old->getDeductibleReserved() < 0 ? 'NP' : $old->getDeductibleReserved()) != ($pratica->getDeductibleReserved() < 0 ? 'NP' : $pratica->getDeductibleReserved())) {
-                            $log[] = "DEDUCTIBLE RESERVED: da '" . ($old->getDeductibleReserved() < 0 ? 'NP' : $old->getDeductibleReserved()) . "' a '" . ($pratica->getDeductibleReserved() < 0 ? 'NP' : $pratica->getDeductibleReserved()) . "'";
-                            ;
-                            $old->setDeductibleReserved($pratica->getDeductibleReserved());
-                        }
-                        if ($old->getLtFeesReserve() != $pratica->getLtFeesReserve()) {
-                            $log[] = "LT FEES RESERVE: da '" . $old->getLtFeesReserve() . "' a '" . $pratica->getLtFeesReserve() . "'";
-                            ;
-                            $old->setLtFeesReserve($pratica->getLtFeesReserve());
-                        }
-                        if ($old->getProfessFeesReserve() != $pratica->getProfessFeesReserve()) {
-                            $log[] = "PROFESS. FEES RESERVE: da '" . $old->getProfessFeesReserve() . "' a '" . $pratica->getProfessFeesReserve() . "'";
-                            ;
-                            $old->setProfessFeesReserve($pratica->getProfessFeesReserve());
-                        }
-                        if ($old->getPossibleRecovery() != $pratica->getPossibleRecovery()) {
-                            $log[] = "POSSIBLE RECOVERY: da '" . $old->getPossibleRecovery() . "' a '" . $pratica->getPossibleRecovery() . "'";
-                            ;
-                            $old->setPossibleRecovery($pratica->getPossibleRecovery());
-                        }
-                        if ($old->getAmountSettled() != $pratica->getAmountSettled()) {
-                            $log[] = "AMOUNT SETTLED: da '" . $old->getAmountSettled() . "' a '" . $pratica->getAmountSettled() . "'";
-                            ;
-                            $old->setAmountSettled($pratica->getAmountSettled());
-                        }
-                        if ($old->getDeducPaid() != $pratica->getDeducPaid()) {
-                            $log[] = "DEDUC. PAID: da '" . $old->getDeducPaid() . "' a '" . $pratica->getDeducPaid() . "'";
-                            ;
-                            $old->setDeducPaid($pratica->getDeducPaid());
-                        }
-                        if ($old->getLtFeesPaid() != $pratica->getLtFeesPaid()) {
-                            $log[] = "LT FEES PAID: da '" . $old->getLtFeesPaid() . "' a '" . $pratica->getLtFeesPaid() . "'";
-                            ;
-                            $old->setLtFeesPaid($pratica->getLtFeesPaid());
-                        }
-                        if ($old->getProfessFeesPaid() != $pratica->getProfessFeesPaid()) {
-                            $log[] = "PROFESS. FEES PAID: da '" . $old->getProfessFeesPaid() . "' a '" . $pratica->getProfessFeesPaid() . "'";
-                            ;
-                            $old->setProfessFeesPaid($pratica->getProfessFeesPaid());
-                        }
-                        if ($old->getTotalPaid() != $pratica->getTotalPaid()) {
-                            $log[] = "TOTAL PAID: da '" . $old->getTotalPaid() . "' a '" . $pratica->getTotalPaid() . "'";
-                            ;
-                            $old->setTotalPaid($pratica->getTotalPaid());
-                        }
-                        if ($old->getRecovered() != $pratica->getRecovered()) {
-                            $log[] = "RECOVERED: da '" . $old->getRecovered() . "' a '" . $pratica->getRecovered() . "'";
-                            ;
-                            $old->setRecovered($pratica->getRecovered());
-                        }
-                        if ($old->getTotalIncurred() != $pratica->getTotalIncurred()) {
-                            $log[] = "TOTAL INCURRED: da '" . $old->getTotalIncurred() . "' a '" . $pratica->getTotalIncurred() . "'";
-                            ;
-                            $old->setTotalIncurred($pratica->getTotalIncurred());
-                        }
-                        if ($old->getSp() != $pratica->getSp()) {
-                            $log[] = "S.P.: da '" . $old->getSp() . "' a '" . $pratica->getSp() . "'";
-                            ;
-                            $old->setSp($pratica->getSp());
-                        }
-                        if ($old->getMpl() != $pratica->getMpl()) {
-                            $log[] = "M.P.L.: da '" . $old->getMpl() . "' a '" . $pratica->getMpl() . "'";
-                            ;
-                            $old->setMpl($pratica->getMpl());
-                        }
-                        if ($old->getSoi() != $pratica->getSoi()) {
-                            $log[] = "S. OF I.: da '" . $old->getSoi() . "' a '" . $pratica->getSoi() . "'";
-                            ;
-                            $old->setSoi($pratica->getSoi());
-                        }
-                        if ($old->getStatus() != $pratica->getStatus()) {
-                            $log[] = "STATUS: da '" . $old->getStatus() . "' a '" . $pratica->getStatus() . "'";
-                            ;
-                            $old->setStatus($pratica->getStatus());
-                        }
-                        if ($old->getCourt() != $pratica->getCourt()) {
-                            $log[] = "COURT: da '" . $old->getCourt() . "' a '" . $pratica->getCourt() . "'";
-                            ;
-                            $old->setCourt($pratica->getCourt());
-                        }
-                        if ($old->getComments() != $pratica->getComments()) {
-                            $log[] = "COMMENTS: da '" . $old->getComments() . "' a '" . $pratica->getComments() . "'";
-                            ;
-                            $old->setComments($pratica->getComments());
-                        }
-
-                        if (count($log) > 0) {
-                            $old->addLog($log);
-                            $this->persist($old);
-                            $pratiche_aggiornate[] = $old;
-                        }
-                    } else {
-                        $pratica->addLog(array('Importata pratica'));
-                        $this->persist($pratica);
-                        $pratiche_nuove[] = $pratica;
-                    }
+                    $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove);
                     $this->getEm()->commit();
                 } catch (\Exception $e) {
                     $this->getEm()->rollback();

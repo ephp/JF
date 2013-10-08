@@ -21,7 +21,7 @@ class AccountType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         foreach ($this->options as $key => $subform) {
-            $builder->add($key, new $subform(), array('mapped' => false));
+            $builder->add(str_replace('.', '_', $key), new $subform(), array('mapped' => false));
         }
     }
 

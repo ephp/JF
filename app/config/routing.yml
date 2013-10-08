@@ -8,6 +8,11 @@ claims_ravinale:
     type:     annotation
     prefix:   /
 
+claims_contec:
+    resource: "@ClaimsContecBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 claims_h:
     resource: "@ClaimsHBundle/Controller/"
     type:     annotation
@@ -27,8 +32,14 @@ jf_acl:
     resource: "@JFACLBundle/Controller/"
     type:     annotation
     prefix:   /
+    
 jf_core:
     resource: "@JFCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    
+ephp_drag_drop:
+    resource: "@EphpDragDropBundle/Controller/"
     type:     annotation
     prefix:   /
 

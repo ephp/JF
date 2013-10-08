@@ -16,3 +16,7 @@ parameters:
     
     locale: it
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    dimensione_massima_immagine: 2000000
+    larghezza_minima_immagine: 200
+    altezza_minima_immagine: 200

@@ -267,7 +267,7 @@ class Pratica {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="ro", type="boolean", nullable=true)
+     * @ORM\Column(name="ro", type="string", length=1, nullable=true)
      */
     private $ro;
 
@@ -643,7 +643,9 @@ class Pratica {
     public function getTypeOfLoss($encode = false) {
         if ($encode) {
             $tpl = $this->tpl();
-            return $tpl[intval($this->typeOfLoss)];
+            if (isset($tpl[intval($this->typeOfLoss)])) {
+                return $tpl[intval($this->typeOfLoss)];
+            }
         }
         return $this->typeOfLoss;
     }
@@ -1004,7 +1006,9 @@ class Pratica {
     public function getSp($encode = false) {
         if ($encode) {
             $sa = $this->sa();
-            return $sa[intval($this->sp)];
+            if(isset($sa[intval($this->sp)])) {
+                return $sa[intval($this->sp)];
+            }
         }
         return $this->sp;
     }
@@ -1029,7 +1033,9 @@ class Pratica {
     public function getMpl($encode = false) {
         if ($encode) {
             $mpl = $this->fasceMpl();
-            return $mpl[$this->mpl];
+            if (isset($mpl[$this->mpl])) {
+                return $mpl[$this->mpl];
+            }
         }
         return $this->mpl;
     }
@@ -1054,7 +1060,9 @@ class Pratica {
     public function getSoi($encode = false) {
         if ($encode) {
             $soi = $this->severityOfInjury();
-            return $soi[$this->soi];
+            if (isset($soi[$this->soi])) {
+                return $soi[$this->soi];
+            }
         }
         return $this->soi;
     }
@@ -1079,7 +1087,7 @@ class Pratica {
     public function getAll($encode = false) {
         if ($encode) {
             $all = $this->allegati();
-            if ($this->all) {
+            if ($this->all && isset($all[intval($this->all)])) {
                 return $all[intval($this->all)];
             }
         }
@@ -1599,7 +1607,9 @@ class Pratica {
     public function getReportTypeOfLoss($encode = true) {
         if ($encode) {
             $tpl = $this->tpl();
-            return $tpl[intval($this->reportTypeOfLoss)];
+            if (isset($tpl[intval($this->reportTypeOfLoss)])) {
+                return $tpl[intval($this->reportTypeOfLoss)];
+            }
         }
         return $this->reportTypeOfLoss;
     }
@@ -1624,7 +1634,9 @@ class Pratica {
     public function getReportServiceProvider($encode = false) {
         if ($encode) {
             $sa = $this->sa();
-            return $sa[intval($this->reportServiceProvider)];
+            if (isset($sa[intval($this->reportServiceProvider)])) {
+                return $sa[intval($this->reportServiceProvider)];
+            }
         }
         return $this->reportServiceProvider;
     }

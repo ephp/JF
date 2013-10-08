@@ -22,10 +22,11 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-//            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new PunkAve\FileUploaderBundle\PunkAveFileUploaderBundle(),
             
             new Ephp\UtilityBundle\EphpUtilityBundle(),
             new Ephp\CalendarBundle\EphpCalendarBundle(),
+            new Ephp\DragDropBundle\EphpDragDropBundle(),
             new Ephp\ACLBundle\EphpACLBundle(),
             
             new JF\GeneratorBundle\JFGeneratorBundle(),

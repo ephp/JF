@@ -215,7 +215,7 @@ class UtenzeController extends Controller {
         $entity = $this->getUser()->getCliente();
         /* @var $entity \JF\ACLBundle\Entity\Cliente */
         $dati = $this->getRequest()->get('jf_cliente');
-        unset($dati['submit'],$dati['_token']);
+        unset($dati['submit'], $dati['_token']);
         $entity->setDati($dati);
         $this->persist($entity);
 
@@ -237,12 +237,14 @@ class UtenzeController extends Controller {
 
         $form->add('submit', 'submit', array('label' => 'Aggiorna', 'attr' => array('class' => 'btn')));
 
-        foreach($this->getUser()->getCliente()->getDati() as $key => $dati) {
-            foreach($dati as $k => $v) {
-                $form->get($key)->get($k)->setData($v);
+        if ($this->getUser()->getCliente()->getDati()) {
+            foreach ($this->getUser()->getCliente()->getDati() as $key => $dati) {
+                foreach ($dati as $k => $v) {
+                    $form->get($key)->get($k)->setData($v);
+                }
             }
         }
-        
+
         return $form;
     }
 

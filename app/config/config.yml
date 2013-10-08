@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: drag_drop_services.yml }
 
 parameters:
     email_robot: %mailer_user%
@@ -28,6 +29,10 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        dimensione_massima_immagine: %dimensione_massima_immagine%
+        larghezza_minima_immagine: %larghezza_minima_immagine%
+        altezza_minima_immagine: %altezza_minima_immagine%
 
 # Assetic Configuration
 assetic:

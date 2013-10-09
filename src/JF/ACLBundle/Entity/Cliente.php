@@ -712,4 +712,22 @@ class Cliente {
         return isset($this->cache[$key]) ? $this->cache[$key] : $default;
     }
     
+    public function getVars() {
+        if(!$this->cache) {
+            $this->cache = array();
+            foreach($this->getLicenze() as $licenza) {
+                $licenza = $licenza->getLicenza();
+                /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+                foreach($licenza->getParams() as $k => $v) {
+                    if($k == 'form_cliente') {
+                        $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
+                    } else {
+                        $this->cache[$licenza->getGruppo()->getSiglaCompleta().'.'.$k] = $v;
+                    }
+                }
+            }
+        }
+        return $this->cache;
+    }
+    
 }

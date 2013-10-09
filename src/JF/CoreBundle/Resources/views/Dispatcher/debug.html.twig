@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+                
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-box"></span>
+    </div>
+    <h1>Licenze</h1>
+</div>
+
+{{ licenze|raw }}
+
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>Variabili</h1>
+</div>
+
+{{ variabili|raw }}
+
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog-2"></span>
+    </div>
+    <h1>Configurazione</h1>
+</div>
+
+{{ configurazione|raw }}
+
+{% endblock %}

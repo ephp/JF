@@ -754,12 +754,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/Utility.git",
-                "reference": "ccaecba34d3b419de342a0eb9ba15dbb83d83daa"
+                "reference": "ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/Utility/zipball/ccaecba34d3b419de342a0eb9ba15dbb83d83daa",
-                "reference": "ccaecba34d3b419de342a0eb9ba15dbb83d83daa",
+                "url": "https://api.github.com/repos/ephp/Utility/zipball/ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9",
+                "reference": "ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +793,7 @@
                 "symfony-2.1",
                 "time"
             ],
-            "time": "2013-09-25 09:09:55"
+            "time": "2013-10-08 17:32:38"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",

@@ -85,6 +85,13 @@ class JFCoreExtension extends Extension implements IExtension {
             'order' => 100,
             'a' => array('class' => 'blgreen'),
         );
+        if($container->getParameter("kernel.environment") == 'dev') {
+            $menu['utility']['submenu'][] = array(
+                'label' => 'Variabili di sistema',
+                'route' => 'debug',
+                'order' => 999,
+            );
+        }
 
         $container->setParameter('jf.menu', $menu);
     }

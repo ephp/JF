@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new Claims\HBundle\ClaimsHBundle(),
             new Claims\ContecBundle\ClaimsContecBundle(),
             new Claims\RavinaleBundle\ClaimsRavinaleBundle(),
+            new SLC\ImportBundle\SLCImportBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,3 +1,8 @@
+scl_import:
+    resource: "@SLCImportBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 jf_calendar:
     resource: "@JFCalendarBundle/Controller/"
     type:     annotation

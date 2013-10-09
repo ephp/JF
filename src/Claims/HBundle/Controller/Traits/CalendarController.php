@@ -46,7 +46,7 @@ trait CalendarController {
         $tipo = $this->findOneBy('EphpCalendarBundle:Tipo', array('calendario' => $cal->getId(), 'sigla' => $sigla));
         if (!$tipo) {
             $_tipo = $this->getEm()->getRepository('EphpCalendarBundle:Tipo');
-            /* @var $_tipo \Ephp\Bundle\CalendarBundle\Entity\TipoRepository */
+            /* @var $_tipo \Ephp\CalendarBundle\Entity\TipoRepository */
             switch ($sigla) {
                 case $this->ANALISI_SINISTRI_COPERTURA:
                     $tipo = $_tipo->createTipo($this->ANALISI_SINISTRI_COPERTURA, 'Analisi Sinistri e Copertura', '44aa44', $cal, false);
@@ -91,7 +91,7 @@ trait CalendarController {
                     $tipo = $_tipo->createTipo($this->RISCHEDULAZIONE, 'Rischedulazione', 'aaaaaa', $cal, true, false, false);
                     break;
                 case $this->PRIORITA:
-                    $_tipo->createTipo($this->PRIORITA, 'Priorita', 'aaaaaa', $cal, false, false, false);
+                    $tipo = $_tipo->createTipo($this->PRIORITA, 'Priorita', 'aaaaaa', $cal, false, false, false);
                     break;
                 case $this->VERIFICA_PERIODICA:
                     $tipo = $_tipo->createTipo($this->VERIFICA_PERIODICA, 'Verifica periodica', '44aa44', $cal);
@@ -109,10 +109,10 @@ trait CalendarController {
 
     /**
      * @param string $sigla
-     * @param \Ephp\Bundle\SinistriBundle\Entity\Scheda $pratica
+     * @param \Claims\HBundle\Entity\Pratica $pratica
      * @param string $titolo
      * @param string $note
-     * @return \Ephp\Bundle\SinistriBundle\Traits\Controller\Evento
+     * @return \Claims\HBundle\Entity\Evento
      */
     protected function newEvento($sigla, \Claims\HBundle\Entity\Pratica $pratica, $titolo = null, $note = "") {
         $oggi = new \DateTime();

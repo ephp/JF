@@ -49,7 +49,7 @@ class JFACLExtension extends Extension implements IExtension {
             'route' => 'utenze',
             'show' => array(
                 'in_role' => array('R_SUPER'),
-                'license' => array('utenze' => array('small', 'medium', 'big', 'unlimited'))
+                'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
             ),
             'order' => 10,
         );
@@ -99,7 +99,7 @@ class JFACLExtension extends Extension implements IExtension {
             'route' => 'rubrica',
             'show' => array(
                 'out_role' => 'R_EPH',
-                'license' => array('utenze' => array('small', 'medium', 'big', 'unlimited'))
+                'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
             ),
             'order' => 90,
         );

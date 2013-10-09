@@ -135,6 +135,8 @@ class MenuBuilder {
                 foreach ($rules['license'] as $gruppo => $licenses) {
                     if(isset($active[$gruppo])) {
                         $out &= in_array($active[$gruppo], $licenses);
+                    } else {
+                        $out = false;
                     }
                 }
             }

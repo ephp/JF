@@ -166,6 +166,7 @@ class TabelloneController extends Controller {
     }
 
     private function buildFiltri(&$mode, &$stato = null) {
+        $logger = $this->get('logger');
         $cliente = $this->getUser()->getCliente();
         $filtri = array(
             'in' => array(
@@ -203,6 +204,7 @@ class TabelloneController extends Controller {
                     $default = 'completo';
                 }
                 $mode = $set_default ? $default : $dati['claims_h'];
+                $logger->notice($mode);
                 return $this->buildFiltri($mode, $stato);
             // Vede solo 
             case 'personale':
@@ -242,8 +244,6 @@ class TabelloneController extends Controller {
         $dati['claims_h'] = $mode;
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());
-        $logger = $this->get('logger');
-        $logger->info(print_r($filtri, true));
         return $filtri;
     }
 

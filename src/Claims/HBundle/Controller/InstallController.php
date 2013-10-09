@@ -35,7 +35,7 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'base', 10, 'Gestione base',         //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_base.txt.twig',             //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -48,7 +48,7 @@ class InstallController extends Controller {
                                                                                 //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_cal.txt.twig',              //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -60,7 +60,7 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'full', 30, 'Completa',              //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_full.txt.twig',             //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -72,7 +72,7 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'trial', 5, 'Completa - prova 30gg', //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_trial.txt.twig',            //TWIG descrizione
                     30,                                                         //Durata
-                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -85,7 +85,7 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'slc', 100, 'Studio Legale Carlesi', //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_slc.txt.twig',              //TWIG descrizione
                     null,                                                       //Durata
-                    array('C_ADMIN', 'C_GESTORE_H'),                            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package

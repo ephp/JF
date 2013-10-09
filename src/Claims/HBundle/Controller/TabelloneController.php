@@ -242,6 +242,8 @@ class TabelloneController extends Controller {
         $dati['claims_h'] = $mode;
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());
+        $logger = $this->get('logger');
+        $logger->info(print_r($filtri, true));
         return $filtri;
     }
 

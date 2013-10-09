@@ -179,11 +179,11 @@ class TabelloneController extends Controller {
         if ($stato) {
             if (!in_array($mode, array("default", "completo", "personale"))) {
                 $mode = 'default';
+                unset($dati['claims_h']);
             }
             if ($stato == 'default') {
                 if(isset($dati['claims_h_stato'])) {
                     $stato = $dati['claims_h_stato'];
-                    unset($dati['claims_h']);
                 } else {
                     $stato = $this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true))->getId();
                 }

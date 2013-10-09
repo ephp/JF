@@ -12,7 +12,7 @@
     <div class="icon">
         <span class="ico-group"></span>
     </div>
-    <h1>Utenze</h1>
+    <h1>Utenze <small>{{ entities|length }}/{{ app.user.get('jf.acl-utenze.max') }}</small></h1>
 </div>
 
 {% if app.user.get('jf.acl-utenze.max') > entities|length %}

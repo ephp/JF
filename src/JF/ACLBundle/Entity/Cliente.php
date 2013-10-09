@@ -708,6 +708,7 @@ class Cliente {
                 }
             }
         }
+//        \Ephp\UtilityBundle\Utility\Debug::pr($this->cache);
         return isset($this->cache[$key]) ? $this->cache[$key] : $default;
     }
     

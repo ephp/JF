@@ -55,7 +55,7 @@ class UtenzeController extends Controller {
      * @Template()
      */
     public function newAction() {
-        if ($this->getUser()->get('utenze.max') <= $this->countDql('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId()))) {
+        if ($this->getUser()->get('jf.acl-utenze.max') <= $this->countDql('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId()))) {
             return $this->redirect($this->generateUrl('catalogo'));
         }
         $entity = new Gestore();

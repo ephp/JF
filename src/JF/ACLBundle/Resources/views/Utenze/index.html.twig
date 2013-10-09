@@ -15,7 +15,7 @@
     <h1>Utenze</h1>
 </div>
 
-{% if app.user.get('utenze.max') > entities|length %}
+{% if app.user.get('jf.acl-utenze.max') > entities|length %}
     <a href="{{ path('utenze_new') }}">
         <span class="label label-important">Nuova utenza</span>
     </a>
@@ -69,7 +69,7 @@
                                     {% endif %}
                                 </td>
                             {% endfor %}
-                            <td>
+                            <td class="no-padding">
                                 {% include ":commons:edit.html.twig" with {'route': path('utenze_edit', { 'slug': entity.slug })} %}
                                 {% if not entity.locked %}
                                     <a href="javascript:void()" slug="{{ entity.slug}}" class="button red lock">

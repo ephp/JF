@@ -35,7 +35,7 @@ class DefaultController extends Controller {
         foreach ($pratiche as $slug) {
             $slug = $slug['slug'];
             
-            $this->claim($slug);
+            $this->claim($slug, $dati);
         }
         return $this->redirect($this->generateUrl('claims_hospital'));
     }
@@ -49,12 +49,12 @@ class DefaultController extends Controller {
             return $this->createNotFoundException('Configurare la sorgente dati di JF-CLAIMS');
         }
 
-        $out = $this->claim($slug);
+        $out = $this->claim($slug, $dati);
         
         return $out ? $this->redirect($this->generateUrl('claims_hospital')) : $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $slug)));
     }
 
-    private function claim($slug) {
+    private function claim($slug, $dati) {
         set_time_limit(3600);
         $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $pratica \Claims\HBundle\Entity\Pratica */

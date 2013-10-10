@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "87993c3406b4846455a1de0df0474723",
+    "hash": "b8057579ac768e68c79e9beda7c404ae",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -748,18 +748,62 @@
             "time": "2013-08-29 08:13:52"
         },
         {
+            "name": "ephp/imap",
+            "version": "dev-master",
+            "target-dir": "Ephp/ImapBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ephp/imap.git",
+                "reference": "47f7a36d0528ee1805f080d8b24a60742923a5c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ephp/imap/zipball/47f7a36d0528ee1805f080d8b24a60742923a5c0",
+                "reference": "47f7a36d0528ee1805f080d8b24a60742923a5c0",
+                "shasum": ""
+            },
+            "require": {
+                "ephp/utility": "master",
+                "php": ">=5.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Ephp\\ImapBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ephraim Pepe",
+                    "email": "ephraim.pepe@gmail.com"
+                }
+            ],
+            "description": "Funzioni per interagire via imap con la posta",
+            "homepage": "https://github.com/ephp/imap",
+            "keywords": [
+                "Node.js",
+                "ephp",
+                "symfony-2.1"
+            ],
+            "time": "2013-08-09 16:41:23"
+        },
+        {
             "name": "ephp/utility",
             "version": "dev-master",
             "target-dir": "Ephp/UtilityBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/Utility.git",
-                "reference": "ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9"
+                "reference": "345dad54f8bf997ca8c9943dcfdbbffa377f9ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/Utility/zipball/ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9",
-                "reference": "ede8bac3b23cfcb6a5d72e011e6a1a5eed714cf9",
+                "url": "https://api.github.com/repos/ephp/Utility/zipball/345dad54f8bf997ca8c9943dcfdbbffa377f9ce3",
+                "reference": "345dad54f8bf997ca8c9943dcfdbbffa377f9ce3",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +837,7 @@
                 "symfony-2.1",
                 "time"
             ],
-            "time": "2013-10-08 17:32:38"
+            "time": "2013-10-09 13:29:45"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -856,12 +900,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "5e236332c3934fbc16b79eff3cf6ee9ee21b7519"
+                "reference": "f9ea1de0698e3055c9916e88c19f42e28844ef61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/5e236332c3934fbc16b79eff3cf6ee9ee21b7519",
-                "reference": "5e236332c3934fbc16b79eff3cf6ee9ee21b7519",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/f9ea1de0698e3055c9916e88c19f42e28844ef61",
+                "reference": "f9ea1de0698e3055c9916e88c19f42e28844ef61",
                 "shasum": ""
             },
             "require": {
@@ -916,7 +960,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-10-02 23:38:05"
+            "time": "2013-10-09 22:58:46"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2417,17 +2461,18 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ephp/acl": 20,
+        "ephp/cal": 20,
+        "ephp/dragdrop": 20,
+        "ephp/imap": 20,
+        "ephp/utility": 20,
+        "friendsofsymfony/user-bundle": 20,
+        "hwi/oauth-bundle": 20,
         "knplabs/knp-menu": 20,
         "knplabs/knp-menu-bundle": 20,
         "knplabs/knp-paginator-bundle": 20,
         "punkave/symfony2-file-uploader-bundle": 20,
-        "stof/doctrine-extensions-bundle": 20,
-        "hwi/oauth-bundle": 20,
-        "friendsofsymfony/user-bundle": 20,
-        "ephp/acl": 20,
-        "ephp/cal": 20,
-        "ephp/dragdrop": 20,
-        "ephp/utility": 20
+        "stof/doctrine-extensions-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

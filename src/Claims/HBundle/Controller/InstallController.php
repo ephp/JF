@@ -91,6 +91,7 @@ class InstallController extends Controller {
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere
                         'status_view' => true,                                  //  Visione per stati operativi
+                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   //  Dati per operazioni automatizzate
                         ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market

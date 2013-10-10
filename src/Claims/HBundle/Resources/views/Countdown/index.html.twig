@@ -1,0 +1,118 @@
+{% extends '::base.html.twig' %}
+{% block title %}
+Countdown
+{% endblock %}
+{% block js %}
+{% javascripts  
+    '@ClaimsHBundle/Resources/public/js/Countdown/index.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-time"></span>
+    </div>
+    <h1>Countdown <small>Hospital</small></h1>
+</div>        
+<div style="clear: both"></div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid tabbable">                    
+                {% set nuovi = false %}
+                <ul class="nav nav-tabs">
+                {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-n">Nuovi</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if miei_aperti|length > 0 %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-a">Countdown aperti</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if miei_chiusi|length > 0 %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-c">Countdown chiusi</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if app.user.hasRole('C_ADMIN') and aperti|length > 0 %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-o">Countdown aperti ufficio</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if app.user.hasRole('C_ADMIN') and chiusi|length > 0 %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-r">Countdown chiusi ufficio</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if not nuovi %}
+                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-m">Messaggio</a></li>
+                    {% set nuovi = true %}
+                {% endif %}
+                </ul>
+                {% set nuovi = false %}
+                <div class="tab-content">
+                {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
+                    <div id="tabs-n" {% if nuovi %}class="no-display"{% endif %}>
+                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if miei_aperti|length > 0 %}
+                    <div id="tabs-a" {% if nuovi %}class="no-display"{% endif %}>
+                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'a', 'entities': miei_aperti} %}
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if miei_chiusi|length > 0 %}
+                    <div id="tabs-c" {% if nuovi %}class="no-display"{% endif %}>
+                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'c', 'entities': miei_chiusi} %}
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if app.user.hasRole('C_ADMIN') and aperti|length > 0 %}
+                    <div id="tabs-o" {% if nuovi %}class="no-display"{% endif %}>
+                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'o', 'entities': aperti, 'gest': true} %}
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if app.user.hasRole('C_ADMIN') and chiusi|length > 0 %}
+                    <div id="tabs-r" {% if nuovi %}class="no-display"{% endif %}>
+                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'r', 'entities': chiusi, 'gest': true} %}
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                {% if not nuovi %}
+                    <div id="tabs-m" {% if nuovi %}class="no-display"{% endif %}>
+                        Nessun countdown attivo
+                    </div>
+                    {% set nuovi = true %}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="no-display" id="fb_assegna_gestore">
+    <form id="assegna_gestore_scheda">
+        <li>Assegna il gestore a <span id="assegna_gestore_a"></span></a></li>
+        <div style="clear: both"></div>
+        <select name="cd[gestore]" id="cd_gestore">
+            <option value="">Nessuno</option>
+            {% for ges in gestori %}
+                <option value="{{ ges.sigla }}">{{ges.nome}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="cd[id]" id="cd_id" value="" />    
+        <button type="button" onclick="assegnaGestore()">Assegna</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+</script>
+<script type="text/html" id="li">
+    <li id="r_{id}"><a href="{url}" target="_blank">{name}</a> ({size} byte) <button onclick="cancella('r_{id}','{delete_url}')">X</button></li>
+</script>
+{% endblock %}

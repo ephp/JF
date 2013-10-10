@@ -64,6 +64,20 @@ class ClaimsHExtension extends Extension implements IExtension {
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
                 'order' => 20,
             );
+            
+            $menu['claims']['submenu'][] = array(
+                'label' => 'Countdown Hospital',
+                'route' => 'claims_h_countdown',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('slc'))),
+                'order' => 50,
+            );
+            
+            $menu['claims']['submenu'][] = array(
+                'label' => 'Ritardi Hospital',
+                'route' => 'claims_h_ritardi',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
+                'order' => 60,
+            );
 
         } else {
 

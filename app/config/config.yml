@@ -113,4 +113,11 @@ knp_menu:
 
 knp_paginator:
     template:
-        pagination: ::sliding.html.twig       
+        pagination: ::sliding.html.twig     
+        
+ephp_imap:
+    server: imap.gmail.com
+    port: 993
+    protocol: imap/ssl/novalidate-cert
+    username: staff@jf-system.com
+    password: livorno76        

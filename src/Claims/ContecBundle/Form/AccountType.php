@@ -14,8 +14,8 @@ class AccountType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('username', 'text', array('mapped' => false, 'label' => 'Username Contec'))
-                ->add('password', 'text', array('mapped' => false, 'label' => 'Password Contec'))
+                ->add('username', 'text', array('mapped' => false, 'label' => 'Username Contec', 'required' => false))
+                ->add('password', 'text', array('mapped' => false, 'label' => 'Password Contec', 'required' => false))
         ;
     }
 

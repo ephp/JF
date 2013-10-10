@@ -65,7 +65,7 @@ class PraticaRepository extends EntityRepository {
         }
         foreach ($filtri['out'] as $field => $value) {
             if (is_null($value)) {
-                    $q->andWhere("p.{$field} IS NOT NULL");
+                $q->andWhere("p.{$field} IS NOT NULL");
             } else {
                 switch ($field) {
                     case 'claimant':
@@ -157,7 +157,7 @@ class PraticaRepository extends EntityRepository {
                                 ->setParameter($field, "%{$value}%");
                         break;
                     case 'amountReserved':
-                        if($value == 'N.P.') {
+                        if ($value == 'N.P.') {
                             $q->andWhere("p.amount_reserved < :{$field}")
                                     ->setParameter($field, 0);
                         } else {
@@ -166,7 +166,7 @@ class PraticaRepository extends EntityRepository {
                         }
                         break;
                     case 'court':
-                        if($value == 'Sì') {
+                        if ($value == 'Sì') {
                             $q->andWhere("p.court != :{$field}")
                                     ->setParameter($field, '');
                         } else {
@@ -185,6 +185,60 @@ class PraticaRepository extends EntityRepository {
         }
         $q->orderBy($filtri['ob'][0], $filtri['ob'][1]);
         return $q;
+    }
+
+    public function ritardi($cliente_id, $gestore_id = null) {
+        $connection = $this->getEntityManager()->getConnection();
+        $q = "   
+SELECT * FROM claims_h_ritardi r 
+ WHERE r.cliente_id = :cliente
+   AND r.priorita != :priorita 
+   AND r.giorni > :giorni 
+";
+        $params = array(
+            'cliente' => $cliente_id,
+            'priorita' => 'definita',
+            'giorni' => 60,
+        );
+
+        if ($gestore_id) {
+            $q .= "
+   AND r.gestore_id = :id 
+";
+            $params['id'] = $gestore_id;
+        }
+        $stmt = $connection->executeQuery($q, $params);
+        $out = $stmt->fetchAll();
+        foreach ($out as $i => $row) {
+            $out[$i]['entity'] = $this->find($row['id']);
+        }
+        return $out;
+    }
+
+    public function nomi($nome) {
+        $connection = $this->getEntityManager()->getConnection();
+        $q = "
+SELECT s.claimant
+  FROM claims_h_pratiche s
+        ";
+        $params = array(
+        );
+        if (is_string($nome)) {
+            $q .= "
+ INNER JOIN claims_h_ospedali o ON o.id = s.ospedale_id
+ INNER JOIN claims_h_sistemi t ON t.id = s.sistema_id
+ WHERE t.nome = :nome
+        ";
+            $params['nome'] = $nome;
+        }
+
+        $stmt = $connection->executeQuery($q, $params);
+        $rows = $stmt->fetchAll();
+        $out = array();
+        foreach ($rows as $row) {
+            $out[] = trim(str_replace(array('  ', '+'), array(' ', ''), $row['claimant']));
+        }
+        return array_unique($out);
     }
 
 }

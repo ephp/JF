@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new Ephp\CalendarBundle\EphpCalendarBundle(),
             new Ephp\DragDropBundle\EphpDragDropBundle(),
             new Ephp\ACLBundle\EphpACLBundle(),
+            new Ephp\ImapBundle\EphpImapBundle(),
             
             new JF\GeneratorBundle\JFGeneratorBundle(),
             new JF\CoreBundle\JFCoreBundle(),

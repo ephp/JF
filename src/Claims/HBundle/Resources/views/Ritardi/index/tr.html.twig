@@ -1,0 +1,79 @@
+<tr id="{{ entity.entity.slug }}" titolo="{{ entity.entity }}" priorita="{% if entity.entity.priorita %}{{ entity.entity.priorita.id }}{% endif %}" stato="{% if entity.entity.statoPratica %}{{ entity.entity.statoPratica.id }}{% endif %}" gestore="{% if entity.entity.gestore %}{{ entity.entity.gestore.slug }}{% endif %}">
+    {% if mode in ['personale'] %}
+        <th class="right">{{ i }}</th>
+    {% endif %}
+        <th class="right">{{ entity.giorni }}</th>
+        <td class="center" nowrap>
+            <a href="#fb_cambia_priorita" class="fancybox">
+                <span class="label {{ entity.entity.priorita.css }}">
+                    <abbr title="{{ entity.entity.priorita.priorita }}">{{ entity.entity.codice }}</abbr>
+                </span>
+            </a>
+            </td>
+    <td class="center" class="dasc" nowrap>
+        {% if app.user.hasRole('C_ADMIN') %}
+            <a href="#fb_cambia_dasc" class="fancybox">
+        {% endif %}
+        {% if entity.entity.dasc %}
+            {{ entity.entity.dasc|date('d-m-Y') }}
+        {% else %}
+            n.d.
+        {% endif %}
+        {% if app.user.hasRole('C_ADMIN') %}
+            </a>
+        {% endif %}
+    </td>
+    <td class="center">{% if entity.entity.giudiziale %}<abbr title="{{ entity.entity.court|trim }}">SI</abbr>{% endif %}</td>
+    <td>{{ entity.entity.claimant }}</td>
+    {% if mode in ['completo'] %}
+        <td>
+        {% if app.user.hasRole('C_ADMIN') %}
+            <a href="#fb_cambia_gestore" class="fancybox button {% if entity.entity.gestore %}gray{% else %}lgray{% endif %} gestore">
+        {% else %}
+            <a href="javascript:void(0)" class="button {% if entity.entity.gestore %}gray{% else %}lgray{% endif %}">
+        {% endif %}
+        {% if entity.entity.gestore %}
+            <div class="user">
+                {{ entity.entity.gestore.sigla }}
+            </div>
+        {% else %}
+                <div class="icon"><span class="ico-user"></span></div>
+        {% endif %}
+    </td>
+    {% endif %}
+    <td class="center"><abbr title="{{ entity.entity.soi(true) }}">{{ entity.entity.soi }}</abbr></td>
+    <td class="right">{% if entity.entity.amountReserved >= 0 %}{{ entity.entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
+    <td class="note">
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            <div class="typography" contenteditable="true">
+        {% endif %}
+        {{ entity.entity.note|raw|nl2br }}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            </div>
+        {% endif %}
+    </td>
+    <td class="center stato_pratica">
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            <a href="#fb_cambia_stato" class="fancybox">
+        {% endif %}
+        {% if entity.entity.statoPratica %}
+            {{ entity.entity.statoPratica.stato }}
+        {% else %}
+            <attr title="Non Disponibilie">N.D.</attr>
+        {% endif %}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            </a>
+        {% endif %}
+    </td>
+    <td class="TAC">
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.entity.slug })} %}
+        {% endif %}
+        {% include ":commons:show.html.twig" with {'class': 'fancybox', 'route': path('claims_hospital_dettagli', { 'slug': entity.entity.slug })} %}
+        {% if not entity.entity.gestore and app.user.cliente.get('slc.h.import-import.on', false) %}
+            <a href="{{ path('slc_import_claim', {'slug': entity.entity.slug}) }}" class="button blue">
+                <div class="icon"><span class="ico-shuffle" title="Sincronizza con JF-Claims"></span></div>
+            </a>
+        {% endif %}
+    </td>
+</tr>

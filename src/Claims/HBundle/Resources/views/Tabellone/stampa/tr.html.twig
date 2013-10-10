@@ -1,4 +1,4 @@
-<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{{ entity.priorita.id }}" stato="{{ entity.statoPratica.id }}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
+<tr id="{{ entity.slug }}">
     {% if mode in ['personale', 'chiuso'] %}
         <th class="right">{{ i }}</th>
     {% endif %}
@@ -26,6 +26,6 @@
         {{ entity.note|raw }}
     </td>
     <td class="center">
-        {{ entity.statoPratica.stato }}
+        {% if entity.statoPratica %}{{ entity.statoPratica.stato }}{% else %}N.D.{% endif %}
     </td>
 </tr>

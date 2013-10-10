@@ -1,4 +1,4 @@
-<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{{ entity.priorita.id }}" stato="{{ entity.statoPratica.id }}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
+<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{% if entity.priorita %}{{ entity.priorita.id }}{% endif %}" stato="{% if entity.statoPratica %}{{ entity.statoPratica.id }}{% endif %}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
     {% if mode in ['personale', 'chiuso'] %}
         <th class="right">{{ i }}</th>
     {% endif %}
@@ -55,7 +55,11 @@
         {% if app.user.hasRole(['C_GESTORE_H']) %}
             <a href="#fb_cambia_stato" class="fancybox">
         {% endif %}
-        {{ entity.statoPratica.stato }}
+        {% if entity.statoPratica %}
+            {{ entity.statoPratica.stato }}
+        {% else %}
+            <attr title="Non Disponibilie">N.D.</attr>
+        {% endif %}
         {% if app.user.hasRole(['C_GESTORE_H']) %}
             </a>
         {% endif %}
@@ -64,6 +68,11 @@
         {% if app.user.hasRole(['C_GESTORE_H']) %}
             {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.slug })} %}
         {% endif %}
-        {% include ":commons:show.html.twig" with {'class' : 'fancybox', 'route': path('claims_hospital_dettagli', { 'slug': entity.slug })} %}
+        {% include ":commons:show.html.twig" with {'class': 'fancybox', 'route': path('claims_hospital_dettagli', { 'slug': entity.slug })} %}
+        {% if not entity.gestore and app.user.cliente.get('slc.h.import-import.on', false) %}
+            <a href="{{ path('slc_import_claim', {'slug': entity.slug}) }}" class="button blue">
+                <div class="icon"><span class="ico-shuffle" title="Sincronizza con JF-Claims"></span></div>
+            </a>
+        {% endif %}
     </td>
 </tr>

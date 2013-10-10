@@ -115,7 +115,7 @@ class CronEmailController extends Controller {
                     } else {
                         break;
                     }
-                    /* @var $countdown \Ephp\Bundle\EmailBundle\Entity\Countdown */
+                    /* @var $countdown Countdown */
                     $header = $body->getHeader();
                     $this->persist($header);
                     $body->setHeader($header);

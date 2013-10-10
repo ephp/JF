@@ -51,9 +51,9 @@ class CountdownController extends Controller {
         $req = $this->getRequest()->get('cd');
 
         $cd = $this->find('ClaimsHBundle:Countdown', $req['id']);
-        /* @var $cd \Ephp\Bundle\EmailBundle\Entity\Countdown */
+        /* @var $cd Countdown */
         $gestore = $this->findOneBy('JFACLBundle:Gestore', array('sigla' => $req['gestore']));
-        /* @var $gestore \Ephp\Bundle\GestoriBundle\Entity\Gestore */
+        /* @var $gestore \JF\ACLBundle\Entity\Gestore */
 
         $genera = is_null($cd->getGestore());
         try {
@@ -74,7 +74,7 @@ class CountdownController extends Controller {
      */
     public function cancellaCountdownAction($id) {
         $cd = $this->find('ClaimsHBundle:Countdown', $id);
-        /* @var $cd \Ephp\Bundle\EmailBundle\Entity\Countdown */
+        /* @var $cd Countdown */
         try {
             $email = $cd->getEmail();
             $this->remove($cd);
@@ -94,9 +94,9 @@ class CountdownController extends Controller {
     public function replyAction($id) {
         $req = $this->getParam('email');
         $gestore = $this->getUser();
-        /* @var $gestore \Ephp\Bundle\GestoriBundle\Entity\Gestore */
+        /* @var $gestore \JF\ACLBundle\Entity\Gestore */
         $countdown = $this->find('ClaimsHBundle:Countdown', $id);
-        /* @var $countdown \Ephp\Bundle\EmailBundle\Entity\Countdown */
+        /* @var $countdown Countdown */
         $docs = json_decode($req['docs']);
         $message = \Swift_Message::newInstance()
                 ->setSubject("RE: " . $countdown->getEmail()->getSubject() . " [RECD-{$countdown->getId()}]")

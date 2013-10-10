@@ -264,10 +264,10 @@ class Countdown
     /**
      * Set countdown
      *
-     * @param \Ephp\Bundle\EmailBundle\Entity\Countdown $countdown
+     * @param Countdown $countdown
      * @return Countdown
      */
-    public function setCountdown(\Ephp\Bundle\EmailBundle\Entity\Countdown $countdown = null)
+    public function setCountdown(Countdown $countdown = null)
     {
         $this->countdown = $countdown;
     
@@ -277,7 +277,7 @@ class Countdown
     /**
      * Get countdown
      *
-     * @return \Ephp\Bundle\EmailBundle\Entity\Countdown 
+     * @return Countdown 
      */
     public function getCountdown()
     {

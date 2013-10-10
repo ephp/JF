@@ -466,5 +466,3 @@ $('.wrapper').resize(function(){
     if($("#mail_wysiwyg").length > 0) m_editor.refresh();
     
 });
-
-

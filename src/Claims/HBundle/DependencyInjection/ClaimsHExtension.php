@@ -66,6 +66,13 @@ class ClaimsHExtension extends Extension implements IExtension {
             );
             
             $menu['claims']['submenu'][] = array(
+                'label' => 'Calendario Hospital',
+                'route' => 'claims_calendario_hospital',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
+                'order' => 30,
+            );
+            
+            $menu['claims']['submenu'][] = array(
                 'label' => 'Countdown Hospital',
                 'route' => 'claims_h_countdown',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('slc'))),

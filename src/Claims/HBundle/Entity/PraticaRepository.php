@@ -37,6 +37,17 @@ class PraticaRepository extends EntityRepository {
                 $q->andWhere("p.{$field} IS NULL");
             } else {
                 switch ($field) {
+                    case 'evento':
+                        /* @var $value \DateTime */
+                        $da = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));
+                        $a = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));
+                        $da->setTime(0, 0, 0);
+                        $a->setTime(23, 59, 59);
+                        $q->leftJoin('p.eventi', 'e');
+                        $q->andWhere("e.data_ora BETWEEN :da AND :a")
+                                ->setParameter('da', $da)
+                                ->setParameter('a', $a);
+                        break;
                     case 'claimant':
                         $q->andWhere("p.{$field} LIKE :{$field}")
                                 ->setParameter($field, "%{$value}%");

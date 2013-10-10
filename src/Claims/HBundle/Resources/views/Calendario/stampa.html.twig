@@ -1,0 +1,12 @@
+{% extends '::stampa.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-calendar"></span>
+    </div>
+        <h1>JF-Claims <small>Calendario del {{ data|date('d-m-Y') }}</small></h1>
+</div>
+    
+{% include "ClaimsHBundle:Calendario:stampa/table.html.twig" %}
+
+{% endblock %}

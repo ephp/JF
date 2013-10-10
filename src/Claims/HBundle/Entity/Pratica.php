@@ -4,6 +4,7 @@ namespace Claims\HBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Pratica
@@ -1006,7 +1007,7 @@ class Pratica {
     public function getSp($encode = false) {
         if ($encode) {
             $sa = $this->sa();
-            if(isset($sa[intval($this->sp)])) {
+            if (isset($sa[intval($this->sp)])) {
                 return $sa[intval($this->sp)];
             }
         }
@@ -1905,6 +1906,52 @@ class Pratica {
 
     public function __toString() {
         return $this->getCodice() . ' - ' . $this->getClaimant();
+    }
+
+    public function getEventiGiorno(\DateTime $day) {
+        $da = \DateTime::createFromFormat('d-m-Y', $day->format('d-m-Y'));
+        $da->setTime(0, 0, 0);
+        $a = \DateTime::createFromFormat('d-m-Y', $day->format('d-m-Y'));
+        $a->setTime(23, 59, 59);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gte("data_ora", $da))
+            ->andWhere(Criteria::expr()->lte("data_ora", $a))
+        ;
+
+        return $this->eventi->matching($criteria);
+    }
+
+    public function getEventiOggi() {
+        $da = new \DateTime();
+        $da->setTime(0, 0, 0);
+        $a = new \DateTime();
+        $a->setTime(23, 59, 59);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gte("data_ora", $da))
+            ->andWhere(Criteria::expr()->lte("data_ora", $a))
+        ;
+
+        return $this->eventi->matching($criteria);
+    }
+
+    public function getEventiFuturi() {
+        $da = new \DateTime();
+        $da->setTime(0, 0, 0);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gte("data_ora", $da))
+        ;
+
+        return $this->eventi->matching($criteria);
+    }
+    
+    public function getEventiPassati() {
+        $a = new \DateTime();
+        $a->setTime(23, 59, 59);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->lte("data_ora", $a))
+        ;
+
+        return $this->eventi->matching($criteria);
     }
 
     public function tpl() {

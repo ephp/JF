@@ -1,0 +1,37 @@
+<table class="table" style="width: 100%;">
+    <tbody>
+        {% for evento in entity.eventiGiorno(data) %}
+            {% if evento.titolo|trim != '' %}
+                <tr>
+                    <td class="center" width="20">
+                        <div id="star_{{ evento.id }}" class="star" evento="{{ evento.id }}">
+                            {% if evento.importante %}
+                                {% include ":commons:color.html.twig" with {'color' : '#FFAA31 !important;', 'icon': 'ico-star', 'title': 'Evento importante'} %}
+                            {% else %}
+                                {% include ":commons:color.html.twig" with {'color' : '#D1D1D1 !important;', 'icon': 'ico-star-empty', 'title': 'Evento'} %}
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="center" width="30">
+                        {% if evento.tipo.pubblico %}
+                            {% include ":commons:color.html.twig" with {'color' : '#' ~ evento.tipo.colore ~ ' !important;', 'icon': 'ico-eye-open', 'label': evento.tipo.sigla, 'title': evento.tipo.nome} %}
+                        {% else %}
+                            {% include ":commons:color.html.twig" with {'color' : '#' ~ evento.tipo.colore ~ ' !important;', 'icon': 'ico-eye-close', 'label': evento.tipo.sigla, 'title': evento.tipo.nome} %}
+                        {% endif %}
+                    </td>
+                    <td class="center" nowrap width="10%">
+                        {{ evento.dataOra|date('d/m/Y') }}
+                    </td>
+                    <td class="center" width="20%">
+                        {{ evento.titolo }}
+                    </td>
+                    <td>
+                        <div class="typography" width="70%">
+                            {{ evento.note }}
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>        

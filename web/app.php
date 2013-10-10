@@ -12,7 +12,8 @@ $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 $loader = new ApcClassLoader('sf2', $loader);
 $loader->register(true);
 */
-
+ini_set('max_input_nesting_level','100000');
+ini_set('xdebug.max_nesting_level','100000');
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 

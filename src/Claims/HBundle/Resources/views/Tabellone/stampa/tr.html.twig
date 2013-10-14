@@ -27,8 +27,12 @@
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
         {% if monthly_report and entity.monthlyReport %}
+            <b>{{ entity.monthlyReport.titolo }}</b><br/>
             {{ entity.monthlyReport.note|raw }}
-            <i>({{ entity.monthlyReport.tipo.sigla }} - {{ entity.monthlyReport.dataOra|date('d-m-Y') }})</i>
+            {% if app.environment == 'dev' %}
+                <br/>
+                <i style="color: #888888">({{ entity.monthlyReport.tipo.sigla }} - {{ entity.monthlyReport.dataOra|date('d-m-Y') }})</i>
+            {% endif %}
         {% else %}
             {{ entity.note|raw }}
         {% endif %}

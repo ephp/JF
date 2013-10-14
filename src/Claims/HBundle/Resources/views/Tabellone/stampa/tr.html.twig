@@ -26,7 +26,7 @@
     <td class="center">{{ entity.soi }}</td>
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
-        {% if monthly_report and mr %}
+        {% if monthly_report %}
             {% set mr = entity.monthlyReport %}
             {% if mr %}
                 <b>{{ mr.titolo }}</b>

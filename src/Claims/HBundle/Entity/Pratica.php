@@ -1944,6 +1944,7 @@ class Pratica {
                     break;
             }
         }
+        return null;
     }
 
     public function getEventiOggi() {

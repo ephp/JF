@@ -82,7 +82,7 @@ class TabelloneController extends Controller {
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
-            'monthly_report' => $monthly_report === false,
+            'monthly_report' => $monthly_report !== false,
         );
     }
 

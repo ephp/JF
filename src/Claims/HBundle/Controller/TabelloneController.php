@@ -36,8 +36,8 @@ class TabelloneController extends Controller {
      * @Template()
      */
     public function indexAction($mode) {
-        $filtri = $this->buildFiltri($mode);
         $sorting = $this->sorting();
+        $filtri = $this->buildFiltri($mode);
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
         return array(
             'pagination' => $pagination,
@@ -55,8 +55,8 @@ class TabelloneController extends Controller {
      * @Template("ClaimsHBundle:Tabellone:index.html.twig")
      */
     public function statiAction($mode, $stato) {
-        $filtri = $this->buildFiltri($mode, $stato);
         $sorting = $this->sorting();
+        $filtri = $this->buildFiltri($mode, $stato);
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
         return array(
             'pagination' => $pagination,

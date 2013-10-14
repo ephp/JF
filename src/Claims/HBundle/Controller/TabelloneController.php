@@ -163,7 +163,7 @@ class TabelloneController extends Controller {
         if ($this->getParam('ricerca')) {
             $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
         }
-        if ($this->getUser()->hasRole('C_ADMIN')) {
+        if ($this->getUser()->getCliente()->hasLicenza('cl.h-pratiche', 'slc') && $this->getUser()->hasRole('C_ADMIN')) {
             $out['monthly_report'] = array(
                 'route' => $this->getParam('_route') . '_stampa',
                 'params' => array('monthly_report' => 'monthly-report'),

@@ -532,9 +532,9 @@ class Cliente {
      * @return boolean
      */
     public function getLicenza($licenza_id) {
-        foreach($this->getLicenze() as $licenza) {
+        foreach ($this->getLicenze() as $licenza) {
             /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-            if($licenza->getLicenza()->getId() == $licenza_id) {
+            if ($licenza->getLicenza()->getId() == $licenza_id) {
                 return $licenza;
             }
         }
@@ -549,27 +549,10 @@ class Cliente {
      * @return boolean
      */
     public function getLicenzaGruppo($gruppo) {
-        foreach($this->getLicenze() as $licenza) {
+        foreach ($this->getLicenze() as $licenza) {
             /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-            if($licenza->getGruppo() == $gruppo) {
+            if ($licenza->getGruppo() == $gruppo) {
                 return $licenza;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Add licenze
-     *
-     * @param Licenza $licenze
-     * @return boolean
-     */
-    public function hasLicenza($licenza_id) {
-        foreach($this->getLicenze() as $licenza) {
-            /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-            if($licenza->getLicenza()->getId() == $licenza_id) {
-                return true;
             }
         }
 
@@ -672,11 +655,39 @@ class Cliente {
         return array_keys($widgets);
     }
 
+    /**
+     * Add licenze
+     *
+     * @param Licenza $licenze
+     * @return boolean
+     */
+    public function hasLicenza($gruppo, $sigla = false) {
+        if (!$sigla) {
+            foreach ($this->getLicenze() as $licenza) {
+                /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+                if ($licenza->getLicenza()->getId() == $licenza_id) {
+                    return true;
+                }
+            }
+
+            return false;
+        } else {
+            if(!is_array($sigla)) {
+                $sigla = array($sigla);
+            }
+            $licenze = $this->getLicenzeAttive();
+            if (isset($licenze[$gruppo])) {
+                return in_array($licenze[$gruppo], $sigla);
+            }
+            return false;
+        }
+    }
+
     public function getLicenzeAttive($object = false, $sorted = true) {
         $licenze = array();
         foreach ($this->getLicenze() as $licenza) {
             /* @var $licenza Licenza */
-            if($licenza->isActive()) {
+            if ($licenza->isActive()) {
                 $licenze[] = $object ? $licenza : $licenza->info();
             }
         }
@@ -685,25 +696,25 @@ class Cliente {
 
     private function ordinaLicenze($licenze) {
         $out = array();
-        foreach($licenze as $licenza) {
+        foreach ($licenze as $licenza) {
             $out[$licenza['gruppo']->getSiglaCompleta()] = $licenza['codice'];
         }
         return $out;
     }
-    
+
     private $cache = null;
-    
+
     public function get($key, $default = null) {
-        if(!$this->cache) {
+        if (!$this->cache) {
             $this->cache = array();
-            foreach($this->getLicenze() as $licenza) {
+            foreach ($this->getLicenze() as $licenza) {
                 $licenza = $licenza->getLicenza();
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                foreach($licenza->getParams() as $k => $v) {
-                    if($k == 'form_cliente') {
+                foreach ($licenza->getParams() as $k => $v) {
+                    if ($k == 'form_cliente') {
                         $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
                     } else {
-                        $this->cache[$licenza->getGruppo()->getSiglaCompleta().'.'.$k] = $v;
+                        $this->cache[$licenza->getGruppo()->getSiglaCompleta() . '.' . $k] = $v;
                     }
                 }
             }
@@ -711,23 +722,23 @@ class Cliente {
 //        \Ephp\UtilityBundle\Utility\Debug::pr($this->cache);
         return isset($this->cache[$key]) ? $this->cache[$key] : $default;
     }
-    
+
     public function getVars() {
-        if(!$this->cache) {
+        if (!$this->cache) {
             $this->cache = array();
-            foreach($this->getLicenze() as $licenza) {
+            foreach ($this->getLicenze() as $licenza) {
                 $licenza = $licenza->getLicenza();
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                foreach($licenza->getParams() as $k => $v) {
-                    if($k == 'form_cliente') {
+                foreach ($licenza->getParams() as $k => $v) {
+                    if ($k == 'form_cliente') {
                         $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
                     } else {
-                        $this->cache[$licenza->getGruppo()->getSiglaCompleta().'.'.$k] = $v;
+                        $this->cache[$licenza->getGruppo()->getSiglaCompleta() . '.' . $k] = $v;
                     }
                 }
             }
         }
         return $this->cache;
     }
-    
+
 }

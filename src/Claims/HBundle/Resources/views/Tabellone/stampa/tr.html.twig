@@ -24,7 +24,8 @@
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
         {% if monthly_report %}
-            {{ entity.monthlyReport|raw }}
+            {{ entity.monthlyReport.note|raw }}
+            <i>({{ entity.monthlyReport.dataOra|date('d-m-Y') }})</i>
         {% else %}
             {{ entity.note|raw }}
         {% endif %}

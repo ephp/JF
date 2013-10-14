@@ -163,16 +163,18 @@ class TabelloneController extends Controller {
         if ($this->getParam('ricerca')) {
             $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
         }
-        $out['monthly_report'] = array(
-            'route' => $this->getParam('_route') . '_stampa',
-            'params' => array('monthly_report' => 'monthly-report'),
-            'label' => 'Stampa monthly report',
-            'icon' => 'ico-printer',
-            'class' => 'label-warning',
-            'target' => '_blank'
-        );
-        if ($this->getParam('ricerca')) {
-            $out['monthly_report']['params'] = array('ricerca' => $this->getParam('ricerca'));
+        if ($this->getUser()->hasRole('C_ADMIN')) {
+            $out['monthly_report'] = array(
+                'route' => $this->getParam('_route') . '_stampa',
+                'params' => array('monthly_report' => 'monthly-report'),
+                'label' => 'Stampa monthly report',
+                'icon' => 'ico-printer',
+                'class' => 'label-warning',
+                'target' => '_blank'
+            );
+            if ($this->getParam('monthly_report')) {
+                $out['monthly_report']['params'] = array('monthly_report' => 'monthly-report', 'ricerca' => $this->getParam('ricerca'));
+            }
         }
         return $out;
     }
@@ -194,7 +196,7 @@ class TabelloneController extends Controller {
                 unset($dati['claims_h']);
             }
             if ($stato == 'default') {
-                if(isset($dati['claims_h_stato'])) {
+                if (isset($dati['claims_h_stato'])) {
                     $stato = $dati['claims_h_stato'];
                 } else {
                     $stato = $this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true))->getId();

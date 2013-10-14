@@ -239,7 +239,7 @@ SELECT * FROM claims_h_ritardi r
 ";
         $params = array(
             'cliente' => $cliente_id,
-            'priorita' => 'definita',
+            'priorita' => 'Chiuso',
             'giorni' => 60,
         );
 

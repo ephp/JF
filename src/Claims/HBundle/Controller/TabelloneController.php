@@ -194,6 +194,9 @@ class TabelloneController extends Controller {
             $this->getUser()->setDati($dati);
             $this->persist($this->getUser());
         }
+        if(isset($dati['claims_h_sorting'])) {
+            $sorting = $dati['claims_h_sorting'];
+        }
         $out = array();
         $out['anno'] = array(
             'label' => 'Anno e Ospedale',

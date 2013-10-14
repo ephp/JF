@@ -26,19 +26,6 @@
         </div>            
     </div>       
 </div> 
-{% if sorting is defined %}
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="block">
-                <div class="data-fluid">
-                    {% for sortmode, link in sorting %}
-                        <a href="{{ path(app.request.get('_route'), {'sorting': link.mode}) }}"><span class="label {% if app.user.dati.claims_h_sorting == sortmode or app.user.dati.claims_h_sorting == 'i'~sortmode %}label-success{% else %}label-green{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
-                    {% endfor %}
-                </div>            
-            </div>            
-        </div>       
-    </div> 
-{% endif %}
 {% if stati is defined %}
     <div class="row-fluid">
         <div class="span12">
@@ -51,6 +38,19 @@
             </div>            
         </div>       
     </div>       
+{% endif %}
+{% if sorting is defined %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block">
+                <div class="data-fluid">
+                    {% for sortmode, link in sorting %}
+                        <a href="{{ path(app.request.get('_route'), {'sorting': link.mode}) }}"><span class="label {% if app.user.dati.claims_h_sorting == sortmode or app.user.dati.claims_h_sorting == 'i'~sortmode %}label-success{% else %}label-green{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
+                    {% endfor %}
+                </div>            
+            </div>            
+        </div>       
+    </div> 
 {% endif %}
 {% render(controller("ClaimsHBundle:Render:ricerca", {'mode': mode, 'ricerca': app.request.get('ricerca')})) %}
 <div class="row-fluid">

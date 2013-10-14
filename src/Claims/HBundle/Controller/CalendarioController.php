@@ -141,6 +141,7 @@ class CalendarioController extends Controller {
         }
         $filtri['in']['evento'] = $data;
         $filtri['ricerca'] = array();
+        $filtri['sorting'] = 'claimant';
         $dati['claims_h_calendario'] = $mode;
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());

@@ -37,12 +37,14 @@ class TabelloneController extends Controller {
      */
     public function indexAction($mode) {
         $filtri = $this->buildFiltri($mode);
+        $sorting = $this->sorting();
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
         return array(
             'pagination' => $pagination,
             'show_gestore' => true,
             'links' => $this->buildLinks(),
             'mode' => $mode,
+            'sorting' => $sorting,
         );
     }
 
@@ -54,6 +56,7 @@ class TabelloneController extends Controller {
      */
     public function statiAction($mode, $stato) {
         $filtri = $this->buildFiltri($mode, $stato);
+        $sorting = $this->sorting();
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
         return array(
             'pagination' => $pagination,
@@ -62,6 +65,7 @@ class TabelloneController extends Controller {
             'mode' => $mode,
             'stati' => $this->findBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true)),
             'stato' => $stato,
+            'sorting' => $sorting,
         );
     }
 
@@ -179,6 +183,85 @@ class TabelloneController extends Controller {
         return $out;
     }
 
+    private function sorting() {
+        $dati = $this->getUser()->getDati();
+        $sorting = $this->getParam('sorting', false);
+        if(!$sorting && !isset($dati['claims_h_sorting'])) {
+            $sorting = 'anno';
+        }
+        if($sorting) {
+            $dati['claims_h_sorting'] = $sorting;
+            $this->getUser()->setDati($dati);
+            $this->persist($this->getUser());
+        }
+        $out = array();
+        if($sorting == 'anno') {
+            $out['ianno'] = array(
+                'label' => 'Anno e Ospedale',
+                'icon' => 'ico-chevron-up',
+            );
+        } elseif($sorting == 'ianno') {
+            $out['anno'] = array(
+                'label' => 'Anno e Ospedale',
+                'icon' => 'ico-chevron-down',
+            );
+        } else {
+            $out['anno'] = array(
+                'label' => 'Anno e Ospedale',
+            );
+        }
+        
+        if($sorting == 'dasc') {
+            $out['idasc'] = array(
+                'label' => 'DASC',
+                'icon' => 'ico-chevron-up',
+            );
+        } elseif($sorting == 'idasc') {
+            $out['dasc'] = array(
+                'label' => 'DASC',
+                'icon' => 'ico-chevron-down',
+            );
+        } else {
+            $out['dasc'] = array(
+                'label' => 'DASC',
+            );
+        }
+        
+        if($sorting == 'claimant') {
+            $out['iclaimant'] = array(
+                'label' => 'Nome Claimant',
+                'icon' => 'ico-chevron-up',
+            );
+        } elseif($sorting == 'iclaimant') {
+            $out['claimant'] = array(
+                'label' => 'Nome Claimant',
+                'icon' => 'ico-chevron-down',
+            );
+        } else {
+            $out['claimant'] = array(
+                'label' => 'Nome Claimant',
+            );
+        }
+        
+        if($sorting == 'attivita') {
+            $out['iattivita'] = array(
+                'label' => 'Attività',
+                'icon' => 'ico-chevron-up',
+            );
+        } elseif($sorting == 'iattivita') {
+            $out['attivita'] = array(
+                'label' => 'Attività',
+                'icon' => 'ico-chevron-down',
+            );
+        } else {
+            $out['attivita'] = array(
+                'label' => 'Attività',
+            );
+        }
+        
+        return $out;
+    }
+
     private function buildFiltri(&$mode, &$stato = null) {
         $logger = $this->get('logger');
         $cliente = $this->getUser()->getCliente();
@@ -256,6 +339,7 @@ class TabelloneController extends Controller {
             $filtri['in']['statoPratica'] = $stato;
         }
         $filtri['ricerca'] = $this->getParam('ricerca', array());
+        $filtri['sorting'] = $dati['claims_h_sorting'];
         $dati['claims_h'] = $mode;
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());

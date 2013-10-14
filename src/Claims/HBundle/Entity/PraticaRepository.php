@@ -28,8 +28,8 @@ class PraticaRepository extends EntityRepository {
         if (!isset($filtri['bt'])) {
             $filtri['bt'] = array();
         }
-        if (!isset($filtri['ob'])) {
-            $filtri['ob'] = array('p.dasc', 'DESC');
+        if (!isset($filtri['sorting'])) {
+            $filtri['sorting'] = 'anno';
         }
         $q = $this->createQueryBuilder('p');
         foreach ($filtri['in'] as $field => $value) {
@@ -194,7 +194,38 @@ class PraticaRepository extends EntityRepository {
                 }
             }
         }
-        $q->orderBy($filtri['ob'][0], $filtri['ob'][1]);
+        switch ($filtri['sorting']) {
+            case 'anno':
+                $q->leftJoin('p.ospedale', 'o');
+                $q->orderBy('p.anno', 'asc');
+                $q->addOrderBy('o.sigla', 'asc');
+                break;
+            case 'ianno':
+                $q->leftJoin('p.ospedale', 'o');
+                $q->orderBy('p.anno', 'desc');
+                $q->addOrderBy('o.sigla', 'desc');
+                break;
+            case 'dasc':
+                $q->orderBy('p.dasc', 'asc');
+                break;
+            case 'idasc':
+                $q->orderBy('p.dasc', 'desc');
+                break;
+            case 'claimant':
+                $q->orderBy('p.claimant', 'asc');
+                break;
+            case 'iclaimant':
+                $q->orderBy('p.claimant', 'desc');
+                break;
+            case 'attivita':
+                $q->leftJoin('p.eventi', 'e');
+                $q->orderBy('e.data_ora', 'asc');
+                break;
+            case 'iattivita':
+                $q->leftJoin('p.eventi', 'e');
+                $q->orderBy('e.data_ora', 'desc');
+                break;
+        }
         return $q;
     }
 

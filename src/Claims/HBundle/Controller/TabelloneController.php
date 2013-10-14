@@ -195,68 +195,45 @@ class TabelloneController extends Controller {
             $this->persist($this->getUser());
         }
         $out = array();
+        $out['anno'] = array(
+            'label' => 'Anno e Ospedale',
+            'mode' => 'anno',
+        );
         if($sorting == 'anno') {
-            $out['ianno'] = array(
-                'label' => 'Anno e Ospedale',
-                'icon' => 'ico-chevron-up',
-            );
+            $out['anno']['icon'] = 'ico-chevron-up';
+            $out['anno']['mode'] = 'ianno';
         } elseif($sorting == 'ianno') {
-            $out['anno'] = array(
-                'label' => 'Anno e Ospedale',
-                'icon' => 'ico-chevron-down',
-            );
-        } else {
-            $out['anno'] = array(
-                'label' => 'Anno e Ospedale',
-            );
+            $out['anno']['icon'] = 'ico-chevron-down';
         }
         
+        $out['dasc'] = array(
+            'label' => 'DASC',
+        );
         if($sorting == 'dasc') {
-            $out['idasc'] = array(
-                'label' => 'DASC',
-                'icon' => 'ico-chevron-up',
-            );
+            $out['dasc']['icon'] = 'ico-chevron-up';
+            $out['dasc']['mode'] = 'idasc';
         } elseif($sorting == 'idasc') {
-            $out['dasc'] = array(
-                'label' => 'DASC',
-                'icon' => 'ico-chevron-down',
-            );
-        } else {
-            $out['dasc'] = array(
-                'label' => 'DASC',
-            );
+            $out['dasc']['icon'] = 'ico-chevron-down';
         }
         
+        $out['claimant'] = array(
+            'label' => 'Nome Claimant',
+        );
         if($sorting == 'claimant') {
-            $out['iclaimant'] = array(
-                'label' => 'Nome Claimant',
-                'icon' => 'ico-chevron-up',
-            );
+            $out['claimant']['icon'] = 'ico-chevron-up';
+            $out['claimant']['mode'] = 'iclaimant';
         } elseif($sorting == 'iclaimant') {
-            $out['claimant'] = array(
-                'label' => 'Nome Claimant',
-                'icon' => 'ico-chevron-down',
-            );
-        } else {
-            $out['claimant'] = array(
-                'label' => 'Nome Claimant',
-            );
+            $out['claimant']['icon'] = 'ico-chevron-down';
         }
         
+        $out['attivita'] = array(
+            'label' => 'Attività',
+        );
         if($sorting == 'attivita') {
-            $out['iattivita'] = array(
-                'label' => 'Attività',
-                'icon' => 'ico-chevron-up',
-            );
+            $out['attivita']['icon'] = 'ico-chevron-up';
+            $out['attivita']['mode'] = 'iattivita';
         } elseif($sorting == 'iattivita') {
-            $out['attivita'] = array(
-                'label' => 'Attività',
-                'icon' => 'ico-chevron-down',
-            );
-        } else {
-            $out['attivita'] = array(
-                'label' => 'Attività',
-            );
+            $out['attivita']['icon'] = 'ico-chevron-down';
         }
         
         return $out;

@@ -19,7 +19,7 @@ class RitardiController extends Controller {
     /**
      * Lists all Gestore entities.
      *
-     * @Route("/",      name="claims_h_ritardi",       defaults={"mode": "personale"}, options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
+     * @Route("/",      name="claims_h_ritardi",       defaults={"mode": "personale"}, options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("/tutti", name="claims_h_ritardi_tutti", defaults={"mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */

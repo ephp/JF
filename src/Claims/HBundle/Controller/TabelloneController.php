@@ -26,10 +26,10 @@ class TabelloneController extends Controller {
         Traits\CalendarController;
 
     /**
-     * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H"}}})
-     * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
@@ -47,9 +47,9 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-stati/{stato}",           name="claims_stati_hospital",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
+     * @Route("-stati/{stato}",           name="claims_stati_hospital",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stati-completo/{stato}",  name="claims_stati_hospital_completo",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stati-personale/{stato}", name="claims_stati_hospital_personale", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-stati-personale/{stato}", name="claims_stati_hospital_personale", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:index.html.twig")
      */
     public function statiAction($mode, $stato) {
@@ -66,29 +66,30 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-stampa/",                 name="claims_hospital_stampa",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-completo/",        name="claims_hospital_completo_stampa",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-personale/",       name="claims_hospital_personale_stampa",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H"}}})
-     * @Route("-stampa-chiusi/",          name="claims_hospital_chiuso_stampa",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H"}}})
-     * @Route("-stampa-senza-dasc/",      name="claims_hospital_senza_dasc_stampa",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stampa-senza-gestore/",   name="claims_hospital_senza_gestore_stampa", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stampa-chiusi-completo/", name="claims_hospital_chiusi_stampa",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa/{monthly_report}",                 name="claims_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-completo/{monthly_report}",        name="claims_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-personale/{monthly_report}",       name="claims_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-chiusi/{monthly_report}",          name="claims_hospital_chiuso_stampa",        defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_stampa",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-chiusi-completo/{monthly_report}", name="claims_hospital_chiusi_stampa",        defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
-    public function stampaAction($mode) {
+    public function stampaAction($mode, $monthly_report) {
         $filtri = $this->buildFiltri($mode);
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'monthly_report' => $monthly_report === false,
         );
     }
 
     /**
-     * @Route("-stati-stampa/{stato}",           name="claims_stati_hospital_stampa",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
+     * @Route("-stati-stampa/{stato}",           name="claims_stati_hospital_stampa",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stati-stampa-completo/{stato}",  name="claims_stati_hospital_completo_stampa",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stati-stampa-personale/{stato}", name="claims_stati_hospital_personale_stampa", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-stati-stampa-personale/{stato}", name="claims_stati_hospital_personale_stampa", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
      */
     public function stampaStatiAction($mode, $stato) {
@@ -104,7 +105,7 @@ class TabelloneController extends Controller {
     private function buildLinks($full = true) {
         $out = array();
         if ($full) {
-            if ($this->getUser()->hasRole(array('C_GESTORE_H'))) {
+            if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
                 $out['personale'] = array(
                     'route' => 'claims_hospital_personale',
                     'label' => 'Personale'
@@ -133,7 +134,7 @@ class TabelloneController extends Controller {
                 );
             }
         } else {
-            if ($this->getUser()->hasRole(array('C_GESTORE_H'))) {
+            if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
                 $out['personale'] = array(
                     'route' => 'claims_stati_hospital_personale',
                     'label' => 'Personale'
@@ -161,6 +162,17 @@ class TabelloneController extends Controller {
         );
         if ($this->getParam('ricerca')) {
             $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
+        }
+        $out['monthly_report'] = array(
+            'route' => $this->getParam('_route') . '_stampa',
+            'params' => array('monthly_report' => 'monthly-report'),
+            'label' => 'Stampa monthly report',
+            'icon' => 'ico-printer',
+            'class' => 'label-warning',
+            'target' => '_blank'
+        );
+        if ($this->getParam('ricerca')) {
+            $out['monthly_report']['params'] = array('ricerca' => $this->getParam('ricerca'));
         }
         return $out;
     }
@@ -193,7 +205,7 @@ class TabelloneController extends Controller {
             // Legge in cache l'ultimo tipo di visualizzazione
             case 'default':
                 $set_default = false;
-                if ($this->getUser()->hasRole(array('C_GESTORE_H'))) {
+                if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
                     if (!isset($dati['claims_h']) || (!$this->getUser()->hasRole(array('C_ADMIN')) && in_array($dati['claims_h'], array('senza_dasc', 'senza_gestore', 'chiusi')))) {
                         $set_default = true;
                     }
@@ -249,7 +261,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-cambia-priorita/", name="claims_hospital_cambia_priorita", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-priorita/", name="claims_hospital_cambia_priorita", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaPrioritaAction() {
         $req = $this->getParam('priorita');
@@ -344,7 +356,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-get-note/{slug}", name="claims_hospital_get_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-get-note/{slug}", name="claims_hospital_get_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function getNoteAction($slug) {
 
@@ -355,7 +367,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-cambia-note/", name="claims_hospital_cambia_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-note/", name="claims_hospital_cambia_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaNoteAction() {
         $req = $this->getParam('note');
@@ -384,7 +396,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-cambia-stato/", name="claims_hospital_cambia_stato", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-stato/", name="claims_hospital_cambia_stato", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaStatoAction() {
         $req = $this->getParam('stato');
@@ -428,11 +440,11 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-pratica/{slug}", name="claims_hospital_pratica", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
-     * @Route("-dettagli/{slug}", name="claims_hospital_dettagli", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-report/{slug}", name="claims_hospital_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-report/{slug}", name="claims_hospital_stampa_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-pratica/{slug}", name="claims_hospital_stampa_pratica", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
+     * @Route("-pratica/{slug}", name="claims_hospital_pratica", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-dettagli/{slug}", name="claims_hospital_dettagli", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-report/{slug}", name="claims_hospital_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-report/{slug}", name="claims_hospital_stampa_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-pratica/{slug}", name="claims_hospital_stampa_pratica", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function praticaAction($slug) {
 
@@ -468,7 +480,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-autoupdate-pratica/{slug}", name="claims_hospital_pratica_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-autoupdate-pratica/{slug}", name="claims_hospital_pratica_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function autoupdatePraticaAction($slug) {
         $req = $this->getParam('pratica');
@@ -508,7 +520,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-aggiungi-link/{slug}", name="claims_hospital_aggiungi_link", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-aggiungi-link/{slug}", name="claims_hospital_aggiungi_link", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:pratica/links.html.twig")
      */
     public function aggiungiLinkAction($slug) {
@@ -535,7 +547,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-cancella-link", name="claims_hospital_cancella_link", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-cancella-link", name="claims_hospital_cancella_link", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:pratica/links.html.twig")
      */
     public function cancellaLinkAction() {
@@ -553,7 +565,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-aggiungi-evento/{slug}", name="claims_hospital_aggiungi_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-aggiungi-evento/{slug}", name="claims_hospital_aggiungi_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:pratica/calendario.html.twig")
      */
     public function aggiungiEventoAction($slug) {
@@ -580,7 +592,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-cancella-evento", name="claims_hospital_cancella_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-cancella-evento", name="claims_hospital_cancella_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:pratica/calendario.html.twig")
      */
     public function cancellaEventoAction() {
@@ -598,7 +610,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-evidenzia-evento", name="claims_hospital_evidenzia_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format"="json"})
+     * @Route("-evidenzia-evento", name="claims_hospital_evidenzia_evento", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format"="json"})
      */
     public function evidenziaEventoAction() {
         $req = $this->getParam('evento');
@@ -616,7 +628,7 @@ class TabelloneController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-autoupdate-calendario", name="claims_hospital_evento_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format"="json"})
+     * @Route("-autoupdate-calendario", name="claims_hospital_evento_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format"="json"})
      */
     public function autoupdateCalendarioAction() {
         $req = $this->getParam('evento');
@@ -678,7 +690,7 @@ class TabelloneController extends Controller {
     /**
      * Displays a form to create a new Report entity.
      *
-     * @Route("-report-pratica/{slug}", name="claims_hospital_report_pratica_new", options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-report-pratica/{slug}", name="claims_hospital_report_pratica_new", options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function newReportAction($slug) {
         $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
@@ -723,7 +735,7 @@ class TabelloneController extends Controller {
     /**
      * Displays a form to edit an existing Report entity.
      *
-     * @Route("-report-pratica-modifica/{slug}/{numero}", name="claims_hospital_report_pratica_edit", options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-report-pratica-modifica/{slug}/{numero}", name="claims_hospital_report_pratica_edit", options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function editReportAction($slug, $numero) {
@@ -752,7 +764,7 @@ class TabelloneController extends Controller {
     /**
      * Displays a form to edit an existing Report entity.
      *
-     * @Route("-report-pratica/{slug}/{numero}", name="claims_hospital_report_pratica_show", options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-report-pratica/{slug}/{numero}", name="claims_hospital_report_pratica_show", options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function showReportAction($slug, $numero) {
@@ -796,7 +808,7 @@ class TabelloneController extends Controller {
     /**
      * Edits an existing Report entity.
      *
-     * @Route("-report-pratica-salva/{slug}/{numero}", name="claims_hospital_report_pratica_update", options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-report-pratica-salva/{slug}/{numero}", name="claims_hospital_report_pratica_update", options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Report:edit.html.twig")
      */
     public function updateReportAction($slug, $numero) {
@@ -828,7 +840,7 @@ class TabelloneController extends Controller {
     /**
      * Edits an existing Report entity.
      *
-     * @Route("-report-pratica-autoupdate/{slug}/{numero}", name="claims_hospital_report_pratica_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     * @Route("-report-pratica-autoupdate/{slug}/{numero}", name="claims_hospital_report_pratica_autoupdate", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
      * @Template("ClaimsHBundle:Report:edit.html.twig")
      */
     public function autoupdateReportAction($slug, $numero) {

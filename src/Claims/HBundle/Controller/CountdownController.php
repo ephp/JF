@@ -18,17 +18,26 @@ class CountdownController extends Controller {
     /**
      * Lists all Gestore entities.
      *
-     * @Route("/", name="claims_h_countdown")
+     * @Route("/", name="claims_h_countdown", options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function indexAction() {
         $gestore = $this->getUser();
         $cliente = $gestore->getCliente();
-        $nuovi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
-        $aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
-        $miei_aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
-        $chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
-        $miei_chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C', 'gestore' => $gestore->getId()), array('sended_at' => 'DESC'));
+        $nuovi = false;
+        $aperti = false;
+        $chiusi = false;
+        $miei_aperti = false;
+        $miei_chiusi = false;
+        if($this->getUser()->hasRole('C_ADMIN')) {
+            $nuovi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
+            $aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
+            $chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
+        }
+        if($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
+            $miei_aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
+            $miei_chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C', 'gestore' => $gestore->getId()), array('sended_at' => 'DESC'));
+        }
 
         return array(
             'gestore' => $gestore,
@@ -44,7 +53,7 @@ class CountdownController extends Controller {
     /**
      * Lists all Gestore entities.
      *
-     * @Route("/countdown-gestore", name="claims_h_countdown_assegna_gestore", defaults={"_format"="json"}, options={"expose"=true})
+     * @Route("/countdown-gestore", name="claims_h_countdown_assegna_gestore", defaults={"_format"="json"}, options={"expose"=true, "ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function assegnaGestoreCountdownAction() {
@@ -69,7 +78,7 @@ class CountdownController extends Controller {
     /**
      * Lists all Gestore entities.
      *
-     * @Route("/countdown-delete/{id}", name="claims_h_countdown_delete")
+     * @Route("/countdown-delete/{id}", name="claims_h_countdown_delete", options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function cancellaCountdownAction($id) {
@@ -89,7 +98,7 @@ class CountdownController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-countdown-reply/{id}", name="claims_h_countdown_reply")
+     * @Route("-countdown-reply/{id}", name="claims_h_countdown_reply", options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function replyAction($id) {
         $req = $this->getParam('email');

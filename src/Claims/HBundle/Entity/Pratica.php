@@ -1914,11 +1914,36 @@ class Pratica {
         $a = \DateTime::createFromFormat('d-m-Y', $day->format('d-m-Y'));
         $a->setTime(23, 59, 59);
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte("data_ora", $da))
-            ->andWhere(Criteria::expr()->lte("data_ora", $a))
+                ->where(Criteria::expr()->gte("data_ora", $da))
+                ->andWhere(Criteria::expr()->lte("data_ora", $a))
         ;
 
         return $this->eventi->matching($criteria);
+    }
+
+    public function getMonthlyReport() {
+        $a = new \DateTime();
+        $a->setTime(23, 59, 59);
+        $criteria = Criteria::create()
+                ->where(Criteria::expr()->lte("data_ora", $a))
+                ->orderBy(array('data_ora' => 'desc'));
+        ;
+
+        $evs = $this->eventi->matching($criteria);
+        foreach ($evs as $ev) {
+            /* @var $ev \Claims\HBundle\Entity\Evento */
+            switch ($ev->getTipo()->getSigla()) {
+                case 'OTH':
+                    return $ev;
+                case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
+                    if ($ev->getNote()) {
+                        return $ev;
+                    }
+                case 'JWB': case 'EJW': case 'CNT': case 'RVP': case 'MRV': case 'EML': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
+                default:
+                    break;
+            }
+        }
     }
 
     public function getEventiOggi() {
@@ -1927,8 +1952,8 @@ class Pratica {
         $a = new \DateTime();
         $a->setTime(23, 59, 59);
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte("data_ora", $da))
-            ->andWhere(Criteria::expr()->lte("data_ora", $a))
+                ->where(Criteria::expr()->gte("data_ora", $da))
+                ->andWhere(Criteria::expr()->lte("data_ora", $a))
         ;
 
         return $this->eventi->matching($criteria);
@@ -1938,17 +1963,17 @@ class Pratica {
         $da = new \DateTime();
         $da->setTime(0, 0, 0);
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte("data_ora", $da))
+                ->where(Criteria::expr()->gte("data_ora", $da))
         ;
 
         return $this->eventi->matching($criteria);
     }
-    
+
     public function getEventiPassati() {
         $a = new \DateTime();
         $a->setTime(23, 59, 59);
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->lte("data_ora", $a))
+                ->where(Criteria::expr()->lte("data_ora", $a))
         ;
 
         return $this->eventi->matching($criteria);

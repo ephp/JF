@@ -26,9 +26,9 @@ class CalendarioController extends Controller {
         Traits\CalendarController;
 
     /**
-     * @Route("/{data}",           name="claims_calendario_hospital",           defaults={"data": "oggi", "mode": "default"},   options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-completo/{data}",  name="claims_calendario_hospital_completo",  defaults={"data": "oggi", "mode": "completo"},  options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-personale/{data}", name="claims_calendario_hospital_personale", defaults={"data": "oggi", "mode": "personale"}, options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("/{data}",           name="claims_calendario_hospital",           defaults={"data": "oggi", "mode": "default"},   options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-completo/{data}",  name="claims_calendario_hospital_completo",  defaults={"data": "oggi", "mode": "completo"},  options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/{data}", name="claims_calendario_hospital_personale", defaults={"data": "oggi", "mode": "personale"}, options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function indexAction($data, $mode) {
@@ -44,9 +44,9 @@ class CalendarioController extends Controller {
     }
 
     /**
-     * @Route("-stampa/{data}",           name="claims_calendario_hospital_stampa",           defaults={"data": "oggi", "mode": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-completo/{data}",  name="claims_calendario_hospital_completo_stampa",  defaults={"data": "oggi", "mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H"}}})
-     * @Route("-stampa-personale/{data}", name="claims_calendario_hospital_personale_stampa", defaults={"data": "oggi", "mode": "personale"}, options={"ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-stampa/{data}",           name="claims_calendario_hospital_stampa",           defaults={"data": "oggi", "mode": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-completo/{data}",  name="claims_calendario_hospital_completo_stampa",  defaults={"data": "oggi", "mode": "completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-personale/{data}", name="claims_calendario_hospital_personale_stampa", defaults={"data": "oggi", "mode": "personale"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function stampaAction($data, $mode) {
@@ -74,18 +74,18 @@ class CalendarioController extends Controller {
                 'label' => 'Completo'
             );
         }
-        $out['stampa'] = array(
-            'route' => $this->getParam('_route') . '_stampa',
-            'label' => 'Versione per la stampa',
-            'icon' => 'ico-printer',
-            'class' => 'label-warning',
-            'target' => '_blank'
-        );
         $out['giorno'] = array(
             'fancybox' => 'fb_datapicker',
             'label' => 'Cambia giorno',
             'icon' => 'ico-calendar',
             'class' => 'label-info',
+            'target' => '_blank'
+        );
+        $out['stampa'] = array(
+            'route' => $this->getParam('_route') . '_stampa',
+            'label' => 'Versione per la stampa',
+            'icon' => 'ico-printer',
+            'class' => 'label-warning',
             'target' => '_blank'
         );
         return $out;

@@ -20,10 +20,10 @@ select p.id, p.cliente_id, p.claimant, p.codice,
  where (
         t.sigla IN ('OTH', 'CHS')
         OR (
-            t.sigla = 'VER'
+            t.sigla IN ('ASC', 'VIM', 'RPM', 'RER', 'RSA', 'TAX', 'VER')
             AND e.note != ''
-		     )
-		  )
+           )
+       )
 
  group by e.pratica_id
  order by giorni desc

@@ -52,7 +52,7 @@ class ClaimsHExtension extends Extension implements IExtension {
             );
             
             $menu['claims']['submenu'][] = array(
-                'label' => 'Hospital',
+                'label' => 'Borderaux Hospital',
                 'route' => 'claims_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
                 'order' => 10,

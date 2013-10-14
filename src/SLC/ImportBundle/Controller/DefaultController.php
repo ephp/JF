@@ -49,9 +49,9 @@ class DefaultController extends Controller {
             return $this->createNotFoundException('Configurare la sorgente dati di JF-CLAIMS');
         }
 
-        $out = $this->claim($slug, $dati);
+        $no_gestore = $this->claim($slug, $dati);
         
-        return $out ? $this->redirect($this->generateUrl('claims_hospital')) : $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $slug)));
+        return $no_gestore ? $this->redirect($this->generateUrl('claims_hospital')) : $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $slug)));
     }
 
     private function claim($slug, $dati) {
@@ -172,7 +172,7 @@ class DefaultController extends Controller {
             $this->getEm()->rollback();
             throw $e;
         }
-        return !is_null($pratica->getGestore());
+        return is_null($pratica->getGestore());
     }
 
 }

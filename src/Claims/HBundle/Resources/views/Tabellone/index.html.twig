@@ -32,7 +32,7 @@
             <div class="block">
                 <div class="data-fluid">
                     {% for sortmode, link in sorting %}
-                        <a href="{{ path(app.request.get('_route'), {'sorting': sortmode}) }}"><span class="label {% if app.user.dati.claims_h_sorting == sortmode %}label-success{% else %}label-green{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
+                        <a href="{{ path(app.request.get('_route'), {'sorting': link.mode}) }}"><span class="label {% if app.user.dati.claims_h_sorting == sortmode or app.user.dati.claims_h_sorting == 'i'~sortmode %}label-success{% else %}label-green{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
                     {% endfor %}
                 </div>            
             </div>            

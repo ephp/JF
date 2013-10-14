@@ -208,6 +208,7 @@ class TabelloneController extends Controller {
         
         $out['dasc'] = array(
             'label' => 'DASC',
+            'mode' => 'dasc',
         );
         if($sorting == 'dasc') {
             $out['dasc']['icon'] = 'ico-chevron-up';
@@ -218,6 +219,7 @@ class TabelloneController extends Controller {
         
         $out['claimant'] = array(
             'label' => 'Nome Claimant',
+            'mode' => 'claimant',
         );
         if($sorting == 'claimant') {
             $out['claimant']['icon'] = 'ico-chevron-up';
@@ -228,6 +230,7 @@ class TabelloneController extends Controller {
         
         $out['attivita'] = array(
             'label' => 'Attività',
+            'mode' => 'attivita',
         );
         if($sorting == 'attivita') {
             $out['attivita']['icon'] = 'ico-chevron-up';

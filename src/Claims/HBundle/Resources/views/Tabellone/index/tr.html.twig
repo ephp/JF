@@ -4,9 +4,15 @@
     {% endif %}
         <td class="center" nowrap>
             <a href="#fb_cambia_priorita" class="fancybox">
-                <span class="label {{ entity.priorita.css }}">
-                    <abbr title="{{ entity.priorita.priorita }}">{{ entity.codice }}</abbr>
-                </span>
+                {% if entity.priorita %}
+                    <span class="label {{ entity.priorita.css }}">
+                        <abbr title="{{ entity.priorita.priorita }}">{{ entity.codice }}</abbr>
+                    </span>
+                {% else %}
+                    <span class="label">
+                        <abbr title="Non definita">{{ entity.codice }}</abbr>
+                    </span>
+                {% endif %}
             </a>
             </td>
     <td class="center" class="dasc" nowrap>

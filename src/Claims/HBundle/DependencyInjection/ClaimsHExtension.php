@@ -54,35 +54,35 @@ class ClaimsHExtension extends Extension implements IExtension {
             $menu['claims']['submenu'][] = array(
                 'label' => 'Borderaux Hospital',
                 'route' => 'claims_hospital',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 10,
             );
             
             $menu['claims']['submenu'][] = array(
                 'label' => 'Stati pratiche Hospital',
                 'route' => 'claims_stati_hospital',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H')),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 20,
             );
             
             $menu['claims']['submenu'][] = array(
                 'label' => 'Calendario Hospital',
                 'route' => 'claims_calendario_hospital',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
                 'order' => 30,
             );
             
             $menu['claims']['submenu'][] = array(
                 'label' => 'Countdown Hospital',
                 'route' => 'claims_h_countdown',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('slc'))),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('cl.h-pratiche' => array('slc'))),
                 'order' => 50,
             );
             
             $menu['claims']['submenu'][] = array(
                 'label' => 'Ritardi Hospital',
                 'route' => 'claims_h_ritardi',
-                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
                 'order' => 60,
             );
 

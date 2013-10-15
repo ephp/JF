@@ -1,0 +1,16 @@
+<tr >
+    <th style="text-align: right;">{{ index }}</th>
+    <td style="text-align: center;">{{ entity.giorniRimanenti }}</td>
+    <td>{{ entity.email.subject }}</td>
+    <td>{{ entity.email.fromName }}</td>
+    <td>
+        {% if entity.scheda %}
+            {{ entity.scheda.codice }}
+        {% endif %}
+    </td>
+    <td>
+        {% if entity.scheda %}
+            {{ entity.scheda.claimant }}
+        {% endif %}
+    </td>
+</tr>

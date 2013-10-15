@@ -9,7 +9,7 @@ use Ephp\UtilityBundle\Utility\Debug;
 use Claims\HBundle\Entity\Countdown;
 
 /**
- * @Route("/cron-email")
+ * @Route("/h/cron-email")
  */
 class CronEmailController extends Controller {
 

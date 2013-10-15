@@ -1,0 +1,3 @@
+{% for entity in pratica.eventiOggi %}
+{{ index }} | {% if entity.importante %}*{% else %} {% endif %} | {{ entity.dataOra|date('d/m/Y') }} | {{ entity.codice }} | {{ entity.scheda.claimant }} | {{ entity.titolo }} | {{ entity.note }}
+{% endfor %}

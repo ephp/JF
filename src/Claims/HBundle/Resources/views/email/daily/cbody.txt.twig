@@ -1,0 +1,7 @@
+{% if index is not defined %}
+    {% set index = 1 %}
+{% endif %}
+{% for entity in countdown %}
+    {% include 'ClaimsHBundle:email:daily/riga_countdown.txt.twig' %}
+    {% set index = index + 1 %}
+{% endfor %}

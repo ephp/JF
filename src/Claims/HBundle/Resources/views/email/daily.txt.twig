@@ -1,0 +1,15 @@
+{% set titolo = 'Agenda giornaliera di '~user.nome %}
+
+*{{titolo}}*
+
+{% if entity|length > 0 %}
+Hai {{ pratiche|length }} pratiche in agenda
+| # | * | Data | Tpa | Claimant | Titolo | Note |
+{% include 'ClaimsHBundle:email:daily/tbody.txt.twig' %}
+{% endif %}
+
+{% if countdown|length > 0 %}
+Hai {{ countdown|length }} countdown aperti
+| # | Giorni | Mittente | Subject | TPA | 
+{% include 'ClaimsHBundle:email:daily/cbody.txt.twig' %}
+{% endif %}

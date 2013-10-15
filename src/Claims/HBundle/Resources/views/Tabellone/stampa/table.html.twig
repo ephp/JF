@@ -1,22 +1,28 @@
 <table class="table-bordered">
     <thead>
         <tr>
-            {% if mode in ['personale', 'chiuso'] %}
+            {% if mode is not defined or mode in ['personale', 'chiuso'] %}
                 <th width="20">#</th>
             {% endif %}
             <th width="110">Pratica</th>
             <th width="15%">Claimant</th>
-            {% if mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
+            {% if mode is not defined or mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
                 <th width="40">Gestore</th>
             {% endif %}
             <th width="25">Soi</th>
             <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
+            {% if mode is not defined %}
+                <th width="70"><abbr title="First Reserve Indication">F.R.I.</abbr></th>
+            {% endif %}
             <th>Note</th>
             <th width="10%">Stato</th>
         </tr>
     </thead>
     <tbody>
         {% set i = 0 %}
+        {% if app.request.get('page') %}
+            {% set i = (app.request.get('page') - 1) * 50 %}
+        {% endif %}
         {% for entity in entities %}
             {% set i = i + 1 %}
             {% include "ClaimsHBundle:Tabellone:stampa/tr.html.twig" %}

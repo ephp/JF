@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+{% block title %}Analisi Sinistri Hospital{% endblock %}
+{% block js %}
+{% javascripts  
+    '@SLCHBundle/Resources/public/js/index.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cogs-2"></span>
+    </div>
+    <h1>Analisi Sinistri <small>Hospital</small></h1>
+</div>        
+<div style="clear: both"></div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                {% for linkmode, link in links %}
+                    <a href="{% if link.fancybox is defined %}#{{ link.fancybox }}{% else %}{% if link.params is defined %}{{ path(link.route, link.params) }}{% else %}{{ path(link.route) }}{% endif %}{% endif %}" {% if link.target is defined %}target="{{ link.target }}"{% endif %} {% if link.fancybox is defined %}class="fancybox"{% endif %}><span class="label {% if linkmode == tabopen %}label-success{% else %}{% if link.class is defined %}{{ link.class }}{% else %}label-green{% endif %}{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
+                {% endfor %}
+            </div>            
+        </div>            
+    </div>       
+</div> 
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                {% include "ClaimsHBundle:Tabellone:index/table.html.twig" %}
+            </div> 
+        </div>            
+    </div>            
+</div>         
+<div class="row-fluid">
+    <div class="span12">
+        {{ knp_pagination_render(pagination) }}
+    </div>            
+</div>         
+{% render(controller("ClaimsHBundle:Render:dettagli")) %}
+{% render(controller("ClaimsHBundle:Render:cambiaPriorita")) %}
+{% if app.user.hasRole(['C_GESTORE_H']) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaStato")) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaNote")) %}
+{% endif %}
+{% if app.user.hasRole('C_ADMIN') %}
+    {% render(controller("ClaimsHBundle:Render:cambiaDasc")) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaGestore")) %}
+{% endif %}
+{% endblock %}

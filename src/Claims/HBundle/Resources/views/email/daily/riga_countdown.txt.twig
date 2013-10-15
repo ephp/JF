@@ -1,0 +1,1 @@
+{{ index }} | {{ entity.giorniRimanenti }} | {{ entity.email.subject }} | {{ entity.email.fromName }} | {% if entity.scheda %}{{ entity.scheda.ospedale.sigla|upper }}/{{ entity.scheda.anno2 }}/{{ entity.scheda.tpa }} | {{ entity.scheda.claimant }}{% else %} - | -{% endif %}

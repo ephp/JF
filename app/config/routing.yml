@@ -1,3 +1,8 @@
+slch:
+    resource: "@SLCHBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 scl_import:
     resource: "@SLCImportBundle/Controller/"
     type:     annotation

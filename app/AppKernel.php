@@ -35,11 +35,14 @@ class AppKernel extends Kernel
             new JF\CalendarBundle\JFCalendarBundle(),
             new JF\ACLBundle\JFACLBundle(),
             new JF\AndreaniBundle\JFAndreaniBundle(),
+            
             new Claims\CoreBundle\ClaimsCoreBundle(),
             new Claims\HBundle\ClaimsHBundle(),
             new Claims\ContecBundle\ClaimsContecBundle(),
             new Claims\RavinaleBundle\ClaimsRavinaleBundle(),
+            
             new SLC\ImportBundle\SLCImportBundle(),
+            new SLC\HBundle\SLCHBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -665,7 +665,7 @@ class Cliente {
         if (!$sigla) {
             foreach ($this->getLicenze() as $licenza) {
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                if ($licenza->getLicenza()->getId() == $licenza_id) {
+                if ($licenza->getLicenza()->getId() == $gruppo) {
                     return true;
                 }
             }

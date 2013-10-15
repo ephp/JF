@@ -347,6 +347,52 @@ class Pratica {
     private $informazioni;
 
     /**
+     * DATI RECUPERO
+     */
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_responsabile", type="text", nullable=true)
+     */
+    private $recuperoResponsabile;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_sollecito_asl", type="text", nullable=true)
+     */
+    private $recuperoSollecitoAsl;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_copia_polizza", type="text", nullable=true)
+     */
+    private $recuperoCopiaPolizza;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_email_liquidatore", type="text", nullable=true)
+     */
+    private $recuperoEmailLiquidatore;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_quietanze", type="text", nullable=true)
+     */
+    private $recuperoQuietanze;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="recupero_azione_di_recupero", type="text", nullable=true)
+     */
+    private $recuperoAzioneDiRecupero;
+
+    /**
      * DATI REPORT
      */
 
@@ -1898,6 +1944,55 @@ class Pratica {
      */
     public function getLinks() {
         return $this->links;
+    }
+
+    
+    public function getRecuperoResponsabile() {
+        return $this->recuperoResponsabile;
+    }
+
+    public function setRecuperoResponsabile($recuperoResponsabile) {
+        $this->recuperoResponsabile = $recuperoResponsabile;
+    }
+
+    public function getRecuperoSollecitoAsl() {
+        return $this->recuperoSollecitoAsl;
+    }
+
+    public function setRecuperoSollecitoAsl($recuperoSollecitoAsl) {
+        $this->recuperoSollecitoAsl = $recuperoSollecitoAsl;
+    }
+
+    public function getRecuperoCopiaPolizza() {
+        return $this->recuperoCopiaPolizza;
+    }
+
+    public function setRecuperoCopiaPolizza($recuperoCopiaPolizza) {
+        $this->recuperoCopiaPolizza = $recuperoCopiaPolizza;
+    }
+
+    public function getRecuperoEmailLiquidatore() {
+        return $this->recuperoEmailLiquidatore;
+    }
+
+    public function setRecuperoEmailLiquidatore($recuperoEmailLiquidatore) {
+        $this->recuperoEmailLiquidatore = $recuperoEmailLiquidatore;
+    }
+
+    public function getRecuperoQuietanze() {
+        return $this->recuperoQuietanze;
+    }
+
+    public function setRecuperoQuietanze($recuperoQuietanze) {
+        $this->recuperoQuietanze = $recuperoQuietanze;
+    }
+
+    public function getRecuperoAzioneDiRecupero() {
+        return $this->recuperoAzioneDiRecupero;
+    }
+
+    public function setRecuperoAzioneDiRecupero($recuperoAzioneDiRecupero) {
+        $this->recuperoAzioneDiRecupero = $recuperoAzioneDiRecupero;
     }
 
     public function isGiudiziale() {

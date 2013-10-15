@@ -22,6 +22,7 @@ trait CalendarController {
     protected $CAMBIO_STATO_OPERATIVO = "CHS";
     protected $CAMBIO_GESTORE = "CHG";
     protected $PRIORITA = "PRI";
+    protected $RECUPERI = "REC";
 
     /**
      * @return \Ephp\Bundle\CalendarBundle\Entity\Calendario
@@ -102,6 +103,9 @@ trait CalendarController {
                 case $this->CAMBIO_GESTORE:
                     $tipo = $_tipo->createTipo($this->CAMBIO_GESTORE, 'Cambio Gestore', 'aaaaaa', $cal, false, false, false);
                     break;
+                case $this->RECUPERI:
+                    $tipo = $_tipo->createTipo($this->RECUPERI, 'Recuperi', '228822', $cal, false, false, true);
+                    break;
             }
         }
         return $tipo;
@@ -131,6 +135,23 @@ trait CalendarController {
                 ->setPratica($pratica)
                 ->setTitolo($titolo ? $titolo : $tipo->getNome());
         return $evento;
+    }
+
+    protected function titoloRecuperi($name) {
+        switch ($name) {
+            case 'recupero_responsabile':
+                return '1. Individuazione responsabile';
+            case 'recupero_sollecito_asl':
+                return '2. Email ASL (Sollecito 1910)';
+            case 'recupero_copia_polizza':
+                return '3. Recupero copia sinistro/copia polizza';
+            case 'recupero_email_liquidatore':
+                return '4. Scrivere/telefonare al liquidatore per chiedere compartecipazione';
+            case 'recupero_quietanze':
+                return '5. Chiedere percentuale espressamente e quietanze separate';
+            case 'recupero_azione_di_recupero':
+                return '6. Azione di recupero';
+        }
     }
 
     protected function generatore() {

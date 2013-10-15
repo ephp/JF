@@ -3,7 +3,6 @@ $(document).ready(function() {
     sanitizeCurrencyNp([$('.currencynp')]);
     sanitizeDate([$('.auto_date')]);
     sanitizeUrl([$('.auto_url')]);
-//    $(".autogrow").autoGrow();
     autoupdate();
     checkUm();
 });
@@ -14,7 +13,7 @@ function aggiungiEvento() {
     var form = $('#aggiungi_evento');
     $.post(Routing.generate('claims_hospital_aggiungi_evento', {'slug': slug}), form.serialize(), function(out) {
         $('#tab_cal').html(out);
-        autoupdate();
+        autoupdateCalendario();
         $.fancybox.close();
         form[0].reset();
         $('#bt_aggiungi_evento').show();
@@ -35,7 +34,7 @@ function cancellaEvento(id, testo) {
     if (confirm("Vuoi cancellare l'evento \"" + testo + "\"")) {
         $.post(Routing.generate('claims_hospital_cancella_evento'), {'evento': {'id': id}}, function(out) {
             $('#tab_cal').html(out);
-            autoupdate();
+            autoupdateCalendario();
         });
     }
 }
@@ -61,27 +60,46 @@ function cancellaLink(id, testo) {
     }
 }
 
+function _autoupdate($this) {
+    val = $this.val();
+    pratica = $this.attr('pratica');
+    evento = $this.attr('evento');
+    field = $this.attr('name');
+    report = $this.attr('report');
+    if (pratica) {
+        $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
+            checkUm();
+            if (out.reload) {
+                $('#tab_cal').html(out.calendario);
+                autoupdateCalendario();
+            }
+        });
+    } else if (report) {
+        field = field.from(7).to(-1);
+        $.post(Routing.generate('claims_hospital_report_pratica_autoupdate', {'slug': slug, 'numero': $('#' + report).val()}), {'report': {'field': field, 'value': val}}, function(out) {
+        });
+    } else {
+        $.post(Routing.generate('claims_hospital_evento_autoupdate'), {'evento': {'id': evento, 'field': field, 'value': val}}, function(out) {
+            if (out.reload === 1) {
+                window.location = window.location;
+            }
+        });
+    }
+}
+
 function autoupdate() {
     $('.autoupdate').change(function() {
-        val = $(this).val();
-        pratica = $(this).attr('pratica');
-        evento = $(this).attr('evento');
-        field = $(this).attr('name');
-        report = $(this).attr('report');
-        if (pratica) {
-            $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
-                checkUm();
-            });
-        } else if (report) {
-            field = field.from(7).to(-1);
-            $.post(Routing.generate('claims_hospital_report_pratica_autoupdate', {'slug': slug, 'numero': $('#'+report).val()}), {'report': {'field': field, 'value': val}}, function(out) {});
-        } else {
-            $.post(Routing.generate('claims_hospital_evento_autoupdate'), {'evento': {'id': evento, 'field': field, 'value': val}}, function(out) {
-                if (out.reload === 1) {
-                    window.location = window.location;
-                }
-            });
-        }
+        _autoupdate($(this));
+    });
+
+    $('.star').click(function() {
+        evidenziaEvento($(this).attr('evento'));
+    });
+}
+
+function autoupdateCalendario() {
+    $('#tab_cal').find('.autoupdate').change(function() {
+        _autoupdate($(this));
     });
 
     $('.star').click(function() {
@@ -108,7 +126,7 @@ function importaRavinale() {
     var form = $('#form_ravinale');
     $.post(form.attr('action'), form.serialize(), function(out) {
         $('#tab_cal').html(out);
-        autoupdate();
+        autoupdateCalendario();
         $(".tabbable").tabs({active: 0});
         form[0].reset();
     });

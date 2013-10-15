@@ -557,6 +557,7 @@ class TabelloneController extends Controller {
         $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $pratica Pratica */
         try {
+            $this->getEm()->beginTransaction();
             $fx = \Doctrine\Common\Util\Inflector::camelize("set_{$req['field']}");
             switch ($req['field']) {
                 case 'dasc':
@@ -570,6 +571,26 @@ class TabelloneController extends Controller {
                         $pratica->$fx(-1);
                         break;
                     }
+                case 'recupero_responsabile':
+                case 'recupero_sollecito_asl':
+                case 'recupero_copia_polizza':
+                case 'recupero_email_liquidatore':
+                case 'recupero_quietanze':
+                case 'recupero_azione_di_recupero':
+                    $pratica->$fx($req['value']);
+                    $oggi = new \DateTime();
+                    $oggi->setTime(8, 0, 0);
+                    $titolo = $this->titoloRecuperi($req['field']);
+                    $evento = $this->findOneBy('ClaimsHBundle:Evento', array('titolo' => $titolo, 'tipo' => $this->getTipoEvento($this->RECUPERI)->getId(), 'data_ora' => $oggi));
+                    if(!$evento) {
+                        $evento = $this->newEvento($this->RECUPERI, $pratica, $titolo, $req['value']);
+                        $evento->getDataOra()->setTime(8, 0, 0);
+                    } else {
+                        $evento->setNote($req['value']);
+                    }
+                    $this->persist($evento);
+                    $req['reload'] = true;
+                    break;
                 default:
                     $pratica->$fx($req['value']);
                     break;
@@ -580,8 +601,13 @@ class TabelloneController extends Controller {
             }
 
             $this->persist($pratica);
+            $this->getEm()->commit();
         } catch (\Exception $e) {
+            $this->getEm()->rollback();
             throw $e;
+        }
+        if(isset($req['reload'])) {
+            $req['calendario'] = $this->renderView("ClaimsHBundle:Tabellone:pratica/calendario.html.twig", array('entity' => $this->find('ClaimsHBundle:Pratica', $pratica->getId())));
         }
         return new \Symfony\Component\HttpFoundation\Response(json_encode($req));
     }

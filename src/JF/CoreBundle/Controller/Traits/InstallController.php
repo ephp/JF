@@ -7,7 +7,7 @@ trait InstallController {
     protected function findPackage($sigla) {
         return $this->findOneBy('JFCoreBundle:Package', array('sigla' => $sigla));
     }
-    
+
     protected function findGruppo(\JF\CoreBundle\Entity\Package $package, $sigla) {
         return $this->findOneBy('JFCoreBundle:Gruppo', array('package' => $package->getId(), 'sigla' => $sigla));
     }
@@ -29,7 +29,6 @@ trait InstallController {
                     ->setDescrizione($this->renderView($descrizione));
             $this->persist($package);
         }
-        
     }
 
     protected function installGruppo($package, $sigla, $nome, $descrizione) {
@@ -47,7 +46,6 @@ trait InstallController {
                     ->setDescrizione($this->renderView($descrizione));
             $this->persist($gruppo);
         }
-        
     }
 
     protected function newLicenza($package, $gruppo, $sigla, $ordine, $nome, $descrizione, $durata, $roles, $widgets, $params, $prezzo, $sconto = null, $autoinstall = false, $market = true) {
@@ -66,61 +64,70 @@ trait InstallController {
                     ->setWidgets($widgets)
                     ->setParams($params)
                     ->setPrezzo($prezzo)
-                    ->setSconto($sconto ?: $prezzo)
+                    ->setSconto($sconto ? : $prezzo)
                     ->setAutoinstall($autoinstall)
                     ->setMarket($market)
                     ->setStato($sconto ? \JF\CoreBundle\Entity\Licenza::$S_LIM : \JF\CoreBundle\Entity\Licenza::$S_NEW)
-                    ;
-            if(!$market) {
+            ;
+            if (!$market) {
                 $licenza->setStato(\JF\CoreBundle\Entity\Licenza::$S_HID);
             }
             $this->persist($licenza);
         } else {
             $stato = \JF\CoreBundle\Entity\Licenza::$S_NOP;
             $descrizione = $this->renderView($descrizione);
-            if($licenza->getDescrizione() != $descrizione) {
+            if ($licenza->getDescrizione() != $descrizione) {
                 $licenza->setDescrizione($descrizione);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if($licenza->getOrdine() != $ordine) {
+            if ($licenza->getOrdine() != $ordine) {
                 $licenza->setOrdine($ordine);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if($licenza->getNome() != $nome) {
+            if ($licenza->getNome() != $nome) {
                 $licenza->setNome($nome);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if($licenza->getDurata() != $durata) {
+            if ($licenza->getDurata() != $durata) {
                 $licenza->setDurata($durata);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if($licenza->getAutoinstall() != $autoinstall) {
+            if ($licenza->getAutoinstall() != $autoinstall) {
                 $licenza->setAutoinstall($autoinstall);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getRoles(), $roles)) + count(array_diff($roles, $licenza->getRoles())) != 0) {
+            if (count(array_diff(array_keys($licenza->getRoles()), array_keys($roles))) +
+                    count(array_diff(array_keys($roles), array_keys($licenza->getRoles()))) +
+                    count(array_diff($licenza->getRoles(), $roles)) +
+                    count(array_diff($roles, $licenza->getRoles())) != 0) {
                 $licenza->setRoles($roles);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getParams(), $params)) + count(array_diff($params, $licenza->getParams())) != 0) {
+            if (count(array_diff(array_keys($licenza->getParams()), array_keys($params))) +
+                    count(array_diff(array_keys($params), array_keys($licenza->getParams()))) +
+                    count(array_diff($licenza->getParams(), $params)) +
+                    count(array_diff($params, $licenza->getParams())) != 0) {
                 $licenza->setParams($params);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if(count(array_diff($licenza->getWidgets(), $widgets)) + count(array_diff($widgets, $licenza->getWidgets())) != 0) {
+            if (count(array_diff(array_keys($licenza->getWidgets()), array_keys($widgets))) +
+                    count(array_diff(array_keys($widgets), array_keys($licenza->getWidgets()))) +
+                    count(array_diff($licenza->getWidgets(), $widgets)) +
+                    count(array_diff($widgets, $licenza->getWidgets())) != 0) {
                 $licenza->setWidgets($widgets);
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_UPD;
             }
-            if($licenza->getPrezzo() != $prezzo) {
+            if ($licenza->getPrezzo() != $prezzo) {
                 $stato = $licenza->getPrezzo() > $prezzo ? \JF\CoreBundle\Entity\Licenza::$S_DOW : \JF\CoreBundle\Entity\Licenza::$S_UPD;
                 $licenza->setPrezzo($prezzo);
                 $licenza->setSconto($prezzo);
             }
-            if($sconto) {
+            if ($sconto) {
                 $stato = \JF\CoreBundle\Entity\Licenza::$S_SAL;
                 $licenza->setSconto($sconto);
             }
-            if($licenza->getMarket()) {
-                if(!$market) {
+            if ($licenza->getMarket()) {
+                if (!$market) {
                     $licenza->setMarket($market);
                     $stato = \JF\CoreBundle\Entity\Licenza::$S_DEL;
                 }
@@ -130,10 +137,10 @@ trait InstallController {
             $licenza->setStato($stato);
             $this->persist($licenza);
         }
-        
-        if($licenza->getAutoinstall()) {
-            foreach($this->findBy('JFACLBundle:Cliente', array()) as $cliente) {
-                if(!$this->findOneBy('JFACLBundle:Licenza', array('gruppo' => $gruppo, 'cliente' => $cliente->getId()))) {
+
+        if ($licenza->getAutoinstall()) {
+            foreach ($this->findBy('JFACLBundle:Cliente', array()) as $cliente) {
+                if (!$this->findOneBy('JFACLBundle:Licenza', array('gruppo' => $gruppo, 'cliente' => $cliente->getId()))) {
                     $_licenza = new \JF\ACLBundle\Entity\Licenza();
                     $_licenza->setLicenza($licenza);
                     $_licenza->setCliente($cliente);
@@ -142,7 +149,7 @@ trait InstallController {
                 }
             }
         }
-        
+
         return array('codice' => $licenza->getCodiceEsteso(), 'stato' => $licenza->getStatoTestuale());
     }
 

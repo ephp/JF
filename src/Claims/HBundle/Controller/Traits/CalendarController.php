@@ -124,7 +124,7 @@ trait CalendarController {
         $tipo = $this->getTipoEvento($sigla);
         $evento = new \Claims\HBundle\Entity\Evento();
         $evento->setCalendario($cal)
-                ->setCliente($this->getUser()->getCliente())
+                ->setCliente($this->getUser() ? $this->getUser()->getCliente() : $pratica->getCliente())
                 ->setGestore($pratica->getGestore())
                 ->setTipo($tipo)
                 ->setDataOra($oggi)

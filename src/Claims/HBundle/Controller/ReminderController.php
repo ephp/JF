@@ -21,7 +21,21 @@ class ReminderController extends Controller {
      */
     public function dailyAction() {
         $output = array();
-        $out = $this->executeSql("SELECT c.id FROM acl_clienti c, acl_licenze cl, jf_licenze l, jf_gruppi_licenze gl, jf_package p WHERE cl.cliente_id = c.id AND cl.licenza_id = l.id AND l.gruppo_id = gl.id AND gl.package_id = p.id AND p.sigla = 'cl.h' AND gl.sigla = 'pratiche' AND l.params LIKE '%\"daily_email\";b:1%'");
+        $out = $this->executeSql("
+SELECT c.id 
+  FROM acl_clienti c, 
+       acl_licenze cl, 
+		 jf_licenze l, 
+		 jf_gruppi_licenze gl, 
+		 jf_package p 
+ WHERE cl.cliente_id = c.id 
+   AND cl.licenza_id = l.id 
+	AND l.gruppo_id = gl.id 
+	AND gl.package_id = p.id 
+	AND p.sigla = 'cl.h' 
+	AND gl.sigla = 'pratiche'
+	AND l.params RLIKE 'daily_email[^b]+b:1'
+        ");
         foreach ($out as $id) {
             $id = $id['id'];
             $cliente = $this->find('JFACLBundle:Cliente', $id);
@@ -55,7 +69,6 @@ class ReminderController extends Controller {
             'out' => array(
             ),
         );
-        $dati = $this->getUser()->getDati();
         $filtri['in']['gestore'] = $gestore->getId();
         $filtri['in']['evento'] = new \DateTime();
         $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));

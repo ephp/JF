@@ -20,6 +20,9 @@ security:
         andreani:
             pattern:  ^/andreani/
             security: false
+        cron:
+            pattern:  -cron$
+            security: false
         eph:
             pattern:  /eph$
             security: false

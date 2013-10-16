@@ -1,16 +1,16 @@
-<tr>
+<tr style="background-color: #ccc; color: #000;">
     <th style="text-align: right;">{{ index }}</th>
-    <td style="text-align: center;"><a href="{{ url('claims_hospital_pratica', {'slug': pratica.slug}) }}">{{ pratica.codice }}</a></td>
-    <td><abbr title="{{ pratica.priorita.priorita }}">{{ pratica.priorita.priorita }}</abbr></td>
-    <td>{{ pratica.claimant }}</td>
-    <td>{{ pratica.nota }}</td>
+    <td style="text-align: center;" nowrap><a style="color: #f00; margin: 5px;" href="{{ url('claims_hospital_pratica', {'slug': pratica.slug}) }}">{{ pratica.codice }}</a></td>
+    <td style="text-align: center; font-weight: bold;"><abbr title="{{ pratica.priorita.priorita }}">{{ pratica.priorita.priorita }}</abbr></td>
+    <td style="text-align: center; font-weight: bold;">{{ pratica.claimant }}</td>
+    <td>{{ pratica.note }}</td>
 </tr>
 {% for entity in pratica.eventiOggi %}
-<tr>
+<tr style="background-color: #ddd; color: #000; padding:2px;">
     <td style="text-align: right;">&nbsp;</td>
-    <td title="{{entity.tipo.sigla}}">{% if entity.importante %}*{% else %}&nbsp;{% endif %}</td>
-    <td>{{ entity.dataOra|date('d-m-Y') }}</td>
-    <td>{{ entity.titolo }}</td>
+    <td>{{entity.tipo.sigla}} {% if entity.importante %}*{% else %}&nbsp;{% endif %}</td>
+    <td style="text-align: center;" nowrap>{{ entity.dataOra|date('d-m-Y') }}</td>
+    <td nowrap>{{ entity.titolo }}</td>
     <td>{{ entity.note }}</td>
 </tr>
 {% endfor %}

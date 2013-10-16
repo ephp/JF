@@ -6,29 +6,27 @@
 
 {% if pratiche|length > 0 %}
     <h2><a href="{{ url('claims_calendario_hospital') }}">Hai {{ pratiche|length }} pratiche in agenda</a></h2>
-    <table class="records_list">
+    <table>
         <thead>
-            <tr>
+            <tr style="background-color: #000; color: #fff; padding:2px;">
                 <th>#</th>
-                <th>&nbsp;</th>
-                <th>Data</th>
                 <th>Tpa</th>
+                <th>Priorità</th>
                 <th>Claimant</th>
-                <th>Titolo</th>
                 <th>Note</th>
             </tr>
         </thead>
         <tbody id="tb_container">
-            {% include 'EphpSinistriBundle:Calendar:email/agenda_giornaliera/tbody.html.twig' %}
+            {% include 'ClaimsHBundle:email:daily/tbody.html.twig' %}
         </tbody>
     </table>
 {% endif %}
 
 {% if countdown|length > 0 %}
     <h2><a href="{{ url('claims_h_countdown') }}">Hai {{ countdown|length }} countdown aperti</a></h2>
-    <table class="records_list">
+    <table class="table">
         <thead>
-            <tr>
+            <tr style="background-color: #000; color: #fff; padding:2px;">
                 <th>#</th>
                 <th>Giorni</th>
                 <th>Subject</th>
@@ -38,7 +36,7 @@
             </tr>
         </thead>
         <tbody id="tb_container">
-            {% include 'EphpSinistriBundle:Calendar:email/agenda_giornaliera/cbody.html.twig' %}
+            {% include 'ClaimsHBundle:email:daily/cbody.html.twig' %}
         </tbody>
     </table>
 {% endif %}

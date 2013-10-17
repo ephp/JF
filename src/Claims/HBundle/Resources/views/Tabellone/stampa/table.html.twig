@@ -1,12 +1,12 @@
 <table class="table-bordered">
     <thead>
         <tr>
-            {% if mode is not defined or mode in ['personale', 'chiuso'] %}
+            {% if mode is not defined or mode in ['personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore'] %}
                 <th width="20">#</th>
             {% endif %}
             <th width="110">Pratica</th>
             <th width="15%">Claimant</th>
-            {% if mode is not defined or mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
+            {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] %}
                 <th width="40">Gestore</th>
             {% endif %}
             <th width="25">Soi</th>

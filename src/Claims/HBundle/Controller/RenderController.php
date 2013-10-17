@@ -122,7 +122,7 @@ class RenderController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCercaForm(Pratica $entity, $mode) {
-        $form = $this->createForm(new RicercaType($mode), $entity, array(
+        $form = $this->createForm(new RicercaType($this->getUser()->getCliente()), $entity, array(
             'action' => $this->generateUrl('claims_hospital_'.$mode),
             'method' => 'POST',
         ));

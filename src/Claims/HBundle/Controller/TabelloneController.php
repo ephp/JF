@@ -28,8 +28,10 @@ class TabelloneController extends Controller {
     /**
      * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/",          name="claims_hospital_aperti",        defaults={"mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-tutti/",           name="claims_hospital_tutti",         defaults={"mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
@@ -72,8 +74,10 @@ class TabelloneController extends Controller {
     /**
      * @Route("-stampa/{monthly_report}",                 name="claims_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-completo/{monthly_report}",        name="claims_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-aperti/{monthly_report}",          name="claims_hospital_aperti_stampa",        defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-personale/{monthly_report}",       name="claims_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-chiusi/{monthly_report}",          name="claims_hospital_chiuso_stampa",        defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-tutti/{monthly_report}",           name="claims_hospital_tutti_stampa",         defaults={"monthly_report": false, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_stampa",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-stampa-chiusi-completo/{monthly_report}", name="claims_hospital_chiusi_stampa",        defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
@@ -112,42 +116,60 @@ class TabelloneController extends Controller {
             if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
                 $out['personale'] = array(
                     'route' => 'claims_hospital_personale',
-                    'label' => 'Personale'
+                    'label' => 'Personale',
+                    'icon' => 'ico-user',
                 );
                 $out['chiuso'] = array(
                     'route' => 'claims_hospital_chiuso',
-                    'label' => 'Chiusi'
+                    'label' => 'Chiusi',
+                    'icon' => 'ico-user',
+                );
+                $out['tutti'] = array(
+                    'route' => 'claims_hospital_tutti',
+                    'label' => 'Tutti personali',
+                    'icon' => 'ico-user',
                 );
             }
-            $out['completo'] = array(
-                'route' => 'claims_hospital_completo',
-                'label' => 'Completo'
+            $out['aperti'] = array(
+                'route' => 'claims_hospital_aperti',
+                'label' => 'Aperti',
+                'icon' => 'ico-group',
             );
             if ($this->getUser()->hasRole('C_ADMIN')) {
                 $out['chiusi'] = array(
                     'route' => 'claims_hospital_chiusi',
-                    'label' => 'Tutti i chiusi'
+                    'label' => 'Tutti i chiusi',
+                    'icon' => 'ico-group',
+                );
+                $out['completo'] = array(
+                    'route' => 'claims_hospital_completo',
+                    'label' => 'Completo',
+                    'icon' => 'ico-group',
                 );
                 $out['senza_dasc'] = array(
                     'route' => 'claims_hospital_senza_dasc',
-                    'label' => 'Senza DASC'
+                    'label' => 'Senza DASC',
+                    'icon' => 'ico-tools',
                 );
                 $out['senza_gestore'] = array(
                     'route' => 'claims_hospital_senza_gestore',
-                    'label' => 'Senza gestore'
+                    'label' => 'Senza gestore',
+                    'icon' => 'ico-tools',
                 );
             }
         } else {
             if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
                 $out['personale'] = array(
                     'route' => 'claims_stati_hospital_personale',
-                    'label' => 'Personale'
+                    'label' => 'Personale',
+                    'icon' => 'ico-user',
                 );
             }
             if ($this->getUser()->hasRole('C_ADMIN')) {
                 $out['completo'] = array(
                     'route' => 'claims_stati_hospital_completo',
-                    'label' => 'Completo'
+                    'label' => 'Completo',
+                    'icon' => 'ico-group',
                 );
             }
         }
@@ -288,6 +310,9 @@ class TabelloneController extends Controller {
                 $logger->notice($mode);
                 return $this->buildFiltri($mode, $stato);
             // Vede solo 
+            case 'tutti':
+                $filtri['in']['gestore'] = $this->getUser()->getId();
+                break;
             case 'personale':
                 $filtri['in']['gestore'] = $this->getUser()->getId();
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
@@ -297,10 +322,12 @@ class TabelloneController extends Controller {
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 $filtri['in']['gestore'] = $this->getUser()->getId();
                 break;
-            case 'completo':
+            case 'aperti':
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 $filtri['out']['dasc'] = null;
                 $filtri['out']['gestore'] = null;
+                break;
+            case 'completo':
                 break;
             case 'chiusi':
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));

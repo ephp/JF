@@ -8,13 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RicercaType extends AbstractType {
 
-    private $mode;
+    private $cliente;
 
-    function __construct($mode) {
-        $this->mode = $mode;
+    function __construct(\JF\ACLBundle\Entity\Cliente $cliente) {
+        $this->cliente = $cliente;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $cliente = $this->cliente;
         $p = new \Claims\HBundle\Entity\Pratica();
         $builder
                 ->add('anno', 'choice', array('required' => false, 'empty_value' => 'Tutti', 'choices' => array_combine(range(7, date('y')), range(2007, date('Y'))), 'attr' => array('style' => 'max-width: 400px')))
@@ -27,12 +28,13 @@ class RicercaType extends AbstractType {
                 ->add('status', null, array('required' => false, 'attr' => array('style' => 'max-width: 400px')))
                 ->add('statoPratica', null, array('required' => false, 'empty_value' => 'Tutti', 'attr' => array('style' => 'max-width: 400px')))
                 ->add('priorita', null, array('required' => false, 'empty_value' => 'Tutte', 'attr' => array('style' => 'max-width: 400px')))
+                ->add('gestore', null, array('required' => false, 'empty_value' => 'Tutti', 'property' => 'nome', 'query_builder' => function(\JF\ACLBundle\Entity\GestoreRepository $er) use ($cliente) {
+                        return $er->createQueryBuilder('g')
+                        ->where('g.cliente = :gid')
+                        ->setParameter('gid', $cliente->getId())
+                        ->orderBy('g.sigla', 'ASC');
+                    }, 'attr' => array('style' => 'max-width: 400px')))
         ;
-        if (in_array($this->mode, array('completo', 'senza_dasc', 'senza_gestore', 'chiusi'))) {
-            $builder
-                    ->add('gestore', null, array('required' => false, 'empty_value' => 'Tutti', 'attr' => array('style' => 'max-width: 400px')))
-            ;
-        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

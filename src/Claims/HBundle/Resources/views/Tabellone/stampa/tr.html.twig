@@ -1,5 +1,5 @@
 <tr id="{{ entity.slug }}">
-    {% if mode is not defined or mode in ['personale', 'chiuso'] %}
+    {% if mode is not defined or mode in ['personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore'] %}
         <th class="right">{{ i }}</th>
     {% endif %}
         <td class="center" nowrap>
@@ -14,7 +14,7 @@
             {% endif %}
         </td>
     <td>{{ entity.claimant }}{% if entity.giudiziale %} (Giud){% endif %}</td>
-    {% if mode is not defined or mode in ['completo', 'senza_dasc', 'senza_gestore', 'chiusi'] %}
+    {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] %}
         <td>
         {% if entity.gestore %}
                 {{ entity.gestore.sigla }}

@@ -44,7 +44,7 @@ class JFCalendarExtension extends Extension implements IExtension {
 
         $menu['utility']['submenu'][] = array(
             'label' => 'Calendario personale',
-            'route' => 'calendario',
+            'route' => 'calendario_personale',
             'show' => array(
                 'logged' => true
             ),

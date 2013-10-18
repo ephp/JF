@@ -23,6 +23,7 @@ trait CalendarController {
     protected $CAMBIO_GESTORE = "CHG";
     protected $PRIORITA = "PRI";
     protected $RECUPERI = "REC";
+    protected $RECUPERI_MANUALE = "RCM";
 
     /**
      * @return \Ephp\Bundle\CalendarBundle\Entity\Calendario
@@ -83,7 +84,7 @@ trait CalendarController {
                     $tipo = $_tipo->createTipo($this->EMAIL_RAVINALE, 'Email da Ravinale Piemonte', 'aa22aa', $cal, true, false, true);
                     break;
                 case $this->ATTIVITA_MANUALE:
-                    $tipo = $_tipo->createTipo($this->ATTIVITA_MANUALE, 'Attività manuali', 'aaaa44', $cal);
+                    $tipo = $_tipo->createTipo($this->ATTIVITA_MANUALE, 'Attività manuali', 'ffaa31', $cal);
                     break;
                 case $this->EMAIL_MANUALE:
                     $tipo = $_tipo->createTipo($this->EMAIL_MANUALE, 'Email', 'aaaa22', $cal, true, false, true);
@@ -105,6 +106,9 @@ trait CalendarController {
                     break;
                 case $this->RECUPERI:
                     $tipo = $_tipo->createTipo($this->RECUPERI, 'Recuperi', '228822', $cal, false, false, true);
+                    break;
+                case $this->RECUPERI_MANUALE:
+                    $tipo = $_tipo->createTipo($this->RECUPERI_MANUALE, 'Recuperi manuali', 'dd8831', $cal);
                     break;
             }
         }

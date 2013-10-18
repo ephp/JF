@@ -14,7 +14,11 @@
             {% endif %}
             <th width="25">Soi</th>
             <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
-            <th>Note</th>
+            {% if app.user.hasRole(['C_RECUPERI_H']) %}
+                <th>Dati recupero</th>
+            {% else %}
+                <th>Note</th>
+            {% endif %}
             <th width="10%">Stato Pratica</th>
             <th width="80" class="TAC">Operazioni</th>
         </tr>

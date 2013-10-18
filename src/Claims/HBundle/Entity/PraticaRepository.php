@@ -52,6 +52,12 @@ class PraticaRepository extends EntityRepository {
                                     ->setParameter('da', $da)
                                     ->setParameter('a', $a);
                             break;
+                        case 'evento_recupero':
+                            $q->leftJoin('t.tipo', 't');
+                            $q->andWhere("p.gestore = :gestore OR t.sigla = :sigla")
+                                    ->setParameter('gestore', $value)
+                                    ->setParameter('sigla', 'RCM');
+                            break;
                         case 'claimant':
                             $q->andWhere("p.{$field} LIKE :{$field}")
                                     ->setParameter($field, "%{$value}%");

@@ -735,7 +735,7 @@ class TabelloneController extends Controller {
         }
 
         $data = \DateTime::createFromFormat('d/m/Y', $req['data']);
-        $evento = $this->newEvento($this->ATTIVITA_MANUALE, $pratica, $req['titolo'], $req['note']);
+        $evento = $this->newEvento($this->getUser()->hasRole('C_RECUPERI_H') ? $this->RECUPERI_MANUALE : $this->ATTIVITA_MANUALE, $pratica, $req['titolo'], $req['note']);
         $evento->setDataOra($data);
         $this->persist($evento);
 

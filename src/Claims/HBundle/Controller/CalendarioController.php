@@ -68,7 +68,7 @@ class CalendarioController extends Controller {
                 'label' => 'Personale'
             );
         }
-        if ($this->getUser()->hasRole('C_ADMIN')) {
+        if ($this->getUser()->hasRole(array('C_ADMIN', 'C_RECUPERI_H'))) {
             $out['completo'] = array(
                 'route' => 'claims_calendario_hospital_completo',
                 'label' => 'Completo'

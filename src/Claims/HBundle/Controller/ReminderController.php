@@ -161,8 +161,12 @@ SELECT c.id
             'out' => array(
             ),
         );
-        $filtri['in']['gestore'] = $gestore->getId();
         $filtri['in']['evento'] = new \DateTime();
+        if($gestore->hasRole('C_RECUPERI_H')) {
+            $filtri['in']['evento_recupero'] = $gestore->getId();
+        } else {
+            $filtri['in']['gestore'] = $gestore->getId();
+        }
         $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
         $filtri['out']['dasc'] = null;
         $filtri['ricerca'] = array();

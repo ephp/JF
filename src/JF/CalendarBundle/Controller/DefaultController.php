@@ -15,7 +15,7 @@ class DefaultController extends Controller {
         Traits\CalendarController;
 
     /**
-     * @Route("/{mese}-{anno}", name="calendario", defaults={"mese": null, "anno": null})
+     * @Route("/{mese}-{anno}", name="calendario_personale", defaults={"mese": null, "anno": null})
      * @Template()
      */
     public function indexAction($mese, $anno) {

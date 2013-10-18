@@ -39,7 +39,7 @@ class PraticaRepository extends EntityRepository {
                 } else {
                     switch ($field) {
                         case 'recuperi':
-                            $q->andWhere("(p.dati_recupero IS NOT NULL OR p.recupero_responsabile IS NOT NULL OR p.recupero_sollecito_asl IS NOT NULL OR p.recupero_copia_polizza IS NOT NULL OR p.recupero_email_liquidatore IS NOT NULL OR p.recupero_quietanze IS NOT NULL OR p.recupero_azione_di_recupero IS NOT NULL)");
+                            $q->andWhere("(p.datiRecupero IS NOT NULL OR p.recuperoResponsabile IS NOT NULL OR p.recuperoSollecito_asl IS NOT NULL OR p.recuperoCopiaPolizza IS NOT NULL OR p.recuperoEmailLiquidatore IS NOT NULL OR p.recuperoQuietanze IS NOT NULL OR p.recuperoAzioneDiRecupero IS NOT NULL)");
                             break;
                         case 'evento':
                             /* @var $value \DateTime */

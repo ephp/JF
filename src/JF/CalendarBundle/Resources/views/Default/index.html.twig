@@ -19,8 +19,8 @@
             <dl>
             {% set g = {} %}
             {% for evento in eventi %}
-                <dt>{{ evento.dataOra|date('d-m-Y') }} - {{ evento.titolo }}</dt>
-                <dd>{{ evento.note }}</dd>
+                <dt onclick="$('#d_{{ evento.id }}').toggle();">{{ evento.dataOra|date('d-m-Y') }} - {{ evento.titolo }}</dt>
+                <dd id="d_{{ evento.id }}" style="display: none">{{ evento.note }}</dd>
             {% endfor %}
             </dl>
         </div>

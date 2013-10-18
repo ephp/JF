@@ -27,14 +27,14 @@ class TabelloneController extends Controller {
 
     /**
      * @Route("/",                 name="claims_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-aperti/",          name="claims_hospital_aperti",        defaults={"mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-tutti/",           name="claims_hospital_tutti",         defaults={"mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/",          name="claims_hospital_aperti",        defaults={"mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function indexAction($mode) {
@@ -73,14 +73,14 @@ class TabelloneController extends Controller {
 
     /**
      * @Route("-stampa/{monthly_report}",                 name="claims_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-completo/{monthly_report}",        name="claims_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-aperti/{monthly_report}",          name="claims_hospital_aperti_stampa",        defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-personale/{monthly_report}",       name="claims_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-chiusi/{monthly_report}",          name="claims_hospital_chiuso_stampa",        defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-tutti/{monthly_report}",           name="claims_hospital_tutti_stampa",         defaults={"monthly_report": false, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-aperti/{monthly_report}",          name="claims_hospital_aperti_stampa",        defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-chiusi-completo/{monthly_report}", name="claims_hospital_chiusi_stampa",        defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-stampa-completo/{monthly_report}",        name="claims_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-stampa-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_stampa",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-stampa-chiusi-completo/{monthly_report}", name="claims_hospital_chiusi_stampa",        defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function stampaAction($mode, $monthly_report) {
@@ -499,7 +499,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-cambia-dati-recupero/", name="claims_hospital_cambia_dati_recupero", options={"expose": true, "ACL": {"in_role": {C_RECUPERI_H"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-dati-recupero/", name="claims_hospital_cambia_dati_recupero", options={"expose": true, "ACL": {"in_role": {"C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaDatiRecuperoAction() {
         $req = $this->getParam('note');

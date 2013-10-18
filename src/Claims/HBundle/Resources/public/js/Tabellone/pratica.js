@@ -68,7 +68,7 @@ function _autoupdate($this) {
     field = $this.attr('name');
     if (pratica) {
         $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
-            $('.'+out.field).val(out.value);
+            $('.' + out.field).val(out.value);
             checkUm();
             if (out.reload) {
                 $('#tab_cal').html(out.calendario);
@@ -105,6 +105,25 @@ function autoupdateCalendario() {
 
     $('.star').click(function() {
         evidenziaEvento($(this).attr('evento'));
+    });
+
+    $('a.fancybox').each(function() {
+        if ($(this).attr('href').startsWith('#')) {
+            $(this).fancybox({
+                hideOnOverlayClick: false,
+                transitionIn: 'elastic',
+                padding: 3,
+                margin: 0
+            });
+        } else {
+            $(this).fancybox({
+                type: 'ajax',
+                hideOnOverlayClick: false,
+                transitionIn: 'elastic',
+                padding: 3,
+                margin: 0
+            });
+        }
     });
 }
 

@@ -47,6 +47,7 @@ class ClaimsCoreExtension extends Extension implements IExtension {
             'submenu' => array(),
             'order' => 10,
             'a' => array('class' => 'blblue'),
+            'icon' => 'ico-archive',
         );
         
         $menu['a_claims'] = array(
@@ -55,6 +56,7 @@ class ClaimsCoreExtension extends Extension implements IExtension {
             'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
             'order' => 110,
             'a' => array('class' => 'bldblue'),
+            'icon' => 'ico-tools',
         );
 
         if (true) {

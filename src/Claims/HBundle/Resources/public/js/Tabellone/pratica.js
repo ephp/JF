@@ -123,6 +123,16 @@ function checkUm() {
     });
 }
 
+function importaContec() {
+    var form = $('#form_contec');
+    $.post(form.attr('action'), form.serialize(), function(out) {
+        $('#tab_cal').html(out);
+        autoupdateCalendario();
+        $(".tabbable").tabs({active: 0});
+        form[0].reset();
+    });
+}
+
 function importaRavinale() {
     var form = $('#form_ravinale');
     $.post(form.attr('action'), form.serialize(), function(out) {

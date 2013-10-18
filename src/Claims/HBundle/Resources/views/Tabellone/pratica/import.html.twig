@@ -1,12 +1,12 @@
 {% if entity.ospedale.sistema.nome == 'Contec' %}
-    <div class="row-fluid todo">
+    <div class="row-fluid">
         <div class="span12">
             <div class="block icon no-margin">
                 <h3 class="ico-inbox-2">Contec</h3>
             </div>
-            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_ravinale" onsubmit="return false;">
+            <form action="{{ path('contec_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_contec" onsubmit="return false;">
                 <textarea class="autogrow" pratica="{{ entity.slug }}" name="import" style="height: 350px;" placeholder="Incolla calendario da Contec"></textarea>
-                <button class="btn" type="button" onclick="importaRavinale();">Importa</button>
+                <button class="btn" type="button" onclick="importaContec();">Importa</button>
             </form>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="block icon no-margin">
             <h3 class="ico-inbox-2">Cancelleria telematica</h3>
         </div>
-            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_ravinale" onsubmit="return false;">
+            <form action="{{ path('ravinale_import_calendario_manuale', {'slug': entity.slug}) }}" id="form_cancelleria" onsubmit="return false;">
                 <textarea class="autogrow" pratica="{{ entity.slug }}" name="import" style="height: 350px;" placeholder="Incolla calendario da Cancelleria Telematica"></textarea>
                 <button class="btn" type="button" onclick="importaRavinale();">Importa</button>
             </form>

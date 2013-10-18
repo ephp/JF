@@ -381,35 +381,40 @@ class ImportController extends Controller {
      * @Template("ClaimsHBundle:Tabellone:pratica/calendario.html.twig")
      */
     public function calendarioAction($slug) {
-        $colonne = array('data', 'note');
+        $colonne = array('data', 'autore', 'titolo', 'note');
         set_time_limit(3600);
-        $csv = $this->getParam('import');
+        $em = $this->getEm();
+        $conn = $em->getConnection();
+        $req = $this->getRequest()->get('import');
         $entity = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $entity Pratica */
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Scheda entity.');
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
 
         $cal = $this->getCalendar();
+        $csv = $req['csv'];
         $righe = explode("\n", str_replace(array("\r", "\n\n"), array("\n", "\n"), $csv));
         foreach ($righe as $riga) {
             $dati = explode("\t", $riga);
-            if (count($dati) >= 2) {
+            if (count($dati) >= 4) {
                 try {
-                    $this->getEm()->beginTransaction();
+                    $conn->beginTransaction();
                     $data = \DateTime::createFromFormat('d/m/Y', substr($dati[0], 0, 10));
                     /* @var $data \DateTime */
-                    $evento = $this->newEvento($this->RAVINALE, $entity, 'Ravinale Piemonte', $dati[1]);
+                    $evento = $this->newEvento($this->JWEB, $entity, $dati[2], $dati[3] . ($dati[1] ? "({$dati[1]})" : ''));
                     $evento->setDataOra($data);
                     $olds = $this->findBy('ClaimsHBundle:Evento', array(
                         'calendario' => $cal->getId(),
                         'tipo' => $evento->getTipo()->getId(),
-                        'pratica' => $entity->getId(),
+                        'scheda' => $entity->getId(),
+                        'titolo' => $evento->getTitolo(),
                         'note' => $evento->getNote(),
                     ));
 //                    Debug::vd($old);
                     if (!$olds) {
-                        $this->persist($evento);
+                        $em->persist($evento);
+                        $em->flush();
                     } else {
                         $data->setTime(0, 0, 0);
                         $save = true;
@@ -424,9 +429,9 @@ class ImportController extends Controller {
                         }
                     }
 
-                    $this->getEm()->commit();
+                    $conn->commit();
                 } catch (\Exception $e) {
-                    $this->getEm()->rollback();
+                    $conn->rollback();
                     throw $e;
                 }
             }

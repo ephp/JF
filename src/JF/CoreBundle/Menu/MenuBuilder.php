@@ -45,17 +45,18 @@ class MenuBuilder {
         }
     }
 
-    public function createSidebarMenu(Request $request, $voci) {
+    public function createHeaderMenu(Request $request, $voci) {
         $this->request = $request->getUser();
         $menu = $this->factory->createItem('root');
         $menu->setAttribute('id', 'menu_sidebar')->setAttribute('class', 'navigation bordered');
 
-        $this->buildMenu($menu, $voci, $request->get('_route'));
-
+        $this->buildHeaderMenu($menu, $voci, $request->get('_route'));
+        $menu->setExtra('user', $this->user);
+        
         return $menu;
     }
 
-    private function buildMenu(MenuItem $menu, $voci, $route) {
+    private function buildHeaderMenu(MenuItem $menu, $voci, $route, $level = 0) {
         usort($voci, function($a, $b) {
                     if (!isset($a['order'])) {
                         $a['order'] = 1000;
@@ -79,7 +80,68 @@ class MenuBuilder {
                     if (isset($voce['submenu'])) {
                         $vm = $menu->addChild($voce['label'], array('url' => 'javascript:void(0);'));
                         $vm->setAttribute('class', 'submenu');
-                        $this->buildMenu($vm, $voce['submenu'], $route);
+                        $this->buildHeaderMenu($vm, $voce['submenu'], $route, $level +1);
+                        $vm->setChildrenAttribute('class', 'sub');
+                        if(!$vm->hasChildren()) {
+                            $vm->setDisplay(false);
+                        }
+                    } else {
+                        $vm = $menu->addChild($voce['label']);
+                    }
+                }
+                if ($level == 0) {
+                    if (!isset($voce['a']['class'])) {
+                        $voce['a']['class'] = 'button';
+                    } else {
+                        $voce['a']['class'] = str_replace(array('bl', 'ue'), array('','blue'), $voce['a']['class']).' button';
+                    }
+                }
+                if (isset($voce['a'])) {
+                    foreach ($voce['a'] as $attr => $val) {
+                        $vm->setLinkAttribute($attr, $val);
+                    }
+                }
+                if (isset($voce['icon'])) {
+                    $vm->setExtra('icon', $voce['icon']);
+                }
+            }
+        }
+    }
+    public function createSidebarMenu(Request $request, $voci) {
+        $this->request = $request->getUser();
+        $menu = $this->factory->createItem('root');
+        $menu->setAttribute('id', 'menu_sidebar')->setAttribute('class', 'navigation bordered');
+
+        $this->buildSidebarMenu($menu, $voci, $request->get('_route'));
+
+        return $menu;
+    }
+
+    private function buildSidebarMenu(MenuItem $menu, $voci, $route) {
+        usort($voci, function($a, $b) {
+                    if (!isset($a['order'])) {
+                        $a['order'] = 1000;
+                    }
+                    if (!isset($b['order'])) {
+                        $b['order'] = 1000;
+                    }
+                    return $a['order'] > $b['order'];
+                });
+        foreach ($voci as $voce) {
+            if (!isset($voce['show'])) {
+                $voce['show'] = array('always' => true);
+            }
+            if ($this->show($voce['show'])) {
+                if (isset($voce['route'])) {
+                    $vm = $menu->addChild($voce['label'], array('route' => $voce['route']));
+                    if(strpos($route, $voce['route']) !== false) {
+                        $this->active($vm);
+                    }
+                } else {
+                    if (isset($voce['submenu'])) {
+                        $vm = $menu->addChild($voce['label'], array('url' => 'javascript:void(0);'));
+                        $vm->setAttribute('class', 'submenu');
+                        $this->buildSidebarMenu($vm, $voce['submenu'], $route);
                         if(!$vm->hasChildren()) {
                             $vm->setDisplay(false);
                         }
@@ -91,6 +153,9 @@ class MenuBuilder {
                     foreach ($voce['a'] as $attr => $val) {
                         $vm->setLinkAttribute($attr, $val);
                     }
+                }
+                if (isset($voce['icon'])) {
+                    $vm->setExtra('icon', $voce['icon']);
                 }
             }
         }
@@ -144,5 +209,6 @@ class MenuBuilder {
 
         return $out;
     }
+    
 
 }

@@ -6,14 +6,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class DefaultController extends Controller
-{
+/**
+ * @Route("/calendario")
+ */
+class DefaultController extends Controller {
+
+    use \Ephp\UtilityBundle\Controller\Traits\BaseController,
+        Traits\CalendarController;
+
     /**
-     * @Route("/hello/{name}")
+     * @Route("/{mese}-{anno}", name="calendario", defaults={"mese": null, "anno": null})
      * @Template()
      */
-    public function indexAction($name)
-    {
-        return array('name' => $name);
+    public function indexAction($mese, $anno) {
+        if(!$mese) {
+            $mese = date('m');
+        }
+        if(!$anno) {
+            $anno = date('Y');
+        }
+        $eventi = $this->getRepository('JFCalendarBundle:Evento')->calendarioMese($mese, $aano);
+        
+        return array(
+            'mese' => $mese,
+            'anno' => $anno,
+            'eventi' => $eventi,
+        );
     }
+
 }

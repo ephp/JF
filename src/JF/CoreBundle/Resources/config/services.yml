@@ -11,3 +11,11 @@ services:
         scope: request
         tags:
             - { name: knp_menu.menu, alias: sidebar }
+    jf_menu.header:
+        class: Knp\Menu\MenuItem 
+        factory_service: jf_menu.builder
+        factory_method: createHeaderMenu
+        arguments: ["@request", %jf.menu%]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: header }

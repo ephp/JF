@@ -1,0 +1,58 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block list %}
+{% import 'knp_menu.html.twig' as macros %}
+
+{% spaceless %}
+{% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+    {% if item.isRoot %}
+        <ul class="navigation bordered"{{ macros.attributes(listAttributes) }}>
+            {{ block('children') }}
+            {% if item.extra('user') %}
+                <li>
+                    <div class="user">
+                        <a href="{{ path('profilo') }}" class="name">
+                            <span>{{ item.extra('user').nome }}</span>
+                            <span class="sm">{{ item.extra('user').cliente.nome }}</span>
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+    {% else %}
+        <ul{{ knp_menu.attributes(listAttributes) }}>
+            {{ block('children') }}
+        </ul>
+    {% endif %}
+{% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block label %}
+{% spaceless %}
+{% if item.extra('icon') %}
+    {% if item.hasChildren %}
+        <div class="arrow"></div>
+    {% endif %}
+    <div class="icon">
+        <span class="{{item.extra('icon')}}"></span>
+    </div>                    
+    <div class="name">{{ item.label|trans(item.getExtra('translation_params', {}), item.getExtra('translation_domain', 'messages')) }}</div>
+{% else %}
+    {{ item.label|trans(item.getExtra('translation_params', {}), item.getExtra('translation_domain', 'messages')) }}
+{% endif %}
+{% endspaceless %}
+{% endblock %}
+    
+{% block spanElement %}
+    {% spaceless %}
+    {% if item.icon is defined %}
+        <div class="icon">
+            <span class="{{item.icon}}"></span>
+        </div>                    
+        <div class="name"><a href="javascript:void();"{{ knp_menu.attributes(item.linkAttributes) }}>{{ block('label') }}</a></div>
+    {% else %}
+        <a href="#"{{ knp_menu.attributes(item.linkAttributes) }}>{{ block('label') }}</a>
+    {% endif %}
+    {% endspaceless %}
+{% endblock %}

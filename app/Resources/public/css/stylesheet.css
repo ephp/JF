@@ -83,10 +83,12 @@ form{margin: 0px;}
                 .body .navigation .button .name{font-size: 12px; color: #FFF; line-height: 13px;}
                 .body .navigation .button .arrow{position: absolute; left: 5px; top: 5px; width: 16px; height: 16px; background: url('/img/arrow_white.png') left top no-repeat;}                    
             .body .navigation .button:hover{-moz-box-shadow: inset 0px 0px 4px rgba(255,255,255,.9); -webkit-box-shadow: inset 0px 0px 4px rgba(255,255,255,.9); box-shadow: inset 0px 0px 4px rgba(255,255,255,.9);}
-            .body .navigation .sub{display: none; position: absolute; left: 0px; bottom: 0px; list-style: none; padding: 0px; margin: 0px;}
-                .body .navigation .sub li{display: block; float: left; margin-right: 30px;}
-                    .body .navigation .sub li a{font-size: 14px; color: #4C4C4C; text-decoration: none; font-weight: 500;}
-                    .body .navigation .sub li a:hover{color: #000;}
+            .body .navigation .sub{display: none; position: absolute; left: 0px; top: 110px; list-style: none; padding: 0px; margin: 0px;}
+                .body .navigation .sub li{display: block; float: left;}
+                .body .navigation .sub li:after{content: "|"; margin-left: 3px; color: #C8C8C8;}
+                .body .navigation .sub li.last:after{content: ""; margin-left: 0px;}
+                    .body .navigation .sub li a{font-size: 12px; color: #6C6C6C; text-decoration: none; font-weight: 500;}
+                    .body .navigation .sub li a:hover, .body .navigation .sub li.active a{color: #000;}
                     
             .body .navigation li.active .arrow{background: url('/img/arrow_white_active.png') left top no-repeat;}
             .body .navigation li.active .sub{display: block;}

@@ -34,9 +34,10 @@
                 {% endblock %}
             </div>
             <div class="body">
-                <ul class="navigation">
-                    {% block navigation %}{% endblock %}
-                </ul>
+                {% block navigation %}
+                    {{ knp_menu_render('header', {'template': '::knp_menu_header.html.twig'}) }}
+                    <div class="clear: both;"></div>
+                {% endblock %}
                 <div class="content">
                     {% block body %}{% endblock %}
                     {% block content %}{% endblock %}

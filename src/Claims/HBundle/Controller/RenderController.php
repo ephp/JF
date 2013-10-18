@@ -57,6 +57,15 @@ class RenderController extends Controller {
     }
 
     /**
+     * @Route("/dati_recupero", name="render_claims_hospital_dati_recupero")
+     * @Template()
+     */
+    public function cambiaDatiRecuperoAction() {
+        return array(
+        );
+    }
+
+    /**
      * @Route("/stato", name="render_claims_hospital_stato")
      * @Template()
      */

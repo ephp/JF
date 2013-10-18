@@ -38,6 +38,9 @@ class PraticaRepository extends EntityRepository {
                     $q->andWhere("p.{$field} IS NULL");
                 } else {
                     switch ($field) {
+                        case 'recuperi':
+                            $q->andWhere("(p.dati_recupero IS NOT NULL OR p.recupero_responsabile IS NOT NULL OR p.recupero_sollecito_asl IS NOT NULL OR p.recupero_copia_polizza IS NOT NULL OR p.recupero_email_liquidatore IS NOT NULL OR p.recupero_quietanze IS NOT NULL OR p.recupero_azione_di_recupero IS NOT NULL)");
+                            break;
                         case 'evento':
                             /* @var $value \DateTime */
                             $da = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));

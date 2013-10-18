@@ -50,7 +50,11 @@
                 {% endif %}
             {% endif %}
         {% else %}
-            {{ entity.note|raw }}
+            {% if app.user.hasRole(['C_RECUPERI_H']) %}
+                {{ entity.datiRecupero|raw }}
+            {% else %}
+                {{ entity.note|raw }}
+            {% endif %}
         {% endif %}
     </td>
     <td class="center">

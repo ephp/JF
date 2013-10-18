@@ -1,0 +1,15 @@
+<div style="display: none; width: 600px" id="fb_cambia_dati_recupero">
+    <form id="cambia_dati_recupero">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-pen-2"></span>
+            </div>
+            <h1>Scrivi dati_recupero<small id="cambia_dati_recupero_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <textarea name="dati_recupero[dati_recupero]" style="width: 100%;" id="dati_recupero_dati_recupero"></textarea>
+        <input type="hidden" name="dati_recupero[id]" id="dati_recupero_id" value="" />    
+        <button type="button" onclick="assegnaDatiRecupero();" class="btn" id="bt_cambia_dati_recupero">Scrivi</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_dati_recupero"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

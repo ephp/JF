@@ -37,13 +37,14 @@ body { min-height: 100%; font-family: "Segoe UI", arial, sans-serif; font-size: 
     .body .content .widget{margin-bottom: 0px;}
     .body .content .widget:nth-child(1n){margin-right: 3px;}
     .body .navigation .sub{top: 75px;}
-    .body .navigation .sub li a{font-size: 11px;}
+    .body .navigation .sub li a{font-size: 10px;}
     .body .navigation .sub li:after{content: ""; margin-left: 0px;}
     .body .navigation .sub li.last:after{content: ""; margin-left: 0px;}
 }
 
 @media only screen and (max-width: 1023px) {    
     
+    .body .navigation{padding-bottom: 35px; }
     .body .navigation .button{width: 55px; height: 55px; }
     .body .navigation .arrow{display: none;}
     .body .navigation .button .icon{width: 55px; height: 44px; margin: 0px; border: 0px;}

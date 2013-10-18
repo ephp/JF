@@ -73,7 +73,7 @@ form{margin: 0px;}
     .body{position: relative; margin-left: 250px; padding: 0px 0px 0px 20px;}    
         
         /* body navigation */
-        .body .navigation{padding: 10px 0px 25px; float: right; margin: 0px; list-style: none; display: block; position: relative;}
+        .body .navigation{padding: 10px 0px 40px; float: right; margin: 0px; list-style: none; display: block; position: relative;}
             .body .navigation li{margin-left: 3px; margin-bottom: 3px; display: block; float: left;}
             .body .navigation .button{width: 90px; height: 90px; display: block; padding: 5px;
                                       background: #009AD7; text-decoration: none; position: relative;}

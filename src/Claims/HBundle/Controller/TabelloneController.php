@@ -135,7 +135,7 @@ class TabelloneController extends Controller {
                 'label' => 'Aperti',
                 'icon' => 'ico-group',
             );
-            if ($this->getUser()->hasRole('C_ADMIN')) {
+            if ($this->getUser()->hasRole(array('C_ADMIN', 'C_RECUPERI_H'))) {
                 $out['chiusi'] = array(
                     'route' => 'claims_hospital_chiusi',
                     'label' => 'Tutti i chiusi',
@@ -146,6 +146,8 @@ class TabelloneController extends Controller {
                     'label' => 'Completo',
                     'icon' => 'ico-group',
                 );
+            }
+            if ($this->getUser()->hasRole('C_ADMIN')) {
                 $out['senza_dasc'] = array(
                     'route' => 'claims_hospital_senza_dasc',
                     'label' => 'Senza DASC',
@@ -165,7 +167,7 @@ class TabelloneController extends Controller {
                     'icon' => 'ico-user',
                 );
             }
-            if ($this->getUser()->hasRole('C_ADMIN')) {
+            if ($this->getUser()->hasRole('C_ADMIN', 'C_RECUPERI_H')) {
                 $out['completo'] = array(
                     'route' => 'claims_stati_hospital_completo',
                     'label' => 'Completo',
@@ -309,19 +311,33 @@ class TabelloneController extends Controller {
                 $mode = $set_default ? $default : $dati['claims_h'];
                 $logger->notice($mode);
                 return $this->buildFiltri($mode, $stato);
-            // Vede solo 
+            // Gestore e Recuperi
             case 'tutti':
-                $filtri['in']['gestore'] = $this->getUser()->getId();
+                if($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = true;
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
                 break;
             case 'personale':
-                $filtri['in']['gestore'] = $this->getUser()->getId();
+                if($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = true;
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 $filtri['out']['dasc'] = null;
                 break;
             case 'chiuso':
+                if($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = true;
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
-                $filtri['in']['gestore'] = $this->getUser()->getId();
                 break;
+            
+            // Amministratore e Recuperi
             case 'aperti':
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 $filtri['out']['dasc'] = null;
@@ -332,6 +348,8 @@ class TabelloneController extends Controller {
             case 'chiusi':
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 break;
+            
+            // Amministratore
             case 'senza_dasc':
                 $filtri['in']['dasc'] = null;
                 $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
@@ -452,18 +470,7 @@ class TabelloneController extends Controller {
     }
 
     /**
-     * @Route("-get-note/{slug}", name="claims_hospital_get_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
-     */
-    public function getNoteAction($slug) {
-
-        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
-        /* @var $pratica Pratica */
-
-        return $this->jsonResponse(array('note' => $pratica->getNote()));
-    }
-
-    /**
-     * @Route("-cambia-note/", name="claims_hospital_cambia_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-note/", name="claims_hospital_cambia_note", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaNoteAction() {
         $req = $this->getParam('note');
@@ -489,6 +496,35 @@ class TabelloneController extends Controller {
         }
         $priorita = $pratica->getPriorita();
         return $this->jsonResponse(array('note' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getNote(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
+
+    /**
+     * @Route("-cambia-dati-recupero/", name="claims_hospital_cambia_dati_recupero", options={"expose": true, "ACL": {"in_role": {C_RECUPERI_H"}}}, defaults={"_format": "json"})
+     */
+    public function cambiaDatiRecuperoAction() {
+        $req = $this->getParam('note');
+
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+
+        $datiRecupero = $req['dati_recupero'];
+
+        try {
+            $this->getEm()->beginTransaction();
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            }
+
+            $pratica->setDatiRecupero($datiRecupero);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        $priorita = $pratica->getPriorita();
+        return $this->jsonResponse(array('dati_recupero' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getDatiRecupero(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
 
     /**

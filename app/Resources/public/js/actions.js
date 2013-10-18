@@ -1,7 +1,7 @@
 var ws;
 $(document).ready(function() {
     ws = $('body').width();
-
+    
     $('a.fancybox').each(function() {
         if ($(this).attr('href').startsWith('#')) {
             $(this).fancybox({
@@ -256,6 +256,10 @@ $(document).ready(function() {
         });
     });
     /* eof alert click*/
+
+    if(ws <= 768) {
+        $('.body .navigation').children('.active').find('a').click();
+    }
 
 });
 

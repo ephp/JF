@@ -23,10 +23,19 @@ $(document).ready(function() {
     }).blur(function() {
         if (tipografy !== $(this).html()) {
             var tr = $(this).closest('tr');
-            $('#cambia_note_a').text(tr.attr('titolo'));
-            $('#note_id').val(tr.attr('id'));
-            $('#note_note').val($(this).html().trim());
-            assegnaNote();
+            var td = $(this).closest('td');
+            if(td.hasClass('note')) {
+                $('#cambia_note_a').text(tr.attr('titolo'));
+                $('#note_id').val(tr.attr('id'));
+                $('#note_note').val($(this).html().trim());
+                assegnaNote();
+            }
+            if(td.hasClass('dati_recupero')) {
+                $('#cambia_dati_recupero_a').text(tr.attr('titolo'));
+                $('#dati_recupero_id').val(tr.attr('id'));
+                $('#dati_recupero_dati_recupero').val($(this).html().trim());
+                assegnaDatiRecupero();
+            }
         }
     });
 
@@ -98,6 +107,30 @@ function assegnaNote() {
         var riga = $('#' + $('#note_id').val());
         var note = riga.find('.note').find('a');
         note.text(out.note);
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.label');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        $.fancybox.close();
+    });
+}
+
+function assegnaDatiRecupero() {
+    $('#bt_cambia_dati_recupero').hide();
+    $('#wait_cambia_dati_recupero').show();
+    var form = $('#cambia_dati_recupero');
+    $.post(Routing.generate('claims_hospital_cambia_dati_recupero'), form.serialize(), function(out) {
+        var riga = $('#' + $('#dati_recupero_id').val());
+        var dati_recupero = riga.find('.dati_recupero').find('a');
+        dati_recupero.text(out.dati_recupero);
         var label = riga.find('.label');
         var abbr = label.find('abbr');
         label = riga.find('.label');

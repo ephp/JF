@@ -64,10 +64,11 @@ function _autoupdate($this) {
     val = $this.val();
     pratica = $this.attr('pratica');
     evento = $this.attr('evento');
-    field = $this.attr('name');
     report = $this.attr('report');
+    field = $this.attr('name');
     if (pratica) {
         $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': slug}), {'pratica': {'field': field, 'value': val}}, function(out) {
+            $('.'+out.field).val(out.value);
             checkUm();
             if (out.reload) {
                 $('#tab_cal').html(out.calendario);

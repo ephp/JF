@@ -68,12 +68,24 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            <h4><small>5</small> Azione di recupero</h4>
+            <h4><small>6</small> Azione di recupero</h4>
             {% if app.user.hasRole('C_RECUPERI_H') %}
                 <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_azione_di_recupero">{{ entity.recuperoAzioneDiRecupero }}</textarea>
             {% else %}
                 {{ entity.recuperoAzioneDiRecupero }}
             {% endif %}
         </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-money-bag">Dati Recupero</h3>
+        </div>
+        {% if app.user.hasRole('C_RECUPERI_H') %}
+            <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
+        {% else %}
+            {{ entity.datiRecupero|raw }}
+        {% endif %}
     </div>
 </div>

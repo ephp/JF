@@ -18,7 +18,7 @@ select p.id, p.cliente_id, p.claimant, p.codice,
        on g.id = p.gestore_id
  
  where (
-        t.sigla IN ('OTH', 'CHS')
+        t.sigla IN ('OTH', 'CHS', 'REC', 'RCM')
         OR (
             t.sigla IN ('ASC', 'VIM', 'RPM', 'RER', 'RSA', 'TAX', 'VER')
             AND e.note != ''

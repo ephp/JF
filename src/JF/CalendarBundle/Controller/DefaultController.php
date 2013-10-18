@@ -25,12 +25,23 @@ class DefaultController extends Controller {
         if(!$anno) {
             $anno = date('Y');
         }
-        $eventi = $this->getRepository('JFCalendarBundle:Evento')->calendarioMese($mese, $aano);
+//        $eventi = $this->getRepository('JFCalendarBundle:Evento')->calendarioMese($this->getUser(), $mese, $anno);
+        $eventi = $this->getRepository('ClaimsHBundle:Evento')->calendarioMese($this->getUser(), $mese, $anno);
+        
+        $giorni = array();
+        foreach($eventi as $evento) {
+            /* @var $evento \Claims\HBundle\Entity\Evento */
+            if(!isset($giorni[$evento->getDataOra()->format('d')])) {
+                $giorni[$evento->getDataOra()->format('d')] = 0;
+            }
+            $giorni[$evento->getDataOra()->format('d')]++;
+        }
         
         return array(
             'mese' => $mese,
             'anno' => $anno,
             'eventi' => $eventi,
+            'giorni' => $giorni,
         );
     }
 

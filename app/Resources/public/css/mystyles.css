@@ -115,3 +115,36 @@ div.typography:focus {
     max-height: 225px;
     background-color: #FFFFFF;
 }
+
+/* CALENDARIO PIENA PAGINA */
+
+.calendar td {
+    height: 75px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.calendar td .ui-state-default {
+    width: 20px;
+    height: 20px;
+    background-color: inherit;
+}
+
+.calendar td .ui-state-active {
+    background-color: #009AD7 !important;
+}
+.calendar td.ui-datepicker-week-end  {
+    background-color: #eff;
+}
+.calendar .ncal  {
+    -webkit-border-radius: 25%;
+    -moz-border-radius: 25%;
+    background-color: rgb(215, 154, 0);
+    color: rgb(255, 255, 255);
+    display: block;
+    height: 20px;
+    line-height: 14px;
+    padding: 6px;
+    text-align: center;
+    width: 20px;
+}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Evento
  *
  * @ORM\Table(name="claims_h_eventi")
- * @ORM\Entity(repositoryClass="JF\CalendarBundle\Entity\EventoRepository")
+ * @ORM\Entity(repositoryClass="Claims\HBundle\Entity\EventoRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Evento {

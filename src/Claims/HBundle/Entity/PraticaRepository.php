@@ -197,10 +197,10 @@ class PraticaRepository extends EntityRepository {
                             break;
                         case 'amountReserved':
                             if ($value == 'N.P.') {
-                                $q->andWhere("p.amount_reserved < :{$field}")
+                                $q->andWhere("p.amountReserved < :{$field}")
                                         ->setParameter($field, 0);
                             } else {
-                                $q->andWhere("p.amount_reserved >= :{$field}")
+                                $q->andWhere("p.amountReserved >= :{$field}")
                                         ->setParameter($field, 0);
                             }
                             break;
@@ -233,6 +233,14 @@ class PraticaRepository extends EntityRepository {
                 $q->leftJoin('p.ospedale', 'o');
                 $q->orderBy('p.anno', 'desc');
                 $q->addOrderBy('o.sigla', 'desc');
+                break;
+            case 'soi':
+                $q->orderBy('p.soi', 'asc');
+                $q->addOrderBy('o.amountReserved', 'asc');
+                break;
+            case 'isoi':
+                $q->orderBy('p.soi', 'desc');
+                $q->addOrderBy('o.amountReserved', 'asc');
                 break;
             case 'dasc':
                 $q->orderBy('p.dasc', 'asc');

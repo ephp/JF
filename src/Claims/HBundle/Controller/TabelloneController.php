@@ -222,6 +222,7 @@ class TabelloneController extends Controller {
             $sorting = $dati['claims_h_sorting'];
         }
         $out = array();
+        
         $out['anno'] = array(
             'label' => 'Anno e Ospedale',
             'mode' => 'anno',
@@ -231,6 +232,17 @@ class TabelloneController extends Controller {
             $out['anno']['mode'] = 'ianno';
         } elseif($sorting == 'ianno') {
             $out['anno']['icon'] = 'ico-chevron-down';
+        }
+        
+        $out['soi'] = array(
+            'label' => 'SOI',
+            'mode' => 'soi',
+        );
+        if($sorting == 'soi') {
+            $out['soi']['icon'] = 'ico-chevron-up';
+            $out['soi']['mode'] = 'isoi';
+        } elseif($sorting == 'isoi') {
+            $out['soi']['icon'] = 'ico-chevron-down';
         }
         
         $out['dasc'] = array(

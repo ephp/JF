@@ -7,6 +7,8 @@ trait CalendarController {
     protected $APPUNTAMENTO = "APP";
     protected $PROMEMORIA = "PRM";
     protected $SCADENZA = "SCD";
+    protected $RIUNIONE_CLIENTI = "RIE";
+    protected $RIUNIONE_INTERNA = "RII";
     protected $JF_SYSTEM = "JFS";
 
     /**
@@ -31,17 +33,26 @@ trait CalendarController {
         $cal = $this->getCalendar();
         $tipo = $this->findOneBy('EphpCalendarBundle:Tipo', array('calendario' => $cal->getId(), 'sigla' => $sigla));
         if (!$tipo) {
-            $_tipo = $this->getEm()->getRepository('EphpCalendarBundle:Tipo');
+            $_tipo = $this->getRepository('EphpCalendarBundle:Tipo');
             /* @var $_tipo \Ephp\CalendarBundle\Entity\TipoRepository */
             switch ($sigla) {
                 case $this->APPUNTAMENTO:
-                    $tipo = $_tipo->createTipo($this->APPUNTAMENTO, 'Appuntamento', '0000aa', $cal, true, true, true);
+                    $tipo = $_tipo->createTipo($this->APPUNTAMENTO, 'Appuntamento', '0000aa', $cal, true, true, false);
                     break;
                 case $this->PROMEMORIA:
-                    $tipo = $_tipo->createTipo($this->PROMEMORIA, 'Promemoria', '00aa00', $cal, true, true, true);
+                    $tipo = $_tipo->createTipo($this->PROMEMORIA, 'Promemoria', '00aa00', $cal, true, true, false);
                     break;
                 case $this->SCADENZA:
-                    $tipo = $_tipo->createTipo($this->SCADENZA, 'Scadenza', 'aa0000', $cal, true, true, true);
+                    $tipo = $_tipo->createTipo($this->SCADENZA, 'Scadenza', 'aa0000', $cal, true, true, false);
+                    break;
+                case $this->RIUNIONE_CLIENTI:
+                    $tipo = $_tipo->createTipo($this->RIUNIONE_CLIENTI, 'Riunione con cliente', '00aaaa', $cal, true, true, false);
+                    break;
+                case $this->RIUNIONE_INTERNA:
+                    $tipo = $_tipo->createTipo($this->RIUNIONE_INTERNA, 'Riunione interna', '00aaaa', $cal, true, true, true);
+                    break;
+                case $this->SCADENZA:
+                    $tipo = $_tipo->createTipo($this->SCADENZA, 'Scadenza', 'aa0000', $cal, true, true, false);
                     break;
                 case $this->JF_SYSTEM:
                     $tipo = $_tipo->createTipo($this->JF_SYSTEM, 'JF-System', 'ff0000', $cal, false, false, false);

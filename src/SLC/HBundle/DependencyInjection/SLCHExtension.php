@@ -61,7 +61,11 @@ class SLCHExtension extends Extension implements IExtension {
     }
 
     public function setRoles(ContainerBuilder $container) {
-        
+        $roles = $container->getParameter('jf.roles');
+
+        $this->newRole($roles, 'C_GESTORE_H', 'H-GEST', 'Gestore Claims Hospital');
+
+        $container->setParameter('jf.roles', $roles);
     }
 
     public function setWidgets(ContainerBuilder $container) {

@@ -9,11 +9,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>1</small> Individuazione responsabile</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_responsabile">{{ entity.recuperoResponsabile }}</textarea>
-            {% else %}
-                {{ entity.recuperoResponsabile }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_responsabile">{{ entity.recuperoResponsabile }}</textarea>
         </div>
     </div>
 </div>
@@ -21,11 +17,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>2</small> Email ASL (Sollecito 1910)</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_sollecito_asl">{{ entity.recuperoSollecitoAsl }}</textarea>
-            {% else %}
-                {{ entity.recuperoSollecitoAsl }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_sollecito_asl">{{ entity.recuperoSollecitoAsl }}</textarea>
         </div>
     </div>
 </div>
@@ -33,11 +25,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>3</small> Recupero copia sinistro/copia polizza</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_copia_polizza">{{ entity.recuperoCopiaPolizza }}</textarea>
-            {% else %}
-                {{ entity.recuperoCopiaPolizza }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_copia_polizza">{{ entity.recuperoCopiaPolizza }}</textarea>
         </div>
     </div>
 </div>
@@ -45,11 +33,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>4</small> Scrivere/telefonare al liquidatore per chiedere compartecipazione</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_email_liquidatore">{{ entity.recuperoEmailLiquidatore }}</textarea>
-            {% else %}
-                {{ entity.recuperoEmailLiquidatore }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_email_liquidatore">{{ entity.recuperoEmailLiquidatore }}</textarea>
         </div>
     </div>
 </div>
@@ -57,11 +41,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>5</small> Chiedere percentuale espressamente e quietanze separate</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_quietanze">{{ entity.recuperoQuietanze }}</textarea>
-            {% else %}
-                {{ entity.recuperoQuietanze }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_quietanze">{{ entity.recuperoQuietanze }}</textarea>
         </div>
     </div>
 </div>
@@ -69,11 +49,7 @@
     <div class="span12">
         <div class="block">
             <h4><small>6</small> Azione di recupero</h4>
-            {% if app.user.hasRole('C_RECUPERI_H') %}
-                <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_azione_di_recupero">{{ entity.recuperoAzioneDiRecupero }}</textarea>
-            {% else %}
-                {{ entity.recuperoAzioneDiRecupero }}
-            {% endif %}
+            <textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="recupero_azione_di_recupero">{{ entity.recuperoAzioneDiRecupero }}</textarea>
         </div>
     </div>
 </div>
@@ -82,10 +58,6 @@
         <div class="block icon no-margin">
             <h3 class="ico-money-bag">Dati Recupero</h3>
         </div>
-        {% if app.user.hasRole('C_RECUPERI_H') %}
-            <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
-        {% else %}
-            {{ entity.datiRecupero|raw }}
-        {% endif %}
+        <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
     </div>
 </div>

@@ -27,10 +27,6 @@
         <div class="block icon no-margin">
             <h3 class="ico-money-bag">Dati Recupero</h3>
         </div>
-        {% if app.user.hasRole('C_RECUPERI_H') %}
-            <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
-        {% else %}
-            {{ entity.datiRecupero|raw }}
-        {% endif %}
+        <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
     </div>
 </div>

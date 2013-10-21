@@ -236,11 +236,11 @@ class PraticaRepository extends EntityRepository {
                 break;
             case 'soi':
                 $q->orderBy('p.soi', 'asc');
-                $q->addOrderBy('o.amountReserved', 'asc');
+                $q->addOrderBy('p.amountReserved', 'desc');
                 break;
             case 'isoi':
                 $q->orderBy('p.soi', 'desc');
-                $q->addOrderBy('o.amountReserved', 'asc');
+                $q->addOrderBy('p.amountReserved', 'desc');
                 break;
             case 'dasc':
                 $q->orderBy('p.dasc', 'asc');

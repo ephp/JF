@@ -68,6 +68,14 @@ trait TabelloneController {
                     'icon' => 'ico-group',
                 );
             }
+            if ($this->getUser()->getCliente()->hasLicenza('slc.h-analisi', 'slc')) {
+                $out['xls'] = array(
+                    'route' => $this->getParam('_route') . '_all_xls',
+                    'label' => 'Esporta XLS',
+                    'icon' => 'ico-table',
+                    'class' => 'label-important',
+                );
+            }
         }
         $out['search'] = array(
             'fancybox' => 'fb_ricerca',

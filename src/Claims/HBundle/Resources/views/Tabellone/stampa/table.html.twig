@@ -14,7 +14,7 @@
             {% if mode is not defined %}
                 <th width="70"><abbr title="First Reserve Indication">F.R.I.</abbr></th>
             {% endif %}
-            {% if not monthly_report and app.user.hasRole(['C_RECUPERI_H']) %}
+            {% if monthly_report is defined and not monthly_report and app.user.hasRole(['C_RECUPERI_H']) %}
                 <th>Dati recupero</th>
             {% else %}
                 <th>Note</th>

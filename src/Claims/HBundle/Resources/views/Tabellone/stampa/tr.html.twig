@@ -4,7 +4,7 @@
     {% endif %}
         <td class="center" nowrap>
             {{ entity.codice }}
-            {% if not monthly_report %}
+            {% if monthly_report is not defined or not monthly_report %}
                 <br/>
                 {% if entity.dasc %}
                     {{ entity.dasc|date('d-m-Y') }}
@@ -29,7 +29,7 @@
         <td class="right">{{ entity.firstReserveIndication }} €</td>
     {% endif %}
     <td class="note">
-        {% if monthly_report %}
+        {% if monthly_report is defined and monthly_report %}
             {% if entity.note %}
                 <b>Note</b><br/>
                 {{ entity.note|raw }}

@@ -28,9 +28,6 @@ class TabelloneController extends Controller {
      * @Route("-xls-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_xls", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
     public function xlsAction($mode, $monthly_report) {
-        $filtri = $this->buildFiltri($mode);
-        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
-
         $excelService = $this->get('xls.service_xls5');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
 //        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
@@ -46,26 +43,142 @@ class TabelloneController extends Controller {
                 ->setKeywords($monthly_report ? "Montly Report, Hospital" : "Riepilogo, Hospital")
                 ->setCategory($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
 
-        $colonna = ord('A');
-        $colonne = array();
-        $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
-        $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
-        $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
-        $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
-        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'))) {
-            $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
+        $colonne = $this->getColonne($mode, $monthly_report);
+
+        $filtri = $this->buildFiltri($mode);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        
+        $sheet = $excel->setActiveSheetIndex(0);
+        /* @var $sheet \PHPExcel_Worksheet */
+
+        $this->fillSheet($sheet, $colonne, $entities, $monthly_report);
+        
+        $excel->getActiveSheet()->setTitle($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+
+        //create the response
+        $response = $excelService->getResponse();
+        /* @var $response \Symfony\Component\HttpFoundation\Response */
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . ($monthly_report ? "Monthly-report" . date('-m-Y') : "Riepilogo" . date('-d-m-Y') )  . '.xls;');
+
+        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+    }
+
+    /**
+     * @Route("-stati-xls",           name="claims_stati_hospital_all_xls",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stati-xls-completo",  name="claims_stati_hospital_completo_all_xls",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stati-xls-personale", name="claims_stati_hospital_personale_all_xls", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     */
+    public function allXlsStatiAction($mode) {
+        $excelService = $this->get('xls.service_xls5');
+        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
+
+        $excel = $excelService->excelObj;
+        /* @var $excel \PHPExcel */
+
+        $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
+                ->setLastModifiedBy($this->getUser()->getCliente()->getNome())
+                ->setTitle("Stati pratica " . date('m/Y'))
+                ->setSubject("Stati pratica " . date('m/Y'))
+                ->setDescription("Generato automaticamente da JF-System")
+                ->setKeywords("Stati pratica")
+                ->setCategory("Stati pratica");
+        
+        $colonne = $this->getColonne($mode);
+        
+        $i = 0;
+        foreach($this->findBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true)) as $stato){
+            /* @var $stato \Claims\CoreBundle\Entity\StatoPratica */
+            $_stato = $stato->getId();
+            $filtri = $this->buildFiltri($mode, $_stato);
+            $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+            
+            if($i > 0) {
+                $excel->createSheet($i);
+            }
+            $sheet = $excel->setActiveSheetIndex($i);
+            
+            $this->fillSheet($sheet, $colonne, $entities);
+
+            $excel->getActiveSheet()->setTitle($stato->getStato());
+
+            $i++;
         }
-        $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
-        $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
-        if (!$monthly_report && $this->hasRole('C_RECUPERI_H')) {
-            $colonne[chr($colonna++)] = array('nome' => 'Dati recupero', 'larghezza' => 50);
-        } else {
-            $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
-        }
-        $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+        
+        //create the response
+        $response = $excelService->getResponse();
+        /* @var $response \Symfony\Component\HttpFoundation\Response */
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . "Stati-pratica" . date('-d-m-Y') . '.xls;');
+
+        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+    }
+
+    /**
+     * @Route("-stati-xls/{stato}",           name="claims_stati_hospital_xls",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stati-xls-completo/{stato}",  name="claims_stati_hospital_completo_xls",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stati-xls-personale/{stato}", name="claims_stati_hospital_personale_xls", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     */
+    public function xlsStatiAction($mode, $stato) {
+        $excelService = $this->get('xls.service_xls5');
+        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
+
+        $excel = $excelService->excelObj;
+        /* @var $excel \PHPExcel */
+
+        $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
+                ->setLastModifiedBy($this->getUser()->getCliente()->getNome())
+                ->setTitle("Stato pratica {$stato} " . date('m/Y'))
+                ->setSubject("Stato pratica {$stato} " . date('m/Y'))
+                ->setDescription("Generato automaticamente da JF-System")
+                ->setKeywords("Stato pratica {$stato}")
+                ->setCategory("Stato pratica {$stato}");
+
+        $colonne = $this->getColonne($mode);
+        
+        $filtri = $this->buildFiltri($mode, $stato);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
 
         $sheet = $excel->setActiveSheetIndex(0);
         /* @var $sheet \PHPExcel_Worksheet */
+        
+        $this->fillSheet($sheet, $colonne, $entities);
+
+        $excel->getActiveSheet()->setTitle("Stato pratica {$stato}");
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+
+        $stato = $this->findBy('ClaimsCoreBundle:StatoPratica', $stato);
+        
+        //create the response
+        $response = $excelService->getResponse();
+        /* @var $response \Symfony\Component\HttpFoundation\Response */
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . "Stato-pratica-". \Doctrine\Common\Util\Inflector::camelize($stato->getStato()) . date('-d-m-Y') . '.xls;');
+
+        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+    }
+    
+    protected function fillSheet(\PHPExcel_Worksheet $sheet, $colonne, $entities, $monthly_report = false) {
         foreach ($colonne as $colonna => $titolo) {
             $cell = $sheet->setCellValue($colonna . '1', $titolo['nome']);
             /* @var $cell \PHPExcel_Cell */
@@ -161,24 +274,27 @@ class TabelloneController extends Controller {
             $sheet->getColumnDimension($colonna)->setWidth((int) $calculatedWidth * 1.05);
         }
         $sheet->freezePaneByColumnAndRow(0, 1);
-
-        $excel->getActiveSheet()->setTitle($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-        $excel->setActiveSheetIndex(0);
-
-        //create the response
-        $response = $excelService->getResponse();
-        /* @var $response \Symfony\Component\HttpFoundation\Response */
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . ($monthly_report ? "Monthly-report" : "Riepilogo-" ) . date('-m-Y') . '.xls;');
-
-        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-        $response->sendHeaders();
-        return $response;
     }
-
+    
+    protected function getColonne($mode, $monthly_report = false) {
+        $colonna = ord('A');
+        $colonne = array();
+        $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
+        $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
+        $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
+        $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
+        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'))) {
+            $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
+        }
+        $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
+        $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+        if (!$monthly_report && $this->hasRole('C_RECUPERI_H')) {
+            $colonne[chr($colonna++)] = array('nome' => 'Dati recupero', 'larghezza' => 50);
+        } else {
+            $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
+        }
+        $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
+        return $colonne;
+    }
 
 }

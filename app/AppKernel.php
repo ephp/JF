@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new PunkAve\FileUploaderBundle\PunkAveFileUploaderBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             
             new Ephp\UtilityBundle\EphpUtilityBundle(),
             new Ephp\CalendarBundle\EphpCalendarBundle(),

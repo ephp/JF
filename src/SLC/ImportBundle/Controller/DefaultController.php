@@ -26,15 +26,15 @@ class DefaultController extends Controller {
             return $this->createNotFoundException('Configurare la sorgente dati di JF-CLAIMS');
         }
 
-        if($this->getParam('_route') == 'slc_import_all_claims') {
+        if ($this->getParam('_route') == 'slc_import_all_claims') {
             $pratiche = $this->executeSql('SELECT p.slug FROM claims_h_pratiche p WHERE p.cliente_id = ' . $this->getUser()->getCliente()->getId());
-        } else {    
-            $pratiche = $this->executeSql('SELECT p.slug FROM claims_h_pratiche p WHERE p.cliente_id = ' . $this->getUser()->getCliente()->getId().' AND p.gestore_id IS NULL');
+        } else {
+            $pratiche = $this->executeSql('SELECT p.slug FROM claims_h_pratiche p WHERE p.cliente_id = ' . $this->getUser()->getCliente()->getId() . ' AND p.gestore_id IS NULL');
         }
 
         foreach ($pratiche as $slug) {
             $slug = $slug['slug'];
-            
+
             $this->claim($slug, $dati);
         }
         return $this->redirect($this->generateUrl('claims_hospital'));
@@ -50,7 +50,7 @@ class DefaultController extends Controller {
         }
 
         $no_gestore = $this->claim($slug, $dati);
-        
+
         return $no_gestore ? $this->redirect($this->generateUrl('claims_hospital')) : $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $slug)));
     }
 
@@ -63,40 +63,88 @@ class DefaultController extends Controller {
             $this->getEm()->beginTransaction();
             $out = $this->curlGet($url);
             $_pratica = json_decode($out);
+            $save_pratica = false;
             if (!$pratica->getDasc() && $_pratica->dasc) {
+                $save_pratica = true;
                 $pratica->setDasc(\DateTime::createFromFormat('Y-m-d', $_pratica->dasc));
             }
             if ($_pratica->gestore) {
-                $pratica->setGestore($this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $_pratica->gestore)));
+                $gestore = $this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $_pratica->gestore));
+                if (!$pratica->getGestore() || $pratica->getGestore()->getId() != $gestore->getId()) {
+                    $save_pratica = true;
+                    $pratica->setGestore($gestore);
+                }
             }
             if ($_pratica->priorita) {
-                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => $_pratica->priorita)));
+                $priorita = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => $_pratica->priorita));
+                if (!$pratica->getPriorita() || $pratica->getPriorita()->getId() != $priorita->getId()) {
+                    $save_pratica = true;
+                    $pratica->setPriorita($priorita);
+                }
             }
             if ($_pratica->stato) {
-                $pratica->setStatoPratica($this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'stato' => $_pratica->stato)));
+                $statoPratica = $this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'stato' => $_pratica->stato));
+                if (!$pratica->getStatoPratica() || $pratica->getStatoPratica()->getId() != $statoPratica->getId()) {
+                    $save_pratica = true;
+                    $pratica->setStatoPratica($statoPratica);
+                }
             }
-            $pratica->setNote($_pratica->note);
-            $pratica->setLegaliAvversari($_pratica->avversari);
-            $pratica->setDatiRecupero($_pratica->dati);
-            $pratica->setSettlementAuthority($_pratica->sa);
-            $pratica->setOffertaNostra($_pratica->offerta_nostra);
-            $pratica->setOffertaLoro($_pratica->offerta_loro);
-            $pratica->setRecuperoOffertaNostra($_pratica->recupero_offerta_nostra);
-            $pratica->setRecuperoOffertaLoro($_pratica->recupero_offerta_loro);
+            if ($_pratica->note && $pratica->getNote() != $_pratica->note) {
+                $save_pratica = true;
+                $pratica->setNote($_pratica->note);
+            }
+            if ($_pratica->avversari && $pratica->getLegaliAvversari() != $_pratica->avversari) {
+                $save_pratica = true;
+                $pratica->setLegaliAvversari($_pratica->avversari);
+            }
+            if ($_pratica->dati && $pratica->getDatiRecupero() != $_pratica->dati) {
+                $save_pratica = true;
+                $pratica->setDatiRecupero($_pratica->dati);
+            }
+            if ($_pratica->sa && $pratica->getSettlementAuthority() != $_pratica->sa) {
+                $save_pratica = true;
+                $pratica->setSettlementAuthority($_pratica->sa);
+            }
+            if ($_pratica->offerta_nostra && $pratica->getOffertaNostra() != $_pratica->offerta_nostra) {
+                $save_pratica = true;
+                $pratica->setOffertaNostra($_pratica->offerta_nostra);
+            }
+            if ($_pratica->offerta_loro && $pratica->getOffertaLoro() != $_pratica->offerta_loro) {
+                $save_pratica = true;
+                $pratica->setOffertaLoro($_pratica->offerta_loro);
+            }
+            if ($_pratica->recupero_offerta_nostra && $pratica->getRecuperoOffertaNostra() != $_pratica->recupero_offerta_nostra) {
+                $save_pratica = true;
+                $pratica->setRecuperoOffertaNostra($_pratica->recupero_offerta_nostra);
+            }
+            if ($_pratica->recupero_offerta_loro && $pratica->getRecuperoOffertaLoro() != $_pratica->recupero_offerta_loro) {
+                $save_pratica = true;
+                $pratica->setRecuperoOffertaLoro($_pratica->recupero_offerta_loro);
+            }
 
             foreach ($_pratica->report as $key => $val) {
                 switch ($key) {
                     case 'dol':
                     case 'don':
                         if ($val) {
-                            $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                            $pratica->$set(\DateTime::createFromFormat('Y-m-d', $_pratica->dasc));
+                            $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
+                            $data = \DateTime::createFromFormat('Y-m-d', $val);
+                            if (!$pratica->$get() || $pratica->$get()->format('d-m-Y') != $data->format('d-m-Y')) {
+                                $save_pratica = true;
+                                $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
+                                $pratica->$set($data);
+                            }
                         }
                         break;
                     case 'gestore':
                         if ($val) {
-                            $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                            $pratica->$set($this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $val)));
+                            $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
+                            $gestore = $this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $val));
+                            if (!$pratica->$get() || $pratica->$get()->getId() != $gestore->getId()) {
+                                $save_pratica = true;
+                                $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
+                                $pratica->$set($gestore);
+                            }
                         }
                         break;
                     case 'reports':
@@ -128,8 +176,12 @@ class DefaultController extends Controller {
                         }
                         break;
                     default:
-                        $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                        $pratica->$set($val);
+                        $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
+                        if (!$pratica->$get() != $val) {
+                            $save_pratica = true;
+                            $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
+                            $pratica->$set($val);
+                        }
                         break;
                 }
             }
@@ -176,3 +228,4 @@ class DefaultController extends Controller {
     }
 
 }
+

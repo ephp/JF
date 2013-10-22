@@ -125,7 +125,7 @@ trait Pratica
     /**
      * Get gestore
      *
-     * @return integer 
+     * @return \JF\ACLBundle\Entity\Gestore 
      */
     public function getGestore()
     {
@@ -148,7 +148,7 @@ trait Pratica
     /**
      * Get statoPratica
      *
-     * @return integer 
+     * @return \Claims\CoreBundle\Entity\StatoPratica 
      */
     public function getStatoPratica()
     {

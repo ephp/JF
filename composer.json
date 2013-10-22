@@ -29,6 +29,7 @@
         "ephp/dragdrop": "master@dev",
         "ephp/imap": "master@dev",
         "ephp/utility": "master@dev",
+        "liuggio/excelbundle": ">=1.0.4",
         "friendsofsymfony/jsrouting-bundle": "~1.1",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "hwi/oauth-bundle": "0.3.*@dev",

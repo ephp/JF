@@ -107,7 +107,7 @@ class TabelloneController extends Controller {
             
             $this->fillSheet($sheet, $colonne, $entities);
 
-            $excel->getActiveSheet()->setTitle($stato->getStato());
+            $excel->getActiveSheet()->setTitle(\Ephp\UtilityBundle\Utility\String::tronca(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' ', ' ', '-', '-', '', '(', ')'), $stato->getStato()), 25));
 
             $i++;
         }
@@ -158,12 +158,12 @@ class TabelloneController extends Controller {
         
         $this->fillSheet($sheet, $colonne, $entities);
 
-        $excel->getActiveSheet()->setTitle("Stato pratica {$stato}");
+        $stato = $this->findBy('ClaimsCoreBundle:StatoPratica', $stato);
+        $excel->getActiveSheet()->setTitle(\Ephp\UtilityBundle\Utility\String::tronca(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' ', ' ', '-', '-', '', '(', ')'), $stato->getStato()), 25));
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-        $stato = $this->findBy('ClaimsCoreBundle:StatoPratica', $stato);
         
         //create the response
         $response = $excelService->getResponse();

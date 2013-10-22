@@ -49,7 +49,8 @@ class InstallController extends Controller {
                                                                                 //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_cal.txt.twig',              //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
+                                                                                //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -62,7 +63,8 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'full', 30, 'Completa',              //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_full.txt.twig',             //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
+                                                                                //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -75,7 +77,8 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'trial', 5, 'Completa - prova 30gg', //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_trial.txt.twig',            //TWIG descrizione
                     30,                                                         //Durata
-                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
+                                                                                //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -89,14 +92,16 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'slc', 100, 'Studio Legale Carlesi', //Anagrafica licenza 
                     'ClaimsHBundle:Install:pratiche_slc.txt.twig',              //TWIG descrizione
                     null,                                                       //Durata
-                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
+                    array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
+                                                                                //Ruoli abilitati
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => true,                                 //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   //  Dati per operazioni automatizzate
+                        'label_cliente' => 'Dati operazioni da email',  
+                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
                         ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market

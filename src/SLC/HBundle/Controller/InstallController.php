@@ -39,7 +39,9 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        ),                                          
+                        'label_cliente' => 'Personalizzazione ospedali',  
+                        'form_cliente' => '\SLC\HBundle\Form\AccountType',      
+                    ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();

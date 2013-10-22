@@ -50,9 +50,9 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
+                        'label_cliente' => 'Dati Contec',
                         'form_cliente' => '\Claims\ContecBundle\Form\AccountType',
-                                                                                //  Form per opzioni personalizzate
-                        ),                                          
+                    ),                                          
                     1500, null,                                                 //Prezzo-Prezzo scontato
                     false, true);                                               //Autoinstall-Market
             $licenze[] = $this->newLicenza(
@@ -63,9 +63,9 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
+                        'label_cliente' => 'Dati Contec',
                         'form_cliente' => '\Claims\ContecBundle\Form\AccountType',
-                                                                                //  Form per opzioni personalizzate
-                        ),                                          
+                    ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();

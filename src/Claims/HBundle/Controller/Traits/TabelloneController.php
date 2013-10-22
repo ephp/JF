@@ -186,6 +186,7 @@ trait TabelloneController {
     private function buildFiltri(&$mode, &$stato = null) {
         $logger = $this->get('logger');
         $cliente = $this->getUser()->getCliente();
+        /* @var $cliente \JF\ACLBundle\Entity\Cliente */
         $filtri = array(
             'in' => array(
                 'cliente' => $cliente->getId(),
@@ -275,6 +276,23 @@ trait TabelloneController {
                 break;
             default:
                 break;
+        }
+        $datiCliente = $cliente->getDati();
+        if(isset($datiCliente['slc_h-analisi'])) {
+            $analisi = $datiCliente['slc_h-analisi'];
+            if(isset($analisi['sigle']) && $analisi['sigle']) {
+                $sigle = explode(',', $analisi['sigle']);
+                $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sigla' => $sigle));
+                $idOspedali = array();
+                foreach($ospedali as $ospedale) {
+                    $idOspedali[] = $ospedale->getId();
+                }
+                if(!$this->getUser()->hasRole('C_SUPVIS_H') && $this->getRequest()->get('hidden')) {
+                    $filtri['in']['ospedale'] = $idOspedali;
+                } else {
+                    $filtri['out']['ospedale'] = $idOspedali;
+                }
+            }
         }
         if ($stato) {
             $dati['claims_h_stato'] = $stato;

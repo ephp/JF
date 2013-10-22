@@ -39,8 +39,9 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        'form_cliente' => '\SLC\ImportBundle\Form\BaseType',    //  Form configurazione
-                        ),                                          
+                        'label_cliente' => 'Dati JF-Claims',
+                        'form_cliente' => '\SLC\ImportBundle\Form\BaseType',
+                    ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();

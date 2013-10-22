@@ -113,6 +113,7 @@ class ClaimsHExtension extends Extension implements IExtension {
 
         $this->newRole($roles, 'C_GESTORE_H', 'H-GEST', 'Gestore Claims Hospital');
         $this->newRole($roles, 'C_RECUPERI_H', 'H-REC', 'Addetto ai recuperi Claims Hospital');
+        $this->newRole($roles, 'C_SUPVIS_H', 'H-SV', 'Supervisore Claims Hospital');
 
         $container->setParameter('jf.roles', $roles);
     }

@@ -710,9 +710,14 @@ class Cliente {
             foreach ($this->getLicenze() as $licenza) {
                 $licenza = $licenza->getLicenza();
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                foreach ($licenza->getParams() as $k => $v) {
+                $params = $licenza->getParams();
+                foreach ($params as $k => $v) {
                     if ($k == 'form_cliente') {
-                        $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
+                        if(isset($params['label_cliente'])) {
+                            $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = array('form' => $v, 'label' => $params['label_cliente']);
+                        } else {
+                            $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = array('form' => $v, 'label' => $licenza->getGruppo()->getSiglaCompleta());
+                        }
                     } else {
                         $this->cache[$licenza->getGruppo()->getSiglaCompleta() . '.' . $k] = $v;
                     }
@@ -729,9 +734,14 @@ class Cliente {
             foreach ($this->getLicenze() as $licenza) {
                 $licenza = $licenza->getLicenza();
                 /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                foreach ($licenza->getParams() as $k => $v) {
+                $params = $licenza->getParams();
+                foreach ($params as $k => $v) {
                     if ($k == 'form_cliente') {
-                        $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = $v;
+                        if(isset($params['label_cliente'])) {
+                            $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = array('form' => $v, 'label' => $params['label_cliente']);
+                        } else {
+                            $this->cache[$k][$licenza->getGruppo()->getSiglaCompleta()] = array('form' => $v, 'label' => $licenza->getGruppo()->getSiglaCompleta());
+                        }
                     } else {
                         $this->cache[$licenza->getGruppo()->getSiglaCompleta() . '.' . $k] = $v;
                     }

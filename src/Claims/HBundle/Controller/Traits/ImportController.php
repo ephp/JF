@@ -36,7 +36,12 @@ trait ImportController {
                 $old->setApplicableDeductible($pratica->getApplicableDeductible());
             }
             if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
-                $log[] = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
+                $_log = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
+                if($old->getAmountReserved() < 0) {
+                    $evento = $this->newEvento($this->RISERVA, $old, null, $_log);
+                    $this->persist($evento);
+                }
+                $log[] = $_log;
                 $old->setAmountReserved($pratica->getAmountReserved());
             }
             if (($old->getDeductibleReserved() < 0 ? 'NP' : $old->getDeductibleReserved()) != ($pratica->getDeductibleReserved() < 0 ? 'NP' : $pratica->getDeductibleReserved())) {
@@ -145,6 +150,8 @@ trait ImportController {
                 $old->addLog($log);
                 $this->persist($old);
                 $pratiche_aggiornate[] = $old;
+                $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
+                $this->persist($evento);
             }
         } else {
             $pratica->addLog(array('Importata pratica'));

@@ -57,6 +57,8 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => false,                                //  Verifica a 30 giorni
                         'status_view' => false,                                 //  Visione per stati operativi
+                        'label_cliente' => 'Dati operazioni da email',  
+                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
                         ),                                          
                     2500);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
@@ -71,6 +73,8 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => true,                                 //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
+                        'label_cliente' => 'Dati operazioni da email',  
+                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
                         ),                                          
                     3000);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
@@ -85,6 +89,8 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => false,                                //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
+                        'label_cliente' => 'Dati operazioni da email',  
+                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
                         ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
@@ -101,7 +107,7 @@ class InstallController extends Controller {
                         '30day_verify' => true,                                 //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
                         'label_cliente' => 'Dati operazioni da email',  
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
+                        'form_cliente' => '\Claims\HBundle\Form\AccountSLCType',   
                         ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market

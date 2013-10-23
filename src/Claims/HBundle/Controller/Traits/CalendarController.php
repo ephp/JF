@@ -4,26 +4,29 @@ namespace Claims\HBundle\Controller\Traits;
 
 trait CalendarController {
 
-    protected $ANALISI_SINISTRI_COPERTURA = "ASC";
-    protected $VERIFICA_INCARICHI_MEDICI = "VIM";
-    protected $RICERCA_POLIZZE_MEDICI = "RPM";
-    protected $RELAZIONE_RISERVA = "RER";
-    protected $RICHIESTA_SA = "RSA";
-    protected $TRATTATIVE_AGGIORNAMENTI = "TAX";
-    protected $JWEB = "JWB";
-    protected $EMAIL_JWEB = "EJW";
-    protected $CANCELLERIA_TELEMATICA = "CNT";
-    protected $RAVINALE = "RVP";
-    protected $EMAIL_RAVINALE = "MRV";
-    protected $ATTIVITA_MANUALE = "OTH";
-    protected $EMAIL_MANUALE = "EML";
-    protected $RISCHEDULAZIONE = "RIS";
-    protected $VERIFICA_PERIODICA = "VER";
-    protected $CAMBIO_STATO_OPERATIVO = "CHS";
-    protected $CAMBIO_GESTORE = "CHG";
-    protected $PRIORITA = "PRI";
-    protected $RECUPERI = "REC";
-    protected $RECUPERI_MANUALE = "RCM";
+    protected $ANALISI_SINISTRI_COPERTURA   = "ASC";
+    protected $VERIFICA_INCARICHI_MEDICI    = "VIM";
+    protected $RICERCA_POLIZZE_MEDICI       = "RPM";
+    protected $RELAZIONE_RISERVA            = "RER";
+    protected $RICHIESTA_SA                 = "RSA";
+    protected $TRATTATIVE_AGGIORNAMENTI     = "TAX";
+    protected $JWEB                         = "JWB";
+    protected $EMAIL_JWEB                   = "EJW";
+    protected $CANCELLERIA_TELEMATICA       = "CNT";
+    protected $RAVINALE                     = "RVP";
+    protected $EMAIL_RAVINALE               = "MRV";
+    protected $ATTIVITA_MANUALE             = "OTH";
+    protected $EMAIL_MANUALE                = "EML";
+    protected $RISCHEDULAZIONE              = "RIS";
+    protected $VERIFICA_PERIODICA           = "VER";
+    protected $CAMBIO_STATO_OPERATIVO       = "CHS";
+    protected $CAMBIO_GESTORE               = "CHG";
+    protected $PRIORITA                     = "PRI";
+    protected $RECUPERI                     = "REC";
+    protected $RECUPERI_MANUALE             = "RCM";
+    protected $BORDERAUX                    = "BDX";
+    protected $RISERVA                      = "RIS";
+    protected $DEFINITO                     = "DEF";
 
     /**
      * @return \Ephp\Bundle\CalendarBundle\Entity\Calendario
@@ -109,6 +112,15 @@ trait CalendarController {
                     break;
                 case $this->RECUPERI_MANUALE:
                     $tipo = $_tipo->createTipo($this->RECUPERI_MANUALE, 'Recuperi manuali', 'dd8831', $cal);
+                    break;
+                case $this->BORDERAUX:
+                    $tipo = $_tipo->createTipo($this->BORDERAUX, 'Aggiornamenti da importazione Borderaux', '00b4ff', $cal, false, false, true);
+                    break;
+                case $this->RISERVA:
+                    $tipo = $_tipo->createTipo($this->RISERVA, 'Messa in riserva', '00e000', $cal, false, false, false);
+                    break;
+                case $this->DEFINITO:
+                    $tipo = $_tipo->createTipo($this->DEFINITO, 'Definito', 'ff0000', $cal, false, false, false);
                     break;
             }
         }

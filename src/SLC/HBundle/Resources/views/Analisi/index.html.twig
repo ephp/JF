@@ -42,7 +42,7 @@
 </div>         
 {% render(controller("ClaimsHBundle:Render:dettagli")) %}
 {% render(controller("ClaimsHBundle:Render:cambiaPriorita")) %}
-{% if app.user.hasRole(['C_GESTORE_H']) %}
+{% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
     {% render(controller("ClaimsHBundle:Render:cambiaStato")) %}
     {% render(controller("ClaimsHBundle:Render:cambiaNote")) %}
 {% endif %}

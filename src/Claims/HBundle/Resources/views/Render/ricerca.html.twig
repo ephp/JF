@@ -3,17 +3,17 @@
         <div class="span12">
             <div class="block">
                 <b>Criteri di ricerca:</b>
-                {% if entity.anno %}<span class="label label-info">Anno: {{ entity.anno }}</span>{% endif %}
-                {% if entity.codice %}<span class="label label-info">TPA: {{ entity.codice }}</span>{% endif %}
                 {% if entity.claimant %}<span class="label label-info">Claimant: {{ entity.claimant }}</span>{% endif %}
+                {% if entity.codice %}<span class="label label-info">TPA: {{ entity.codice }}</span>{% endif %}
                 {% if entity.soi %}<span class="label label-info">SOI: {{ entity.soi(true) }}</span>{% endif %}
                 {% if entity.amountReserved %}<span class="label label-info">Amount Reserved: {{ entity.amountReserved }}</span>{% endif %}
-                {% if entity.ospedale %}<span class="label label-info">Ospedale: {{ entity.ospedale }}</span>{% endif %}
                 {% if entity.court %}<span class="label label-info">Giudiziale: {{ entity.court }}</span>{% endif %}
-                {% if entity.status %}<span class="label label-info">Status {{ entity.status }}</span>{% endif %}
+                {% if entity.ospedale %}<span class="label label-info">Ospedale: {{ entity.ospedale }}</span>{% endif %}
+                {% if entity.anno %}<span class="label label-info">Anno: {{ entity.anno }}</span>{% endif %}
+                {% if entity.gestore %}<span class="label label-info">Gestore: {{ entity.gestore.nome }}</span>{% endif %}
                 {% if entity.statoPratica %}<span class="label label-info">Stato pratica: {{ entity.statoPratica }}</span>{% endif %}
                 {% if entity.priorita %}<span class="label label-info">Priorità: {{ entity.priorita }}</span>{% endif %}
-                {% if entity.gestore %}<span class="label label-info">Gestore: {{ entity.gestore.nome }}</span>{% endif %}
+                {% if entity.status %}<span class="label label-info">Status {{ entity.status }}</span>{% endif %}
             </div>
         </div>
     </div>
@@ -30,8 +30,8 @@
             <div class="span6">
                 <div class="block">
                     <div class="data-fluid">
-                        {{ form_row(form.codice) }}
                         {{ form_row(form.claimant) }}
+                        {{ form_row(form.codice) }}
                         {{ form_row(form.soi) }}
                         {{ form_row(form.amountReserved) }}
                         {{ form_row(form.court) }}

@@ -239,7 +239,7 @@ class TabelloneController extends Controller {
      * @Route("-cambia-dati-recupero/", name="claims_hospital_cambia_dati_recupero", options={"expose": true, "ACL": {"in_role": {"C_RECUPERI_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaDatiRecuperoAction() {
-        $req = $this->getParam('note');
+        $req = $this->getParam('dati_recupero');
 
         $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $req['id']));
         /* @var $pratica Pratica */

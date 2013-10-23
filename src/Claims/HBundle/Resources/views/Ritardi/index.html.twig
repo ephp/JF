@@ -58,7 +58,12 @@
 {% render(controller("ClaimsHBundle:Render:cambiaPriorita")) %}
 {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
     {% render(controller("ClaimsHBundle:Render:cambiaStato")) %}
+{% endif %}
+{% if app.user.hasRole(['C_GESTORE_H']) %}
     {% render(controller("ClaimsHBundle:Render:cambiaNote")) %}
+{% endif %}
+{% if app.user.hasRole(['C_RECUPERI_H']) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaDatiRecupero")) %}
 {% endif %}
 {% if app.user.hasRole('C_ADMIN') %}
     {% render(controller("ClaimsHBundle:Render:cambiaDasc")) %}

@@ -14,7 +14,7 @@ class AccountType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('definiti', 'textarea', array('mapped' => false, 'label' => 'Status definiti (separati da virgola)', 'required' => false))
+                ->add('definiti', 'textarea', array('mapped' => false, 'label' => 'Status definiti (separati da virgola) per chiusura automatica sinistri', 'required' => false))
         ;
     }
 

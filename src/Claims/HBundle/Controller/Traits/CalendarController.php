@@ -25,7 +25,7 @@ trait CalendarController {
     protected $RECUPERI                     = "REC";
     protected $RECUPERI_MANUALE             = "RCM";
     protected $BORDERAUX                    = "BDX";
-    protected $RISERVA                      = "RIS";
+    protected $RISERVA                      = "RES";
     protected $DEFINITO                     = "DEF";
 
     /**

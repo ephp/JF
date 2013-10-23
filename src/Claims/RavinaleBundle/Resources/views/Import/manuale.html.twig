@@ -54,7 +54,7 @@
                     <tbody>
                     {% for entity in pratiche_aggiornate %}
                         <tr>
-                            <td>{{ entity.codice }}</td>
+                            <td><a href="{{ url('claims_hospital_pratica', {'slug': entity.slug}) }}">{{ entity.codice }}</a></td>
                             <td>{{ entity.claimant }}</td>
                             <td>{{ entity.lastLog|raw }}</td>
                         </tr>

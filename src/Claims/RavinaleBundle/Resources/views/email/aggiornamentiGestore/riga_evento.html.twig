@@ -1,0 +1,8 @@
+<tr style="background-color: #ccc; color: #000;">
+    <th style="text-align: right;">{{ index }}</th>
+    <td style="text-align: center;" nowrap><a style="color: #f00; margin: 5px;" href="{{ url('claims_hospital_pratica', {'slug': pratica.slug}) }}">{{ pratica.codice }}</a></td>
+    <td style="text-align: center; font-weight: bold;"><abbr title="{{ pratica.priorita.priorita }}">{{ pratica.priorita.priorita }}</abbr></td>
+    <td style="text-align: center; font-weight: bold;">{{ pratica.claimant }}</td>
+    <td>{{ pratica.note }}</td>
+    <td>{{ pratica.lastLog|raw }}</td>
+</tr>

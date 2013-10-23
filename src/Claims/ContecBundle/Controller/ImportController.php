@@ -135,7 +135,7 @@ class ImportController extends Controller {
         return $out;
     }
 
-    private function importBdx($cliente, $source) {
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche_aggiornate = $pratiche_nuove = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
@@ -371,6 +371,27 @@ class ImportController extends Controller {
                 }
             }
         }
+        $aggiornamenti = array();
+        foreach ($pratiche_aggiornate as $pratica) {
+            /* @var $pratica Pratica */
+            if($pratica->getGestore()) {
+                if(!isset($aggiornamenti[$pratica->getGestore()->getId()])) {
+                    $aggiornamenti[$pratica->getGestore()->getId()] = array();
+                }
+                $aggiornamenti[$pratica->getGestore()->getId()][] = $pratica;
+            }
+        }
+        foreach($cliente->getUtenze() as $gestore) {
+            /* @var $gestore \JF\ACLBundle\Entity\Gestore */
+            if($gestore->hasRole('C_ADMIN')) {
+                $this->notify($gestore, 'Aggiornamenti personali BDX Contec', 'ClaimsContecBundle:email:aggiornamentiAdmin', array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate));
+            }
+            if(isset($aggiornamenti[$gestore->getId()])) {
+                $this->notify($gestore, 'Aggiornamenti generali BDX Contec', 'ClaimsContecBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
+            }
+            
+        }
+        
         return array('pratiche_aggiornate' => $pratiche_aggiornate, 'pratiche_nuove' => $pratiche_nuove);
     }
 
@@ -385,7 +406,7 @@ class ImportController extends Controller {
         set_time_limit(3600);
         $em = $this->getEm();
         $conn = $em->getConnection();
-        $req = $this->getRequest()->get('import');
+        $csv = $this->getRequest()->get('import');
         $entity = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
         /* @var $entity Pratica */
         if (!$entity) {
@@ -393,7 +414,6 @@ class ImportController extends Controller {
         }
 
         $cal = $this->getCalendar();
-        $csv = $req['csv'];
         $righe = explode("\n", str_replace(array("\r", "\n\n"), array("\n", "\n"), $csv));
         foreach ($righe as $riga) {
             $dati = explode("\t", $riga);
@@ -407,7 +427,7 @@ class ImportController extends Controller {
                     $olds = $this->findBy('ClaimsHBundle:Evento', array(
                         'calendario' => $cal->getId(),
                         'tipo' => $evento->getTipo()->getId(),
-                        'scheda' => $entity->getId(),
+                        'pratica' => $entity->getId(),
                         'titolo' => $evento->getTitolo(),
                         'note' => $evento->getNote(),
                     ));

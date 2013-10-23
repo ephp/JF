@@ -1,0 +1,7 @@
+{% if index is not defined %}
+    {% set index = 1 %}
+{% endif %}
+{% for pratica in pratiche %}
+    {% include 'ClaimsRavinaleBundle:email:aggiornamentiAdmin/riga_evento.txt.twig' %}
+    {% set index = index + 1 %}
+{% endfor %}

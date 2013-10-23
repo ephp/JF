@@ -14,7 +14,7 @@ class AccountSLCType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('definiti', 'textarea', array('mapped' => false, 'label' => 'Status definiti (separati da virgola)', 'required' => false))
+                ->add('definiti', 'textarea', array('mapped' => false, 'label' => 'Status definiti (separati da virgola) per chiusura automatica sinistri', 'required' => false))
                 ->add('server', 'text', array('mapped' => false, 'label' => 'Server di posta', 'required' => false))
                 ->add('port', 'text', array('mapped' => false, 'label' => 'Porta del server', 'required' => false))
                 ->add('protocol', 'text', array('mapped' => false, 'label' => 'Protocollo di posta', 'required' => false))

@@ -1,0 +1,8 @@
+
+*Aggiornamento sinistri Contec*
+
+{% if pratiche|length > 0 %}
+{{ pratiche|length }} pratiche anno subito un aggiornamento
+| # | * | Data | Tpa | Claimant | Titolo | Note | Aggiornamenti |
+{% include 'ClaimsContecBundle:email:aggiornamentiGestore/tbody.txt.twig' %}
+{% endif %}

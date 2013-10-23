@@ -1,0 +1,7 @@
+{% if index is not defined %}
+    {% set index = 1 %}
+{% endif %}
+{% for pratica in pratiche %}
+    {% include 'ClaimsContecBundle:email:aggiornamentiGestore/riga_evento.html.twig' %}
+    {% set index = index + 1 %}
+{% endfor %}

@@ -87,7 +87,7 @@ class ImportController extends Controller {
         foreach ($matchs[0] as $match) {
             $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
         }
-        
+
         // https://sistema.ravinalepartners.com/Moduli/San1/Riepilogo/
         sleep(rand(3, 6));
         $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
@@ -115,7 +115,7 @@ class ImportController extends Controller {
         return $out;
     }
 
-    private function importBdx($cliente, $source) {
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
         /*
           $colonne = array(
           'ID',
@@ -344,6 +344,27 @@ class ImportController extends Controller {
                 }
             }
         }
+
+        $aggiornamenti = array();
+        foreach ($pratiche_aggiornate as $pratica) {
+            /* @var $pratica Pratica */
+            if ($pratica->getGestore()) {
+                if (!isset($aggiornamenti[$pratica->getGestore()->getId()])) {
+                    $aggiornamenti[$pratica->getGestore()->getId()] = array();
+                }
+                $aggiornamenti[$pratica->getGestore()->getId()][] = $pratica;
+            }
+        }
+        foreach ($cliente->getUtenze() as $gestore) {
+            /* @var $gestore \JF\ACLBundle\Entity\Gestore */
+            if ($gestore->hasRole('C_ADMIN')) {
+                $this->notify($gestore, 'Aggiornamenti personali BDX Ravinale', 'ClaimsRavinaleBundle:email:aggiornamentiAdmin', array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate));
+            }
+            if(isset($aggiornamenti[$gestore->getId()])) {
+                $this->notify($gestore, 'Aggiornamenti generali BDX Ravinale', 'ClaimsRavinaleBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
+            }
+        }
+
         return array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate);
     }
 

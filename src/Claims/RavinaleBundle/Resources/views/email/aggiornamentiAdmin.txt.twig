@@ -1,0 +1,14 @@
+
+*Aggiornamento sinistri Ravinale*
+
+{% if pratiche_nuove|length > 0 %}
+{{ pratiche_nuove|length }} nuove pratiche
+| # | * | Data | Tpa | Claimant | Titolo | Note | Aggiornamenti |
+{% include 'ClaimsRavinaleBundle:email:aggiornamentiAdmin/tbody.txt.twig' with {'pratiche': pratiche_nuove} %}
+{% endif %}
+
+{% if pratiche_aggiornate|length > 0 %}
+{{ pratiche_aggiornate|length }} pratiche anno subito un aggiornamento
+| # | * | Data | Tpa | Claimant | Titolo | Note | Aggiornamenti |
+{% include 'ClaimsRavinaleBundle:email:aggiornamentiGestore/tbody.txt.twig' with {'pratiche': pratiche_aggiornate} %}
+{% endif %}

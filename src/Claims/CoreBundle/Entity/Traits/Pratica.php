@@ -269,11 +269,11 @@ trait Pratica
         return $this;
     }
     
-    public function getLastLog() {
+    public function getLastLog($html = true) {
         if(is_array($this->logs) && count($this->logs) > 0) {
             $tmp = $this->logs;
             $log = array_shift($tmp);
-            return "<ul class=\"nav\"><li>".implode("</li><li>", $log['info'])."</li></ul>";
+            return $html ? "<ul class=\"nav\"><li>".implode("</li><li>", $log['info'])."</li></ul>" : implode("; ", $log['info']);
         }
         return 'No log';
     }

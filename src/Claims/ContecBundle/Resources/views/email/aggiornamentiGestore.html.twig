@@ -1,0 +1,25 @@
+{% extends '::email.html.twig' %}
+
+{% block content %}
+<h1>Aggiornamento sinistri Contec</h1>
+
+{% if pratiche|length > 0 %}
+    <h2><a href="{{ url('claims_hospital_personale') }}">{{ pratiche|length }} pratiche anno subito un aggiornamento</a></h2>
+    <table>
+        <thead>
+            <tr style="background-color: #000; color: #fff; padding:2px;">
+                <th>#</th>
+                <th>Tpa</th>
+                <th>Priorità</th>
+                <th>Claimant</th>
+                <th>Note</th>
+                <th>Aggiornamenti</th>
+            </tr>
+        </thead>
+        <tbody id="tb_container">
+            {% include 'ClaimsContecBundle:email:aggiornamentiGestore/tbody.html.twig' %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}

@@ -51,6 +51,13 @@ trait Pratica
     private $note;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="note_data_modifica", type="datetime", nullable=true)
+     */
+    private $noteDataModifica;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="logs", type="array", nullable=true)
@@ -187,6 +194,7 @@ trait Pratica
     public function setNote($note)
     {
         $this->note = $note;
+        $this->noteDataModifica = new \DateTime();
     
         return $this;
     }
@@ -199,6 +207,29 @@ trait Pratica
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set noteDataModifica
+     *
+     * @param \DateTime $noteDataModifica
+     * @return Pratica
+     */
+    public function setNoteDataModifica($noteDataModifica)
+    {
+        $this->noteDataModifica = $noteDataModifica;
+    
+        return $this;
+    }
+
+    /**
+     * Get noteDataModifica
+     *
+     * @return \DateTime 
+     */
+    public function getNoteDataModifica()
+    {
+        return $this->noteDataModifica;
     }
 
     /**

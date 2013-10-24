@@ -27,6 +27,8 @@ class XlsController extends Controller {
      * @Route("-completo/{monthly_report}",        name="claims_hospital_completo_xls",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_xls",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_xls", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-recuperati/{monthly_report}",      name="claims_hospital_recuperati_xls",    defaults={"monthly_report": false, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-recupero/{monthly_report}",        name="claims_hospital_recupero_xls",      defaults={"monthly_report": false, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
      */
     public function xlsAction($mode, $monthly_report) {
         $excelService = $this->get('xls.service_xls5');
@@ -279,7 +281,9 @@ class XlsController extends Controller {
                         if ($monthly_report) {
                             if ($entity->getNote()) {
                                 $valore = "Note
-{$entity->getNote()}";
+{$entity->getNote()}
+({$entity->getNoteDataModifica()->format('d-m-Y')})
+";
                             } else {
                                 $mr = $entity->getMonthlyReport();
                                 if ($mr) {

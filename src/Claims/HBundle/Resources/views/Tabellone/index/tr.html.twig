@@ -30,7 +30,7 @@
     </td>
     <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
     <td>{{ entity.claimant }}</td>
-    {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] %}
+    {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] or app.user.hasRole('C_RECUPERI_H') %}
         <td>
             {% if app.user.hasRole('C_ADMIN') %}
                 <a href="#fb_cambia_gestore" class="fancybox button {% if entity.gestore %}gray{% else %}lgray{% endif %} gestore">

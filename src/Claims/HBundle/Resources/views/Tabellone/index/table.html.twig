@@ -8,7 +8,7 @@
             <th width="70">DASC</th>
             <th width="25">Giud</th>
             <th width="15%">Claimant</th>
-            {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] %}
+            {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] or app.user.hasRole('C_RECUPERI_H') %}
                 <th width="40">Gestore</th>
             {% endif %}
             <th width="25">Soi</th>

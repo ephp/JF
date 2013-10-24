@@ -1,0 +1,63 @@
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-money-bag">Recupero <small>{{ entity }}</small></h3>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>1</small> Individuazione responsabile</h4>
+            <p>{{ entity.recuperoResponsabile|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>2</small> Email ASL (Sollecito 1910)</h4>
+            <p>{{ entity.recuperoSollecitoAsl|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>3</small> Recupero copia sinistro/copia polizza</h4>
+            <p>{{ entity.recuperoCopiaPolizza|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>4</small> Scrivere/telefonare al liquidatore per chiedere compartecipazione</h4>
+            <p>{{ entity.recuperoEmailLiquidatore|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>5</small> Chiedere percentuale espressamente e quietanze separate</h4>
+            <p>{{ entity.recuperoQuietanze|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <h4><small>6</small> Azione di recupero</h4>
+            <p>{{ entity.recuperoAzioneDiRecupero|nl2br }}</p>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-money-bag">Dati Recupero</h3>
+        </div>
+        <p>{{ entity.datiRecupero|nl2br }}</p>
+    </div>
+</div>

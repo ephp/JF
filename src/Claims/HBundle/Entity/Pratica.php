@@ -393,6 +393,13 @@ class Pratica {
     private $recuperoAzioneDiRecupero;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="recupero", type="boolean", nullable=true)
+     */
+    private $recupero;
+
+    /**
      * DATI REPORT
      */
 
@@ -1946,7 +1953,6 @@ class Pratica {
         return $this->links;
     }
 
-    
     public function getRecuperoResponsabile() {
         return $this->recuperoResponsabile;
     }
@@ -1993,6 +1999,18 @@ class Pratica {
 
     public function setRecuperoAzioneDiRecupero($recuperoAzioneDiRecupero) {
         $this->recuperoAzioneDiRecupero = $recuperoAzioneDiRecupero;
+    }
+
+    public function getRecupero() {
+        return $this->recupero;
+    }
+
+    public function setRecupero($recupero) {
+        $this->recupero = $recupero;
+    }
+
+    public function isRecuperato() {
+        return trim($this->recuperoResponsabile.$this->recuperoSollecitoAsl.$this->recuperoCopiaPolizza.$this->recuperoEmailLiquidatore.$this->recuperoQuietanze.$this->recuperoAzioneDiRecupero.$this->datiRecupero) != '';
     }
 
     public function isGiudiziale() {

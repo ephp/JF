@@ -22,11 +22,17 @@
         <textarea class="autoupdate autogrow informazioni" pratica="{{ entity.slug }}" name="informazioni" placeholder="Inserisci qui le informazioni utili">{{ entity.informazioni }}</textarea>
     </div>
 </div>
-<div class="row-fluid">
-    <div class="span12">
-        <div class="block icon no-margin">
-            <h3 class="ico-money-bag">Dati Recupero</h3>
+{% if entity.recupero or entity.recuperato %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block icon no-margin">
+                <h3 class="ico-money-bag">Dati Recupero</h3>
+            </div>
+            {% if entity.recupero %}
+                <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
+            {% else %}
+                <p>{{ entity.datiRecupero|nl2br }}</p>
+            {% endif %}
         </div>
-        <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
     </div>
-</div>
+{% endif %}

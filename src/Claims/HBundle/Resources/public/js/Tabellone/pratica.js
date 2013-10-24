@@ -30,6 +30,10 @@ function evidenziaEvento(id) {
     });
 }
 
+function recupero(slug) {
+    window.location = Routing.generate('claims_hospital_cambia_recupero', {'slug': slug});
+}
+
 function cancellaEvento(id, testo) {
     if (confirm("Vuoi cancellare l'evento \"" + testo + "\"")) {
         $.post(Routing.generate('claims_hospital_cancella_evento'), {'evento': {'id': id}}, function(out) {

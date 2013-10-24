@@ -4,6 +4,23 @@
 <div class="block icon no-margin">
     <h3 class="ico-adjust">Stato</h3>
 </div>
+<div class="block no-margin">
+    <div class="span6">
+        <div class="block bold">Fase di recupero</div>
+    </div>
+    <div class="span2">
+        <div class="block tright">
+            {% if not entity.recupero or app.user.hasRole('C_RECUPERI_H') %}
+                <button onclick="recupero('{{ entity.slug }}');" class="{% if entity.recupero %}btn-danger{% else %}btn-success{% endif %}">Cambia</button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="span4">
+        <div class="block tright">
+            {% if entity.recupero %}SI{% else %}NO{% endif %}
+        </div>
+    </div>
+</div>
 {% if entity.giudiziale %}{% set v = 'Sì (' ~ entity.court ~ ')' %}{% else %}{% set v = 'No'%}{% endif %}
 {% include 'ClaimsHBundle:Tabellone:commons/rbrick.html.twig' with {'span_label': 6, 'label': 'Giudiziale', 'span_value': 6, 'value': v} %}
 {% include 'ClaimsHBundle:Tabellone:commons/rbrick.html.twig' with {'span_label': 6, 'label': 'Franchigia', 'span_value': 6, 'value': entity.applicableDeductible, 'uumm': ' €'} %}

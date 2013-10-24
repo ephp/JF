@@ -36,6 +36,8 @@ class TabelloneController extends Controller {
      * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-senza-gestore/",   name="claims_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-recuperati/",      name="claims_hospital_recuperati",    defaults={"mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-recupero/",        name="claims_hospital_recupero",      defaults={"mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
      * @Template()
      */
     public function indexAction($mode) {
@@ -82,6 +84,8 @@ class TabelloneController extends Controller {
      * @Route("-stampa-completo/{monthly_report}",        name="claims_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-stampa-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_stampa",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa-recuperati/{monthly_report}",      name="claims_hospital_recuperati_stampa",    defaults={"monthly_report": false, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-stampa-recupero/{monthly_report}",        name="claims_hospital_recupero_stampa",      defaults={"monthly_report": false, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
      * @Template()
      */
     public function stampaAction($mode, $monthly_report) {
@@ -254,6 +258,8 @@ class TabelloneController extends Controller {
             }
 
             $pratica->setDatiRecupero($datiRecupero);
+            $pratica->setRecupero(true);
+            
             $this->persist($pratica);
             $this->getEm()->commit();
         } catch (\Exception $e) {
@@ -262,6 +268,30 @@ class TabelloneController extends Controller {
         }
         $priorita = $pratica->getPriorita();
         return $this->jsonResponse(array('dati_recupero' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getDatiRecupero(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
+    
+    /**
+     * @Route("-cambia-recupero/{slug}", name="claims_hospital_cambia_recupero", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H","C_RECUPERI_H"}}})
+     */
+    public function cambiaRecuperoAction($slug) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+        try {
+            $this->getEm()->beginTransaction();
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            }
+
+            $pratica->setRecupero(!$pratica->getRecupero());
+            
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        return $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $slug)));
     }
 
     /**

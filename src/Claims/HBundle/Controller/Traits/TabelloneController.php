@@ -24,6 +24,18 @@ trait TabelloneController {
                     'icon' => 'ico-user',
                 );
             }
+            if ($this->getUser()->hasRole(array('C_RECUPERI_H'))) {
+                $out['recupero'] = array(
+                    'route' => 'claims_hospital_recupero',
+                    'label' => 'In recupero',
+                    'icon' => 'ico-money-bag',
+                );
+                $out['recuperati'] = array(
+                    'route' => 'claims_hospital_recuperati',
+                    'label' => 'Recuperati',
+                    'icon' => 'ico-money-bag',
+                );
+            }
             $out['aperti'] = array(
                 'route' => 'claims_hospital_aperti',
                 'label' => 'Aperti',
@@ -227,16 +239,22 @@ trait TabelloneController {
                 $logger->notice($mode);
                 return $this->buildFiltri($mode, $stato);
             // Gestore e Recuperi
+            case 'recupero':
+                $filtri['in']['recupero'] = true;
+                break;
+            case 'recuperati':
+                $filtri['in']['recuperati'] = true;
+                break;
             case 'tutti':
                 if ($this->getUser()->hasRole('C_RECUPERI_H')) {
-                    $filtri['in']['recuperi'] = true;
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
                 } else {
                     $filtri['in']['gestore'] = $this->getUser()->getId();
                 }
                 break;
             case 'personale':
                 if ($this->getUser()->hasRole('C_RECUPERI_H')) {
-                    $filtri['in']['recuperi'] = true;
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
                 } else {
                     $filtri['in']['gestore'] = $this->getUser()->getId();
                 }
@@ -245,7 +263,7 @@ trait TabelloneController {
                 break;
             case 'chiuso':
                 if ($this->getUser()->hasRole('C_RECUPERI_H')) {
-                    $filtri['in']['recuperi'] = true;
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
                 } else {
                     $filtri['in']['gestore'] = $this->getUser()->getId();
                 }

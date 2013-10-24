@@ -268,6 +268,24 @@ class XlsController extends Controller {
                     case 'First Reserve Indication':
                         $valore = $entity->getFirstReserveIndication();
                         break;
+                    case 'Offerta Nostra':
+                        $valore = $entity->getOffertaNostra();
+                        break;
+                    case 'Offerta Loro':
+                        $valore = $entity->getOffertaLoro();
+                        break;
+                    case 'Recupero Offerta Nostra':
+                        $valore = $entity->getRecuperoOffertaNostra();
+                        if($valore <= 100) {
+                            $valore = $valore/100;
+                        }
+                        break;
+                    case 'Recupero Offerta Loro':
+                        $valore = $entity->getRecuperoOffertaLoro();
+                        if($valore <= 100) {
+                            $valore = $valore/100;
+                        }
+                        break;
                     case 'LT Fees Paid':
                         $valore = $entity->getLtFeesPaid();
                         break;
@@ -318,8 +336,20 @@ class XlsController extends Controller {
                     case 'First Reserve Indication':
                     case 'LT Fees Paid':
                     case 'LT Fees Reserve':
-//                        \Ephp\UtilityBundle\Utility\Debug::vd($sheet->getStyle($colonna . $riga)->getNumberFormat()); //->applyFromArray(array('font' => array('bold' => true)))->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                    case 'Offerta Nostra':
+                    case 'Offerta Loro':
                         $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
+                        $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                        break;
+                    case 'Recupero Offerta Nostra':
+                    case 'Recupero Offerta Loro':
+                        if($valore) {
+                            if($valore <= 1) {
+                                $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
+                            } else {
+                                $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
+                            }
+                        }
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
                     case 'Dati recupero':
@@ -359,9 +389,16 @@ class XlsController extends Controller {
             $colonne[chr($colonna++)] = array('nome' => 'LT Fees Paid', 'larghezza' => 20);
             $colonne[chr($colonna++)] = array('nome' => 'LT Fees Reserve', 'larghezza' => 20);
         } else {
-            $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
-            if (in_array($mode, array('np', 'reserve'))) {
-                $colonne[chr($colonna++)] = array('nome' => 'First Reserve Indication', 'larghezza' => 20);
+            if (in_array($mode, array('recupero', 'recuperati'))) {
+                $colonne[chr($colonna++)] = array('nome' => 'Offerta Nostra', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Nostra', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Offerta Loro', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Loro', 'larghezza' => 20);
+            } else {
+                $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                if (in_array($mode, array('np', 'reserve'))) {
+                    $colonne[chr($colonna++)] = array('nome' => 'First Reserve Indication', 'larghezza' => 20);
+                }
             }
         }
         if (!$monthly_report && $this->hasRole('C_RECUPERI_H')) {

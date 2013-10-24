@@ -24,9 +24,14 @@
     </td>
     {% endif %}
     <td class="center">{{ entity.soi }}</td>
+    {% if mode is defined and mode in ['recupero', 'recuperati'] %}
+        <td class="right">{{ entity.offertaNostra }} €{% if entity.recuperoOffertaNostra %}<br/><small>{{ entity.recuperoOffertaNostra }} {% if entity.recuperoOffertaNostra <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
+        <td class="right">{{ entity.offertaLoro }} €{% if entity.recuperoOffertaLoro %}<br><small>{{ entity.recuperoOffertaLoro }} {% if entity.recuperoOffertaLoro <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
+    {% else %}
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
-    {% if mode is not defined %}
-        <td class="right">{{ entity.firstReserveIndication }} €</td>
+        {% if mode is not defined %}
+            <td class="right">{{ entity.firstReserveIndication }} €</td>
+        {% endif %}
     {% endif %}
     <td class="note">
         {% if monthly_report is defined and monthly_report %}

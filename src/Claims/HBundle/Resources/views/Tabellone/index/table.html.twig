@@ -12,9 +12,14 @@
                 <th width="40">Gestore</th>
             {% endif %}
             <th width="25">Soi</th>
-            <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
-            {% if mode is not defined %}
-                <th width="70"><abbr title="First Reserve Indication">F.R.I.</abbr></th>
+            {% if mode is defined and mode in ['recupero', 'recuperati'] %}
+                <th width="70"><abbr title="Offerta nostra (e recupero)">Off. ns.</abbr></th>
+                <th width="70"><abbr title="Offerta avversari (e recupero)">Off. avv.</abbr></th>
+            {% else %}
+                <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
+                {% if mode is not defined %}
+                    <th width="70"><abbr title="First Reserve Indication">F.R.I.</abbr></th>
+                {% endif %}
             {% endif %}
             {% if app.user.hasRole(['C_RECUPERI_H']) %}
                 <th>Dati recupero</th>

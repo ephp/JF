@@ -45,10 +45,17 @@ class SLCImportExtension extends Extension implements IExtension {
         if (true) {
 
             $menu['a_claims']['submenu'][] = array(
-                'label' => 'Importa dati schede',
+                'label' => 'Importa dati schede mancanti',
                 'route' => 'slc_import_claims',
                 'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
                 'order' => 999,
+            );
+            
+            $menu['a_claims']['submenu'][] = array(
+                'label' => 'Importa dati tutte schede',
+                'route' => 'slc_import_all_claims',
+                'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
+                'order' => 1000,
             );
 
         } else {

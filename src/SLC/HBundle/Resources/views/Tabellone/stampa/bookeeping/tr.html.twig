@@ -1,0 +1,29 @@
+<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{% if entity.priorita %}{{ entity.priorita.id }}{% endif %}" stato="{% if entity.statoPratica %}{{ entity.statoPratica.id }}{% endif %}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
+    <th class="right">{{ i }}</th>
+    <td class="center" nowrap>
+        {{ entity.codice }}
+        {% if monthly_report is not defined or not monthly_report %}
+            <br/>
+            {% if entity.dasc %}
+                {{ entity.dasc|date('d-m-Y') }}
+            {% else %}
+                n.d.
+            {% endif %}
+        {% endif %}
+    </td>
+    <td>{{ entity.claimant }}{% if entity.giudiziale %} (Giud){% endif %}</td>
+    <td>
+        {% if entity.gestore %}
+            {{ entity.gestore.sigla }}
+        {% else %}
+            N.A.
+        {% endif %}
+    </td>
+    <td class="center">{{ entity.soi }}</td>
+    <td class="right">{{ entity.ltFeesPaid }} €</td>
+    <td class="right">{{ entity.ltFeesReserve }} €</td>
+    <td class="note">{{ entity.note|raw }}</td>
+    <td class="center">
+        {% if entity.statoPratica %}{{ entity.statoPratica.stato }}{% else %}N.D.{% endif %}
+    </td>
+</tr>

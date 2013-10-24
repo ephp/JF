@@ -240,7 +240,9 @@ class UtenzeController extends Controller {
         if ($this->getUser()->getCliente()->getDati()) {
             foreach ($this->getUser()->getCliente()->getDati() as $key => $dati) {
                 foreach ($dati as $k => $v) {
-                    $form->get($key)->get($k)->setData($v);
+                    try {
+                        $form->get($key)->get($k)->setData($v);
+                    } catch (\Exception $e) {}
                 }
             }
         }

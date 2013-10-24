@@ -398,7 +398,7 @@ class ImportController extends Controller {
     /**
      * Lists all Scheda entities.
      *
-     * @Route("-import-calendario/{slug}", name="contec_import_calendario_manuale", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}})
+     * @Route("-import-calendario/{slug}", name="contec_import_calendario_manuale", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template("ClaimsHBundle:Tabellone:pratica/calendario.html.twig")
      */
     public function calendarioAction($slug) {

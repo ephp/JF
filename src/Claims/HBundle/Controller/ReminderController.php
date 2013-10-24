@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ephp\UtilityBundle\Utility\Debug;
-use Claims\HBundle\Entity\Countdown;
 use Ephp\UtilityBundle\Utility\Time;
 
 /**
@@ -144,7 +143,8 @@ SELECT c.id
     private function sendEmailAction(\JF\ACLBundle\Entity\Gestore $gestore) {
         $filtri = $this->buildFiltriGiorno($gestore);
         $pratiche = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
-        $countdown = $this->findBy('ClaimsHBundle:Countdown', array('stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
+        
+        $countdown = $this->findBy('SLCHBundle:Countdown', array('stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
         if (count($pratiche) > 0 || count($countdown) > 0) {
             $oggi = new \DateTime();
             $this->notify($gestore, "[JF-System] Claims-Hospital agenda di: {$gestore->getNome()} " . $oggi->format('d-m-Y'), 'ClaimsHBundle:email:daily', array('oggi' => $oggi, 'pratiche' => $pratiche, 'countdown' => $countdown));

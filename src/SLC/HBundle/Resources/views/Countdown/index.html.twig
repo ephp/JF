@@ -4,7 +4,7 @@ Countdown
 {% endblock %}
 {% block js %}
 {% javascripts  
-    '@ClaimsHBundle/Resources/public/js/Countdown/index.js'
+    '@SLCHBundle/Resources/public/js/Countdown/index.js'
 %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
@@ -53,31 +53,31 @@ Countdown
                 <div class="tab-content">
                 {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
                     <div id="tabs-n" {% if nuovi %}class="no-display"{% endif %}>
-                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
+                        {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
                     </div>
                     {% set nuovi = true %}
                 {% endif %}
                 {% if miei_aperti|length > 0 %}
                     <div id="tabs-a" {% if nuovi %}class="no-display"{% endif %}>
-                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'a', 'entities': miei_aperti} %}
+                        {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'a', 'entities': miei_aperti} %}
                     </div>
                     {% set nuovi = true %}
                 {% endif %}
                 {% if miei_chiusi|length > 0 %}
                     <div id="tabs-c" {% if nuovi %}class="no-display"{% endif %}>
-                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'c', 'entities': miei_chiusi} %}
+                        {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'c', 'entities': miei_chiusi} %}
                     </div>
                     {% set nuovi = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and aperti|length > 0 %}
                     <div id="tabs-o" {% if nuovi %}class="no-display"{% endif %}>
-                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'o', 'entities': aperti, 'gest': true} %}
+                        {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'o', 'entities': aperti, 'gest': true} %}
                     </div>
                     {% set nuovi = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and chiusi|length > 0 %}
                     <div id="tabs-r" {% if nuovi %}class="no-display"{% endif %}>
-                        {% include 'ClaimsHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'r', 'entities': chiusi, 'gest': true} %}
+                        {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'r', 'entities': chiusi, 'gest': true} %}
                     </div>
                     {% set nuovi = true %}
                 {% endif %}

@@ -1,0 +1,28 @@
+<table class="table grid" cellpadding="0" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th width="20">#</th>
+            <th width="110">Pratica</th>
+            <th width="70">DASC</th>
+            <th width="25">Giud</th>
+            <th width="15%">Claimant</th>
+            <th width="40">Gestore</th>
+            <th width="25">Soi</th>
+            <th width="70"><abbr title="Legal Team fees paid">LT f.p.</abbr></th>
+            <th width="70"><abbr title="Legal Team fees reserve">LT f.r.</abbr></th>
+            <th>Note</th>
+            <th width="10%">Stato Pratica</th>
+            <th width="80" class="TAC">Operazioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set i = 0 %}
+        {% if app.request.get('page') %}
+            {% set i = (app.request.get('page') - 1) * 50 %}
+        {% endif %}
+        {% for entity in pagination %}
+            {% set i = i + 1 %}
+            {% include "SLCHBundle:Tabellone:index/bookeeping/tr.html.twig" %}
+        {% endfor %}
+    </tbody>
+</table>    

@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Analisi Sinistri Hospital{% endblock %}
+{% block title %}Tabellone Sinistri Hospital{% endblock %}
 {% block js %}
 {% javascripts  
     '@SLCHBundle/Resources/public/js/index.js'
@@ -12,7 +12,7 @@
     <div class="icon">
         <span class="ico-cogs-2"></span>
     </div>
-    <h1>Analisi Sinistri <small>Hospital</small></h1>
+    <h1>Tabellone Sinistri <small>Hospital</small></h1>
 </div>        
 <div style="clear: both"></div>
 <div class="row-fluid">
@@ -30,7 +30,11 @@
     <div class="span12">
         <div class="block">
             <div class="data-fluid">
-                {% include "ClaimsHBundle:Tabellone:index/table.html.twig" %}
+                {% if tabopen == 'bookeeping' %}
+                    {% include "SLCHBundle:Tabellone:index/bookeeping/table.html.twig" %}
+                {% else %}
+                    {% include "ClaimsHBundle:Tabellone:index/table.html.twig" %}
+                {% endif %}
             </div> 
         </div>            
     </div>            

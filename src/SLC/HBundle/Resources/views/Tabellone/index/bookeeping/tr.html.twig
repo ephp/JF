@@ -1,7 +1,5 @@
 <tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{% if entity.priorita %}{{ entity.priorita.id }}{% endif %}" stato="{% if entity.statoPratica %}{{ entity.statoPratica.id }}{% endif %}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
-    {% if mode is not defined or mode in ['personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore'] %}
-        <th class="right">{{ i }}</th>
-    {% endif %}
+    <th class="right">{{ i }}</th>
     <td class="center" nowrap>
         <a href="#fb_cambia_priorita" class="fancybox">
             {% if entity.priorita %}
@@ -16,59 +14,41 @@
         </a>
     </td>
     <td class="center" class="dasc" nowrap>
-        {% if app.user.hasRole('C_ADMIN') %}
-            <a href="#fb_cambia_dasc" class="fancybox">
-        {% endif %}
         {% if entity.dasc %}
             {{ entity.dasc|date('d-m-Y') }}
         {% else %}
             n.d.
         {% endif %}
-        {% if app.user.hasRole('C_ADMIN') %}
-            </a>
-        {% endif %}
     </td>
     <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
     <td>{{ entity.claimant }}</td>
-    {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] %}
-        <td>
-            {% if app.user.hasRole('C_ADMIN') %}
-                <a href="#fb_cambia_gestore" class="fancybox button {% if entity.gestore %}gray{% else %}lgray{% endif %} gestore">
-            {% else %}
-                <a href="javascript:void(0)" class="button {% if entity.gestore %}gray{% else %}lgray{% endif %}">
-            {% endif %}
-            {% if entity.gestore %}
-                <div class="user">
-                    {{ entity.gestore.sigla }}
-                </div>
-            {% else %}
-                <div class="icon"><span class="ico-user"></span></div>
-            {% endif %}
-            </a>
-        </td>
-    {% endif %}
-    <td class="center"><abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr></td>
-    <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
-    {% if mode is not defined %}
-        <td class="right">{{ entity.firstReserveIndication }} €</td>
-    {% endif %}
-    {% if app.user.hasRole(['C_RECUPERI_H']) %}
-        <td class="dati_recupero">
-            <div class="typography" contenteditable="true">
-                {{ entity.datiRecupero|raw|nl2br }}
+    <td>
+        {% if app.user.hasRole('C_ADMIN') %}
+            <a href="#fb_cambia_gestore" class="fancybox button {% if entity.gestore %}gray{% else %}lgray{% endif %} gestore">
+        {% else %}
+            <a href="javascript:void(0)" class="button {% if entity.gestore %}gray{% else %}lgray{% endif %}">
+        {% endif %}
+        {% if entity.gestore %}
+            <div class="user">
+                {{ entity.gestore.sigla }}
             </div>
-        </td>
-    {% else %}
-        <td class="note">
-            {% if app.user.hasRole(['C_GESTORE_H']) %}
-                <div class="typography" contenteditable="true">
-            {% endif %}
-            {{ entity.note|raw|nl2br }}
-            {% if app.user.hasRole(['C_GESTORE_H']) %}
-                </div>
-            {% endif %}
-        </td>
-    {% endif %}
+        {% else %}
+            <div class="icon"><span class="ico-user"></span></div>
+        {% endif %}
+        </a>
+    </td>
+    <td class="center"><abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr></td>
+    <td class="right">{{ entity.ltFeesPaid }} €</td>
+    <td class="right">{{ entity.ltFeesReserve }} €</td>
+    <td class="note">
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            <div class="typography" contenteditable="true">
+        {% endif %}
+        {{ entity.note|raw|nl2br }}
+        {% if app.user.hasRole(['C_GESTORE_H']) %}
+            </div>
+        {% endif %}
+    </td>
     <td class="center stato_pratica">
         {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
             <a href="#fb_cambia_stato" class="fancybox">

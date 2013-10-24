@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\HBundle\Entity;
+namespace SLC\HBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Countdown
  *
  * @ORM\Table(name="claims_h_countdown")
- * @ORM\Entity(repositoryClass="Claims\HBundle\Entity\CountdownRepository")
+ * @ORM\Entity(repositoryClass="SLC\HBundle\Entity\CountdownRepository")
  */
 class Countdown
 {
@@ -68,9 +68,9 @@ class Countdown
     private $risposta;
 
     /**
-     * @var Pratica
+     * @var \Claims\HBundle\Entity\Pratica
      * 
-     * @ORM\ManyToOne(targetEntity="Pratica")
+     * @ORM\ManyToOne(targetEntity="Claims\HBundle\Entity\Pratica")
      * @ORM\JoinColumn(name="scheda_id", referencedColumnName="id", nullable=true)
      */
     private $pratica;
@@ -241,10 +241,10 @@ class Countdown
     /**
      * Set scheda
      *
-     * @param Pratica $pratica
+     * @param \Claims\HBundle\Entity\Pratica $pratica
      * @return Countdown
      */
-    public function setPratica(Pratica $pratica = null)
+    public function setPratica(\Claims\HBundle\Entity\Pratica $pratica = null)
     {
         $this->pratica = $pratica;
     
@@ -254,7 +254,7 @@ class Countdown
     /**
      * Get scheda
      *
-     * @return Pratica
+     * @return \Claims\HBundle\Entity\Pratica
      */
     public function getPratica()
     {

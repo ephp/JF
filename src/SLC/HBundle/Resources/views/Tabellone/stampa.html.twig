@@ -1,0 +1,16 @@
+{% extends '::stampa.html.twig' %}
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cogs-2"></span>
+    </div>
+    <h1>Tabellone Sinistri <small>Hospital</small></h1>
+</div>
+    
+{% if tabopen == 'bookeeping' %}
+    {% include "SLCHBundle:Tabellone:stampa/bookeeping/table.html.twig" %}
+{% else %}
+    {% include "ClaimsHBundle:Tabellone:stampa/table.html.twig" %}
+{% endif %}
+
+{% endblock %}

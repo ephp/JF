@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\HBundle\Entity;
+namespace SLC\HBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

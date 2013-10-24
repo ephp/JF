@@ -49,6 +49,12 @@ class SLCHExtension extends Extension implements IExtension {
             'order' => 35,
         );
 
+        $menu['claims']['submenu'][] = array(
+            'label' => 'Countdown Hospital',
+            'route' => 'claims_h_countdown',
+            'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('slc.h-analisi' => array('slc'))),
+            'order' => 50,
+        );
         $container->setParameter('jf.menu', $menu);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Claims\HBundle\Controller;
+namespace SLC\HBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,13 +30,13 @@ class CountdownController extends Controller {
         $miei_aperti = false;
         $miei_chiusi = false;
         if($this->getUser()->hasRole('C_ADMIN')) {
-            $nuovi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
-            $aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
-            $chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
+            $nuovi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
+            $aperti = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
+            $chiusi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
         }
         if($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
-            $miei_aperti = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
-            $miei_chiusi = $this->findBy('ClaimsHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C', 'gestore' => $gestore->getId()), array('sended_at' => 'DESC'));
+            $miei_aperti = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
+            $miei_chiusi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C', 'gestore' => $gestore->getId()), array('sended_at' => 'DESC'));
         }
 
         return array(
@@ -59,7 +59,7 @@ class CountdownController extends Controller {
     public function assegnaGestoreCountdownAction() {
         $req = $this->getRequest()->get('cd');
 
-        $cd = $this->find('ClaimsHBundle:Countdown', $req['id']);
+        $cd = $this->find('SLCHBundle:Countdown', $req['id']);
         /* @var $cd Countdown */
         $gestore = $this->findOneBy('JFACLBundle:Gestore', array('sigla' => $req['gestore']));
         /* @var $gestore \JF\ACLBundle\Entity\Gestore */
@@ -82,7 +82,7 @@ class CountdownController extends Controller {
      * @Template()
      */
     public function cancellaCountdownAction($id) {
-        $cd = $this->find('ClaimsHBundle:Countdown', $id);
+        $cd = $this->find('SLCHBundle:Countdown', $id);
         /* @var $cd Countdown */
         try {
             $email = $cd->getEmail();
@@ -104,7 +104,7 @@ class CountdownController extends Controller {
         $req = $this->getParam('email');
         $gestore = $this->getUser();
         /* @var $gestore \JF\ACLBundle\Entity\Gestore */
-        $countdown = $this->find('ClaimsHBundle:Countdown', $id);
+        $countdown = $this->find('SLCHBundle:Countdown', $id);
         /* @var $countdown Countdown */
         $docs = json_decode($req['docs']);
         $message = \Swift_Message::newInstance()
@@ -114,8 +114,8 @@ class CountdownController extends Controller {
                 ->setCc(trim($gestore->getEmail()))
                 ->setBcc(trim($this->container->getParameter('email_robot')))
                 ->setReplyTo(trim($gestore->getEmail()), $gestore->getFullName())
-                ->setBody($this->renderView("ClaimsHBundle:email:risposta_countdown.txt.twig", array('gestore' => $gestore, 'testo' => $req['testo'], 'allegati' => $docs)))
-                ->addPart($this->renderView("ClaimsHBundle:email:risposta_countdown.html.twig", array('gestore' => $gestore, 'testo' => $req['testo'], 'allegati' => $docs)), 'text/html');
+                ->setBody($this->renderView("SLCHBundle:email:risposta_countdown.txt.twig", array('gestore' => $gestore, 'testo' => $req['testo'], 'allegati' => $docs)))
+                ->addPart($this->renderView("SLCHBundle:email:risposta_countdown.html.twig", array('gestore' => $gestore, 'testo' => $req['testo'], 'allegati' => $docs)), 'text/html');
         ;
         foreach ($docs as $doc) {
             $message->attach(\Swift_Attachment::fromPath($this->dir() . $doc));

@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ephp\UtilityBundle\Utility\Debug;
-use Claims\HBundle\Entity\Countdown;
 
 /**
  * @Route("/h/ritardi")

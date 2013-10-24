@@ -50,8 +50,10 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        'label_cliente' => 'Dati Ravinale',
-                        'form_cliente' => '\Claims\RavinaleBundle\Form\AccountType',
+                        'form_cliente' => array(
+                            'form' => '\Claims\RavinaleBundle\Form\AccountType',
+                            'label' => 'Dati Ravinale',
+                        ),                                          
                     ),                                          
                     1500, null,                                                 //Prezzo-Prezzo scontato
                     false, true);                                               //Autoinstall-Market
@@ -63,8 +65,10 @@ class InstallController extends Controller {
                     array(),                                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
-                        'label_cliente' => 'Dati Ravinale',
-                        'form_cliente' => '\Claims\RavinaleBundle\Form\AccountType',
+                        'form_cliente' => array(
+                            'form' => '\Claims\RavinaleBundle\Form\AccountType',
+                            'label' => 'Dati Ravinale',
+                        ),                                          
                     ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market

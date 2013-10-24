@@ -42,6 +42,11 @@ class InstallController extends Controller {
                         'daily_email' => false,                                 //  Invio email giornaliere
                         '30day_verify' => false,                                //  Verifica a 30 giorni
                         'status_view' => false,                                 //  Visione per stati operativi
+                        'calendario_personale' => array(                        //  Eventi per calendario personale 
+                                'label'  => 'Claims Hospital',
+                                'entity' => 'JFCalendarBundle:Evento',
+                                'css'    => 'e_claims_h',
+                            ),
                         ),                                          
                     1500);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
@@ -57,8 +62,15 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => false,                                //  Verifica a 30 giorni
                         'status_view' => false,                                 //  Visione per stati operativi
-                        'label_cliente' => 'Configurazione Claims-Hospital',  
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
+                        'form_cliente' => array(
+                            'form' => '\Claims\HBundle\Form\AccountType',   
+                            'label' => 'Configurazione Claims-Hospital', 
+                        ),
+                        'calendario_personale' => array(                        //  Eventi per calendario personale 
+                                'label'  => 'Claims Hospital',
+                                'entity' => 'JFCalendarBundle:Evento',
+                                'css'    => 'e_claims_h',
+                            ),
                         ),                                          
                     2500);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
@@ -73,8 +85,15 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => true,                                 //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
-                        'label_cliente' => 'Configurazione Claims-Hospital',  
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
+                        'form_cliente' => array(
+                            'form' => '\Claims\HBundle\Form\AccountType',   
+                            'label' => 'Configurazione Claims-Hospital', 
+                        ),
+                        'calendario_personale' => array(                        //  Eventi per calendario personale 
+                                'label'  => 'Claims Hospital',
+                                'entity' => 'JFCalendarBundle:Evento',
+                                'css'    => 'e_claims_h',
+                            ),
                         ),                                          
                     3000);                                                      //Prezzo
             $licenze[] = $this->newLicenza(
@@ -89,9 +108,16 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => false,                                //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
-                        'label_cliente' => 'Configurazione Claims-Hospital',  
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
-                        ),                                          
+                        'form_cliente' => array(
+                            'form' => '\Claims\HBundle\Form\AccountType',   
+                            'label' => 'Configurazione Claims-Hospital',
+                        ),
+                        'calendario_personale' => array(                        //  Eventi per calendario personale 
+                            'label'  => 'Claims Hospital',
+                            'entity' => 'JFCalendarBundle:Evento',
+                            'css'    => 'e_claims_h',
+                        ),
+                    ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $licenze[] = $this->newLicenza(
@@ -106,9 +132,16 @@ class InstallController extends Controller {
                         'daily_email' => true,                                  //  Invio email giornaliere
                         '30day_verify' => true,                                 //  Verifica a 30 giorni
                         'status_view' => true,                                  //  Visione per stati operativi
-                        'label_cliente' => 'Configurazione Claims-Hospital',  
-                        'form_cliente' => '\Claims\HBundle\Form\AccountType',   
-                        ),                                          
+                        'form_cliente' => array(
+                            'form' => '\Claims\HBundle\Form\AccountType',
+                            'label' => 'Configurazione Claims-Hospital',  
+                        ),   
+                        'calendario_personale' => array(                        //  Eventi per calendario personale 
+                            'label'  => 'Claims Hospital',
+                            'entity' => 'JFCalendarBundle:Evento',
+                            'css'    => 'e_claims_h',
+                        ),
+                    ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();

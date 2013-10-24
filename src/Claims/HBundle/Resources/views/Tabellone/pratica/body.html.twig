@@ -23,10 +23,10 @@
 </div>
 <div class="row-fluid">
     <div class="span12">
-        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Nostra', 'span_value': 2, 'value': entity.offertaNostra, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Loro', 'span_value': 2, 'value': entity.offertaLoro, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Nostra', 'span_value': 2, 'value': entity.recuperoOffertaNostra, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Loro', 'span_value': 2, 'value': entity.recuperoOffertaLoro, 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Nostra', 'span_value': 2, 'value': entity.offertaNostra|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Loro', 'span_value': 2, 'value': entity.offertaLoro|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Nostra', 'span_value': 2, 'value': entity.recuperoOffertaNostra|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Loro', 'span_value': 2, 'value': entity.recuperoOffertaLoro|number_format(2, '.', ' '), 'uumm': ' €'} %}
     </div>
 </div>
 <div class="page-header"></div>
@@ -39,28 +39,28 @@
         {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Amount Reserved', 'span_value': 4, 'value': v} %}
         {% if entity.deductibleReserved >= 0 %}{% set v = entity.deductibleReserved ~ ' €' %}{% else %}{% set v = 'N.P.'%}{% endif %}
         {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Deductible Reserved', 'span_value': 4, 'value': v} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'First Reserve Indication', 'span_value': 4, 'value': entity.firstReserveIndication, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'LT Fees Reserve', 'span_value': 4, 'value': entity.ltFeesReserve, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Profess. Fees Reserve', 'span_value': 4, 'value': entity.professFeesReserve, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'TPA Fees Reserve', 'span_value': 4, 'value': entity.tpaFeesReserve, 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'First Reserve Indication', 'span_value': 4, 'value': entity.firstReserveIndication|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'LT Fees Reserve', 'span_value': 4, 'value': entity.ltFeesReserve|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Profess. Fees Reserve', 'span_value': 4, 'value': entity.professFeesReserve|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'TPA Fees Reserve', 'span_value': 4, 'value': entity.tpaFeesReserve|number_format(2, '.', ' '), 'uumm': ' €'} %}
     </div>
     <div class="span4">
         <div class="block icon">
             <h3 class="ico-money-bag">Paid</h3>
         </div>
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Applicable Deductible', 'span_value': 4, 'value': entity.applicableDeductible, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'LT Fees Paid', 'span_value': 4, 'value': entity.ltFeesPaid, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Profess. Fees Paid', 'span_value': 4, 'value': entity.professFeesPaid, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'TPA Fees Paid', 'span_value': 4, 'value': entity.tpaFeesPaid, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Total Paid', 'span_value': 4, 'value': entity.recovered, 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Applicable Deductible', 'span_value': 4, 'value': entity.applicableDeductible|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'LT Fees Paid', 'span_value': 4, 'value': entity.ltFeesPaid|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Profess. Fees Paid', 'span_value': 4, 'value': entity.professFeesPaid|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'TPA Fees Paid', 'span_value': 4, 'value': entity.tpaFeesPaid|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Total Paid', 'span_value': 4, 'value': entity.recovered|number_format(2, '.', ' '), 'uumm': ' €'} %}
     </div>
     <div class="span4">
         <div class="block icon">
             <h3 class="ico-money">Recovery</h3>
         </div>
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Possible Recovery', 'span_value': 4, 'value': entity.possibleRecovery, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Amount Settled', 'span_value': 4, 'value': entity.amountSettled, 'uumm': ' €'} %}
-        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Total Incurred', 'span_value': 4, 'value': entity.totalIncurred, 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Possible Recovery', 'span_value': 4, 'value': entity.possibleRecovery|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Amount Settled', 'span_value': 4, 'value': entity.amountSettled|number_format(2, '.', ' '), 'uumm': ' €'} %}
+        {% include 'ClaimsHBundle:Tabellone:commons/brick.html.twig' with {'span_label': 8, 'label': 'Total Incurred', 'span_value': 4, 'value': entity.totalIncurred|number_format(2, '.', ' '), 'uumm': ' €'} %}
     </div>
 </div>
 <div class="page-header"></div>

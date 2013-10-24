@@ -21,7 +21,7 @@
     </td>
     {% endif %}
     <td class="center">{{ entity.soi }}</td>
-    <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
+    <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved|number_format(2, '.', ' ') }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
         {% if app.user.hasRole(['C_RECUPERI_H']) %}
             {{ entity.datiRecupero|raw }}

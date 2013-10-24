@@ -20,8 +20,8 @@
         {% endif %}
     </td>
     <td class="center">{{ entity.soi }}</td>
-    <td class="right">{{ entity.ltFeesPaid }} €</td>
-    <td class="right">{{ entity.ltFeesReserve }} €</td>
+    <td class="right" nowrap>{{ entity.ltFeesPaid|number_format(2, '.', ' ') }} €</td>
+    <td class="right" nowrap>{{ entity.ltFeesReserve|number_format(2, '.', ' ') }} €</td>
     <td class="note">{{ entity.note|raw }}</td>
     <td class="center">
         {% if entity.statoPratica %}{{ entity.statoPratica.stato }}{% else %}N.D.{% endif %}

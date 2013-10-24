@@ -49,12 +49,12 @@
     {% endif %}
     <td class="center"><abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr></td>
     {% if mode is defined and mode in ['recupero', 'recuperati'] %}
-        <td class="right">{{ entity.offertaNostra }} €{% if entity.recuperoOffertaNostra %}<br/><small>{{ entity.recuperoOffertaNostra }} {% if entity.recuperoOffertaNostra <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
-        <td class="right">{{ entity.offertaLoro }} €{% if entity.recuperoOffertaLoro %}<br><small>{{ entity.recuperoOffertaLoro }} {% if entity.recuperoOffertaLoro <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
+        <td class="right" nowrap>{{ entity.offertaNostra|number_format(2, '.', ' ') }} €{% if entity.recuperoOffertaNostra %}<br/><small>{{ entity.recuperoOffertaNostra }} {% if entity.recuperoOffertaNostra <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
+        <td class="right" nowrap>{{ entity.offertaLoro|number_format(2, '.', ' ') }} €{% if entity.recuperoOffertaLoro %}<br><small>{{ entity.recuperoOffertaLoro }} {% if entity.recuperoOffertaLoro <= 100 %}%{% else %}€{% endif %}</small>{% endif %}</td>
     {% else %}
-        <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved }} €{% else %}N.P.{% endif %}</td>
+        <td class="right" nowrap>{% if entity.amountReserved >= 0 %}{{ entity.amountReserved|number_format(2, '.', ' ') }} €{% else %}N.P.{% endif %}</td>
         {% if mode is not defined %}
-            <td class="right">{{ entity.firstReserveIndication }} €</td>
+            <td class="right" nowrap>{{ entity.firstReserveIndication|number_format(2, '.', ' ') }} €</td>
         {% endif %}
     {% endif %}
     {% if app.user.hasRole(['C_RECUPERI_H']) %}

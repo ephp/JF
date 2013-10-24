@@ -40,7 +40,7 @@ class InstallController extends Controller {
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'label_cliente' => 'Dati JF-Claims',
-                        'form_cliente' => '\SLC\ImportBundle\Form\BaseType',
+                        'form_cliente' => '\SLC\ImportBundle\Form\AccountType',
                     ),                                          
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market

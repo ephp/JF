@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class BaseType extends AbstractType {
+class AccountType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
@@ -14,7 +14,7 @@ class BaseType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('url_base', 'text', array('mapped' => false, 'label' => 'URL di JF-Claims'))
+                ->add('url_base', 'text', array('mapped' => false, 'required' => false, 'label' => 'URL di JF-Claims'))
         ;
     }
 

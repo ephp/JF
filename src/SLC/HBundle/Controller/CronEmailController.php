@@ -25,16 +25,16 @@ class CronEmailController extends Controller {
      */
     public function countdownAction() {
         $output = array();
-        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%cl_h-pratiche%'");
+        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%slc_h-analisi%'");
         foreach ($out as $id) {
             $id = $id['id'];
             $cliente = $this->find('JFACLBundle:Cliente', $id);
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             $dati = $cliente->getDati();
-            $server = $dati['cl_h-pratiche'];
+            $server = $dati['slc_h-analisi'];
             $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_cd_richieste']);
             $n = $this->countMessages();
-            $output[$i] = array(
+            $output[$cliente->getNome()] = array(
                 'countdown' => $n,
                 'subjects' => array(),
             );
@@ -42,7 +42,7 @@ class CronEmailController extends Controller {
                 try {
                     $this->getEm()->beginTransaction();
                     $body = $this->getBody($i);
-                    $output[$i]['subjects'][] = $body->getSubject();
+                    $output[$cliente->getNome()][$i]['subjects'][] = $body->getSubject();
                     $header = $body->getHeader();
                     $this->persist($header);
                     $body->setHeader($header);
@@ -88,16 +88,16 @@ class CronEmailController extends Controller {
      */
     public function risposteAction() {
         $output = array();
-        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%cl_h-pratiche%'");
+        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%slc_h-analisi%'");
         foreach ($out as $id) {
             $id = $id['id'];
             $cliente = $this->find('JFACLBundle:Cliente', $id);
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             $dati = $cliente->getDati();
-            $server = $dati['cl_h-pratiche'];
+            $server = $dati['slc_h-analisi'];
             $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_cd_risposte']);
             $n = $this->countMessages();
-            $output[$i] = array(
+            $output[$cliente->getNome()] = array(
                 'risposte' => $n,
                 'subjects' => array(),
             );
@@ -105,7 +105,7 @@ class CronEmailController extends Controller {
                 try {
                     $this->getEm()->beginTransaction();
                     $body = $this->getBody($i);
-                    $output[$i]['subjects'][] = $body->getSubject();
+                    $output[$cliente->getNome()][$i]['subjects'][] = $body->getSubject();
                     $subject = $body->getSubject();
                     $s = $countdown = null;
                     preg_match(self::RECD, $subject, $s);
@@ -155,14 +155,14 @@ class CronEmailController extends Controller {
      */
     public function tpaAction() {
         $output = array();
-        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%cl_h-pratiche%'");
+        $out = $this->executeSql("SELECT id FROM acl_clienti WHERE dati LIKE '%slc_h-analisi%'");
         foreach ($out as $id) {
             $id = $id['id'];
             $cliente = $this->find('JFACLBundle:Cliente', $id);
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             $dati = $cliente->getDati();
-            $server = $dati['cl_h-pratiche'];
-            $output[$id] = array(
+            $server = $dati['slc_h-analisi'];
+            $output[$cliente->getNome()] = array(
                 'contec' => 0,
                 'contec_subjects' => array(),
                 'ravinale' => 0,
@@ -173,12 +173,12 @@ class CronEmailController extends Controller {
 
             $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_contec']);
             $n = $this->countMessages();
-            $output[$id]['contec'] = $n;
+            $output[$cliente->getNome()]['contec'] = $n;
             for ($i = 1; $i <= $n; $i++) {
                 try {
                     $this->getEm()->beginTransaction();
                     $body = $this->getBody($i);
-                    $output[$id]['contec_subjects'][] = $body->getSubject();
+                    $output[$cliente->getNome()]['contec_subjects'][] = $body->getSubject();
                     $scheda = $this->findPratica($body, self::$CLAIMANT_CONTEC);
                     if ($scheda) {
                         if (is_array($scheda)) {
@@ -207,12 +207,12 @@ class CronEmailController extends Controller {
 
             $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_ravinale']);
             $n = $this->countMessages();
-            $output[$id]['ravinale'] = $n;
+            $output[$cliente->getNome()]['ravinale'] = $n;
             for ($i = 1; $i <= $n; $i++) {
                 try {
                     $this->getEm()->beginTransaction();
                     $body = $this->getBody($i);
-                    $output[$id]['ravinale_subjects'][] = $body->getSubject();
+                    $output[$cliente->getNome()]['ravinale_subjects'][] = $body->getSubject();
                     $scheda = $this->findPratica($body, self::$CLAIMANT_RAVINALE);
                     if ($scheda) {
                         if (is_array($scheda)) {
@@ -239,14 +239,14 @@ class CronEmailController extends Controller {
             }
             $this->closeImap();
 
-            $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_manuala']);
+            $this->openImap($server['server'], $server['port'], $server['protocol'], $server['username'], $server['password'], $server['label_manuale']);
             $n = $this->countMessages();
-            $output[$id]['email'] = $n;
+            $output[$cliente->getNome()]['email'] = $n;
             for ($i = 1; $i <= $n; $i++) {
                 try {
                     $this->getEm()->beginTransaction();
                     $body = $this->getBody($i);
-                    $output[$id]['email_subjects'][] = $body->getSubject();
+                    $output[$cliente->getNome()]['email_subjects'][] = $body->getSubject();
                     $scheda = $this->findPratica($body, self::$CLAIMANT_TUTTI);
                     if ($scheda) {
                         if (is_array($scheda)) {

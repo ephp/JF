@@ -7,16 +7,15 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use JF\CoreBundle\DependencyInjection\Interfaces\IExtension;
-use JF\CoreBundle\DependencyInjection\Traits\CoreExtension;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class JFCalendarExtension extends Extension implements IExtension {
+class JFCalendarExtension extends Extension implements IExtension, Interfaces\ITipiEventi {
 
-    use CoreExtension;
+    use Traits\CalendarExtension;
 
     /**
      * {@inheritDoc}
@@ -66,6 +65,20 @@ class JFCalendarExtension extends Extension implements IExtension {
     }
 
     public function setWidgets(ContainerBuilder $container) {
+    }
+
+    public function setTipoEventi(ContainerBuilder $container) {
+        $tipiEvento = array();
+
+        $this->newTipoEvento($tipiEvento, 'JFS', 'JF-System', 'ff0000', false, false, false, true);
+        $this->newTipoEvento($tipiEvento, 'JFP', 'JF-System', 'ff0000', false, false, true, true);
+        $this->newTipoEvento($tipiEvento, 'APP', 'Appuntamento', '0000aa', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'PRM', 'Promemoria', '00aa00', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'SCD', 'Scadenza', 'aa0000', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'RIC', 'Riunione con cliente', '00aaaa', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'RIU', 'Riunione ufficio', '00aaaa', true, true, true, true);
+        
+        $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
 
 }

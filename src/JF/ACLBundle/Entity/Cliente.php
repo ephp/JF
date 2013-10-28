@@ -744,4 +744,23 @@ class Cliente {
         return $this->cache;
     }
 
+    public function getTipiEventiPrivati($tipi) {
+        $out = array();
+        $licenze = $this->getLicenze();
+        foreach($tipi as $sigla => $tipo) {
+            if($tipo['permission'] === true) {
+                $out[$sigla] = $tipo;
+            } elseif(is_array($tipo['permission'])) {
+                foreach ($licenze as $licenza) {
+                    $licenza = $licenza->getLicenza();
+                    /* @var $licenza \JF\ACLBundle\Entity\Licenza */
+                    if(in_array($licenza->getGruppo()->getSiglaCompleta(), $tipo['permission'])) {
+                        $out[$sigla] = $tipo;
+                    }
+                }
+            }
+        }
+        return $out;
+    }
+
 }

@@ -136,6 +136,11 @@ div.typography:focus {
 .calendar td.ui-datepicker-week-end  {
     background-color: #eff;
 }
+
+.calendar .ui-datepicker-calendar td {
+    width: 14.28%;
+}
+
 .calendar .ncal  {
     -webkit-border-radius: 25%;
     -moz-border-radius: 25%;
@@ -147,4 +152,30 @@ div.typography:focus {
     padding: 6px;
     text-align: center;
     width: 20px;
+    font-size: 1.25em;
+    float: right;
+}
+
+.calendar .nscal  {
+    -webkit-border-radius: 25%;
+    -moz-border-radius: 25%;
+    background-color: rgb(215, 154, 0);
+    color: rgb(255, 255, 255);
+    display: block;
+    height: 10px;
+    line-height: 7px;
+    padding: 3px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    width: 10px;
+    font-size: .75em;
+    float: right;
+}
+
+.e_claims_h {
+    background-color: rgb(0, 154, 215) !important;
+}
+
+.e_personale {
+    background-color: rgb(0, 184, 0) !important;
 }

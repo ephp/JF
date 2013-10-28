@@ -7,16 +7,17 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use JF\CoreBundle\DependencyInjection\Interfaces\IExtension;
-use JF\CoreBundle\DependencyInjection\Traits\CoreExtension;
+use JF\CalendarBundle\DependencyInjection\Traits\CalendarExtension;
+use JF\CalendarBundle\DependencyInjection\Interfaces\ITipiEventi;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class ClaimsHExtension extends Extension implements IExtension {
+class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
 
-    use CoreExtension;
+    use CalendarExtension;
 
     /**
      * {@inheritDoc}
@@ -113,6 +114,17 @@ class ClaimsHExtension extends Extension implements IExtension {
 
     public function setWidgets(ContainerBuilder $container) {
         
+    }
+
+    public function setTipoEventi(ContainerBuilder $container) {
+        $tipiEvento = $container->getParameter('jf.tipi_evento');
+
+        $this->addLicenzaTipoEvento($tipiEvento, 'UDI', 'cl.h-pratiche');
+        $this->addLicenzaTipoEvento($tipiEvento, 'UDG', 'cl.h-pratiche');
+        $this->addLicenzaTipoEvento($tipiEvento, 'TRB', 'cl.h-pratiche');
+        $this->addLicenzaTipoEvento($tipiEvento, 'CNC', 'cl.h-pratiche');
+
+        $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
 
 }

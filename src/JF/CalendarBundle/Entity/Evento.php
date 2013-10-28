@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="JF\CalendarBundle\Entity\EventoRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Evento {
+class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
 
     use Traits\Evento;
 

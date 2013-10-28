@@ -44,7 +44,7 @@ class InstallController extends Controller {
                         'status_view' => false,                                 //  Visione per stati operativi
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
                                 'label'  => 'Claims Hospital',
-                                'entity' => 'JFCalendarBundle:Evento',
+                                'entity' => 'ClaimsHBundle:Evento',
                                 'css'    => 'e_claims_h',
                             ),
                         ),                                          
@@ -68,7 +68,7 @@ class InstallController extends Controller {
                         ),
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
                                 'label'  => 'Claims Hospital',
-                                'entity' => 'JFCalendarBundle:Evento',
+                                'entity' => 'ClaimsHBundle:Evento',
                                 'css'    => 'e_claims_h',
                             ),
                         ),                                          
@@ -91,7 +91,7 @@ class InstallController extends Controller {
                         ),
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
                                 'label'  => 'Claims Hospital',
-                                'entity' => 'JFCalendarBundle:Evento',
+                                'entity' => 'ClaimsHBundle:Evento',
                                 'css'    => 'e_claims_h',
                             ),
                         ),                                          
@@ -114,7 +114,7 @@ class InstallController extends Controller {
                         ),
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
                             'label'  => 'Claims Hospital',
-                            'entity' => 'JFCalendarBundle:Evento',
+                            'entity' => 'ClaimsHBundle:Evento',
                             'css'    => 'e_claims_h',
                         ),
                     ),                                          
@@ -138,7 +138,7 @@ class InstallController extends Controller {
                         ),   
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
                             'label'  => 'Claims Hospital',
-                            'entity' => 'JFCalendarBundle:Evento',
+                            'entity' => 'ClaimsHBundle:Evento',
                             'css'    => 'e_claims_h',
                         ),
                     ),                                          

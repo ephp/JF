@@ -4,7 +4,7 @@ namespace JF\CoreBundle\DependencyInjection\Traits;
 
 trait CoreExtension {
 
-    protected function configure(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
+    public function configure(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
             $this->setPackage($container);
             $this->setMenu($container);
             $this->setRoles($container);

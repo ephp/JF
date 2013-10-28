@@ -26,22 +26,40 @@ class DefaultController extends Controller {
             $anno = date('Y');
         }
 //        $eventi = $this->getRepository('JFCalendarBundle:Evento')->calendarioMese($this->getUser(), $mese, $anno);
-        $eventi = $this->getRepository('ClaimsHBundle:Evento')->calendarioMese($this->getUser(), $mese, $anno);
+        $eventi = array();
+        foreach($this->getUser()->getCliente()->get('calendario_personale') as $cal) {
+            $eventi[$cal['label']] = array(
+                'eventi' => $this->getRepository($cal['entity'])->calendarioMese($this->getUser(), $mese, $anno),
+                'css' => $cal['css'],
+            );
+        }
         
         $giorni = array();
-        foreach($eventi as $evento) {
-            /* @var $evento \Claims\HBundle\Entity\Evento */
-            if(!isset($giorni[$evento->getDataOra()->format('d')])) {
-                $giorni[$evento->getDataOra()->format('d')] = 0;
+        foreach($eventi as $label => $cal) {
+            foreach($cal['eventi'] as $evento) {
+                /* @var $evento \Claims\HBundle\Entity\Evento */
+                if(!isset($giorni[$evento->getDataOra()->format('d')])) {
+                    $giorni[$evento->getDataOra()->format('d')] = array(
+                        'tot' => 0,
+                        'tipo' => array(),
+                    );
+                }
+                if(!isset($giorni[$evento->getDataOra()->format('d')]['tipo'][$label])) {
+                    $giorni[$evento->getDataOra()->format('d')]['tipo'][$label] = array(
+                        'n' => 0,
+                        'css' => $cal['css'],
+                    );
+                }
+                $giorni[$evento->getDataOra()->format('d')]['tipo'][$label]['n']++;
+                $giorni[$evento->getDataOra()->format('d')]['tot']++;
             }
-            $giorni[$evento->getDataOra()->format('d')]++;
         }
         
         return array(
             'mese' => $mese,
             'anno' => $anno,
             'eventi' => $eventi,
-            'giorni' => $giorni,
+            'giorni' => json_encode($giorni),
         );
     }
 

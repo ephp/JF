@@ -52,7 +52,7 @@ SELECT c.id
 SELECT e.id,
        e.pratica_id,
        max(e.delta_g) as delta_g,
-       max(e.data_ora),
+       max(e.data_ora) as data_ora,
        DATEDIFF(NOW(), max(e.data_ora)) as days
   FROM claims_h_eventi e
   LEFT JOIN cal_tipi t
@@ -70,7 +70,7 @@ HAVING days >= 30
         $pratiche = $verifiche = 0;
         foreach ($out as $row) {
             $pratiche++;
-            $pratica = $this->find('ClaimsHBundle:pratica', $row['pratica_id']);
+            $pratica = $this->find('ClaimsHBundle:Pratica', $row['pratica_id']);
             /* @var $pratica \Claims\HBundle\Entity\Pratica */
             $data = \DateTime::createFromFormat('Y-m-d h:i:s', $row['data_ora']);
             /* @var $data \DateTime */

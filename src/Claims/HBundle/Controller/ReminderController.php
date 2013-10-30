@@ -75,7 +75,7 @@ HAVING days >= 30
             $data = \DateTime::createFromFormat('Y-m-d h:i:s', $row['data_ora']);
             /* @var $data \DateTime */
             $data->setTime(8, 0, 0);
-            while($row['days'] > 30) {
+            while($row['days'] >= 30) {
                 $verifiche++;
                 $row['days'] -= 30;
                 $row['delta_g'] += 30;

@@ -411,7 +411,7 @@ class TabelloneController extends Controller {
                     $oggi = new \DateTime();
                     $oggi->setTime(8, 0, 0);
                     $titolo = $this->titoloRecuperi($req['field']);
-                    $evento = $this->findOneBy('ClaimsHBundle:Evento', array('titolo' => $titolo, 'tipo' => $this->getTipoEvento($this->RECUPERI)->getId(), 'data_ora' => $oggi));
+                    $evento = $this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'titolo' => $titolo, 'tipo' => $this->getTipoEvento($this->RECUPERI)->getId(), 'data_ora' => $oggi));
                     if (!$evento) {
                         $evento = $this->newEvento($this->RECUPERI, $pratica, $titolo, $req['value']);
                         $evento->getDataOra()->setTime(8, 0, 0);

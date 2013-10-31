@@ -1,0 +1,50 @@
+{% extends '::email.html.twig' %}
+
+{% block content %}
+<h1>Monthly Report</h1>
+
+{% if pratiche_non_trovate is defined and pratiche_non_trovate|length > 0 %}
+    <h2>Hai {{ pratiche_non_trovate|length }} pratiche dal monthly report non associato</h2>
+    <table>
+        <thead>
+            <tr style="background-color: #000; color: #fff; padding:2px;">
+                <th>Insured</th>
+                <th>Claimant</th>
+                <th>YOA</th>
+                <th>Policy number</th>
+                <th>Reserve</th>
+                <th>Description of event</th>
+            </tr>
+        </thead>
+        <tbody id="tb_container">
+            {% for pratica in pratiche_non_trovate %}
+                <tr style="background-color: #000; color: #fff; padding:2px;">
+                    {% for value in pratica %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+    
+{% if pratiche|length > 0 %}
+    <h2><a href="{{ url('claims_mr_hospital') }}">Hai {{ pratiche|length }} pratiche da seguire per il monthly report</a></h2>
+    <table>
+        <thead>
+            <tr style="background-color: #000; color: #fff; padding:2px;">
+                <th>#</th>
+                <th>Tpa</th>
+                <th>Claimant</th>
+                <th>Note</th>
+                <th>Monthly Report</th>
+            </tr>
+        </thead>
+        <tbody id="tb_container">
+            {% include 'ClaimsHBundle:email:monthlyReport/tbody.html.twig' %}
+        </tbody>
+    </table>
+{% endif %}
+    
+
+{% endblock %}

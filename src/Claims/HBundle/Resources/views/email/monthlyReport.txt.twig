@@ -1,0 +1,7 @@
+*MONTHLY REPORT*
+
+{% if pratiche|length > 0 %}
+Hai {{ pratiche|length }} pratiche in agenda
+| # | * | Data | Tpa | Claimant | Titolo | Note | Monthly report
+{% include 'ClaimsHBundle:email:monthlyReport/tbody.txt.twig' %}
+{% endif %}

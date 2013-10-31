@@ -510,6 +510,20 @@ class Pratica {
     private $reportOld;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="in_monthly_report", type="boolean", nullable=true)
+     */
+    private $inMonthlyReport;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="monthly_report", type="text", nullable=true)
+     */
+    private $textMonthlyReport;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Evento", mappedBy="pratica", cascade="all")
@@ -2000,13 +2014,29 @@ class Pratica {
     public function setRecuperoAzioneDiRecupero($recuperoAzioneDiRecupero) {
         $this->recuperoAzioneDiRecupero = $recuperoAzioneDiRecupero;
     }
-
+    
     public function getRecupero() {
         return $this->recupero;
     }
 
     public function setRecupero($recupero) {
         $this->recupero = $recupero;
+    }
+    
+    public function getInMonthlyReport() {
+        return $this->inMonthlyReport;
+    }
+
+    public function setInMonthlyReport($inMonthlyReport) {
+        $this->inMonthlyReport = $inMonthlyReport;
+    }
+
+    public function getTextMonthlyReport() {
+        return $this->textMonthlyReport;
+    }
+
+    public function setTextMonthlyReport($textMonthlyReport) {
+        $this->textMonthlyReport = $textMonthlyReport;
     }
 
     public function isRecuperato() {

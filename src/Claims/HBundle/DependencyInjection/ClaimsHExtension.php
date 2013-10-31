@@ -60,6 +60,13 @@ class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
             );
             
             $menu['claims']['submenu'][] = array(
+                'label' => 'Monthly Report Hospital',
+                'route' => 'claims_mr_hospital',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
+                'order' => 15,
+            );
+            
+            $menu['claims']['submenu'][] = array(
                 'label' => 'Stati pratiche Hospital',
                 'route' => 'claims_stati_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),

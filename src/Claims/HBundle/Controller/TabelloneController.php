@@ -259,7 +259,7 @@ class TabelloneController extends Controller {
 
             $pratica->setDatiRecupero($datiRecupero);
             $pratica->setRecupero(true);
-            
+
             $this->persist($pratica);
             $this->getEm()->commit();
         } catch (\Exception $e) {
@@ -269,7 +269,7 @@ class TabelloneController extends Controller {
         $priorita = $pratica->getPriorita();
         return $this->jsonResponse(array('dati_recupero' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getDatiRecupero(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
-    
+
     /**
      * @Route("-cambia-recupero/{slug}", name="claims_hospital_cambia_recupero", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H","C_RECUPERI_H"}}})
      */
@@ -284,7 +284,7 @@ class TabelloneController extends Controller {
             }
 
             $pratica->setRecupero(!$pratica->getRecupero());
-            
+
             $this->persist($pratica);
             $this->getEm()->commit();
         } catch (\Exception $e) {
@@ -369,10 +369,15 @@ class TabelloneController extends Controller {
                 break;
             case "claims_hospital_pratica":
             default:
-                $this->checkAttivita($pratica);
-                $this->checkReport($pratica);
+                if ($pratica->getGestore()) {
+                    $this->checkAttivita($pratica);
+                    $this->checkReport($pratica);
+                }
                 $twig = 'ClaimsHBundle:Tabellone:pratica.html.twig';
                 break;
+        }
+        if (!$pratica->getGestore()) {
+            $pratica->setGestore($this->getUser());
         }
 
         return $this->render($twig, array('entity' => $pratica));

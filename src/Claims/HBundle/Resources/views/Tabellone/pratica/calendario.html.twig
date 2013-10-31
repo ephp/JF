@@ -48,7 +48,7 @@
                                     {% if evento.tipo.modificabile %}
                                         <textarea class="autoupdate autogrow" evento="{{ evento.id }}" name="note" placeholder="Inserisci qui le tue note">{{ evento.note }}</textarea>
                                     {% else %}
-                                        {{ evento.note }}
+                                        {{ evento.note|raw }}
                                     {% endif %}
                                 </td>
                                 <td title="{{evento.tipo.sigla}}">

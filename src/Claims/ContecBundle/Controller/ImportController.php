@@ -39,20 +39,18 @@ class ImportController extends Controller {
         set_time_limit(3600);
         $cliente = $this->getUser()->getCliente();
         $dati = $cliente->getDati();
-        $logs = array();
-        if (isset($dati['contec'])) {
-            $bdxs = $this->enterBdx($dati['contec']);
-            foreach ($bdxs as $bdx) {
-                $logs[] = $this->importBdx($cliente, $bdx);
+        $out = array();
+        if (isset($dati['cl_h_contec-import'])) {
+            $bdx = $this->enterBdx($dati['cl_h_contec-import']);
+            $source = __DIR__ . '/../../../../web/uploads/contec' . $cliente->getId() . '.xls';
+            if(file_exists($source)) {
+                unlink($source);
             }
-        }
-        $out = array(
-            'pratiche_nuove' => array(),
-            'pratiche_aggiornate' => array(),
-        );
-        foreach ($logs as $log) {
-            $out['pratiche_nuove'] = array_merge($out['pratiche_nuove'], $log['pratiche_nuove']);
-            $out['pratiche_aggiornate'] = array_merge($out['pratiche_aggiornate'], $log['pratiche_aggiornate']);
+            $xls = fopen($source, 'w');
+            fwrite($xls, $bdx);
+            fclose($xls);
+//            chmod($source, 0777);
+            $out = $this->importBdx($cliente, $source);
         }
         return $out;
     }
@@ -63,7 +61,7 @@ class ImportController extends Controller {
      */
     public function callbackAction() {
         set_time_limit(3600);
-        $source = __DIR__ . '/../../../../web'.$this->getParam('file');
+        $source = __DIR__ . '/../../../../web' . $this->getParam('file');
         $out = $this->importBdx($this->getUser()->getCliente(), $source);
         return $out;
     }
@@ -88,18 +86,17 @@ class ImportController extends Controller {
     private function enterBdx($dati) {
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
-        $p = array(
-            'Username=' . $dati['username'],
-            'Password=' . $dati['password'],
-            'RimaniConnesso=' . 'SI',
-            'PulsanteAccesso=' . 'ACCESSO',
-            'HiddenAccesso=' . 'accesso',
+        $get = array(
+            'localaCode=it',
         );
+
 
         $out = array();
 
-        // https://sistema.contecpartners.com/
-        $access = $this->curlPost($sistema->getUrlBase(), implode('&', $p), array('show' => true));
+        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?localeCode=it
+        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('show' => 1));
+
+
 
         $matchs = $cookies = array();
         preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
@@ -107,32 +104,159 @@ class ImportController extends Controller {
         foreach ($matchs[0] as $match) {
             $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
         }
-
-        // https://sistema.contecpartners.com/Moduli/San1/Riepilogo/
+        $get = array(
+            'actionRequired=' . 'accesso',
+            'userIdJB=' . $dati['username'],
+            'userPasswordJB=' . $dati['password'],
+            'Entra=' . 'Entra',
+        );
+        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=accesso&userIdJB=carlesi&userPasswordJB=al31l1run&Entra=Entra
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
+        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies, 'show' => 1));
 
-        //https://sistema.contecpartners.com/Moduli/San1/EsportaInExcelNewLineNuovo/
+        $url = $this->getUrlMedicalClaims($access);
+        
+
+        // url ricavato da pagina 
         sleep(rand(3, 6));
-        $out[] = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($url, array('cookies' => $cookies, 'show' => 1));
+        $reqTime1 = $this->getReqTime($tmp);
+        
+        $matchs = $cookies = array();
+        preg_match_all('/Set-Cookie:[^;]+;/', $tmp, $matchs);
 
-        //https://sistema.contecpartners.com/Moduli/Inizio/
+        foreach ($matchs[0] as $match) {
+            $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
+        }
+        
+        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899 *
+        //https://romolo.contec.it/jwcmedmal/home/riepiloghiHome.jsp
+        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies,'show' => 1));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+        $menu = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/riepiloghiHome.jsp', array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
+        
+        $reqTime2 = $this->getReqTime($menu);
+               
+         $get = array(
+            'contesto=' . 'jobmanager',
+            $reqTime2[0],
+        );
+        
+        //https://romolo.contec.it/jwcmedmal/home/main.jsp?contesto=jobmanager&timeReq=1383399106882
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
-
-        //https://sistema.contecpartners.com/Moduli/SanPie2013/Riepilogo/
+        $jobman = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/main.jsp?' . implode('&', $get), array('cookies' => $cookies));
+        $reqTime3 = $this->getReqTime($jobman);
+        
+        $get = array(
+            'action=' . '',
+            'parameters=' . '',
+            $reqTime3[0],
+        );
+        
+        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899 *
+        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/empty.htm?action=&parameters=&timeReq=1383413348586
+        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies,'show' => 1));
+        $left = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies));
+//        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/empty.jsp?' . implode('&', $p), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
+        
+        
+        $get = array(
+            'to=' . '/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|',
+            'label=' . 'Gestione+job',
+        );
+        $post = array(
+            'parameters='.'',
+            'uy='.'',
+            'intestatario='.'',
+            'polizza='.'',
+            'sinistro='.'',
+            'riferimento='.'',
+        );
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/Riepilogo/', array('cookies' => $cookies));
-
-        //https://sistema.contecpartners.com/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/
+        // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|&label=Gestione+job
+        $elenco = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
+        $jobId = $this->getJobId($elenco);
+                
+        $post = array(
+            'dirty='.'-1',
+            'actionRequired='.'%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C',
+            'formClass='.'frm.JobManager',
+            'action='.'',
+            'listWaitingJobs_jobId_0='.$jobId,
+            'pagerTable_page='.'1',
+            '#SEL__pagerTable0='.'on',
+            'pagerTable_cmdView_0='.'Visualizza',
+            'formComponentsIDsList_frm.JobManager='.'%23%23revert_to_original_readform%23%23',
+        );
         sleep(rand(3, 6));
-        $out[] = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=-1&actionRequired=%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C&formClass=frm.JobManager&action=&listWaitingJobs_jobId_0=9835&pagerTable_page=1&%23SEL__pagerTable0=on&pagerTable_cmdView_0=Visualizza&formComponentsIDsList_frm.JobManager=%23%23revert_to_original_readform%23%23
+        $pagina = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
 
-        //https://sistema.contecpartners.com/Uscita/
+        $post = array(
+            'dirty='.'0',
+            'actionRequired='.'%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C',
+            'formClass='.'frm.dtl.Job',
+            'action='.'',
+            '#SEL__reports3='.'on',
+            'reports_cmdView.reports_3='.'Visualizza',
+            'formComponentsIDsList_frm.dtl.Job='.'brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C',
+        );
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Uscita/', array('cookies' => $cookies));
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
+        $dettxls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
+        
+        $post = array(
+            'dirty='.'0',
+            'actionRequired='.'led.jobmanager.Detail.download',
+            'formClass='.'frm.edit.reports',
+            'action='.'',
+            'name='.'Report+Bordero\'+Status+-+Globale+per+stato+sinistr',
+            'cmdCancel='.'Indietro',
+            '#SEL__details0='.'on',
+            'details_cmdDownload_0='.'Scarica',
+            'formComponentsIDsList_frm='.'brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C',
+        );
+        sleep(rand(3, 6));
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
+        $xls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
+        
+        $get = array(
+            'actionRequired=' . 'logout',
+            'Esci=' . 'Esci',
+        );
+        sleep(rand(3, 6));
+        $logout = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies));
+        
+        return $xls;
+    }
 
-        return $out;
+    private function getUrlMedicalClaims($source) {
+        preg_match_all('/window.open\([^\(]+\);/', $source, $m);
+        return str_replace(array("window.open('", "');"), array('', ''), $m[0][1]);
+    }
+
+    private function getReqTime($source) {
+        preg_match('/timeReq=[0-9]+/', $source, $m);
+        return $m;
+    }
+    
+    private function getJobId($source) {
+        preg_match('/<input type=\'hidden\' name=\'listWaitingJobs_jobId_0\' value=\'[0-9]+\' \/>/', $source, $m);
+        preg_match('/[0-9]{2,9}/', $m[0], $n);
+        return $n[0];
     }
 
     private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
@@ -374,24 +498,23 @@ class ImportController extends Controller {
         $aggiornamenti = array();
         foreach ($pratiche_aggiornate as $pratica) {
             /* @var $pratica Pratica */
-            if($pratica->getGestore()) {
-                if(!isset($aggiornamenti[$pratica->getGestore()->getId()])) {
+            if ($pratica->getGestore()) {
+                if (!isset($aggiornamenti[$pratica->getGestore()->getId()])) {
                     $aggiornamenti[$pratica->getGestore()->getId()] = array();
                 }
                 $aggiornamenti[$pratica->getGestore()->getId()][] = $pratica;
             }
         }
-        foreach($cliente->getUtenze() as $gestore) {
+        foreach ($cliente->getUtenze() as $gestore) {
             /* @var $gestore \JF\ACLBundle\Entity\Gestore */
-            if($gestore->hasRole('C_ADMIN')) {
+            if ($gestore->hasRole('C_ADMIN')) {
                 $this->notify($gestore, 'Aggiornamenti personali BDX Contec', 'ClaimsContecBundle:email:aggiornamentiAdmin', array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate));
             }
-            if(isset($aggiornamenti[$gestore->getId()])) {
-                $this->notify($gestore, 'Aggiornamenti generali BDX Contec', 'ClaimsContecBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
+            if (isset($aggiornamenti[$gestore->getId()])) {
+                $this->notify($gestore, 'Aggiornamenti generali BDX Contec per '.$gestore->getNome(), 'ClaimsContecBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
             }
-            
         }
-        
+
         return array('pratiche_aggiornate' => $pratiche_aggiornate, 'pratiche_nuove' => $pratiche_nuove);
     }
 
@@ -460,3 +583,52 @@ class ImportController extends Controller {
     }
 
 }
+
+/*
+
+//form
+https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?localeCode=it
+
+//login 
+https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=accesso&userIdJB=carlesi&userPasswordJB=al31l1run&Entra=Entra
+
+//medical pratics
+https://romolo.contec.it/jwcmedmal/portale/JBGW.jsp?J_REQUEST=028-135-036-235-038-236-030-134-219-086-250-212-119-026-068-122-002-089-044-003-071-218-104-075-249-207-205-163-078-147-081-158-229-022-190-049-192-001-098-113-236-037-068-248-063-101-062-003-175-141-086-227-242-109-196-103-051-235-043-196-195-188-050-173-233-205-219-140-198-142-107-161-069-025-200-214-237-111-045-152-075-065-068-174-018-132-169-097-014-062-210-033-160-232-244-139-152-012-095-167-000-061-123-034-161-140-013-254-040-197-057-153&FINE=1&localeCode=it
+
+//frames
+https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899
+https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899 *
+https://romolo.contec.it/jwcmedmal/home/riepiloghiHome.jsp
+https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+
+//jobmanager
+https://romolo.contec.it/jwcmedmal/home/main.jsp?contesto=jobmanager&timeReq=1383399106882
+
+//frames
+https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383399169700 *
+https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899
+https://romolo.contec.it/jwcmedmal/home/empty.htm?action=&parameters=&timeReq=1383413348586
+https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+
+//gestione jobs (post)
+https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|&label=Gestione+job
+
+//dettaglio job (post)
+https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+sì dirty=-1&actionRequired=%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C&formClass=frm.JobManager&action=&listWaitingJobs_jobId_0=9835&pagerTable_page=1&%23SEL__pagerTable0=on&pagerTable_cmdView_0=Visualizza&formComponentsIDsList_frm.JobManager=%23%23revert_to_original_readform%23%23
+no dirty=-1&actionRequired=%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C&formClass=frm.JobManager&action=&listWaitingJobs_jobId_0=9835&pagerTable_page=1&%23SEL__pagerTable1=on&pagerTable_cmdView_1=Visualizza&formComponentsIDsList_frm.JobManager=%23%23revert_to_original_readform%23%23
+
+//xls page (post)
+https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+   dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
+
+//xls file (post)
+https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+   dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
+
+//logout
+https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=logout&Esci=Esci
+
+ */

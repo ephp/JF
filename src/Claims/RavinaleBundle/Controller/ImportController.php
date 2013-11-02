@@ -157,7 +157,7 @@ class ImportController extends Controller {
         $tag_html = Dom::getDOMBase($doc);
         $tag_body = Dom::getDOMElement($tag_html, array('tag' => 'body'));
         $table = Dom::getDOMElement($tag_body, array('tag' => 'table'));
-        $trs = Dom::getDOMElement($table, array('tag' => 'tr'), false);
+        $trs = Dom::getDOMElement($table, array('tag' => 'tr', 'n' => 2));
 
         foreach ($trs as $tr) {
             $tds = Dom::getDOMElement($tr, array('tag' => 'td'), false);

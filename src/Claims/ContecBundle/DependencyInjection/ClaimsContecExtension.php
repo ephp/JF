@@ -45,7 +45,7 @@ class ClaimsContecExtension extends Extension implements IExtension {
         if (true) {
             $menu['a_claims']['submenu'][] = array(
                 'label' => 'Importazione Contec',
-                'route' => 'contec_import_form',
+                'route' => 'contec_import_manuale',
                 'show' => array('in_role' => array('C_ADMIN')),
                 'order' => 90,
             );

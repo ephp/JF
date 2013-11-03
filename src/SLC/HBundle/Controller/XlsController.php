@@ -184,6 +184,8 @@ class XlsController extends Controller {
     /**
      * @Route("-slc",                 name="slc_hospital_xls",            defaults={"mode": "default"},    options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-slc/analisi-np",      name="slc_hospital_np_xls",         defaults={"mode": "np"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-slc/analisi-np-sg",   name="slc_hospital_np_sg_xls",      defaults={"mode": "npsg"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-slc/analisi-np-cg",   name="slc_hospital_np_cg_xls",      defaults={"mode": "npcg"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-slc/analisi-riserve", name="slc_hospital_riserve_xls",    defaults={"mode": "riserve"},    options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-slc/bookeeping",      name="slc_hospital_bookeeping_xls", defaults={"mode": "bookeeping"}, options={"ACL": {"in_role": {"R_SUPER"}}})
      */
@@ -381,7 +383,7 @@ class XlsController extends Controller {
         $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
         $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
         $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
-        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'))) {
+        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'np', 'npcg'))) {
             $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
         }
         $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);

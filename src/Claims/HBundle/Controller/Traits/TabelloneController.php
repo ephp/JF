@@ -192,6 +192,17 @@ trait TabelloneController {
             $out['attivita']['icon'] = 'ico-chevron-down';
         }
 
+        $out['importazione'] = array(
+            'label' => 'Data di importazione',
+            'mode' => 'importazione',
+        );
+        if ($sorting == 'importazione') {
+            $out['importazione']['icon'] = 'ico-chevron-up';
+            $out['importazione']['mode'] = 'iimportazione';
+        } elseif ($sorting == 'iattivita') {
+            $out['importazione']['icon'] = 'ico-chevron-down';
+        }
+
         return $out;
     }
 

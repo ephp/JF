@@ -270,6 +270,14 @@ class PraticaRepository extends EntityRepository {
                 $q->leftJoin('p.eventi', 'e');
                 $q->orderBy('e.data_ora', 'desc');
                 break;
+            case 'importazione':
+                $q->orderBy('p.dataImport', 'asc');
+                $q->addOrderBy('p.id', 'desc');
+                break;
+            case 'iimportazione':
+                $q->orderBy('p.dataImport', 'desc');
+                $q->addOrderBy('p.id', 'desc');
+                break;
             default:
                 if ($filtri['sorting']{0} == '-') {
                     $q->orderBy('p.' . substr($filtri['sorting'], 1), 'desc');

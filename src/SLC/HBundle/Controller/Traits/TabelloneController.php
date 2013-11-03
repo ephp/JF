@@ -11,6 +11,14 @@ trait TabelloneController {
             'label' => 'Analisi N.P.',
             'route' => 'slc_hospital_np',
         );
+        $out['npsd'] = array(
+            'label' => 'Analisi N.P. (senza gestore)',
+            'route' => 'slc_hospital_np_sg',
+        );
+        $out['npcg'] = array(
+            'label' => 'Analisi N.P. (con gestore)',
+            'route' => 'slc_hospital_np_cg',
+        );
 
         $out['riserve'] = array(
             'label' => 'Analisi Riserve',
@@ -135,6 +143,16 @@ trait TabelloneController {
             // Vede solo 
             case 'np':
                 $filtri['in']['amountReserved'] = -1;
+                $filtri['sorting'] = '-firstReserveIndication';
+                break;
+            case 'npsg':
+                $filtri['in']['amountReserved'] = -1;
+                $filtri['in']['gestore'] = null;
+                $filtri['sorting'] = '-firstReserveIndication';
+                break;
+            case 'npcg':
+                $filtri['in']['amountReserved'] = -1;
+                $filtri['out']['gestore'] = null;
                 $filtri['sorting'] = '-firstReserveIndication';
                 break;
             case 'riserve':

@@ -154,6 +154,7 @@ trait ImportController {
                 $this->persist($evento);
             }
         } else {
+            $pratica->setDataImport(new \DateTime());
             $pratica->addLog(array('Importata pratica'));
             $this->persist($pratica);
             $pratiche_nuove[] = $pratica;

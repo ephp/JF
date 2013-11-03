@@ -72,6 +72,13 @@ class Pratica {
     /**
      * @var \DateTime
      *
+     * @ORM\Column(name="data_import", type="date")
+     */
+    private $dataImport;
+
+    /**
+     * @var \DateTime
+     *
      * @ORM\Column(name="dol", type="date", nullable=true)
      */
     private $dol;
@@ -647,6 +654,27 @@ class Pratica {
      */
     public function getDasc() {
         return $this->dasc;
+    }
+
+    /**
+     * Set dataImport
+     *
+     * @param \DateTime $dataImport
+     * @return Pratica
+     */
+    public function setDataImport($dataImport) {
+        $this->dataImport = $dataImport;
+
+        return $this;
+    }
+
+    /**
+     * Get dataImport
+     *
+     * @return \DateTime 
+     */
+    public function getDataImport() {
+        return $this->dataImport;
     }
 
     /**

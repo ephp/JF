@@ -13,6 +13,9 @@
                     <abbr title="Non definita">{{ entity.codice }}</abbr>
                 </span>
             {% endif %}
+                {% if entity.inMonthlyReport %}
+            <br/><div class="icon"><span class="ico-star"></span></div>
+            {% endif %}
         </a>
     </td>
     <td class="center" class="dasc" nowrap>
@@ -27,6 +30,9 @@
         {% if app.user.hasRole('C_ADMIN') %}
             </a>
         {% endif %}
+            {% if app.user.dati.claims_h_sorting is defined and (app.user.dati.claims_h_sorting == 'importazione' or app.user.dati.claims_h_sorting == 'iimportazione') %}
+            <br/><small>import: {{ entity.dataImport|date('d-m-Y') }}</small>
+            {% endif %}
     </td>
     <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
     <td>{{ entity.claimant }}</td>

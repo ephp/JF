@@ -271,11 +271,11 @@ class PraticaRepository extends EntityRepository {
                 $q->orderBy('e.data_ora', 'desc');
                 break;
             case 'importazione':
-                $q->orderBy('p.dataImport', 'asc');
+                $q->orderBy('p.dataImport', 'desc');
                 $q->addOrderBy('p.id', 'desc');
                 break;
             case 'iimportazione':
-                $q->orderBy('p.dataImport', 'desc');
+                $q->orderBy('p.dataImport', 'asc');
                 $q->addOrderBy('p.id', 'desc');
                 break;
             default:

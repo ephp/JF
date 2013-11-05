@@ -1,5 +1,12 @@
 {% extends '::base.html.twig' %}
-
+{% block js %}
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@JFCalendarBundle/Resources/public/js/index.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock js%}
 {% block body -%}
 <div class="page-header">
     <div class="icon">
@@ -35,43 +42,5 @@
 
 <script type="text/javascript">
     var giorni = {{ giorni|raw }};
-    $( "#mydatepicker" ).datepicker({
-        dateFormat: 'dd-mm-yy',
-        closeText: 'Chiudi', 
-        prevText: 'Perc.', 
-        nextText: 'Prox.', 
-        currentText: 'Oggi', 
-        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
-        monthNamesShort: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
-        dayNames: ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'], 
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'], 
-        dayNamesMin: ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S'], 
-        firstDay: 1,
-        weekHeader: "S", 
-        onSelect: function(date){
-            setGiorno(giorni);
-            alert(date);
-        },
-        onChangeMonthYear: function(year, month) {
-            setGiorno(giorni);
-            alert(month+'/'+year);
-        }
-    });
-    
-    setGiorno(giorni);
-        
-    function setGiorno(giorni) {
-        $.each(giorni, function(giorno, val) {
-            $('.calendar td').find('a').each(function() {
-                $this = $(this);
-                if($this.html() == giorno) {
-                    $.each(val.tipo, function(label, v) {
-                        $this.after('<div class="nscal '+v.css+'" title="'+label+': '+v.n+' event'+(v.n === 1 ? 'o' : 'i')+'">'+v.n+'</div>');
-                    });
-                    $this.after('<div class="ncal">'+val.tot+'</div>');
-                }
-            });
-        });
-    }
 </script>   
 {% endblock %}

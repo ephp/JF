@@ -70,8 +70,8 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
     public function setTipoEventi(ContainerBuilder $container) {
         $tipiEvento = array();
 
-        $this->newTipoEvento($tipiEvento, 'JFS', 'JF-System', 'ff0000', false, false, false, true);
-        $this->newTipoEvento($tipiEvento, 'JFP', 'JF-System', 'ff0000', false, false, true, true);
+        $this->newTipoEvento($tipiEvento, 'JFS', 'JF-System', 'ff0000', false, false, false, false);
+        $this->newTipoEvento($tipiEvento, 'JFP', 'JF-System', 'ff0000', false, false, true, false);
         $this->newTipoEvento($tipiEvento, 'APP', 'Appuntamento', '0000aa', true, true, false, true);
         $this->newTipoEvento($tipiEvento, 'PRM', 'Promemoria', '00aa00', true, true, false, true);
         $this->newTipoEvento($tipiEvento, 'SCD', 'Scadenza', 'aa0000', true, true, false, true);

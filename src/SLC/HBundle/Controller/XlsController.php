@@ -301,9 +301,8 @@ class XlsController extends Controller {
                         if ($monthly_report) {
                             if ($entity->getNote()) {
                                 $valore = "Note
-{$entity->getNote()}
-({$entity->getNoteDataModifica()->format('d-m-Y')})
-";
+{$entity->getNote()}".($entity->getNoteDataModifica() ? "
+({$entity->getNoteDataModifica()->format('d-m-Y')})" : "");
                             } else {
                                 $mr = $entity->getMonthlyReport();
                                 if ($mr) {

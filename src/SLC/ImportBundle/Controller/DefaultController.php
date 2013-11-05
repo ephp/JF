@@ -127,7 +127,6 @@ class DefaultController extends Controller {
               }
              */
 
-            if (false) {
                 foreach ($_pratica->report as $key => $val) {
                     switch ($key) {
                         case 'dol':
@@ -191,7 +190,6 @@ class DefaultController extends Controller {
                             break;
                     }
                 }
-            }
 
             foreach ($_pratica->links as $_link) {
                 $link = $this->findOneBy('ClaimsHBundle:Link', array('pratica' => $pratica->getId(), 'url' => $_link->url));

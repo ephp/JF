@@ -7,18 +7,42 @@
             <h1>Aggiungi evento</h1>
         </div>        
         <div style="clear: both"></div>
-        <label for="scheda_data">Data</label>
+        <label for="evento_titolo">Tipo</label>
         <div style="clear: both"></div>
-        <input type="text" name="evento[data]" id="scheda_data" class="auto_date" value="" />
+        <select name="evento[tipo]" id="evento_tipo">
+            {% for sigla, tipo in tipi %}
+                <option value="{{ sigla }}">{{ tipo.name }}</option>
+            {% endfor %}
+        </select>
+        <div style="clear: both"></div>
+        <label for="evento_data">Data</label>
+        <div style="clear: both"></div>
+        <input type="text" name="evento[data]" id="evento_data" class="auto_date" value="" />
         <small>Inserire la data nel formato <b>gg/mm/aaaa</b> o le parole chiave <b>oggi</b>, <b>domani</b> o un numero seguito da <b>gg</b> (es: 5gg)</small>
         <div style="clear: both"></div>
-        <label for="scheda_titolo">Titolo</label>
+        <label for="evento_titolo">Giorno intero <input type="hidden" name="evento[intero]" id="evento_intero" value="no"/></label> <button type="button" class="btn-small btn-success ads no-display">Sì</button> <button type="button" class="btn-small btn-danger ads">No</button>
         <div style="clear: both"></div>
-        <input type="text" name="evento[titolo]" id="scheda_titolo" style="width: 400px;" value=""/>  
+        <span id="ad">
+            <select name="evento[ora]" id="evento_ora" style="width: 100px;">
+                {% for ora in range(0, 23, 1) %}
+                    <option value="{{ ora }}">{{ ora }}</option>
+                {% endfor %}
+            </select>
+            :
+            <select name="evento[minuti]" id="evento_minuti" style="width: 100px;">
+                {% for min in range(0, 59, 5) %}
+                    <option value="{{ min }}">{{ min }}</option>
+                {% endfor %}
+            </select>
+        </span>
         <div style="clear: both"></div>
-        <label for="scheda_note">Note</label>
+        <label for="evento_titolo">Titolo</label>
         <div style="clear: both"></div>
-        <textarea style="background-color: #ffffff; border: 1px solid #dadada; width: 400px;" class="autogrow" name="evento[note]" id="scheda_note" placeholder="Inserisci qui le tue note"></textarea>
+        <input type="text" name="evento[titolo]" id="evento_titolo" style="width: 400px;" value=""/>  
+        <div style="clear: both"></div>
+        <label for="evento_note">Note</label>
+        <div style="clear: both"></div>
+        <textarea style="background-color: #ffffff; border: 1px solid #dadada; width: 400px;" class="autogrow" name="evento[note]" id="evento_note" placeholder="Inserisci qui le tue note"></textarea>
         <div style="clear: both"></div>
         <button type="button" class="btn" onclick="aggiungiEvento();" id="bt_aggiungi_evento">Aggiungi</button>
         <div style="text-align:center;" class="no-display" id="wait_aggiungi_evento"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>

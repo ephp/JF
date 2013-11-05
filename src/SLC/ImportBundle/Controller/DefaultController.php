@@ -77,7 +77,7 @@ class DefaultController extends Controller {
             }
             if ($_pratica->priorita) {
                 $priorita = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => $_pratica->priorita));
-                if(!$priorita) {
+                if (!$priorita) {
                     $priorita = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
                 }
                 if (!$pratica->getPriorita() || $pratica->getPriorita()->getId() != $priorita->getId()) {
@@ -127,69 +127,70 @@ class DefaultController extends Controller {
               }
              */
 
-                foreach ($_pratica->report as $key => $val) {
-                    switch ($key) {
-                        case 'dol':
-                        case 'don':
-                            if ($val) {
-                                $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
-                                $data = \DateTime::createFromFormat('Y-m-d', $val);
-                                if (!$pratica->$get() || $pratica->$get()->format('d-m-Y') != $data->format('d-m-Y')) {
-                                    $save_pratica = true;
-                                    $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                                    $pratica->$set($data);
-                                }
-                            }
-                            break;
-                        case 'gestore':
-                            if ($val) {
-                                $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
-                                $gestore = $this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $val));
-                                if (!$pratica->$get() || $pratica->$get()->getId() != $gestore->getId()) {
-                                    $save_pratica = true;
-                                    $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                                    $pratica->$set($gestore);
-                                }
-                            }
-                            break;
-                        case 'reports':
-                            foreach ($val as $_report) {
-                                $report = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $_report->number));
-                                if (!$report) {
-                                    $report = new \Claims\HBundle\Entity\Report();
-                                    $report->setPratica($pratica);
-                                    $report->setNumber($_report->number);
-                                }
-                                $report->setAnalisiDanno($_report->analisi_danno);
-                                $report->setAzioni($_report->azioni);
-                                $report->setCopertura($_report->copertura);
-                                $report->setData(\DateTime::createFromFormat('Y-m-d', $_report->data));
-                                $report->setDescrizioneInFatto($_report->descrizione_in_fatto);
-                                $report->setMedicoLegale1($_report->medico_legale1);
-                                $report->setMedicoLegale2($_report->medico_legale2);
-                                $report->setMedicoLegale3($_report->medico_legale3);
-                                $report->setNote($_report->note);
-                                $report->setPossibileRivalsa($_report->possibile_rivalsa);
-                                $report->setRelazioneAvversaria($_report->relazione_avversaria);
-                                $report->setRelazioneExAdverso($_report->relazione_ex_adverso);
-                                $report->setRichiestaSa($_report->richiesta_sa);
-                                $report->setRiserva($_report->riserva);
-                                $report->setStato($_report->stato);
-                                $report->setValidato($_report->validato);
-                                $report->setValutazioneResponsabilita($_report->valutazione_responsabilita);
-                                $this->persist($report);
-                            }
-                            break;
-                        default:
+            
+            foreach ($_pratica->report as $key => $val) {
+                switch ($key) {
+                    case 'dol':
+                    case 'don':
+                        if ($val) {
                             $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
-                            if (!$pratica->$get() != $val) {
+                            $data = \DateTime::createFromFormat('Y-m-d', $val);
+                            if (!$pratica->$get() || $pratica->$get()->format('d-m-Y') != $data->format('d-m-Y')) {
                                 $save_pratica = true;
                                 $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
-                                $pratica->$set($val);
+                                $pratica->$set($data);
                             }
-                            break;
-                    }
+                        }
+                        break;
+                    case 'gestore':
+                        if ($val) {
+                            $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
+                            $gestore = $this->findOneBy('JFACLBundle:Gestore', array('cliente' => $this->getUser()->getCliente()->getId(), 'sigla' => $val));
+                            if (!$pratica->$get() || $pratica->$get()->getId() != $gestore->getId()) {
+                                $save_pratica = true;
+                                $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
+                                $pratica->$set($gestore);
+                            }
+                        }
+                        break;
+                    case 'reports':
+                        foreach ($val as $_report) {
+                            $report = $this->findOneBy('ClaimsHBundle:Report', array('pratica' => $pratica->getId(), 'number' => $_report->number));
+                            if (!$report) {
+                                $report = new \Claims\HBundle\Entity\Report();
+                                $report->setPratica($pratica);
+                                $report->setNumber($_report->number);
+                            }
+                            $report->setAnalisiDanno($_report->analisi_danno);
+                            $report->setAzioni($_report->azioni);
+                            $report->setCopertura($_report->copertura);
+                            $report->setData(\DateTime::createFromFormat('Y-m-d', $_report->data));
+                            $report->setDescrizioneInFatto($_report->descrizione_in_fatto);
+                            $report->setMedicoLegale1($_report->medico_legale1);
+                            $report->setMedicoLegale2($_report->medico_legale2);
+                            $report->setMedicoLegale3($_report->medico_legale3);
+                            $report->setNote($_report->note);
+                            $report->setPossibileRivalsa($_report->possibile_rivalsa);
+                            $report->setRelazioneAvversaria($_report->relazione_avversaria);
+                            $report->setRelazioneExAdverso($_report->relazione_ex_adverso);
+                            $report->setRichiestaSa($_report->richiesta_sa);
+                            $report->setRiserva($_report->riserva);
+                            $report->setStato($_report->stato);
+                            $report->setValidato($_report->validato);
+                            $report->setValutazioneResponsabilita($_report->valutazione_responsabilita);
+                            $this->persist($report);
+                        }
+                        break;
+                    default:
+                        $get = \Doctrine\Common\Util\Inflector::camelize('get_report_' . $key);
+                        if ($pratica->$get() != $val) {
+                            $save_pratica = true;
+                            $set = \Doctrine\Common\Util\Inflector::camelize('set_report_' . $key);
+                            $pratica->$set($val);
+                        }
+                        break;
                 }
+            }
 
             foreach ($_pratica->links as $_link) {
                 $link = $this->findOneBy('ClaimsHBundle:Link', array('pratica' => $pratica->getId(), 'url' => $_link->url));
@@ -204,7 +205,7 @@ class DefaultController extends Controller {
                     $salvaLink = true;
                     $link->setSito($_link->sito);
                 }
-                if($salvaLink) {
+                if ($salvaLink) {
                     $this->persist($link);
                 }
             }
@@ -239,7 +240,7 @@ class DefaultController extends Controller {
                     $salvaEvento = true;
                     $evento->setNote($_evento->note);
                 }
-                if($salvaEvento) {
+                if ($salvaEvento) {
                     $this->persist($evento);
                 }
             }

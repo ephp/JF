@@ -300,14 +300,16 @@ class XlsController extends Controller {
                     case 'Note':
                         if ($monthly_report) {
                             if ($entity->getNote()) {
+                                $txt = str_replace(array('&nbsp;', '   ', '  '), array(' ', ' ', ' '), strip_tags(str_replace('>', '> ', $entity->getNote())));
                                 $valore = "Note
-{$entity->getNote()}".($entity->getNoteDataModifica() ? "
+{$txt}".($entity->getNoteDataModifica() ? "
 ({$entity->getNoteDataModifica()->format('d-m-Y')})" : "");
                             } else {
                                 $mr = $entity->getMonthlyReport();
                                 if ($mr) {
+                                    $txt = str_replace(array('&nbsp;', '   ', '  '), array(' ', ' ', ' '), strip_tags(str_replace('>', '> ', $mr->getNote())));
                                     $valore = "{$mr->getTitolo()}
-{$mr->getNote()}
+{$txt}
 ({$mr->getDataOra()->format('d-m-Y')})";
                                 }
                             }

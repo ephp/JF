@@ -93,7 +93,7 @@
     </div>
     <div class="span10">
         <div class="block">
-            {{ entity.note|raw|nl2br }} 
+            {{ entity.notePulite|nl2br }} 
         </div>
     </div>
 </div>
@@ -105,7 +105,7 @@
     </div>
     <div class="span10">
         <div class="block">
-            {{ entity.datiRecupero|raw|nl2br }} 
+            {{ entity.datiRecuperoPuliti|nl2br }} 
         </div>
     </div>
 </div>
@@ -124,7 +124,7 @@
                 <tr>
                     <td width="10%" class="center" nowrap>{{ evento.dataOra|date('d/m/Y') }}</td>
                     <td width="25%">{{ evento.titolo }}</td>
-                    <td width="65%">{{ evento.note|nl2br }}</td>
+                    <td width="65%">{{ evento.notePulite|nl2br }}</td>
                 </tr>
             {% endif %}
         {% endfor %}

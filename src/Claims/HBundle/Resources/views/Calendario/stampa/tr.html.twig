@@ -24,9 +24,9 @@
     <td class="right">{% if entity.amountReserved >= 0 %}{{ entity.amountReserved|number_format(2, '.', ' ') }} €{% else %}N.P.{% endif %}</td>
     <td class="note">
         {% if app.user.hasRole(['C_RECUPERI_H']) %}
-            {{ entity.datiRecupero|raw }}
+            {{ entity.datiRecuperoPuliti|nl2br }}
         {% else %}
-            {{ entity.note|raw }}
+            {{ entity.notePulite|nl2br }}
         {% endif %}
     </td>
     <td class="center">
@@ -49,7 +49,7 @@
                         <tr>
                             <td width="10%" class="center" nowrap>{{ evento.dataOra|date('d/m/Y') }}</td>
                             <td width="25%">{{ evento.titolo }}</td>
-                            <td width="65%">{{ evento.note|nl2br }}</td>
+                            <td width="65%">{{ evento.notePulite|nl2br }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}

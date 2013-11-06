@@ -3,7 +3,7 @@
         <div class="block icon no-margin">
             <h3 class="ico-pencil">Note</h3>
         </div>
-        <textarea class="autoupdate autogrow note" pratica="{{ entity.slug }}" name="note" placeholder="Inserisci qui le tue note">{{ entity.note }}</textarea>
+        <textarea class="autoupdate autogrow note" pratica="{{ entity.slug }}" name="note" placeholder="Inserisci qui le tue note">{{ entity.notePulite }}</textarea>
     </div>
 </div>
 <div class="row-fluid">
@@ -29,9 +29,9 @@
                 <h3 class="ico-money-bag">Dati Recupero</h3>
             </div>
             {% if entity.recupero %}
-                <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecupero }}</textarea>
+                <textarea class="autoupdate autogrow dati_recupero" pratica="{{ entity.slug }}" name="dati_recupero" placeholder="Inserisci qui i dati relativi al recupero">{{ entity.datiRecuperoPuliti }}</textarea>
             {% else %}
-                <p>{{ entity.datiRecupero|nl2br }}</p>
+                <p>{{ entity.datiRecuperoPuliti|nl2br }}</p>
             {% endif %}
         </div>
     </div>

@@ -66,7 +66,7 @@
     {% if app.user.hasRole(['C_RECUPERI_H']) %}
         <td class="dati_recupero">
             <div class="typography" contenteditable="true">
-                {{ entity.datiRecupero|raw|nl2br }}
+                {{ entity.datiRecuperoPuliti|nl2br }}
             </div>
         </td>
     {% else %}
@@ -74,7 +74,7 @@
             {% if app.user.hasRole(['C_GESTORE_H']) %}
                 <div class="typography" contenteditable="true">
             {% endif %}
-            {{ entity.note|raw|nl2br }}
+            {{ entity.notePulite|nl2br }}
             {% if app.user.hasRole(['C_GESTORE_H']) %}
                 </div>
             {% endif %}

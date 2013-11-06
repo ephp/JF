@@ -20,7 +20,7 @@
 {% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Possibile rivalsa', 'span_value': 9, 'value': entity.possibileRivalsa|nl2br} %}
 {% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Azioni', 'span_value': 9, 'value': entity.azioni|nl2br} %}
 {% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Richiesta SA', 'span_value': 9, 'value': entity.richiestaSa|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Note', 'span_value': 9, 'value': entity.note|nl2br, 'last': true} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Note', 'span_value': 9, 'value': entity.notePulite|nl2br, 'last': true} %}
 {% if no_back is not defined %}
     <a href="{{ path('claims_hospital_report', {'slug': entity.pratica.slug}) }}" onclick="return loadAjax($(this));">
         <span class="label label-inverse">Torna indietro</span>

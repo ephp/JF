@@ -2075,6 +2075,14 @@ class Pratica {
         return $this->court != ' ' && trim($this->court) != '';
     }
 
+    public function getNotePulite() {
+        return \Ephp\UtilityBundle\Utility\String::strip_tags($this->getNote());
+    }
+
+    public function getDatiRecuperoPuliti() {
+        return \Ephp\UtilityBundle\Utility\String::strip_tags($this->getDatiRecupero());
+    }
+    
     public function __toString() {
         return $this->getCodice() . ' - ' . $this->getClaimant();
     }

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ephp\UtilityBundle\PhpExcel\SpreadsheetExcelReader;
+use Ephp\UtilityBundle\Utility\String;
 
 /**
  * @Route("/slc/claims-hospital-xls")
@@ -300,14 +301,14 @@ class XlsController extends Controller {
                     case 'Note':
                         if ($monthly_report) {
                             if ($entity->getNote()) {
-                                $txt = str_replace(array('&nbsp;', '   ', '  '), array(' ', ' ', ' '), strip_tags(str_replace('>', '> ', $entity->getNote())));
+                                $txt = String::strip_tags($entity->getNote());
                                 $valore = "Note
 {$txt}".($entity->getNoteDataModifica() ? "
 ({$entity->getNoteDataModifica()->format('d-m-Y')})" : "");
                             } else {
                                 $mr = $entity->getMonthlyReport();
                                 if ($mr) {
-                                    $txt = str_replace(array('&nbsp;', '   ', '  '), array(' ', ' ', ' '), strip_tags(str_replace('>', '> ', $mr->getNote())));
+                                    $txt = String::strip_tags($mr->getNote());
                                     $valore = "{$mr->getTitolo()}
 {$txt}
 ({$mr->getDataOra()->format('d-m-Y')})";

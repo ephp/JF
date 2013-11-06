@@ -3,13 +3,15 @@
 .label-warning, .badge-warning, .yellow{background: #FFAA31 !important;}
 .label-success, .badge-success, .green{background: #68AF27 !important;}
 .label-important, .badge-important, .red{background: #C22439 !important;}
-.label-normal, .badge-normal, .gray{background: #A9A9A9 !important;}
+.label-normal, .badge-normal, .cyan{background: #ACDCFF !important;}
+.label-base, .badge-base, .gray{background: #989898 !important;}
 .label-disabled, .badge-disabled, .lgray{background: #D1D1D1 !important;}
 
 .purple{background: #673499 !important;}
 .orange{background: #D53F26 !important;}
 
 .cblue{color: #009AD7 !important;}
+.ccyan{color: #ACDCFF !important;}
 .cyellow{color: #FFAA31 !important;}
 .cgreen{color: #68AF27 !important;}
 .cred{color: #C22439 !important;}
@@ -20,6 +22,7 @@
 .clgray{color: #D1D1D1 !important;}
 
 .blblue{border-left-color: #009AD7 !important;}
+.blcyan{border-left-color: #ACDCFF !important;}
 .blyellow{border-left-color: #FFAA31 !important;}
 .blgreen{border-left-color: #68AF27 !important;}
 .blred{border-left-color: #C22439 !important;}
@@ -51,6 +54,8 @@
     .btn-inverse:hover,.btn-inverse:active,.btn-inverse.active{background: #1A1A1D;}    
 .btn-link{background: transparent; color: #333;}    
     .btn-link:hover,.btn-link:active,.btn-link.active{background: transparent; color: #333;}
+.btn-normal{background: transparent; color: #ACDCFF;}    
+    .btn-normal:hover,.btn-link:active,.btn-link.active{background: transparent; color: #ACDCFF;}
 
 .btn.disabled,.open .btn.dropdown-toggle{background-color: #008DC4 !important;}   
 .btn.btn-primary.disabled,.open .btn-primary.dropdown-toggle{background-color: #00486F !important;}
@@ -60,3 +65,4 @@
 .btn.btn-danger.disabled,.open .btn-danger.dropdown-toggle{background-color: #AA2031 !important;}
 .btn.btn-inverse.disabled,.open .btn-inverse.dropdown-toggle{background-color: #1A1A1D !important;}
 .btn.btn-link.disabled,.open .btn-link.dropdown-toggle{background-color: transparent !important;}
+.btn.btn-normal.disabled,.open .btn-light.dropdown-toggle{background-color: #DDF1FF !important;}

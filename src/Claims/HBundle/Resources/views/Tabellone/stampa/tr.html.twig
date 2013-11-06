@@ -37,7 +37,7 @@
         {% if monthly_report is defined and monthly_report %}
             {% if entity.note %}
                 <b>Note</b><br/>
-                {{ entity.note|raw }}<br/>
+                {{ entity.notePulite|nl2br }}<br/>
                 {% if entity.noteDataModifica %}
                     <i>({{ entity.noteDataModifica|date('d-m-Y') }})</i>
                 {% endif %}
@@ -47,7 +47,7 @@
                     <b>{{ mr.titolo }}</b>
                     {% if mr.note %}
                         <br/>
-                        {{ mr.note|raw }}<br/>
+                        {{ mr.notePulite|nl2br }}<br/>
                     {% endif %}
                     {% if app.environment == 'dev' %}
                         <br/>
@@ -59,9 +59,9 @@
             {% endif %}
         {% else %}
             {% if app.user.hasRole(['C_RECUPERI_H']) %}
-                {{ entity.datiRecupero|raw }}
+                {{ entity.datiRecuperoPuliti|nl2br }}
             {% else %}
-                {{ entity.note|raw }}
+                {{ entity.notePulite|nl2br }}
             {% endif %}
         {% endif %}
     </td>

@@ -46,7 +46,7 @@
     {% if app.user.hasRole(['C_RECUPERI_H']) %}
         <td class="dati_recupero">
             <div class="typography" contenteditable="true">
-                {{ entity.entity.datiRecupero|raw|nl2br }}
+                {{ entity.datiRecuperoPuliti|nl2br }}
             </div>
         </td>
     {% else %}

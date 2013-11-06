@@ -23,14 +23,14 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var Pratica
      * 
      * @ORM\ManyToOne(targetEntity="Pratica")
      * @ORM\JoinColumn(name="pratica_id", referencedColumnName="id")
      */
-    private $pratica;    
+    private $pratica;
 
     /**
      * @var integer
@@ -38,7 +38,7 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
      * @ORM\Column(name="delta_g", type="integer", nullable=true)
      */
     private $deltaG;
-    
+
     /**
      * Get id
      *
@@ -47,7 +47,7 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
     public function getId() {
         return $this->id;
     }
-    
+
     /**
      * Get pratica
      *
@@ -65,7 +65,7 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
      */
     public function setPratica(Pratica $pratica) {
         $this->pratica = $pratica;
-        
+
         return $this;
     }
 
@@ -78,7 +78,6 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
         return $this->deltaG;
     }
 
-    
     /**
      * Set deltaG
      *
@@ -87,10 +86,12 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
      */
     public function setDeltaG($deltaG) {
         $this->deltaG = $deltaG;
-        
+
         return $this;
     }
 
+    public function getNotePulite() {
+        return \Ephp\UtilityBundle\Utility\String::strip_tags($this->getNote());
+    }
 
-    
 }

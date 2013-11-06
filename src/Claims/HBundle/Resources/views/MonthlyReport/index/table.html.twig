@@ -4,20 +4,19 @@
             <th width="20">#</th>
             <th width="110">Pratica</th>
             <th width="70">DASC</th>
-            <th width="25">Giud</th>
-            <th width="15%">Claimant</th>
+            <th width="15%">Claimant / Giud</th>
             {% if mode is not defined or mode in ['completo', 'senza_gestore'] or app.user.hasRole('C_RECUPERI_H') %}
                 <th width="40">Gestore</th>
             {% endif %}
             <th width="25">Soi</th>
             <th width="70"><abbr title="Amount Reserved">Am. Res.</abbr></th>
             {% if app.user.hasRole(['C_RECUPERI_H']) %}
-                <th>Dati recupero</th>
+                <th width="25%">Dati recupero</th>
             {% else %}
-                <th>Note</th>
+                <th width="25%">Note</th>
             {% endif %}
-            <th>Monthly Report</th>
-            <th width="80" class="TAC">Operazioni</th>
+            <th width="25%">Monthly Report</th>
+            <th width="40" class="TAC">Op.</th>
         </tr>
     </thead>
     <tbody>

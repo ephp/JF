@@ -26,8 +26,7 @@
             </a>
         {% endif %}
     </td>
-    <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
-    <td>{{ entity.claimant }}</td>
+    <td>{{ entity.claimant }}{% if entity.giudiziale %}<br/><abbr title="{{ entity.court|trim }}" style="font-size: 0.75em;">Giud</abbr>{% endif %}</td>
     {% if mode is not defined or mode in ['completo', 'senza_gestore'] or app.user.hasRole('C_RECUPERI_H') %}
         <td>
             {% if app.user.hasRole('C_ADMIN') %}
@@ -49,14 +48,14 @@
     <td class="right" nowrap>{% if entity.amountReserved >= 0 %}{{ entity.amountReserved|number_format(2, '.', ' ') }} €{% else %}N.P.{% endif %}</td>
     {% if app.user.hasRole(['C_RECUPERI_H']) %}
         <td class="dati_recupero">
-            <div class="typography" contenteditable="true">
+            <div class="typography2" contenteditable="true">
                 {{ entity.datiRecuperoPuliti|nl2br }}
             </div>
         </td>
     {% else %}
         <td class="note">
             {% if app.user.hasRole(['C_GESTORE_H']) %}
-                <div class="typography" contenteditable="true">
+                <div class="typography2" contenteditable="true">
             {% endif %}
             {{ entity.notePulite|nl2br }}
             {% if app.user.hasRole(['C_GESTORE_H']) %}
@@ -64,8 +63,10 @@
             {% endif %}
         </td>
     {% endif %}
-    <td class="note">
-        {{ entity.textMonthlyReport|raw|nl2br }}
+    <td class="month">
+        <div class="typography2 nocursor" contenteditable="true">
+            {{ entity.textMonthlyReport|raw|nl2br }}
+        </div>
     </td>
     <td class="TAC">
         {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}

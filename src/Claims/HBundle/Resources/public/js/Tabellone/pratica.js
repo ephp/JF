@@ -100,6 +100,17 @@ function autoupdate() {
     $('.star').click(function() {
         evidenziaEvento($(this).attr('evento'));
     });
+    
+    $('.note div').blur(function(){
+        val = $(this).html();
+        evento = $(this).attr('evento');
+        field = $(this).attr('name');
+        $.post(Routing.generate('claims_hospital_evento_autoupdate'), {'evento': {'id': evento, 'field': field, 'value': val}}, function(out) {
+            if (out.reload === 1) {
+                window.location = window.location;
+            }
+        });
+    });
 }
 
 function autoupdateCalendario() {
@@ -109,6 +120,17 @@ function autoupdateCalendario() {
 
     $('.star').click(function() {
         evidenziaEvento($(this).attr('evento'));
+    });
+    
+    $('.note div').blur(function(){
+        val = $(this).html();
+        evento = $(this).attr('evento');
+        field = $(this).attr('name');
+        $.post(Routing.generate('claims_hospital_evento_autoupdate'), {'evento': {'id': evento, 'field': field, 'value': val}}, function(out) {
+            if (out.reload === 1) {
+                window.location = window.location;
+            }
+        });
     });
 
     $('a.fancybox').each(function() {

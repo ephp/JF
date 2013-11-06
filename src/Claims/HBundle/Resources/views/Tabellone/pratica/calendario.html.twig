@@ -44,6 +44,16 @@
                                         {% include ":commons:color.html.twig" with {'color' : '#' ~ evento.tipo.colore ~ ' !important;', 'icon': 'ico-eye-close', 'label': evento.tipo.sigla, 'title': evento.tipo.nome} %}
                                     {% endif %}
                                 </td>
+                                <td class="note">
+                                    {% if evento.tipo.modificabile %}
+                                        <div class="typography2 fta" evento="{{ evento.id }}" name="note"  contenteditable="true">
+                                    {% endif %}
+                                    {{ evento.notePulite|raw|nl2br }}
+                                    {% if evento.tipo.modificabile %}
+                                        </div>
+                                    {% endif %}
+                                </td>
+{#
                                 <td>
                                     {% if evento.tipo.modificabile %}
                                         <textarea class="autoupdate autogrow" evento="{{ evento.id }}" name="note" placeholder="Inserisci qui le tue note">{{ evento.notePulite }}</textarea>
@@ -51,7 +61,8 @@
                                         {{ evento.notePulite|raw }}
                                     {% endif %}
                                 </td>
-                                <td title="{{evento.tipo.sigla}}">
+#} 
+                               <td title="{{evento.tipo.sigla}}">
                                     {#% include ":commons:star.html.twig" with {'enable' : evento.importante, 'route': 'javascript:evidenziaEvento(' ~ evento.id ~ ');'} %#}
                                     {% if evento.tipo.cancellabile %}
                                         {% include ":commons:delete.html.twig" with {'route': 'javascript:cancellaEvento(' ~ evento.id ~ ', "' ~ evento.dataOra|date('d/m/Y') ~ ' - ' ~ evento.titolo ~'");'} %}

@@ -53,7 +53,7 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            Descrizione evento:<br/><textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="report_descrizione">{{ entity.reportDescrizione }}</textarea>
+            Descrizione evento:<br/><textarea class="report autoupdate autogrow" pratica="{{ entity.slug }}" name="report_descrizione">{{ entity.reportDescrizione }}</textarea>
         </div>
     </div>
 </div>
@@ -61,7 +61,7 @@
     <div class="span12">
         <div class="block">
             {# 
-            MPL:<br/><textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="report_mpl">{{ entity.reportMpl }}</textarea>
+            MPL:<br/><textarea class="report autoupdate autogrow" pratica="{{ entity.slug }}" name="report_mpl">{{ entity.reportMpl }}</textarea>
             #}
             MPL:<select class="autoupdate" pratica="{{ entity.slug }}" name="report_mpl">
             {% for n, mpl in entity.fasceMpl %}
@@ -74,14 +74,14 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            Giudiziale:<br/><textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="report_giudiziale">{{ entity.reportGiudiziale }}</textarea>
+            Giudiziale:<br/><textarea class="report autoupdate autogrow" pratica="{{ entity.slug }}" name="report_giudiziale">{{ entity.reportGiudiziale }}</textarea>
         </div>
     </div>
 </div>
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            Other Policies:<br/><textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="report_other_policies">{{ entity.reportOtherPolicies }}</textarea>
+            Other Policies:<br/><textarea class="report autoupdate autogrow" pratica="{{ entity.slug }}" name="report_other_policies">{{ entity.reportOtherPolicies }}</textarea>
         </div>
     </div>
 </div>
@@ -131,7 +131,7 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            Future Conduct:<br/><textarea class="autoupdate autogrow" pratica="{{ entity.slug }}" name="report_future_conduct">{{ entity.reportFutureConduct }}</textarea>
+            Future Conduct:<br/><textarea class="report autoupdate autogrow" pratica="{{ entity.slug }}" name="report_future_conduct">{{ entity.reportFutureConduct }}</textarea>
         </div>
     </div>
 </div>

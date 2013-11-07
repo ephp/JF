@@ -27,6 +27,7 @@ trait CalendarController {
     protected $BORDERAUX                    = "BDX";
     protected $RISERVA                      = "RES";
     protected $DEFINITO                     = "DEF";
+    protected $RIPASSATONP                  = "RNP";
 
     /**
      * @return \Ephp\Bundle\CalendarBundle\Entity\Calendario
@@ -120,7 +121,10 @@ trait CalendarController {
                     $tipo = $_tipo->createTipo($this->RISERVA, 'Messa in riserva', '00e000', $cal, false, false, false);
                     break;
                 case $this->DEFINITO:
-                    $tipo = $_tipo->createTipo($this->DEFINITO, 'Definito', 'ff0000', $cal, false, false, false);
+                    $tipo = $_tipo->createTipo($this->DEFINITO, 'Definito', '0000e0', $cal, false, false, false);
+                    break;
+                case $this->RIPASSATONP:
+                    $tipo = $_tipo->createTipo($this->RIPASSATONP, 'Ripassato a N.P.', 'ff0000', $cal, false, false, false);
                     break;
             }
         }

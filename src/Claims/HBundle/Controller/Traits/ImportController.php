@@ -37,7 +37,17 @@ trait ImportController {
             }
             if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
                 $_log = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
-                if($old->getAmountReserved() < 0) {
+                if($pratica->getAmountReserved() == 0) {
+                    $evento = $this->newEvento($this->DEFINITO, $old, null, $_log);
+                    $this->persist($evento);
+                    if($old->getPriorita()->getPriorita() != 'Chiuso') {
+                        $old->setPriorita($this->findOneBy('ClaimsHBundle:Priorita', array('priorita' => 'Pre-Chiusura')));
+                    }
+                } elseif($pratica->getAmountReserved() < 0) {
+                    $evento = $this->newEvento($this->RIPASSATONP, $old, null, $_log);
+                    $this->persist($evento);
+                    $old->setPriorita($this->findOneBy('ClaimsHBundle:Priorita', array('priorita' => 'Ripassato NP')));
+                } elseif($old->getAmountReserved() < 0) {
                     $evento = $this->newEvento($this->RISERVA, $old, null, $_log);
                     $this->persist($evento);
                 }

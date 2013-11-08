@@ -424,7 +424,7 @@ class ImportController extends Controller {
             /* @var $sistema \Claims\HBundle\Entity\Pratica */
             list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
             $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
-            $this->logout($sistema);
+            $this->logout($sistema, $cookies);
         }
         return $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $pratica->getSlug())));
     }
@@ -484,7 +484,7 @@ class ImportController extends Controller {
         return array($cookies, $reqTime);
     }
 
-    private function logout(Sistema $sistema) {
+    private function logout(Sistema $sistema, $cookies) {
         $get = array(
             'actionRequired=' . 'logout',
             'Esci=' . 'Esci',
@@ -590,7 +590,7 @@ class ImportController extends Controller {
         // dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
         $xls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
 
-        $this->logout($sistema);
+        $this->logout($sistema, $cookies);
 
         return $xls;
     }
@@ -626,7 +626,7 @@ class ImportController extends Controller {
                 'idPolizza=' . '0',
                 'numeroSinistro=' . $pratica->getCodice(),
                 'rifIntermediario=' . '',
-                'rifCliente=' . $pratica->getClaimant(),
+                'rifCliente=' . str_replace('  ', ' ', $pratica->getClaimant()),
                 'rifCompagnia=' . '',
                 'altroRiferimento=' . '',
                 'reopened=' . 'N',

@@ -40,6 +40,27 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
     private $deltaG;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="comunicazione", type="integer", nullable=true)
+     */
+    private $comunicazione;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="allegato", type="integer", nullable=true)
+     */
+    private $allegato;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     */
+    private $url;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -88,6 +109,30 @@ class Evento implements \JF\CalendarBundle\Interfaces\IEvento {
         $this->deltaG = $deltaG;
 
         return $this;
+    }
+
+    public function getComunicazione() {
+        return $this->comunicazione;
+    }
+
+    public function getAllegato() {
+        return $this->allegato;
+    }
+
+    public function getUrl() {
+        return $this->url;
+    }
+
+    public function setComunicazione($comunicazione) {
+        $this->comunicazione = $comunicazione;
+    }
+
+    public function setAllegato($allegato) {
+        $this->allegato = $allegato;
+    }
+
+    public function setUrl($url) {
+        $this->url = $url;
     }
 
     public function getNotePulite() {

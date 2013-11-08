@@ -11,10 +11,11 @@ trait CalendarController {
     protected $RICHIESTA_SA                 = "RSA";
     protected $TRATTATIVE_AGGIORNAMENTI     = "TAX";
     protected $JWEB                         = "JWB";
-    protected $EMAIL_JWEB                   = "EJW";
+    protected $EMAIL_JWEB                   = "JWE"; //"EJW";
+    protected $ALL_JWEB                     = "JWA";
     protected $CANCELLERIA_TELEMATICA       = "CNT";
     protected $RAVINALE                     = "RVP";
-    protected $EMAIL_RAVINALE               = "MRV";
+    protected $EMAIL_RAVINALE               = "RVE"; //"MRV";
     protected $ATTIVITA_MANUALE             = "OTH";
     protected $EMAIL_MANUALE                = "EML";
     protected $RISCHEDULAZIONE              = "RIS";
@@ -77,6 +78,9 @@ trait CalendarController {
                     break;
                 case $this->EMAIL_JWEB:
                     $tipo = $_tipo->createTipo($this->EMAIL_JWEB, 'Email da J-Web Claims', 'aa2222', $cal, true, false, true);
+                    break;
+                case $this->ALL_JWEB:
+                    $tipo = $_tipo->createTipo($this->ALL_JWEB, 'Allegato da J-Web Claims', 'aa2222', $cal, true, false, true);
                     break;
                 case $this->CANCELLERIA_TELEMATICA:
                     $tipo = $_tipo->createTipo($this->CANCELLERIA_TELEMATICA, 'Cancelleria Telematiche', '44aaaa', $cal);

@@ -12,6 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventoRepository extends EntityRepository {
 
+    public function cancellaTipoDaPratica(Pratica $pratica, \Ephp\CalendarBundle\Entity\Tipo $tipo, $titolo = null, $note = null) {
+        $em = $this->getEntityManager();
+        $conn = $em->getConnection();
+        $params = array('pratica' => $pratica->getId(), 'tipo' => $tipo->getId());
+        if ($titolo) {
+            $params['titolo'] = $titolo;
+        }
+        if ($note) {
+            $params['note'] = $note;
+        }
+        $conn->executeUpdate("
+DELETE 
+  FROM claims_h_eventi
+ WHERE pratica_id = :pratica
+   AND tipo_id = :tipo " .
+                ($titolo ? " AND titolo LIKE :titolo " : "") .
+                ($note ? " AND note LIKE :note " : "")
+                , $params);
+    }
+
     public function calendarioMese(\JF\ACLBundle\Entity\Gestore $gestore, $mese, $anno) {
         $em = $this->getEntityManager();
         $conn = $em->getConnection();

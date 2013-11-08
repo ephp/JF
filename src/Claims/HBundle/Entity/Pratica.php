@@ -554,6 +554,52 @@ class Pratica {
      */
     private $links;
 
+    /*
+     * DA SCHEDA CONTEC
+     */
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="medico_legale", type="string", length=64, nullable=true)
+     */
+    private $medicoLegale;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="specialista", type="string", length=64, nullable=true)
+     */
+    private $specialista;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="perito", type="string", length=64, nullable=true)
+     */
+    private $perito;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coDifensore", type="string", length=64, nullable=true)
+     */
+    private $coDifensore;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rivalsista", type="string", length=64, nullable=true)
+     */
+    private $rivalsista;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="aligned_at", type="date", nullable=true)
+     */
+    private $alignedAt;
+
     /**
      * Constructor
      */
@@ -2042,7 +2088,7 @@ class Pratica {
     public function setRecuperoAzioneDiRecupero($recuperoAzioneDiRecupero) {
         $this->recuperoAzioneDiRecupero = $recuperoAzioneDiRecupero;
     }
-    
+
     public function getRecupero() {
         return $this->recupero;
     }
@@ -2050,7 +2096,7 @@ class Pratica {
     public function setRecupero($recupero) {
         $this->recupero = $recupero;
     }
-    
+
     public function getInMonthlyReport() {
         return $this->inMonthlyReport;
     }
@@ -2068,7 +2114,7 @@ class Pratica {
     }
 
     public function isRecuperato() {
-        return trim($this->recuperoResponsabile.$this->recuperoSollecitoAsl.$this->recuperoCopiaPolizza.$this->recuperoEmailLiquidatore.$this->recuperoQuietanze.$this->recuperoAzioneDiRecupero.$this->datiRecupero) != '';
+        return trim($this->recuperoResponsabile . $this->recuperoSollecitoAsl . $this->recuperoCopiaPolizza . $this->recuperoEmailLiquidatore . $this->recuperoQuietanze . $this->recuperoAzioneDiRecupero . $this->datiRecupero) != '';
     }
 
     public function isGiudiziale() {
@@ -2082,8 +2128,62 @@ class Pratica {
     public function getDatiRecuperoPuliti() {
         return \Ephp\UtilityBundle\Utility\String::strip_tags($this->getDatiRecupero());
     }
+
+    public function getMedicoLegale() {
+        return $this->medicoLegale;
+    }
+
+    public function getSpecialista() {
+        return $this->specialista;
+    }
+
+    public function getPerito() {
+        return $this->perito;
+    }
+
+    public function getCoDifensore() {
+        return $this->coDifensore;
+    }
+
+    public function getRivalsista() {
+        return $this->rivalsista;
+    }
+
+    public function setMedicoLegale($medicoLegale) {
+        $this->medicoLegale = $medicoLegale;
+        return $this;
+    }
+
+    public function setSpecialista($specialista) {
+        $this->specialista = $specialista;
+        return $this;
+    }
+
+    public function setPerito($perito) {
+        $this->perito = $perito;
+        return $this;
+    }
+
+    public function setCoDifensore($coDifensore) {
+        $this->coDifensore = $coDifensore;
+        return $this;
+    }
+
+    public function setRivalsista($rivalsista) {
+        $this->rivalsista = $rivalsista;
+        return $this;
+    }
     
-    public function __toString() {
+    public function getAlignedAt() {
+        return $this->alignedAt;
+    }
+
+    public function setAlignedAt(\DateTime $alignedAt) {
+        $this->alignedAt = $alignedAt;
+        return $this;
+    }
+
+        public function __toString() {
         return $this->getCodice() . ' - ' . $this->getClaimant();
     }
 
@@ -2112,13 +2212,13 @@ class Pratica {
         foreach ($evs as $ev) {
             /* @var $ev \Claims\HBundle\Entity\Evento */
             switch ($ev->getTipo()->getSigla()) {
-                case 'OTH':
+                case 'OTH': case 'EJW': case 'MRV': case 'EML':
                     return $ev;
                 case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
                     if ($ev->getNote()) {
                         return $ev;
                     }
-                case 'JWB': case 'EJW': case 'CNT': case 'RVP': case 'MRV': case 'EML': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
+                case 'JWB': case 'CNT': case 'RVP': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
                 default:
                     break;
             }

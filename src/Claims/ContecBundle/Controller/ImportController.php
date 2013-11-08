@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Claims\HBundle\Entity\Pratica;
+use Claims\HBundle\Entity\Sistema;
 use Claims\HBundle\Entity\Ospedale;
+use Claims\HBundle\Entity\Documento;
 use Ephp\UtilityBundle\Utility\Debug;
 use Ephp\UtilityBundle\Utility\Dom;
 use Ephp\UtilityBundle\Utility\String;
@@ -43,7 +45,7 @@ class ImportController extends Controller {
         if (isset($dati['cl_h_contec-import'])) {
             $bdx = $this->enterBdx($dati['cl_h_contec-import']);
             $source = __DIR__ . '/../../../../web/uploads/contec' . $cliente->getId() . '.xls';
-            if(file_exists($source)) {
+            if (file_exists($source)) {
                 unlink($source);
             }
             $xls = fopen($source, 'w');
@@ -81,182 +83,6 @@ class ImportController extends Controller {
                 }
             }
         }
-    }
-
-    private function enterBdx($dati) {
-        $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
-        /* @var $sistema \Claims\HBundle\Entity\Sistema */
-        $get = array(
-            'localaCode=it',
-        );
-
-
-        $out = array();
-
-        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?localeCode=it
-        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('show' => 1));
-
-
-
-        $matchs = $cookies = array();
-        preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
-
-        foreach ($matchs[0] as $match) {
-            $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
-        }
-        $get = array(
-            'actionRequired=' . 'accesso',
-            'userIdJB=' . $dati['username'],
-            'userPasswordJB=' . $dati['password'],
-            'Entra=' . 'Entra',
-        );
-        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=accesso&userIdJB=carlesi&userPasswordJB=al31l1run&Entra=Entra
-        sleep(rand(3, 6));
-        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies, 'show' => 1));
-
-        $url = $this->getUrlMedicalClaims($access);
-        
-
-        // url ricavato da pagina 
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($url, array('cookies' => $cookies, 'show' => 1));
-        $reqTime1 = $this->getReqTime($tmp);
-        
-        $matchs = $cookies = array();
-        preg_match_all('/Set-Cookie:[^;]+;/', $tmp, $matchs);
-
-        foreach ($matchs[0] as $match) {
-            $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
-        }
-        
-        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
-        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899
-        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899 *
-        //https://romolo.contec.it/jwcmedmal/home/riepiloghiHome.jsp
-        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies,'show' => 1));
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
-        $menu = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/riepiloghiHome.jsp', array('cookies' => $cookies));
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
-        
-        $reqTime2 = $this->getReqTime($menu);
-               
-         $get = array(
-            'contesto=' . 'jobmanager',
-            $reqTime2[0],
-        );
-        
-        //https://romolo.contec.it/jwcmedmal/home/main.jsp?contesto=jobmanager&timeReq=1383399106882
-        sleep(rand(3, 6));
-        $jobman = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/main.jsp?' . implode('&', $get), array('cookies' => $cookies));
-        $reqTime3 = $this->getReqTime($jobman);
-        
-        $get = array(
-            'action=' . '',
-            'parameters=' . '',
-            $reqTime3[0],
-        );
-        
-        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
-        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899 *
-        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899
-        //https://romolo.contec.it/jwcmedmal/home/empty.htm?action=&parameters=&timeReq=1383413348586
-        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies,'show' => 1));
-        $left = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies));
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime3), array('cookies' => $cookies));
-//        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/empty.jsp?' . implode('&', $p), array('cookies' => $cookies));
-        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
-        
-        
-        $get = array(
-            'to=' . '/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|',
-            'label=' . 'Gestione+job',
-        );
-        $post = array(
-            'parameters='.'',
-            'uy='.'',
-            'intestatario='.'',
-            'polizza='.'',
-            'sinistro='.'',
-            'riferimento='.'',
-        );
-        sleep(rand(3, 6));
-        // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|&label=Gestione+job
-        $elenco = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
-        $jobId = $this->getJobId($elenco);
-                
-        $post = array(
-            'dirty='.'-1',
-            'actionRequired='.'%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C',
-            'formClass='.'frm.JobManager',
-            'action='.'',
-            'listWaitingJobs_jobId_0='.$jobId,
-            'pagerTable_page='.'1',
-            '#SEL__pagerTable0='.'on',
-            'pagerTable_cmdView_0='.'Visualizza',
-            'formComponentsIDsList_frm.JobManager='.'%23%23revert_to_original_readform%23%23',
-        );
-        sleep(rand(3, 6));
-        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
-        // dirty=-1&actionRequired=%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C&formClass=frm.JobManager&action=&listWaitingJobs_jobId_0=9835&pagerTable_page=1&%23SEL__pagerTable0=on&pagerTable_cmdView_0=Visualizza&formComponentsIDsList_frm.JobManager=%23%23revert_to_original_readform%23%23
-        $pagina = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
-
-        $post = array(
-            'dirty='.'0',
-            'actionRequired='.'%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C',
-            'formClass='.'frm.dtl.Job',
-            'action='.'',
-            '#SEL__reports3='.'on',
-            'reports_cmdView.reports_3='.'Visualizza',
-            'formComponentsIDsList_frm.dtl.Job='.'brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C',
-        );
-        sleep(rand(3, 6));
-        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
-        // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
-        $dettxls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
-        
-        $post = array(
-            'dirty='.'0',
-            'actionRequired='.'led.jobmanager.Detail.download',
-            'formClass='.'frm.edit.reports',
-            'action='.'',
-            'name='.'Report+Bordero\'+Status+-+Globale+per+stato+sinistr',
-            'cmdCancel='.'Indietro',
-            '#SEL__details0='.'on',
-            'details_cmdDownload_0='.'Scarica',
-            'formComponentsIDsList_frm='.'brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C',
-        );
-        sleep(rand(3, 6));
-        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
-        // dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
-        $xls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
-        
-        $get = array(
-            'actionRequired=' . 'logout',
-            'Esci=' . 'Esci',
-        );
-        sleep(rand(3, 6));
-        $logout = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies));
-        
-        return $xls;
-    }
-
-    private function getUrlMedicalClaims($source) {
-        preg_match_all('/window.open\([^\(]+\);/', $source, $m);
-        return str_replace(array("window.open('", "');"), array('', ''), $m[0][1]);
-    }
-
-    private function getReqTime($source) {
-        preg_match('/timeReq=[0-9]+/', $source, $m);
-        return $m;
-    }
-    
-    private function getJobId($source) {
-        preg_match('/<input type=\'hidden\' name=\'listWaitingJobs_jobId_0\' value=\'[0-9]+\' \/>/', $source, $m);
-        preg_match('/[0-9]{2,9}/', $m[0], $n);
-        return $n[0];
     }
 
     private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
@@ -511,7 +337,7 @@ class ImportController extends Controller {
                 $this->notify($gestore, 'Aggiornamenti personali BDX Contec', 'ClaimsContecBundle:email:aggiornamentiAdmin', array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate));
             }
             if (isset($aggiornamenti[$gestore->getId()])) {
-                $this->notify($gestore, 'Aggiornamenti generali BDX Contec per '.$gestore->getNome(), 'ClaimsContecBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
+                $this->notify($gestore, 'Aggiornamenti generali BDX Contec per ' . $gestore->getNome(), 'ClaimsContecBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
             }
         }
 
@@ -582,6 +408,507 @@ class ImportController extends Controller {
         return array('entity' => $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug)));
     }
 
+    /**
+     * Lists all Scheda entities.
+     *
+     * @Route("-pratica/{slug}", name="contec_import_pratica", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     */
+    public function praticaAction($slug) {
+        set_time_limit(3600);
+        $cliente = $this->getUser()->getCliente();
+        $dati = $cliente->getDati();
+        if (isset($dati['cl_h_contec-import'])) {
+            $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
+            /* @var $sistema \Claims\HBundle\Entity\Sistema */
+            $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+            /* @var $sistema \Claims\HBundle\Entity\Pratica */
+            list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
+            $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
+            $this->logout();
+        }
+        return $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $pratica->getSlug())));
+    }
+
+    private function login(Sistema $sistema, $dati) {
+        $get = array(
+            'localaCode=it',
+        );
+
+        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?localeCode=it
+        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('show' => 1));
+
+        $matchs = $cookies = array();
+        preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
+
+        foreach ($matchs[0] as $match) {
+            $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
+        }
+        $get = array(
+            'actionRequired=' . 'accesso',
+            'userIdJB=' . $dati['username'],
+            'userPasswordJB=' . $dati['password'],
+            'Entra=' . 'Entra',
+        );
+        // https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=accesso&userIdJB=carlesi&userPasswordJB=al31l1run&Entra=Entra
+        //sleep(1);
+        $access = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies, 'show' => 1));
+
+        $url = $this->getUrlMedicalClaims($access);
+
+
+        // url ricavato da pagina 
+        //sleep(1);
+        $tmp = $this->curlGet($url, array('cookies' => $cookies, 'show' => 1));
+        $reqTime1 = $this->getReqTime($tmp);
+
+        $matchs = $cookies = array();
+        preg_match_all('/Set-Cookie:[^;]+;/', $tmp, $matchs);
+
+        foreach ($matchs[0] as $match) {
+            $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
+        }
+
+        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899 *
+        //https://romolo.contec.it/jwcmedmal/home/riepiloghiHome.jsp
+        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies, 'show' => 1));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+        $menu = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/riepiloghiHome.jsp', array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
+
+        $reqTime = $this->getReqTime($menu);
+
+        return array($cookies, $reqTime);
+    }
+
+    private function logout() {
+        $get = array(
+            'actionRequired=' . 'logout',
+            'Esci=' . 'Esci',
+        );
+        //sleep(1);
+        $logout = $this->curlGet($sistema->getUrlBase() . 'jbrows/plugins/contec/pRouter.jsp?' . implode('&', $get), array('cookies' => $cookies));
+    }
+
+    private function enterBdx($dati) {
+        $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
+        /* @var $sistema \Claims\HBundle\Entity\Sistema */
+        list($cookies, $reqTime) = $this->login($sistema, $dati);
+
+        $get = array(
+            'contesto=' . 'jobmanager',
+            $reqTime[0],
+        );
+
+        //https://romolo.contec.it/jwcmedmal/home/main.jsp?contesto=jobmanager&timeReq=1383399106882
+        //sleep(1);
+        $jobman = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/main.jsp?' . implode('&', $get), array('cookies' => $cookies));
+        $reqTime1 = $this->getReqTime($jobman);
+
+        $get = array(
+            'action=' . '',
+            'parameters=' . '',
+            $reqTime1[0],
+        );
+
+        //https://romolo.contec.it/jwcmedmal/home/top.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/left.jsp?timeReq=1383398697899 *
+        //https://romolo.contec.it/jwcmedmal/home/menu.jsp?timeReq=1383398697899
+        //https://romolo.contec.it/jwcmedmal/home/empty.htm?action=&parameters=&timeReq=1383413348586
+        //https://romolo.contec.it/jwcmedmal/common/keepAlive.jsp
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/top.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies, 'show' => 1));
+        $menu = $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/left.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/menu.jsp?' . implode('&', $reqTime1), array('cookies' => $cookies));
+//        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/home/empty.jsp?' . implode('&', $p), array('cookies' => $cookies));
+        $this->curlGet($sistema->getUrlBase() . 'jwcmedmal/common/keepAlive.jsp', array('cookies' => $cookies));
+
+
+        $get = array(
+            'to=' . '/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|',
+            'label=' . 'Gestione+job',
+        );
+        $post = array(
+            'parameters=' . '',
+            'uy=' . '',
+            'intestatario=' . '',
+            'polizza=' . '',
+            'sinistro=' . '',
+            'riferimento=' . '',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/environment/MenuHC?actionRequired=|@PROMPT|led.jobmanager.Job|Gestione%20Job|level02|frm.JobManager|/common/mainFrame.jsp|getDefaultPager|led.jobmanager.Job_PAGER|led.jobmanager.JobSearchBean|led.jobmanager.JobSearchBean|true|&label=Gestione+job
+        $elenco = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
+        $jobId = $this->getJobId($elenco);
+
+        $post = array(
+            'dirty=' . '-1',
+            'actionRequired=' . '%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C',
+            'formClass=' . 'frm.JobManager',
+            'action=' . '',
+            'listWaitingJobs_jobId_0=' . $jobId,
+            'pagerTable_page=' . '1',
+            '#SEL__pagerTable0=' . 'on',
+            'pagerTable_cmdView_0=' . 'Visualizza',
+            'formComponentsIDsList_frm.JobManager=' . '%23%23revert_to_original_readform%23%23',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=-1&actionRequired=%7C%40VIEW%7Cled.jobmanager.Job%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Job%7Cfrm.dtl.Job%7C%2Fcommon%2FmainFrame.jsp%7CpagerTable%7Csrcfrm.Job%7CSINGLE_OBJECT%7C&formClass=frm.JobManager&action=&listWaitingJobs_jobId_0=9835&pagerTable_page=1&%23SEL__pagerTable0=on&pagerTable_cmdView_0=Visualizza&formComponentsIDsList_frm.JobManager=%23%23revert_to_original_readform%23%23
+        $pagina = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
+
+        $post = array(
+            'dirty=' . '0',
+            'actionRequired=' . '%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C',
+            'formClass=' . 'frm.dtl.Job',
+            'action=' . '',
+            '#SEL__reports3=' . 'on',
+            'reports_cmdView.reports_3=' . 'Visualizza',
+            'formComponentsIDsList_frm.dtl.Job=' . 'brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
+        $dettxls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
+
+        $post = array(
+            'dirty=' . '0',
+            'actionRequired=' . 'led.jobmanager.Detail.download',
+            'formClass=' . 'frm.edit.reports',
+            'action=' . '',
+            'name=' . 'Report+Bordero\'+Status+-+Globale+per+stato+sinistr',
+            'cmdCancel=' . 'Indietro',
+            '#SEL__details0=' . 'on',
+            'details_cmdDownload_0=' . 'Scarica',
+            'formComponentsIDsList_frm=' . 'brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
+        $xls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
+
+        $this->logout();
+
+        return $xls;
+    }
+
+    private function enterScheda(Sistema $sistema, Pratica $pratica, $cookies, $reqTime) {
+
+        $get = array(
+            'to=' . '/sinistri/SinistriRouter',
+            'action=' . 'sinistro',
+            'parameters=' . 'menu',
+            'label=' . 'Sinistri',
+        );
+        $post = array(
+            'parameters=' . '',
+            'uy=' . '',
+            'intestatario=' . '',
+            'polizza=' . '',
+            'sinistro=' . '',
+            'riferimento=' . '',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/sinistri/SinistriRouter&action=sinistro&parameters=menu&label=Sinistri
+        $form = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
+
+        $post = array(
+            'form_name=' . 'ricercaSinistroNuova.jsp',
+            'statoPerizia=' . '',
+            'dataSinDa=' . '',
+            'dataSinA=' . '',
+            'idCompagnia=' . '0',
+            'idBroker=' . '0',
+            'idPolizza=' . '0',
+            'numeroSinistro=' . $pratica->getCodice(),
+            'rifIntermediario=' . '',
+            'rifCliente=' . $pratica->getClaimant(),
+            'rifCompagnia=' . '',
+            'altroRiferimento=' . '',
+            'reopened=' . 'N',
+            'altriDati=' . '',
+            'action=' . 'ricercaSinistri',
+            'parameters=' . '',
+            'button=' . '1',
+            'ricercaSinistri=' . 'Effettua Ricerca',
+            'tipoDenuncia=' . 'danniAPersoneMedMal',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/sinistri/SinistriRouter
+        // form_name=ricercaSinistroNuova.jsp&statoPerizia=&dataSinDa=&dataSinA=&idCompagnia=0&idBroker=0&idPolizza=0&numeroSinistro=cgl%2F07%2F3&rifIntermediario=&rifCliente=usai+francesco&rifCompagnia=&altroRiferimento=&reopened=N&altriDati=&action=ricercaSinistri&parameters=&button=1&ricercaSinistri=Effettua+Ricerca&tipoDenuncia=danniAPersoneMedMal
+        $listing = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
+
+        $post = array(
+            'risultatiChecked=' . 'on',
+            'action=' . 'schedaTrattazione',
+            'parameters=' . '|0|',
+            'button=' . '1',
+            'action=' . '',
+            'opzioniAction=' . 'Scheda',
+        );
+        //sleep(1);
+        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+        // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
+        $scheda = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
+
+        $datiScheda = $this->findDatiScheda($scheda);
+
+        $pratica->setMedicoLegale($datiScheda['medicoLegale']);
+        $pratica->setSpecialista($datiScheda['specialista']);
+        $pratica->setPerito($datiScheda['perito']);
+        $pratica->setCoDifensore($datiScheda['coDifensore']);
+        $pratica->setRivalsista($datiScheda['rivalsista']);
+
+        /*
+         * TODO: MODIFICA DOPO 30 GIORNI DALLA MESSA ONLINE DI QUESTA PARTE 
+         */
+        if (!$pratica->getAlignedAt()) {
+
+            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->JWEB));
+            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+
+            foreach ($datiScheda['eventi'] as $_evento) {
+                if (isset($_evento['comunicazione'])) {
+                    //sleep(1);
+                    $post = array(
+                        'actionRequired=' . 'schedaTrattazioneSinistro.visualizzaComunicazione',
+                        'parameters=' . $_evento['comunicazione'],
+                        'notaLavorazione=' . '',
+                        'dataScadenzaNota=' . '',
+                    );
+                    // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                    // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                    $_comunicazione = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/avvisoDanno/AvvisoDannoHC', implode('&', $post), array('cookies' => $cookies));
+                    $comunizazione = $this->getComunicazione($_comunicazione);
+                    $evento = $this->newEvento($this->EMAIL_JWEB, $pratica, $comunizazione['titolo'], $comunizazione['note'] . "\n <small>(inviato da {$_evento['utente']})</small>");
+                    $evento->setDataOra($_evento['data']);
+                    $evento->setComunicazione($_evento['comunicazione']);
+                    $this->persist($evento);
+                } elseif (isset($_evento['allegato'])) {
+                    //sleep(1);
+                    // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                    // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                    $_allegato = $this->datiAllegato($this->curlGet($sistema->getUrlBase() . substr($_evento['allegato'], 1), array('cookies' => $cookies, 'show' => 1)));
+                    $url = '/uploads/contec' . $pratica->getCliente()->getId() . '/' . $pratica->getSlug() . '/' . $_evento['allegato_id'] . '/' . $_allegato['filename'];
+                    $filepath = __DIR__ . '/../../../../web' . $url;
+                    $dir = str_replace('/' . $_allegato['filename'], '', $filepath);
+                    if (!file_exists($dir)) {
+                        mkdir($dir, 0777, true);
+                    }
+                    $handle = fopen($filepath, 'w');
+                    fwrite($handle, $_allegato['file']);
+                    fclose($handle);
+                    $evento = $this->newEvento($this->ALL_JWEB, $pratica, $_evento['note'], $_allegato['filename']);
+                    $evento->setDataOra($_evento['data']);
+                    $evento->setAllegato($_evento['allegato_id']);
+                    $evento->setUrl($url);
+                    $this->persist($evento);
+
+                    $doc = new Documento();
+                    $doc->setEvento($evento);
+                    $doc->setAllegato($_evento['allegato_id']);
+                    $doc->setMimetype($_allegato['mimetype']);
+                    $doc->setSize($_allegato['filesize']);
+                    $doc->setTitolo($_evento['note']);
+                    $doc->setFilename($_allegato['filename']);
+                    $doc->setUrl($url);
+                    $this->persist($doc);
+                } else {
+                    $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
+                    $evento->setDataOra($_evento['data']);
+                }
+            }
+        } else {
+
+            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+
+            foreach ($datiScheda['eventi'] as $_evento) {
+                if (isset($_evento['comunicazione'])) {
+                    if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->EMAIL_JWEB)->getId(), 'comunicazione' => $_evento['comunicazione']))) {
+                        //sleep(1);
+                        $post = array(
+                            'actionRequired=' . 'schedaTrattazioneSinistro.visualizzaComunicazione',
+                            'parameters=' . $_evento['comunicazione'],
+                            'notaLavorazione=' . '',
+                            'dataScadenzaNota=' . '',
+                        );
+                        // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                        // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                        $_comunicazione = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/avvisoDanno/AvvisoDannoHC', implode('&', $post), array('cookies' => $cookies));
+                        $comunizazione = $this->getComunicazione($_comunicazione);
+                        $evento = $this->newEvento($this->EMAIL_JWEB, $pratica, $comunizazione['titolo'], $comunizazione['note'] . "\n <small>(inviato da {$_evento['utente']})</small>");
+                        $evento->setDataOra($_evento['data']);
+                        $evento->setComunicazione($_evento['comunicazione']);
+                        $this->persist($evento);
+                    }
+                } elseif (isset($_evento['allegato'])) {
+                    if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->ALL_JWEB)->getId(), 'allegato' => $_evento['allegato_id']))) {
+                        //sleep(1);
+                        // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                        // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                        $_allegato = $this->datiAllegato($this->curlGet($sistema->getUrlBase() . substr($_evento['allegato'], 1), array('cookies' => $cookies, 'show' => 1)));
+                        $url = '/uploads/contec' . $pratica->getCliente()->getId() . '/' . $pratica->getSlug() . '/' . $_evento['allegato_id'] . '/' . $_allegato['filename'];
+                        $filepath = __DIR__ . '/../../../../web' . $url;
+                        $dir = str_replace('/' . $_allegato['filename'], '', $filepath);
+                        if (!file_exists($dir)) {
+                            mkdir($dir, 0777, true);
+                        }
+                        $handle = fopen($filepath, 'w');
+                        fwrite($handle, $_allegato['file']);
+                        fclose($handle);
+                        $evento = $this->newEvento($this->ALL_JWEB, $pratica, $_evento['note'], $_allegato['filename']);
+                        $evento->setDataOra($_evento['data']);
+                        $evento->setAllegato($_evento['allegato_id']);
+                        $evento->setUrl($url);
+                        $this->persist($evento);
+
+                        $doc = new Documento();
+                        $doc->setEvento($evento);
+                        $doc->setAllegato($_evento['allegato_id']);
+                        $doc->setMimetype($_allegato['mimetype']);
+                        $doc->setSize($_allegato['filesize']);
+                        $doc->setTitolo($_evento['note']);
+                        $doc->setFilename($_allegato['filename']);
+                        $doc->setUrl($url);
+                        $this->persist($doc);
+                    }
+                } else {
+                    $old = $this->findOneBy('ClaimsHBundle:Evento', array(
+                        'data_ora' => $_evento['data'],
+                        'tipo' => $this->getTipoEvento($this->JWEB)->getId(),
+                        'pratica' => $pratica->getId(),
+                        'titolo' => $_evento['tipo'],
+                        'note' => $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""),
+                    ));
+                    if (!$old) {
+                        $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
+                        $evento->setDataOra($_evento['data']);
+                    }
+                }
+            }
+        }
+
+        $pratica->setAlignedAt(new \DateTime());
+
+        $this->persist($pratica);
+
+        return $pratica;
+    }
+
+    private function getUrlMedicalClaims($source) {
+        preg_match_all('/window.open\([^\(]+\);/', $source, $m);
+        return str_replace(array("window.open('", "');"), array('', ''), $m[0][1]);
+    }
+
+    private function getReqTime($source) {
+        preg_match('/timeReq=[0-9]+/', $source, $m);
+        return $m;
+    }
+
+    private function getJobId($source) {
+        preg_match('/<input type=\'hidden\' name=\'listWaitingJobs_jobId_0\' value=\'[0-9]+\' \/>/', $source, $m);
+        preg_match('/[0-9]{2,9}/', $m[0], $n);
+        return $n[0];
+    }
+
+    private function findDatiScheda($source) {
+        $out = array('eventi' => array());
+        $out['medicoLegale'] = $this->findInScheda('Medico legale:', $source);
+        $out['specialista'] = $this->findInScheda('Specialista:', $source);
+        $out['perito'] = $this->findInScheda('Perito:', $source);
+        $out['coDifensore'] = $this->findInScheda('Co-difensore:', $source);
+        $out['rivalsista'] = $this->findInScheda('Rivalsista:', $source);
+        $pos_start = strpos($source, '<table width="100%" border="0" cellspacing="0" cellpadding="2">', strpos($source, 'Attivit'));
+        $pos_end = strpos($source, '</table>', $pos_start) + strlen('</table>');
+        $table = '<html><body>' . preg_replace(array('/<table[^>]+>/', '/<tr[^>]+>/', '/<td[^>]+>/', '/\(\);"[^>]*>/'), array('<table>', '<tr>', '<td>', '();">'), substr($source, $pos_start, $pos_end - $pos_start)) . '</body></html>';
+
+        $doc = new \DOMDocument();
+        $doc->loadHTML($table);
+
+        $tag_html = Dom::getDOMBase($doc);
+        $tag_body = Dom::getDOMElement($tag_html, array('tag' => 'body'));
+        $table = Dom::getDOMElement($tag_body, array('tag' => 'table'));
+        $trs = Dom::getDOMElement($table, array('tag' => 'tr'), false);
+
+        $_evento = array('data', 'utente', 'tipo', 'note');
+        foreach ($trs as $tr) {
+            /* @var $tr \DOMElement */
+            $tds = Dom::getDOMElement($tr, array('tag' => 'td'), false);
+            $evento = array();
+            foreach ($tds as $i => $td) {
+                /* @var $td \DOMElement */
+                switch ($i) {
+                    case 0: //data
+                        if (strlen($td->nodeValue) > 10) {
+                            $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue);
+                        } else {
+                            $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue . ' 08:00:00');
+                        }
+                        break;
+                    case 2:
+                        $a = Dom::getDOMElement($td, array('tag' => 'a'));
+                        /* @var $a \DOMElement */
+                        if ($a) {
+                            $evento[$_evento[$i]] = $a->nodeValue;
+                            if ($a->nodeValue == 'Comunicazione') {
+                                $evento['comunicazione'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
+                            }
+                            if ($a->nodeValue == 'Documento allegato') {
+                                $evento['allegato'] = $a->getAttribute('href');
+                                $evento['allegato_id'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
+                            }
+                            break;
+                        }
+                    case 1:
+                    case 3:
+                        $evento[$_evento[$i]] = $td->nodeValue;
+                        break;
+                }
+            }
+            $out['eventi'][] = $evento;
+        }
+
+        return $out;
+    }
+
+    private function findInScheda($title, $source) {
+        $pos = strpos($source, $title);
+        preg_match('/<span class="plateValue">[^<]*<\/span>/', $source, $m, 0, $pos);
+        return $m[0];
+    }
+
+    private function getComunicazioneAllegatoId($source) {
+        preg_match('/[0-9]+/', $source, $m);
+        return $m[0];
+    }
+
+    private function getComunicazione($source) {
+        preg_match('/formFields\[[0-9]+\]\[0\]="oggetto";/', $source, $o);
+        preg_match('/formFields\[[0-9]+\]\[0\]="contenuto";/', $source, $c);
+        $orx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($o[0], 0, strpos($o[0], '[0]'))) . '\[1\]="[^\n]+";/';
+        $crx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($c[0], 0, strpos($c[0], '[0]'))) . '\[1\]="[^\n]+";/';
+        preg_match($orx, $source, $o1);
+        preg_match($crx, $source, $c1);
+        $os = substr($o1[0], strpos($o1[0], '"'), strlen($o1[0]) - strpos($o1[0], '"') - 2);
+        $cs = substr($c1[0], strpos($c1[0], '"'), strlen($c1[0]) - strpos($c1[0], '"') - 2);
+        return array('titolo' => $os, 'note' => $cs);
+    }
+
+    private function datiAllegato($source) {
+        $out = array();
+        preg_match('/filename=[^\n]+/', $source, $m);
+        $out['filename'] = trim(str_replace('filename=', '', $m[0]));
+        preg_match('/Content-Type:[^\n]+/', $source, $m);
+        $out['mimetype'] = trim(str_replace('Content-Type:', '', $m[0]));
+        preg_match('/Content-Length:[^\n]+/', $source, $m);
+        $out['filesize'] = trim(str_replace('Content-Length:', '', $m[0]));
+        $p = strpos($source, 'Connection: close') + strlen('Connection: close');
+        $out['file'] = trim(substr($source, $p));
+        return $out;
+    }
+
 }
 
 /*
@@ -631,4 +958,27 @@ https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
 //logout
 https://romolo.contec.it/jbrows/plugins/contec/pRouter.jsp?actionRequired=logout&Esci=Esci
 
+
+
+
+//SINISTRI (post)
+https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/sinistri/SinistriRouter&action=sinistro&parameters=menu&label=Sinistri
+
+//RICERCA (post)
+https://romolo.contec.it/jwcmedmal/sinistri/SinistriRouter  
+   form_name=ricercaSinistroNuova.jsp&statoPerizia=&dataSinDa=&dataSinA=&idCompagnia=0&idBroker=0&idPolizza=0&numeroSinistro=cgl%2F07%2F3&rifIntermediario=&rifCliente=usai+francesco&rifCompagnia=&altroRiferimento=&reopened=N&altriDati=&action=ricercaSinistri&parameters=&button=1&ricercaSinistri=Effettua+Ricerca&tipoDenuncia=danniAPersoneMedMal
+
+//SCHEDA (post)
+https://romolo.contec.it/jwcmedmal/sinistri/SinistriRouter
+   risultatiChecked=on&action=schedaTrattazione&parameters=%7C0%7C&button=1&opzioniAction=Scheda
+
+//Dettagli (post)
+https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+   actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+
+//Allegati
+https://romolo.contec.it/jwcmedmal/servizi/ScaricaDocumentoGED?id=32039
+
+
+ 
  */

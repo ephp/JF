@@ -36,7 +36,7 @@ class Documento {
      * @var Evento
      * 
      * @ORM\ManyToOne(targetEntity="Evento")
-     * @ORM\JoinColumn(name="pratica_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="evento_id", referencedColumnName="id", nullable=true)
      */
     private $evento;
 

@@ -702,7 +702,7 @@ class ImportController extends Controller {
                     $handle = fopen($filepath, 'w');
                     fwrite($handle, $_allegato['file']);
                     fclose($handle);
-                    $evento = $this->newEvento($this->ALL_JWEB, $pratica, $_evento['note'], $_allegato['filename']);
+                    $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'].'\n'.$_allegato['filename']);
                     $evento->setDataOra($_evento['data']);
                     $evento->setAllegato($_evento['allegato_id']);
                     $evento->setUrl($url);
@@ -761,7 +761,7 @@ class ImportController extends Controller {
                         $handle = fopen($filepath, 'w');
                         fwrite($handle, $_allegato['file']);
                         fclose($handle);
-                        $evento = $this->newEvento($this->ALL_JWEB, $pratica, $_evento['note'], $_allegato['filename']);
+                        $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'].'\n'.$_allegato['filename']);
                         $evento->setDataOra($_evento['data']);
                         $evento->setAllegato($_evento['allegato_id']);
                         $evento->setUrl($url);

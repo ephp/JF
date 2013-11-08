@@ -44,7 +44,7 @@
                                         {% include ":commons:color.html.twig" with {'color' : '#' ~ evento.tipo.colore ~ ' !important;', 'icon': 'ico-eye-close', 'label': evento.tipo.sigla, 'title': evento.tipo.nome} %}
                                     {% endif %}
                                 </td>
-                                <td class="note">
+                                <td class="note" style="max-width: 400px !important;">
                                     {% if evento.tipo.modificabile %}
                                         <div class="typography2 fta" evento="{{ evento.id }}" name="note"  contenteditable="true">
                                     {% endif %}

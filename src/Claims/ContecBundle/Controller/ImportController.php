@@ -494,6 +494,7 @@ class ImportController extends Controller {
     }
 
     private function enterBdx($dati) {
+
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
         list($cookies, $reqTime) = $this->login($sistema, $dati);
@@ -595,141 +596,85 @@ class ImportController extends Controller {
     }
 
     private function enterScheda(Sistema $sistema, Pratica $pratica, $cookies, $reqTime) {
+        try {
+            $this->getEm()->beginTransaction();
+            $get = array(
+                'to=' . '/sinistri/SinistriRouter',
+                'action=' . 'sinistro',
+                'parameters=' . 'menu',
+                'label=' . 'Sinistri',
+            );
+            $post = array(
+                'parameters=' . '',
+                'uy=' . '',
+                'intestatario=' . '',
+                'polizza=' . '',
+                'sinistro=' . '',
+                'riferimento=' . '',
+            );
+            //sleep(1);
+            // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/sinistri/SinistriRouter&action=sinistro&parameters=menu&label=Sinistri
+            $form = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
 
-        $get = array(
-            'to=' . '/sinistri/SinistriRouter',
-            'action=' . 'sinistro',
-            'parameters=' . 'menu',
-            'label=' . 'Sinistri',
-        );
-        $post = array(
-            'parameters=' . '',
-            'uy=' . '',
-            'intestatario=' . '',
-            'polizza=' . '',
-            'sinistro=' . '',
-            'riferimento=' . '',
-        );
-        //sleep(1);
-        // https://romolo.contec.it/jwcmedmal/home/forwarder.jsp?to=/sinistri/SinistriRouter&action=sinistro&parameters=menu&label=Sinistri
-        $form = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/home/forwarder.jsp?' . implode('&', $get), $post, array('cookies' => $cookies, 'show' => 1));
+            $post = array(
+                'form_name=' . 'ricercaSinistroNuova.jsp',
+                'statoPerizia=' . '',
+                'dataSinDa=' . '',
+                'dataSinA=' . '',
+                'idCompagnia=' . '0',
+                'idBroker=' . '0',
+                'idPolizza=' . '0',
+                'numeroSinistro=' . $pratica->getCodice(),
+                'rifIntermediario=' . '',
+                'rifCliente=' . $pratica->getClaimant(),
+                'rifCompagnia=' . '',
+                'altroRiferimento=' . '',
+                'reopened=' . 'N',
+                'altriDati=' . '',
+                'action=' . 'ricercaSinistri',
+                'parameters=' . '',
+                'button=' . '1',
+                'ricercaSinistri=' . 'Effettua Ricerca',
+                'tipoDenuncia=' . 'danniAPersoneMedMal',
+            );
+            //sleep(1);
+            // https://romolo.contec.it/jwcmedmal/sinistri/SinistriRouter
+            // form_name=ricercaSinistroNuova.jsp&statoPerizia=&dataSinDa=&dataSinA=&idCompagnia=0&idBroker=0&idPolizza=0&numeroSinistro=cgl%2F07%2F3&rifIntermediario=&rifCliente=usai+francesco&rifCompagnia=&altroRiferimento=&reopened=N&altriDati=&action=ricercaSinistri&parameters=&button=1&ricercaSinistri=Effettua+Ricerca&tipoDenuncia=danniAPersoneMedMal
+            $listing = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
 
-        $post = array(
-            'form_name=' . 'ricercaSinistroNuova.jsp',
-            'statoPerizia=' . '',
-            'dataSinDa=' . '',
-            'dataSinA=' . '',
-            'idCompagnia=' . '0',
-            'idBroker=' . '0',
-            'idPolizza=' . '0',
-            'numeroSinistro=' . $pratica->getCodice(),
-            'rifIntermediario=' . '',
-            'rifCliente=' . $pratica->getClaimant(),
-            'rifCompagnia=' . '',
-            'altroRiferimento=' . '',
-            'reopened=' . 'N',
-            'altriDati=' . '',
-            'action=' . 'ricercaSinistri',
-            'parameters=' . '',
-            'button=' . '1',
-            'ricercaSinistri=' . 'Effettua Ricerca',
-            'tipoDenuncia=' . 'danniAPersoneMedMal',
-        );
-        //sleep(1);
-        // https://romolo.contec.it/jwcmedmal/sinistri/SinistriRouter
-        // form_name=ricercaSinistroNuova.jsp&statoPerizia=&dataSinDa=&dataSinA=&idCompagnia=0&idBroker=0&idPolizza=0&numeroSinistro=cgl%2F07%2F3&rifIntermediario=&rifCliente=usai+francesco&rifCompagnia=&altroRiferimento=&reopened=N&altriDati=&action=ricercaSinistri&parameters=&button=1&ricercaSinistri=Effettua+Ricerca&tipoDenuncia=danniAPersoneMedMal
-        $listing = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
+            $post = array(
+                'risultatiChecked=' . 'on',
+                'action=' . 'schedaTrattazione',
+                'parameters=' . '|0|',
+                'button=' . '1',
+                'action=' . '',
+                'opzioniAction=' . 'Scheda',
+            );
+            //sleep(1);
+            // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
+            // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
+            $scheda = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
 
-        $post = array(
-            'risultatiChecked=' . 'on',
-            'action=' . 'schedaTrattazione',
-            'parameters=' . '|0|',
-            'button=' . '1',
-            'action=' . '',
-            'opzioniAction=' . 'Scheda',
-        );
-        //sleep(1);
-        // https://romolo.contec.it/jwcmedmal/jobmanager/JobManagerHC
-        // dirty=0&actionRequired=%7C%40VIEWDEPENDENT%7Cled.jobmanager.Report%7C%40%28WRAPPER_LABEL%23title%29%7Cview.led.jobmanager.Report%7Cfrm.edit.reports%7C%2Fcommon%2FmainFrame.jsp%7Creports%7Cfrm.dtl.Job%7C&formClass=frm.dtl.Job&action=&%23SEL__reports3=on&reports_cmdView.reports_3=Visualizza&formComponentsIDsList_frm.dtl.Job=brd_entity_start%7Cpid%7Ctitle%7CactualState%7CexecutionMode%7CconcurrentMode%7CprocessClass%7CprocessParameterString%7Cbrd_entity_end%7CcmdCancel%7Cbrd_users_start%7Cusers%7Cbrd_users_end%7Cbrd_reports_start%7Creports%7Cbrd_reports_end%7Cbrd_states_start%7Cstates%7Cbrd_states_end%7Cbrd_schedulers_start%7Cschedulers%7Cbrd_schedulers_end%7C
-        $scheda = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/sinistri/SinistriRouter', implode('&', $post), array('cookies' => $cookies));
+            $datiScheda = $this->findDatiScheda($scheda);
 
-        $datiScheda = $this->findDatiScheda($scheda);
+            $pratica->setMedicoLegale(strip_tags($datiScheda['medicoLegale']));
+            $pratica->setSpecialista(strip_tags($datiScheda['specialista']));
+            $pratica->setPerito(strip_tags($datiScheda['perito']));
+            $pratica->setCoDifensore(strip_tags($datiScheda['coDifensore']));
+            $pratica->setRivalsista(strip_tags($datiScheda['rivalsista']));
 
-        $pratica->setMedicoLegale(strip_tags($datiScheda['medicoLegale']));
-        $pratica->setSpecialista(strip_tags($datiScheda['specialista']));
-        $pratica->setPerito(strip_tags($datiScheda['perito']));
-        $pratica->setCoDifensore(strip_tags($datiScheda['coDifensore']));
-        $pratica->setRivalsista(strip_tags($datiScheda['rivalsista']));
+            /*
+             * TODO: MODIFICA DOPO 30 GIORNI DALLA MESSA ONLINE DI QUESTA PARTE 
+             */
+            if (!$pratica->getAlignedAt()) {
 
-        /*
-         * TODO: MODIFICA DOPO 30 GIORNI DALLA MESSA ONLINE DI QUESTA PARTE 
-         */
-        if (!$pratica->getAlignedAt()) {
+                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->JWEB));
+                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), '"');
+                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->ALL_JWEB));
 
-            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->JWEB));
-            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
-            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), '"');
-            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->ALL_JWEB));
-
-            foreach ($datiScheda['eventi'] as $_evento) {
-                if (isset($_evento['comunicazione'])) {
-                    //sleep(1);
-                    $post = array(
-                        'actionRequired=' . 'schedaTrattazioneSinistro.visualizzaComunicazione',
-                        'parameters=' . $_evento['comunicazione'],
-                        'notaLavorazione=' . '',
-                        'dataScadenzaNota=' . '',
-                    );
-                    // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
-                    // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
-                    $_comunicazione = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/avvisoDanno/AvvisoDannoHC', implode('&', $post), array('cookies' => $cookies));
-                    $comunizazione = $this->getComunicazione($_comunicazione);
-                    $evento = $this->newEvento($this->EMAIL_JWEB, $pratica, $comunizazione['titolo'], $comunizazione['note'] . "\n <small>(inviato da {$_evento['utente']})</small>");
-                    $evento->setDataOra($_evento['data']);
-                    $evento->setComunicazione($_evento['comunicazione']);
-                    $this->persist($evento);
-                } elseif (isset($_evento['allegato'])) {
-                    //sleep(1);
-                    // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
-                    // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
-                    $_allegato = $this->datiAllegato($this->curlGet($sistema->getUrlBase() . substr($_evento['allegato'], 1), array('cookies' => $cookies, 'show' => 1)));
-                    $url = '/uploads/contec' . $pratica->getCliente()->getId() . '/' . $pratica->getSlug() . '/' . $_evento['allegato_id'] . '/' . $_allegato['filename'];
-                    $filepath = __DIR__ . '/../../../../web' . $url;
-                    $dir = str_replace('/' . $_allegato['filename'], '', $filepath);
-                    if (!file_exists($dir)) {
-                        mkdir($dir, 0777, true);
-                    }
-                    $handle = fopen($filepath, 'w');
-                    fwrite($handle, $_allegato['file']);
-                    fclose($handle);
-                    $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'].'\n'.$_allegato['filename']);
-                    $evento->setDataOra($_evento['data']);
-                    $evento->setAllegato($_evento['allegato_id']);
-                    $evento->setUrl($url);
-                    $this->persist($evento);
-
-                    $doc = new Documento();
-                    $doc->setEvento($evento);
-                    $doc->setAllegato($_evento['allegato_id']);
-                    $doc->setMimetype($_allegato['mimetype']);
-                    $doc->setSize($_allegato['filesize']);
-                    $doc->setTitolo($_evento['note']);
-                    $doc->setFilename($_allegato['filename']);
-                    $doc->setUrl($url);
-                    $this->persist($doc);
-                } else {
-                    $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
-                    $evento->setDataOra($_evento['data']);
-                    $this->persist($evento);
-                }
-            }
-        } else {
-
-            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
-
-            foreach ($datiScheda['eventi'] as $_evento) {
-                if (isset($_evento['comunicazione'])) {
-                    if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->EMAIL_JWEB)->getId(), 'comunicazione' => $_evento['comunicazione']))) {
+                foreach ($datiScheda['eventi'] as $_evento) {
+                    if (isset($_evento['comunicazione'])) {
                         //sleep(1);
                         $post = array(
                             'actionRequired=' . 'schedaTrattazioneSinistro.visualizzaComunicazione',
@@ -745,9 +690,7 @@ class ImportController extends Controller {
                         $evento->setDataOra($_evento['data']);
                         $evento->setComunicazione($_evento['comunicazione']);
                         $this->persist($evento);
-                    }
-                } elseif (isset($_evento['allegato'])) {
-                    if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->ALL_JWEB)->getId(), 'allegato' => $_evento['allegato_id']))) {
+                    } elseif (isset($_evento['allegato'])) {
                         //sleep(1);
                         // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
                         // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
@@ -761,7 +704,7 @@ class ImportController extends Controller {
                         $handle = fopen($filepath, 'w');
                         fwrite($handle, $_allegato['file']);
                         fclose($handle);
-                        $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'].'\n'.$_allegato['filename']);
+                        $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'] . '\n' . $_allegato['filename']);
                         $evento->setDataOra($_evento['data']);
                         $evento->setAllegato($_evento['allegato_id']);
                         $evento->setUrl($url);
@@ -776,27 +719,90 @@ class ImportController extends Controller {
                         $doc->setFilename($_allegato['filename']);
                         $doc->setUrl($url);
                         $this->persist($doc);
-                    }
-                } else {
-                    $old = $this->findOneBy('ClaimsHBundle:Evento', array(
-                        'data_ora' => $_evento['data'],
-                        'tipo' => $this->getTipoEvento($this->JWEB)->getId(),
-                        'pratica' => $pratica->getId(),
-                        'titolo' => $_evento['tipo'],
-                        'note' => $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""),
-                    ));
-                    if (!$old) {
+                    } else {
                         $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
                         $evento->setDataOra($_evento['data']);
                         $this->persist($evento);
                     }
                 }
+            } else {
+
+                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+
+                foreach ($datiScheda['eventi'] as $_evento) {
+                    if (isset($_evento['comunicazione'])) {
+                        if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->EMAIL_JWEB)->getId(), 'comunicazione' => $_evento['comunicazione']))) {
+                            //sleep(1);
+                            $post = array(
+                                'actionRequired=' . 'schedaTrattazioneSinistro.visualizzaComunicazione',
+                                'parameters=' . $_evento['comunicazione'],
+                                'notaLavorazione=' . '',
+                                'dataScadenzaNota=' . '',
+                            );
+                            // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                            // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                            $_comunicazione = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/avvisoDanno/AvvisoDannoHC', implode('&', $post), array('cookies' => $cookies));
+                            $comunizazione = $this->getComunicazione($_comunicazione);
+                            $evento = $this->newEvento($this->EMAIL_JWEB, $pratica, $comunizazione['titolo'], $comunizazione['note'] . "\n <small>(inviato da {$_evento['utente']})</small>");
+                            $evento->setDataOra($_evento['data']);
+                            $evento->setComunicazione($_evento['comunicazione']);
+                            $this->persist($evento);
+                        }
+                    } elseif (isset($_evento['allegato'])) {
+                        if (!$this->findOneBy('ClaimsHBundle:Evento', array('pratica' => $pratica->getId(), 'tipo' => $this->getTipoEvento($this->ALL_JWEB)->getId(), 'allegato' => $_evento['allegato_id']))) {
+                            //sleep(1);
+                            // https://romolo.contec.it/jwcmedmal/avvisoDanno/AvvisoDannoHC
+                            // actionRequired=schedaTrattazioneSinistro.visualizzaComunicazione&parameters=135527&notaLavorazione=&dataScadenzaNota=
+                            $_allegato = $this->datiAllegato($this->curlGet($sistema->getUrlBase() . substr($_evento['allegato'], 1), array('cookies' => $cookies, 'show' => 1)));
+                            $url = '/uploads/contec' . $pratica->getCliente()->getId() . '/' . $pratica->getSlug() . '/' . $_evento['allegato_id'] . '/' . $_allegato['filename'];
+                            $filepath = __DIR__ . '/../../../../web' . $url;
+                            $dir = str_replace('/' . $_allegato['filename'], '', $filepath);
+                            if (!file_exists($dir)) {
+                                mkdir($dir, 0777, true);
+                            }
+                            $handle = fopen($filepath, 'w');
+                            fwrite($handle, $_allegato['file']);
+                            fclose($handle);
+                            $evento = $this->newEvento($this->ALL_JWEB, $pratica, 'Documento allegato', $_evento['note'] . '\n' . $_allegato['filename']);
+                            $evento->setDataOra($_evento['data']);
+                            $evento->setAllegato($_evento['allegato_id']);
+                            $evento->setUrl($url);
+                            $this->persist($evento);
+
+                            $doc = new Documento();
+                            $doc->setEvento($evento);
+                            $doc->setAllegato($_evento['allegato_id']);
+                            $doc->setMimetype($_allegato['mimetype']);
+                            $doc->setSize($_allegato['filesize']);
+                            $doc->setTitolo($_evento['note']);
+                            $doc->setFilename($_allegato['filename']);
+                            $doc->setUrl($url);
+                            $this->persist($doc);
+                        }
+                    } else {
+                        $old = $this->findOneBy('ClaimsHBundle:Evento', array(
+                            'data_ora' => $_evento['data'],
+                            'tipo' => $this->getTipoEvento($this->JWEB)->getId(),
+                            'pratica' => $pratica->getId(),
+                            'titolo' => $_evento['tipo'],
+                            'note' => $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""),
+                        ));
+                        if (!$old) {
+                            $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
+                            $evento->setDataOra($_evento['data']);
+                            $this->persist($evento);
+                        }
+                    }
+                }
             }
+
+            $pratica->setAlignedAt(new \DateTime());
+            $this->getEm()->commit();
+            $this->persist($pratica);
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
         }
-
-        $pratica->setAlignedAt(new \DateTime());
-
-        $this->persist($pratica);
 
         return $pratica;
     }
@@ -880,7 +886,7 @@ class ImportController extends Controller {
     private function findInScheda($title, $source) {
         $pos = strpos($source, $title);
         preg_match('/<span class="plateValue">[^<]*<\/span>/', $source, $m, 0, $pos);
-        return $m[0];
+        return isset($m[0]) ? $m[0] : '';
     }
 
     private function getComunicazioneAllegatoId($source) {
@@ -896,7 +902,7 @@ class ImportController extends Controller {
         preg_match($orx, $source, $o1);
         preg_match($crx, $source, $c1);
         $os = substr($o1[0], strpos($o1[0], '"') + 1, strlen($o1[0]) - strpos($o1[0], '"') - 2);
-        $cs = str_replace('\\n' ,'\n' ,substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '"') - 2));
+        $cs = str_replace('\\n', '\n', substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '"') - 2));
         return array('titolo' => $os, 'note' => $cs);
     }
 

@@ -424,7 +424,7 @@ class ImportController extends Controller {
             /* @var $sistema \Claims\HBundle\Entity\Pratica */
             list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
             $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
-            $this->logout();
+            $this->logout($sistema);
         }
         return $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $pratica->getSlug())));
     }
@@ -484,7 +484,7 @@ class ImportController extends Controller {
         return array($cookies, $reqTime);
     }
 
-    private function logout() {
+    private function logout(Sistema $sistema) {
         $get = array(
             'actionRequired=' . 'logout',
             'Esci=' . 'Esci',
@@ -589,7 +589,7 @@ class ImportController extends Controller {
         // dirty=0&actionRequired=led.jobmanager.Detail.download&formClass=frm.edit.reports&action=&name=Report+Bordero'+Status+-+Globale+per+stato+sinistr&cmdCancel=Indietro&%23SEL__details0=on&details_cmdDownload_0=Scarica&formComponentsIDsList_frm.edit.reports=brd_entity_start%7Cname%7Cdescription%7Cbrd_entity_end%7CcmdCancel%7Cbrd_details_start%7Cdetails%7Cbrd_details_end%7C
         $xls = $this->curlPost($sistema->getUrlBase() . 'jwcmedmal/jobmanager/JobManagerHC', implode('&', $post), array('cookies' => $cookies));
 
-        $this->logout();
+        $this->logout($sistema);
 
         return $xls;
     }
@@ -655,11 +655,11 @@ class ImportController extends Controller {
 
         $datiScheda = $this->findDatiScheda($scheda);
 
-        $pratica->setMedicoLegale($datiScheda['medicoLegale']);
-        $pratica->setSpecialista($datiScheda['specialista']);
-        $pratica->setPerito($datiScheda['perito']);
-        $pratica->setCoDifensore($datiScheda['coDifensore']);
-        $pratica->setRivalsista($datiScheda['rivalsista']);
+        $pratica->setMedicoLegale(strip_tags($datiScheda['medicoLegale']));
+        $pratica->setSpecialista(strip_tags($datiScheda['specialista']));
+        $pratica->setPerito(strip_tags($datiScheda['perito']));
+        $pratica->setCoDifensore(strip_tags($datiScheda['coDifensore']));
+        $pratica->setRivalsista(strip_tags($datiScheda['rivalsista']));
 
         /*
          * TODO: MODIFICA DOPO 30 GIORNI DALLA MESSA ONLINE DI QUESTA PARTE 
@@ -668,6 +668,8 @@ class ImportController extends Controller {
 
             $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->JWEB));
             $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), '"');
+            $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->ALL_JWEB));
 
             foreach ($datiScheda['eventi'] as $_evento) {
                 if (isset($_evento['comunicazione'])) {
@@ -718,6 +720,7 @@ class ImportController extends Controller {
                 } else {
                     $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
                     $evento->setDataOra($_evento['data']);
+                    $this->persist($evento);
                 }
             }
         } else {
@@ -785,6 +788,7 @@ class ImportController extends Controller {
                     if (!$old) {
                         $evento = $this->newEvento($this->JWEB, $pratica, $_evento['tipo'], $_evento['note'] . ($_evento['utente'] ? "\n({$_evento['utente']})" : ""));
                         $evento->setDataOra($_evento['data']);
+                        $this->persist($evento);
                     }
                 }
             }
@@ -891,8 +895,8 @@ class ImportController extends Controller {
         $crx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($c[0], 0, strpos($c[0], '[0]'))) . '\[1\]="[^\n]+";/';
         preg_match($orx, $source, $o1);
         preg_match($crx, $source, $c1);
-        $os = substr($o1[0], strpos($o1[0], '"'), strlen($o1[0]) - strpos($o1[0], '"') - 2);
-        $cs = substr($c1[0], strpos($c1[0], '"'), strlen($c1[0]) - strpos($c1[0], '"') - 2);
+        $os = substr($o1[0], strpos($o1[0], '"') + 1, strlen($o1[0]) - strpos($o1[0], '"') - 2);
+        $cs = str_replace('\\n' ,'\n' ,substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '"') - 2));
         return array('titolo' => $os, 'note' => $cs);
     }
 

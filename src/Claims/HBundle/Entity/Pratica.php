@@ -554,6 +554,13 @@ class Pratica {
      */
     private $links;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Documento", mappedBy="pratica", cascade="all")
+     */
+    private $docs;
+
     /*
      * DA SCHEDA CONTEC
      */
@@ -604,6 +611,7 @@ class Pratica {
      * Constructor
      */
     public function __construct() {
+        $this->docs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->links = new \Doctrine\Common\Collections\ArrayCollection();
         $this->eventi = new \Doctrine\Common\Collections\ArrayCollection();
         $this->reports = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1954,7 +1962,7 @@ class Pratica {
     /**
      * Add eventi
      *
-     * @param Wvwnro $eventi
+     * @param Evento $eventi
      * @return Cliente
      */
     public function addEventi(Evento $eventi) {
@@ -1984,10 +1992,10 @@ class Pratica {
     /**
      * Add reports
      *
-     * @param Wvwnro $reports
+     * @param Report $reports
      * @return Cliente
      */
-    public function addReports(Evento $reports) {
+    public function addReports(Report $reports) {
         $this->reports[] = $reports;
 
         return $this;
@@ -2014,10 +2022,10 @@ class Pratica {
     /**
      * Add links
      *
-     * @param Wvwnro $links
+     * @param Link $links
      * @return Cliente
      */
-    public function addLinks(Evento $links) {
+    public function addLinks(Link $links) {
         $this->links[] = $links;
 
         return $this;
@@ -2028,7 +2036,7 @@ class Pratica {
      *
      * @param Evento $links
      */
-    public function removeLinks(Evento $links) {
+    public function removeLinks(Link $links) {
         $this->links->removeElement($links);
     }
 
@@ -2039,6 +2047,36 @@ class Pratica {
      */
     public function getLinks() {
         return $this->links;
+    }
+
+    /**
+     * Add docs
+     *
+     * @param Documento $docs
+     * @return Cliente
+     */
+    public function addDocs(Documento $docs) {
+        $this->docs[] = $docs;
+
+        return $this;
+    }
+
+    /**
+     * Remove docs
+     *
+     * @param Evento $docs
+     */
+    public function removeDocs(Documento $docs) {
+        $this->docs->removeElement($docs);
+    }
+
+    /**
+     * Get docs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDocs() {
+        return $this->docs;
     }
 
     public function getRecuperoResponsabile() {

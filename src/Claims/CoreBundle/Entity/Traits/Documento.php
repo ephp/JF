@@ -158,5 +158,22 @@ trait Documento {
         return $this;
     }
 
+    public function getSizeKb() {
+        $size = $this->size;
+        if($size < 1024) {
+            return $size.' b';
+        }
+        $size = $size / 1024;
+        if($size < 1024) {
+            return number_format($size).' kb';
+        }
+        $size = $size / 1024;
+        if($size < 1024) {
+            return number_format($size, 1).' Mb';
+        }
+        $size = $size / 1024;
+        return number_format($size, 2).' Tb';
+    }
+
 
 }

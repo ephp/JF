@@ -670,7 +670,6 @@ class ImportController extends Controller {
 
                 $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->JWEB));
                 $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
-                $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), '"');
                 $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->ALL_JWEB));
 
                 foreach ($datiScheda['eventi'] as $_evento) {
@@ -726,7 +725,6 @@ class ImportController extends Controller {
                     }
                 }
             } else {
-
                 $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
 
                 foreach ($datiScheda['eventi'] as $_evento) {

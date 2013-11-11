@@ -13,8 +13,12 @@
                     <abbr title="Non definita">{{ entity.codice }}</abbr>
                 </span>
             {% endif %}
-                {% if entity.inMonthlyReport %}
-            <br/><div class="icon"><span class="ico-star"></span></div>
+            <br/>
+            <a href="{{ path('claims_hospital_dettagli', { 'slug': entity.slug }) }}" class="fancybox icon">
+                <span class="icon-info-sign" title="Click per aprire la scheda">
+            </a>
+            {% if entity.inMonthlyReport %}
+            <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
             {% endif %}
         </a>
     </td>
@@ -35,7 +39,9 @@
             {% endif %}
     </td>
     <td class="center">{% if entity.giudiziale %}<abbr title="{{ entity.court|trim }}">SI</abbr>{% endif %}</td>
-    <td>{{ entity.claimant }}</td>
+    <td>
+        {{ entity.claimant }}
+    </td>
     {% if mode is not defined or mode in ['aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore'] or app.user.hasRole('C_RECUPERI_H') %}
         <td>
             {% if app.user.hasRole('C_ADMIN') %}
@@ -97,9 +103,8 @@
         {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
             {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.slug })} %}
         {% endif %}
-        {% include ":commons:show.html.twig" with {'class': 'fancybox', 'route': path('claims_hospital_dettagli', { 'slug': entity.slug })} %}
-        {% if not entity.gestore and app.user.cliente.get('slc.h.import-import.on', false) %}
-            <a href="{{ path('slc_import_claim', {'slug': entity.slug}) }}" class="button blue">
+        {% if entity.ospedale.sistema.nome == 'Contec' %}
+            <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="button red" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}>
                 <div class="icon"><span class="ico-shuffle" title="Sincronizza con JF-Claims"></span></div>
             </a>
         {% endif %}

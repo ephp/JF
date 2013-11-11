@@ -4,7 +4,7 @@
             <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-success ico-calendar"> Aggiungi data</span></a>
             <a href="{{ path('claims_hospital_stampa_pratica', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
             {% if entity.ospedale.sistema.nome == 'Contec' %}
-            <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="icon" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}><span class="label label-important ico-random"> Importa da Contec</span></a>
+            <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="icon" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}><span class="label {% if entity.alignedAt %}{{ entity.statoAlign(true) }}{% else %}purple{% endif %} ico-random"> Importa da Contec</span></a>
             {% endif %}
             <table class="table" style="width: 100%;">
                 <thead>
@@ -81,7 +81,7 @@
             <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-success ico-calendar"> Aggiungi data</span></a>
             <a href="{{ path('claims_hospital_stampa_pratica', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
             {% if entity.ospedale.sistema.nome == 'Contec' %}
-                <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="icon" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}><span class="label label-important ico-random"> Importa da Contec</span></a>
+                <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="icon" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}><span class="label {% if entity.alignedAt %}{{ entity.statoAlign(true) }}{% else %}purple{% endif %} ico-random"> Importa da Contec</span></a>
             {% endif %}
         </div>
     </div>

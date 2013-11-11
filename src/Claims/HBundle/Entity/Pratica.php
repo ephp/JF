@@ -2221,6 +2221,21 @@ class Pratica {
         return $this;
     }
 
+    public function getStatoAlign() {
+        $diff = $this->alignedAt->diff(new \DateTime(), true);
+        /* @var $diff \DateInterval */
+        if($diff->d <= 7) {
+            return 'green';
+        }
+        if($diff->d <= 15) {
+            return 'yellow';
+        }
+        if($diff->d <= 30) {
+            return 'red';
+        }
+        return 'purple';
+    }
+    
         public function __toString() {
         return $this->getCodice() . ' - ' . $this->getClaimant();
     }

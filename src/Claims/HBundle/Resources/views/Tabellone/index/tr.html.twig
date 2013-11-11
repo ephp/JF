@@ -107,8 +107,8 @@
             {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.slug })} %}
         {% endif %}
         {% if entity.ospedale.sistema.nome == 'Contec' %}
-            <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="button red" {% if entity.alignedAt %}title="Ultimo allineamento: {{ entity.alignedAt|date('d-m-Y') }}"{% endif %}>
-                <div class="icon"><span class="ico-shuffle" title="Sincronizza con JF-Claims"></span></div>
+            <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="button {% if entity.alignedAt %}{{ entity.statoAlign }}{% else %}purple{% endif %}">
+                <div class="icon"><span class="ico-shuffle" {% if entity.alignedAt %}title="Ultimo allineamento con Contec: {{ entity.alignedAt|date('d-m-Y') }}"{% else %}title="Allinea con Contec"{% endif %}></span></div>
             </a>
         {% endif %}
     </td>

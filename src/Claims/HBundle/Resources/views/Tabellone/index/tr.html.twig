@@ -80,7 +80,7 @@
             {% endif %}
         </td>
     {% endif %}
-    <td class="center stato_pratica">
+    <td class="center stato_pratica" alt="{{ entity.status }}" title="{{ entity.status }}">
         {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
             <a href="#fb_cambia_stato" class="fancybox">
         {% endif %}

@@ -1,4 +1,0 @@
-JF
-==
-
-Evoluzione di progetto

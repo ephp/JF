@@ -38,6 +38,11 @@ $(document).ready(function() {
             }
         }
     });
+    
+    $('.goto-mr').click(function(){
+        var to = $(this).attr('to');
+        $('#'+to).focus().append('<br/>'+$(this).attr('title'));
+    });
 
     $('td.stato_pratica').click(function() {
         var i = 0;

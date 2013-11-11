@@ -17,8 +17,11 @@
             <a href="{{ path('claims_hospital_dettagli', { 'slug': entity.slug }) }}" class="fancybox icon">
                 <span class="icon-info-sign" title="Click per aprire la scheda">
             </a>
+            {% if app.user.hasRole(['C_GESTORE_H']) and entity.monthlyReport %} 
+                <span class="ico-forward-2 goto-mr" title="{% if entity.monthlyReport.note|trim != '' %}{{ entity.monthlyReport.note }}{% else %}{{ entity.monthlyReport.titolo }}{% endif %}" to="note_{{ entity.slug}}"></span>
+            {% endif %}
             {% if entity.inMonthlyReport %}
-            <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
+                <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
             {% endif %}
         </a>
     </td>
@@ -78,7 +81,7 @@
     {% else %}
         <td class="note">
             {% if app.user.hasRole(['C_GESTORE_H']) %}
-                <div class="typography" contenteditable="true">
+                <div class="typography" contenteditable="true" id="note_{{ entity.slug}}">
             {% endif %}
             {{ entity.notePulite|nl2br }}
             {% if app.user.hasRole(['C_GESTORE_H']) %}

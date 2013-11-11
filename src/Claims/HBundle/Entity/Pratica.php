@@ -2268,7 +2268,7 @@ class Pratica {
                 case 'OTH': case 'EJW': case 'MRV': case 'EML':
                     return $ev;
                 case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
-                    if ($ev->getNote()) {
+                    if (trim($ev->getNote())) {
                         return $ev;
                     }
                 case 'JWB': case 'CNT': case 'RVP': case 'RIS': case 'CHS': case 'CHG': case 'PRI':

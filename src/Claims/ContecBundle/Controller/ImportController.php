@@ -76,13 +76,50 @@ class ImportController extends Controller {
         foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             $dati = $cliente->getDati();
-            if (isset($dati['contec'])) {
-                $bdxs = $this->enterBdx($dati['contec']);
+            if (isset($dati['cl_h_contec-import'])) {
+                $bdxs = $this->enterBdx($dati['cl_h_contec-import']);
                 foreach ($bdxs as $bdx) {
                     $this->importBdx($cliente, $bdx);
                 }
             }
         }
+    }
+
+    /**
+     * @Route("-schede-cron", name="contec_import_schede_cron", defaults={"_format": "json"})
+     */
+    public function cronSchedeAction() {
+        $ora = new \DateTime();
+        $h = $ora->format('H');
+        $d = $ora->format('N');
+        $out = array('d' => $d, 'h' => $h);
+        if ($d >= 6) {
+            if ($h < 6)
+                return $this->jsonResponse($out);
+        } else {
+            if ($h < 6 || ($h >= 8 && $h <= 20))
+                return $this->jsonResponse($out);
+        }
+        foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
+            /* @var $cliente \JF\ACLBundle\Entity\Cliente */
+            $dati = $cliente->getDati();
+            if (isset($dati['cl_h_contec-import'])) {
+                set_time_limit(3600);
+                $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
+                /* @var $sistema \Claims\HBundle\Entity\Sistema */
+                $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sistema' => $sistema->getId()));
+                $o = array();
+                foreach($ospedali as $ospedale) {
+                    $o[] = $ospedale->getId();
+                }
+                $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'ospedale' => $o, 'alignedAt' => null));
+                /* @var $sistema \Claims\HBundle\Entity\Pratica */
+                list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
+                $out[$cliente->getId()][] = $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
+                $this->logout($sistema, $cookies);
+            }
+        }
+        return $this->jsonResponse($out);
     }
 
     private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
@@ -802,7 +839,7 @@ class ImportController extends Controller {
             throw $e;
         }
 
-        return $pratica;
+        return $pratica->getSlug();
     }
 
     private function getUrlMedicalClaims($source) {

@@ -221,8 +221,6 @@ class PraticaRepository extends EntityRepository {
                                         ->setParameter($field, '');
                             }
                             break;
-                        case 'statoPratica':
-                            $field = 'stato_pratica';
                         default:
                             $q->andWhere("p.{$field} = :{$field}")
                                     ->setParameter($field, $value);

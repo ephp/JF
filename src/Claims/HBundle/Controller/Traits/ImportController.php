@@ -9,12 +9,6 @@ trait ImportController {
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
             $log = array();
-            if ($old->getPriorita() && $old->getPriorita()->getPriorita() == 'Chiuso') {
-                if ($old->getStatus() != $pratica->getStatus()) {
-                    $log[] = "Pratica messa in priorità 'Riaperta'";
-                    $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Riaperto')));
-                }
-            }
             if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
                 $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
                 $old->setDol($pratica->getDol());
@@ -35,6 +29,7 @@ trait ImportController {
                 $log[] = "APPLICABLE DEDUCTIBLE: da '" . $old->getApplicableDeductible() . "' a '" . $pratica->getApplicableDeductible() . "'";
                 $old->setApplicableDeductible($pratica->getApplicableDeductible());
             }
+            $checkPriorita = true;
             if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
                 $_log = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
                 if($pratica->getAmountReserved() == 0) {
@@ -42,17 +37,26 @@ trait ImportController {
                     $this->persist($evento);
                     if($old->getPriorita()->getPriorita() != 'Chiuso') {
                         $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Pre-Chiusura')));
+                        $checkPriorita = false;
                     }
                 } elseif($pratica->getAmountReserved() < 0) {
                     $evento = $this->newEvento($this->RIPASSATONP, $old, null, $_log);
                     $this->persist($evento);
                     $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Ripassato NP')));
+                    $checkPriorita = false;
                 } elseif($old->getAmountReserved() < 0) {
                     $evento = $this->newEvento($this->RISERVA, $old, null, $_log);
                     $this->persist($evento);
                 }
                 $log[] = $_log;
                 $old->setAmountReserved($pratica->getAmountReserved());
+            }
+            if ($old->getStatus() != $pratica->getStatus()) {
+                if ($checkPriorita && $old->getPriorita() && $old->getPriorita()->getPriorita() == 'Chiuso') {
+                    $log[] = "Pratica messa in priorità 'Riaperta'";
+                    $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Riaperto')));
+                }
+                $old->setStatus($pratica->getStatus());
             }
             if (($old->getDeductibleReserved() < 0 ? 'NP' : $old->getDeductibleReserved()) != ($pratica->getDeductibleReserved() < 0 ? 'NP' : $pratica->getDeductibleReserved())) {
                 $log[] = "DEDUCTIBLE RESERVED: da '" . ($old->getDeductibleReserved() < 0 ? 'NP' : $old->getDeductibleReserved()) . "' a '" . ($pratica->getDeductibleReserved() < 0 ? 'NP' : $pratica->getDeductibleReserved()) . "'";

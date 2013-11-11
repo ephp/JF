@@ -69,20 +69,37 @@ class ImportController extends Controller {
     }
 
     /**
-     * @Route("-cron", name="contec_import_cron")
+     * @Route("-cron", name="contec_import_cron", defaults={"_format": "json"})
      * @Template()
      */
     public function cronAction() {
         foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
+            $cliente = $this->getUser()->getCliente();
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
+            set_time_limit(3600);
             $dati = $cliente->getDati();
+            $out = array();
             if (isset($dati['cl_h_contec-import'])) {
-                $bdxs = $this->enterBdx($dati['cl_h_contec-import']);
-                foreach ($bdxs as $bdx) {
-                    $this->importBdx($cliente, $bdx);
+                $bdx = $this->enterBdx($dati['cl_h_contec-import']);
+                $source = __DIR__ . '/../../../../web/uploads/contec' . $cliente->getId() . '.xls';
+                if (file_exists($source)) {
+                    unlink($source);
+                }
+                $xls = fopen($source, 'w');
+                fwrite($xls, $bdx);
+                fclose($xls);
+//            chmod($source, 0777);
+                $out[$cliente->getId()] = $this->importBdx($cliente, $source);
+            }
+        }
+        foreach ($out as $cliente_id => $elenchi) {
+            foreach ($elenchi as $nome_elenco => $elenco) {
+                foreach ($elenco as $i => $pratica) {
+                    $out[$cliente_id][$nome_elenco][$i] = $pratica->getSlug();
                 }
             }
         }
+        return $this->jsonResponse($out);
     }
 
     /**

@@ -49,20 +49,40 @@ class ImportController extends Controller {
     }
 
     /**
-     * @Route("-cron", name="ravinale_import_cron")
+     * @Route("-cron", name="ravinale_import_cron", defaults={"_format": "json"})
      * @Template()
      */
     public function cronAction() {
+        $out = array();
         foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
+            $cliente = $this->getUser()->getCliente();
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
+            set_time_limit(3600);
             $dati = $cliente->getDati();
+            $logs = array();
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
                 foreach ($bdxs as $bdx) {
-                    $this->importBdx($cliente, $bdx);
+                    $logs[] = $this->importBdx($cliente, $bdx);
+                }
+            }
+            $out[$clienta->getId()] = array(
+                'pratiche_nuove' => array(),
+                'pratiche_aggiornate' => array(),
+            );
+            foreach ($logs as $log) {
+                $out[$clienta->getId()]['pratiche_nuove'] = array_merge($out['pratiche_nuove'], $log['pratiche_nuove']);
+                $out[$clienta->getId()]['pratiche_aggiornate'] = array_merge($out['pratiche_aggiornate'], $log['pratiche_aggiornate']);
+            }
+        }
+        foreach ($out as $cliente_id => $elenchi) {
+            foreach ($elenchi as $nome_elenco => $elenco) {
+                foreach ($elenco as $i => $pratica) {
+                    $out[$cliente_id][$nome_elenco][$i] = $pratica->getSlug();
                 }
             }
         }
+        return $this->jsonResponse($out);
     }
 
     private function enterBdx($dati) {
@@ -360,7 +380,7 @@ class ImportController extends Controller {
             if ($gestore->hasRole('C_ADMIN')) {
                 $this->notify($gestore, 'Aggiornamenti personali BDX Ravinale', 'ClaimsRavinaleBundle:email:aggiornamentiAdmin', array('pratiche_nuove' => $pratiche_nuove, 'pratiche_aggiornate' => $pratiche_aggiornate));
             }
-            if(isset($aggiornamenti[$gestore->getId()])) {
+            if (isset($aggiornamenti[$gestore->getId()])) {
                 $this->notify($gestore, 'Aggiornamenti generali BDX Ravinale', 'ClaimsRavinaleBundle:email:aggiornamentiGestore', array('pratiche' => $aggiornamenti[$gestore->getId()]));
             }
         }

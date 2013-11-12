@@ -108,33 +108,44 @@ class ImportController extends Controller {
     public function cronSchedeAction() {
         $ora = new \DateTime();
         $h = $ora->format('H');
+        $m = intval($ora->format('i'));
         $d = $ora->format('N');
-        $out = array('d' => $d, 'h' => $h);
+        $out = array('d' => $d, 'h' => $h, 'm' => $m);
         if ($d >= 6) {
-            if ($h < 6)
+            if ($h < 6) {
                 return $this->jsonResponse($out);
-        } else {
-            if ($h < 6 || ($h >= 8 && $h <= 20))
-                return $this->jsonResponse($out);
-        }
-        foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
-            /* @var $cliente \JF\ACLBundle\Entity\Cliente */
-            $dati = $cliente->getDati();
-            if (isset($dati['cl_h_contec-import'])) {
-                set_time_limit(3600);
-                $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
-                /* @var $sistema \Claims\HBundle\Entity\Sistema */
-                $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sistema' => $sistema->getId()));
-                $o = array();
-                foreach($ospedali as $ospedale) {
-                    $o[] = $ospedale->getId();
-                }
-                $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'ospedale' => $o, 'alignedAt' => null));
-                /* @var $sistema \Claims\HBundle\Entity\Pratica */
-                list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
-                $out[$cliente->getId()][] = $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
-                $this->logout($sistema, $cookies);
             }
+        } else {
+            if ($h < 6) {
+                return $this->jsonResponse($out);
+            }
+            if (($h >= 8 && $h <= 20) && !in_array($m, array(59, 0, 1, 14, 15, 16, 29, 30, 31, 44, 45, 46))) {
+                return $this->jsonResponse($out);
+            }
+        }
+        try {
+            foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
+                /* @var $cliente \JF\ACLBundle\Entity\Cliente */
+                $dati = $cliente->getDati();
+                if (isset($dati['cl_h_contec-import'])) {
+                    set_time_limit(3600);
+                    $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
+                    /* @var $sistema \Claims\HBundle\Entity\Sistema */
+                    $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sistema' => $sistema->getId()));
+                    $o = array();
+                    foreach ($ospedali as $ospedale) {
+                        $o[] = $ospedale->getId();
+                    }
+                    $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'ospedale' => $o, 'alignedAt' => null));
+                    /* @var $sistema \Claims\HBundle\Entity\Pratica */
+                    list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
+                    $out[$cliente->getId()][] = $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
+                    $this->logout($sistema, $cookies);
+                }
+            }
+        } catch (\Exception $e) {
+            $out['error'] = $e->getMessage();
+            return $this->jsonResponse($out);
         }
         return $this->jsonResponse($out);
     }

@@ -217,6 +217,9 @@ trait TabelloneController {
             'out' => array(
             ),
         );
+        if($this->getUser()->get('claims_h_sistema') != 'tutti') {
+            $filtri['in']['sistema'] = $this->getUser()->get('claims_h_sistema');
+        }
         $dati = $this->getUser()->getDati();
         if ($stato) {
             if (!in_array($mode, array("default", "completo", "personale"))) {
@@ -307,16 +310,16 @@ trait TabelloneController {
                 break;
         }
         $datiCliente = $cliente->getDati();
-        if(isset($datiCliente['slc_h-analisi'])) {
+        if (isset($datiCliente['slc_h-analisi'])) {
             $analisi = $datiCliente['slc_h-analisi'];
-            if(isset($analisi['sigle']) && $analisi['sigle']) {
+            if (isset($analisi['sigle']) && $analisi['sigle']) {
                 $sigle = explode(',', $analisi['sigle']);
                 $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sigla' => $sigle));
                 $idOspedali = array();
-                foreach($ospedali as $ospedale) {
+                foreach ($ospedali as $ospedale) {
                     $idOspedali[] = $ospedale->getId();
                 }
-                if(!$this->getUser()->hasRole('C_SUPVIS_H') && $this->getRequest()->get('hidden')) {
+                if (!$this->getUser()->hasRole('C_SUPVIS_H') && $this->getRequest()->get('hidden')) {
                     $filtri['in']['ospedale'] = $idOspedali;
                 } else {
                     $filtri['out']['ospedale'] = $idOspedali;
@@ -333,6 +336,55 @@ trait TabelloneController {
         $this->getUser()->setDati($dati);
         $this->persist($this->getUser());
         return $filtri;
+    }
+
+    protected function getColonne($mode) {
+        $colonne = array();
+        if (in_array($mode, array('personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore', 'cerca'))) {
+            $colonne[] = 'index';
+        }
+        $colonne[] = 'codice';
+        $colonne[] = 'dasc';
+        $colonne[] = 'giudiziale';
+        $colonne[] = 'claimant';
+        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'cerca', 'np', 'npcg'))) {
+            $colonne[] = 'gestore';
+        }
+        $colonne[] = 'soi';
+        if (in_array($mode, array('bookeeping'))) {
+            $colonne[] = 'ltFees';
+        } else {
+            if (in_array($mode, array('recupero', 'recuperati'))) {
+                $colonne[] = 'offerte';
+            } else {
+                $colonne[] = 'amountReserved';
+                if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
+                    $colonne[] = 'firstReserve';
+                }
+            }
+        }
+        if ($this->hasRole('C_RECUPERI_H')) {
+            $colonne[] = 'datiRecupero';
+        } else {
+            $colonne[] = 'note';
+        }
+        $colonne[] = 'stato';
+        $colonne[] = 'operazioni';
+        return $colonne;
+    }
+
+    public function getSistemi() {
+        $sistema = $this->getParam('sistema', $this->getUser()->get('claims_h_sistema', 'tutti'));
+        if ($sistema != $this->getUser()->get('claims_h_sistema')) {
+            $this->getUser()->set('claims_h_sistema', $sistema);
+            $this->persist($this->getUser());
+        }
+        $sistemi = array('tutti' => 'Tutti');
+        foreach ($this->findAll('ClaimsHBundle:Sistema') as $sistema) {
+            /* @var $sistema \Claims\HBundle\Entity\Sistema */
+            $sistemi[strtolower($sistema->getNome())] = $sistema->getNome();
+        }
+        return $sistemi;
     }
 
 }

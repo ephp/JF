@@ -187,10 +187,24 @@ class Gestore extends BaseUser {
     }
 
     public function get($key, $default = null) {
+        $out = null;
         if ($this->getCliente()) {
-            return $this->getCliente()->get($key, $default);
+            $out = $this->getCliente()->get($key);
         }
-        return $default;
+        if(!$out) {
+            $d = $this->getDati();
+            if(isset($d[$key])) {
+                $out = $d[$key];
+            }
+        }
+        return $out ?: $default;
+    }
+
+    public function set($key, $value) {
+        $d = $this->getDati();
+        $d[$key] = $value;
+        $this->setDati($d);
+        return $this;
     }
 
 }

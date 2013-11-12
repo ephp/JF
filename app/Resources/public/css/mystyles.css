@@ -203,9 +203,14 @@ textarea.expand {
     max-height: 100px;
     overflow-y: auto;
 }
+
 textarea.expand:focus {
     line-height: 15px !important;
     min-height: 400px !important;
     max-height: 400px;
     font-size: 1.25em;
+}
+
+td.TAC{
+    width: 80px;
 }

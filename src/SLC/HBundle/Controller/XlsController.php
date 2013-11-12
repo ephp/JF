@@ -389,7 +389,7 @@ class XlsController extends Controller {
             $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
         }
         $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
-        if (in_array($mode, array('np', 'bookeeping'))) {
+        if (in_array($mode, array('bookeeping'))) {
             $colonne[chr($colonna++)] = array('nome' => 'LT Fees Paid', 'larghezza' => 20);
             $colonne[chr($colonna++)] = array('nome' => 'LT Fees Reserve', 'larghezza' => 20);
         } else {

@@ -1,0 +1,5 @@
+<tr id="{{ entity.slug }}" titolo="{{ entity }}" priorita="{% if entity.priorita %}{{ entity.priorita.id }}{% endif %}" stato="{% if entity.statoPratica %}{{ entity.statoPratica.id }}{% endif %}" gestore="{% if entity.gestore %}{{ entity.gestore.slug }}{% endif %}">
+    {% for td in tds %}
+        {% include "ClaimsHBundle:Tabellone:index/td/"~td~".html.twig" %}
+    {% endfor %}
+</tr>

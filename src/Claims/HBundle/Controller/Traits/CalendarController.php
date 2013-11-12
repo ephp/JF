@@ -76,6 +76,7 @@ trait CalendarController {
                 case $this->JWEB:
                     $tipo = $_tipo->createTipo($this->JWEB, 'J-Web Claims', 'aa4444', $cal);
                     break;
+                case 'EJW':
                 case $this->EMAIL_JWEB:
                     $tipo = $_tipo->createTipo($this->EMAIL_JWEB, 'Email da J-Web Claims', 'aa2222', $cal, true, false, true);
                     break;
@@ -88,6 +89,7 @@ trait CalendarController {
                 case $this->RAVINALE:
                     $tipo = $_tipo->createTipo($this->RAVINALE, 'Ravinale Piemonte', 'aa44aa', $cal);
                     break;
+                case 'MRV':
                 case $this->EMAIL_RAVINALE:
                     $tipo = $_tipo->createTipo($this->EMAIL_RAVINALE, 'Email da Ravinale Piemonte', 'aa22aa', $cal, true, false, true);
                     break;

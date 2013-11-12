@@ -1,0 +1,16 @@
+<td class="center dasc nosmall" nowrap>
+    {% if app.user.hasRole('C_ADMIN') %}
+        <a href="#fb_cambia_dasc" class="fancybox">
+    {% endif %}
+    {% if entity.dasc %}
+        {{ entity.dasc|date('d-m-Y') }}
+    {% else %}
+        n.d.
+    {% endif %}
+    {% if app.user.hasRole('C_ADMIN') %}
+        </a>
+    {% endif %}
+    {% if app.user.dati.claims_h_sorting is defined and (app.user.dati.claims_h_sorting == 'importazione' or app.user.dati.claims_h_sorting == 'iimportazione') %}
+        <br/><small>import: {{ entity.dataImport|date('d-m-Y') }}</small>
+    {% endif %}
+</td>

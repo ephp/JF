@@ -1,0 +1,10 @@
+<td class="TAC">
+    {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
+        {% include ":commons:edit.html.twig" with {'route': path('claims_hospital_pratica', { 'slug': entity.slug })} %}
+    {% endif %}
+    {% if entity.ospedale.sistema.nome == 'Contec' %}
+        <a href="{{ path('contec_import_pratica', {'slug': entity.slug}) }}" class="button {% if entity.alignedAt %}{{ entity.statoAlign }}{% else %}purple{% endif %}">
+            <div class="icon"><span class="ico-shuffle" {% if entity.alignedAt %}title="Ultimo allineamento con Contec: {{ entity.alignedAt|date('d-m-Y') }}"{% else %}title="Allinea con Contec"{% endif %}></span></div>
+        </a>
+    {% endif %}
+</td>

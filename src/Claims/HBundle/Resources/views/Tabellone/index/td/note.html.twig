@@ -1,0 +1,9 @@
+<td class="note">
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        <div class="typography" contenteditable="true" id="note_{{ entity.slug}}">
+    {% endif %}
+    {{ entity.notePulite|nl2br }}
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        </div>
+    {% endif %}
+</td>

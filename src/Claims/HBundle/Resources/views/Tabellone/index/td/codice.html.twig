@@ -1,0 +1,23 @@
+<td class="center" nowrap>
+    <a href="#fb_cambia_priorita" class="fancybox">
+        {% if entity.priorita %}
+            <span class="label {{ entity.priorita.css }}">
+                <abbr title="{{ entity.priorita.priorita }}">{{ entity.codice }}</abbr>
+            </span>
+        {% else %}
+            <span class="label purple">
+                <abbr title="Non definita">{{ entity.codice }}</abbr>
+            </span>
+        {% endif %}
+    </a>
+    <br/>
+    <a href="{{ path('claims_hospital_dettagli', { 'slug': entity.slug }) }}" class="fancybox icon">
+        <span class="icon-info-sign" title="Click per vedere la scheda">
+    </a>
+    {% if app.user.hasRole(['C_GESTORE_H']) and 'note' in tds and entity.monthlyReport %} 
+        <span class="ico-forward-2 goto-mr" title="{% if entity.monthlyReport.note|trim != '' %}{{ entity.monthlyReport.note }}{% else %}{{ entity.monthlyReport.titolo }}{% endif %}" to="note_{{ entity.slug}}"></span>
+    {% endif %}
+    {% if entity.inMonthlyReport %}
+        <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
+    {% endif %}
+</td>

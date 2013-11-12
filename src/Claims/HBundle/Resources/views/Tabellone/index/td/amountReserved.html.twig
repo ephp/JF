@@ -1,0 +1,4 @@
+<td class="right" nowrap>
+    {% if entity.amountReserved >= 0 %}{{ entity.amountReserved|number_format(2, '.', ' ') }} €{% else %}N.P.{% endif %}
+    <br/><small>{% if entity.deductibleReserved %}{{ entity.deductibleReserved|number_format(2, '.', ' ') }}{% else %}0.00{% endif %} €</small>
+</td>

@@ -214,3 +214,14 @@ textarea.expand:focus {
 td.TAC{
     width: 80px;
 }
+
+div.right {
+    float: right !important;
+}
+
+div.white a, div.white a span {
+    color: #fff !important;
+}
+div.white a:hover, div.white a span:hover {
+    color: #eee !important;
+}

@@ -12,6 +12,14 @@
         <span class="ico-archive"></span>
     </div>
     <h1>JF-Claims <small>Hospital</small></h1>
+    <div class="icon yellow right white">
+        <a target="_blank" href="{{ path(app.request.get('_route') ~ '_stampa')}}{% if app.request.queryString %}?{{app.request.queryString }}{% endif %}"><span class="ico-printer" title="Stampa"></span></a>
+    </div>
+    {% if app.user.cliente.get('slc.h-analisi.on', false) %}
+        <div class="icon green right white">
+            <a target="_blank" href="{{ path(app.request.get('_route') ~ '_xls')}}{% if app.request.queryString %}?{{app.request.queryString }}{% endif %}"><span class="ico-table" title="Esporta Excel"></span></a>
+        </div>
+    {% endif %}
 </div>
 
     

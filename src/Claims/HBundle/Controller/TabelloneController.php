@@ -42,11 +42,17 @@ class TabelloneController extends Controller {
      * @Template()
      */
     public function indexAction($mode) {
-        $sistemi = $this->getSistemi();
-        $sorting = $this->sorting();
-        $filtri = $this->buildFiltri($mode);
-        $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
-        $tds = $this->getColonne($mode);
+        try {
+            $sistemi = $this->getSistemi();
+            $sorting = $this->sorting();
+            $filtri = $this->buildFiltri($mode);
+            $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+            $tds = $this->getColonne($mode);
+        } catch (\Exception $e) {
+            $this->getUser()->setData(null);
+            $this->persist($this->getUser());
+            return $this->indexAction($mode);
+        }
         return array(
             'pagination' => $pagination,
             'show_gestore' => true,

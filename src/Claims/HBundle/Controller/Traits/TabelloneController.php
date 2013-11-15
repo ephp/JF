@@ -95,16 +95,16 @@ trait TabelloneController {
             'class' => $this->getParam('ricerca') ? 'label-success' : 'label-info',
             'icon' => 'ico-search'
         );
-        $out['stampa'] = array(
-            'route' => $this->getParam('_route') . '_stampa',
-            'label' => 'Versione per la stampa',
-            'icon' => 'ico-printer',
-            'class' => 'label-warning',
-            'target' => '_blank'
-        );
-        if ($this->getParam('ricerca')) {
-            $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
-        }
+//        $out['stampa'] = array(
+//            'route' => $this->getParam('_route') . '_stampa',
+//            'label' => 'Versione per la stampa',
+//            'icon' => 'ico-printer',
+//            'class' => 'label-warning',
+//            'target' => '_blank'
+//        );
+//        if ($this->getParam('ricerca')) {
+//            $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
+//        }
         if ($this->getUser()->getCliente()->hasLicenza('cl.h-pratiche', 'slc') && $this->getUser()->hasRole('C_ADMIN')) {
             $out['monthly_report'] = array(
                 'route' => $this->getParam('_route') . '_stampa',

@@ -61,8 +61,8 @@ class PraticaRepository extends EntityRepository {
                                     ->setParameter('a', $a);
                             break;
                         case 'sistema':
-                            $q->leftJoin('p.ospedale', 'o');
-                            $q->leftJoin('o.sistema', 's');
+                            $q->leftJoin('p.ospedale', 'h');
+                            $q->leftJoin('h.sistema', 's');
                             $q->andWhere("s.nome = :sistema")
                                     ->setParameter('sistema', $value);
                             break;

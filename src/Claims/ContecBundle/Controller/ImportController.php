@@ -903,44 +903,45 @@ class ImportController extends Controller {
         $tag_html = Dom::getDOMBase($doc);
         $tag_body = Dom::getDOMElement($tag_html, array('tag' => 'body'));
         $table = Dom::getDOMElement($tag_body, array('tag' => 'table'));
-        $trs = Dom::getDOMElement($table, array('tag' => 'tr'), false);
-
-        $_evento = array('data', 'utente', 'tipo', 'note');
-        foreach ($trs as $tr) {
-            /* @var $tr \DOMElement */
-            $tds = Dom::getDOMElement($tr, array('tag' => 'td'), false);
-            $evento = array();
-            foreach ($tds as $i => $td) {
-                /* @var $td \DOMElement */
-                switch ($i) {
-                    case 0: //data
-                        if (strlen($td->nodeValue) > 10) {
-                            $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue);
-                        } else {
-                            $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue . ' 08:00:00');
-                        }
-                        break;
-                    case 2:
-                        $a = Dom::getDOMElement($td, array('tag' => 'a'));
-                        /* @var $a \DOMElement */
-                        if ($a) {
-                            $evento[$_evento[$i]] = $a->nodeValue;
-                            if ($a->nodeValue == 'Comunicazione') {
-                                $evento['comunicazione'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
-                            }
-                            if ($a->nodeValue == 'Documento allegato') {
-                                $evento['allegato'] = $a->getAttribute('href');
-                                $evento['allegato_id'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
+        if ($table) {
+            $trs = Dom::getDOMElement($table, array('tag' => 'tr'), false);
+            $_evento = array('data', 'utente', 'tipo', 'note');
+            foreach ($trs as $tr) {
+                /* @var $tr \DOMElement */
+                $tds = Dom::getDOMElement($tr, array('tag' => 'td'), false);
+                $evento = array();
+                foreach ($tds as $i => $td) {
+                    /* @var $td \DOMElement */
+                    switch ($i) {
+                        case 0: //data
+                            if (strlen($td->nodeValue) > 10) {
+                                $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue);
+                            } else {
+                                $evento[$_evento[$i]] = \DateTime::createFromFormat('d/m/Y H:i:s', $td->nodeValue . ' 08:00:00');
                             }
                             break;
-                        }
-                    case 1:
-                    case 3:
-                        $evento[$_evento[$i]] = $td->nodeValue;
-                        break;
+                        case 2:
+                            $a = Dom::getDOMElement($td, array('tag' => 'a'));
+                            /* @var $a \DOMElement */
+                            if ($a) {
+                                $evento[$_evento[$i]] = $a->nodeValue;
+                                if ($a->nodeValue == 'Comunicazione') {
+                                    $evento['comunicazione'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
+                                }
+                                if ($a->nodeValue == 'Documento allegato') {
+                                    $evento['allegato'] = $a->getAttribute('href');
+                                    $evento['allegato_id'] = $this->getComunicazioneAllegatoId($a->getAttribute('href'));
+                                }
+                                break;
+                            }
+                        case 1:
+                        case 3:
+                            $evento[$_evento[$i]] = $td->nodeValue;
+                            break;
+                    }
                 }
+                $out['eventi'][] = $evento;
             }
-            $out['eventi'][] = $evento;
         }
 
         return $out;

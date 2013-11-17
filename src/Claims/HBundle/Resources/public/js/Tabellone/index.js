@@ -18,7 +18,7 @@ $(document).ready(function() {
     });
 
     var tipografy = '';
-    $('.typography').focus(function() {
+    $("div[class^='typography']").focus(function() {
         tipografy = $(this).html();
     }).blur(function() {
         if (tipografy !== $(this).html()) {
@@ -50,6 +50,9 @@ $(document).ready(function() {
             }
         }
     });
+    $('.autoupdate').change(function() {
+        _autoupdate($(this));
+    });
     
     $('.goto-mr').click(function(){
         var to = $(this).attr('to');
@@ -66,6 +69,17 @@ $(document).ready(function() {
         $('#wait_cambia_stato').hide();
     });
 });
+
+function _autoupdate($this) {
+    val = $this.val();
+    pratica = $this.attr('pratica');
+    field = $this.attr('name');
+    if (pratica) {
+        $.post(Routing.generate('claims_hospital_pratica_autoupdate', {'slug': pratica}), {'pratica': {'field': field, 'value': val}}, function(out) {
+            $('.' + out.field).val(out.value);
+        });
+    }
+}
 
 function assegnaPriorita() {
     $('#bt_cambia_priorita').hide();

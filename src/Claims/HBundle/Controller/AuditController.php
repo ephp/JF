@@ -11,9 +11,9 @@ use Ephp\UtilityBundle\Utility\Log;
 use Ephp\UtilityBundle\PhpExcel\SpreadsheetExcelReader;
 
 /**
- * @Route("/claims-hospital/monthly-report")
+ * @Route("/claims-hospital/audit")
  */
-class MonthlyReportController extends Controller {
+class AuditController extends Controller {
 
     use \Ephp\UtilityBundle\Controller\Traits\BaseController,
         \Ephp\UtilityBundle\Controller\Traits\PaginatorController,
@@ -22,17 +22,17 @@ class MonthlyReportController extends Controller {
         Traits\TabelloneController;
 
     /**
-     * @Route("/",               name="claims_mr_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-personale/",     name="claims_mr_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-completo/",      name="claims_mr_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-senza-gestore/", name="claims_mr_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("/",               name="claims_audit_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/",     name="claims_audit_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-completo/",      name="claims_audit_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-senza-gestore/", name="claims_audit_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template("ClaimsHBundle:Tabellone:index.html.twig")
      */
     public function indexAction($mode) {
         $sorting = $this->sorting();
         $filtri = $this->buildFiltri($mode);
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
-        $tds = $this->getColonne($mode, $this->V_MONTLY_REPORT);
+        $tds = $this->getColonne($mode, $this->V_AUDIT);
         return array(
             'pagination' => $pagination,
             'show_gestore' => true,
@@ -45,10 +45,10 @@ class MonthlyReportController extends Controller {
     }
 
     /**
-     * @Route("-stampa/{monthly_report}",               name="claims_mr_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-personale/{monthly_report}",     name="claims_mr_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-completo/{monthly_report}",      name="claims_mr_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-stampa-senza-gestore/{monthly_report}", name="claims_mr_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa/{monthly_report}",               name="claims_audit_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-personale/{monthly_report}",     name="claims_audit_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-completo/{monthly_report}",      name="claims_audit_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-stampa-senza-gestore/{monthly_report}", name="claims_audit_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function stampaAction($mode, $monthly_report) {
@@ -66,21 +66,21 @@ class MonthlyReportController extends Controller {
         $out = array();
         if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
             $out['personale'] = array(
-                'route' => 'claims_mr_hospital_personale',
+                'route' => 'claims_audit_hospital_personale',
                 'label' => 'Personale',
                 'icon' => 'ico-user',
             );
         }
         if ($this->getUser()->hasRole(array('C_ADMIN', 'C_RECUPERI_H'))) {
             $out['completo'] = array(
-                'route' => 'claims_mr_hospital_completo',
+                'route' => 'claims_audit_hospital_completo',
                 'label' => 'Completo',
                 'icon' => 'ico-group',
             );
         }
         if ($this->getUser()->hasRole('C_ADMIN')) {
             $out['senza_gestore'] = array(
-                'route' => 'claims_mr_hospital_senza_gestore',
+                'route' => 'claims_audit_hospital_senza_gestore',
                 'label' => 'Senza gestore',
                 'icon' => 'ico-tools',
             );
@@ -181,7 +181,7 @@ class MonthlyReportController extends Controller {
     }
 
     /**
-     * @Route("-form", name="claims_mr_hospital_import_form")
+     * @Route("-form", name="claims_audit_hospital_import_form")
      * @Template()
      */
     public function formAction() {
@@ -189,7 +189,7 @@ class MonthlyReportController extends Controller {
     }
 
     /**
-     * @Route("-callback", name="claims_mr_hospital_import_callback", options={"expose": true})
+     * @Route("-callback", name="claims_audit_hospital_import_callback", options={"expose": true})
      * @Template()
      */
     public function callbackAction() {

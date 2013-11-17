@@ -64,7 +64,11 @@ class ImportController extends Controller {
     public function callbackAction() {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
-        $out = $this->importBdx($this->getUser()->getCliente(), $source);
+        $mr = $this->getParam('mr') == 'checked';
+        if ($mr) {
+            $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($this->getUser()->getCliente());
+        }
+        $out = $this->importBdx($this->getUser()->getCliente(), $source, $mr);
         return $out;
     }
 
@@ -119,7 +123,7 @@ class ImportController extends Controller {
             if ($h < 6) {
                 return $this->jsonResponse($out);
             }
-            if (($h >= 8 && $h <= 20) && !in_array($m, array(59, 0, 1, 14, 15, 16, 29, 30, 31, 44, 45, 46))) {
+            if (($h >= 8 && $h <= 20) && !in_array($m, array(0, 4, 10, 14, 20, 24, 30, 34, 40, 44, 50, 54))) {
                 return $this->jsonResponse($out);
             }
         }
@@ -150,7 +154,7 @@ class ImportController extends Controller {
         return $this->jsonResponse($out);
     }
 
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $mr = false) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche_aggiornate = $pratiche_nuove = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
@@ -180,7 +184,7 @@ class ImportController extends Controller {
                             $pratica->setStatoPratica($this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $cliente->getId(), 'primo' => true)));
                             foreach ($valori_riga as $idx => $value) {
                                 if (!isset($colonne[$idx])) {
-                                    break;
+                                    continue;
                                 }
                                 switch ($colonne[$idx]) {
                                     case 'TPA  Ref.':
@@ -376,7 +380,7 @@ class ImportController extends Controller {
                                     default: break;
                                 }
                             }
-                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove);
+                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $mr);
                             $this->getEm()->commit();
                         } catch (\Exception $e) {
                             $this->getEm()->rollback();

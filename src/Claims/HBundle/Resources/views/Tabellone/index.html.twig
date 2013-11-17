@@ -20,6 +20,9 @@
             <a target="_blank" href="{{ path(app.request.get('_route') ~ '_xls')}}{% if app.request.queryString %}?{{app.request.queryString }}{% endif %}"><span class="ico-table" title="Esporta Excel"></span></a>
         </div>
     {% endif %}
+    {% if twig_button is defined %}
+        {% include twig_button %}
+    {% endif %}
 </div>
 
     

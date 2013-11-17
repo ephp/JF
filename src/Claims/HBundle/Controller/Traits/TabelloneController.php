@@ -217,7 +217,7 @@ trait TabelloneController {
             'out' => array(
             ),
         );
-        if($this->getUser()->get('claims_h_sistema') != 'tutti') {
+        if ($this->getUser()->get('claims_h_sistema') != 'tutti') {
             $filtri['in']['sistema'] = $this->getUser()->get('claims_h_sistema');
         }
         $dati = $this->getUser()->getDati();
@@ -338,38 +338,75 @@ trait TabelloneController {
         return $filtri;
     }
 
-    protected function getColonne($mode) {
+    protected $V_STANDARD = 1;
+    protected $V_MONTLY_REPORT = 2;
+    protected $V_AUDIT = 3;
+
+    protected function getColonne($mode, $view = 1) {
         $colonne = array();
-        if (in_array($mode, array('personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore', 'cerca'))) {
-            $colonne[] = 'index';
-        }
-        $colonne[] = 'codice';
-        $colonne[] = 'dasc';
-        $colonne[] = 'giudiziale';
-        $colonne[] = 'claimant';
-        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'cerca', 'np', 'npcg'))) {
-            $colonne[] = 'gestore';
-        }
-        $colonne[] = 'soi';
-        if (in_array($mode, array('bookeeping'))) {
-            $colonne[] = 'ltFees';
-        } else {
-            if (in_array($mode, array('recupero', 'recuperati'))) {
-                $colonne[] = 'offerte';
-            } else {
-                $colonne[] = 'amountReserved';
-                if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
-                    $colonne[] = 'firstReserve';
+        switch ($view) {
+            case $this->V_STANDARD:
+                if (in_array($mode, array('personale', 'chiuso', 'tutti', 'senza_dasc', 'senza_gestore', 'cerca'))) {
+                    $colonne[] = 'index';
                 }
-            }
+                $colonne[] = 'codice';
+                $colonne[] = 'dasc';
+                $colonne[] = 'giudiziale';
+                $colonne[] = 'claimant';
+                if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'cerca', 'np', 'npcg'))) {
+                    $colonne[] = 'gestore';
+                }
+                $colonne[] = 'soi';
+                if (in_array($mode, array('bookeeping'))) {
+                    $colonne[] = 'ltFees';
+                } else {
+                    if (in_array($mode, array('recupero', 'recuperati'))) {
+                        $colonne[] = 'offerte';
+                    } else {
+                        $colonne[] = 'amountReserved';
+                        if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
+                            $colonne[] = 'firstReserve';
+                        }
+                    }
+                }
+                if ($this->hasRole('C_RECUPERI_H')) {
+                    $colonne[] = 'datiRecupero';
+                } else {
+                    $colonne[] = 'note';
+                }
+                $colonne[] = 'stato';
+                $colonne[] = 'operazioni';
+                break;
+            case $this->V_MONTLY_REPORT:
+                $colonne[] = 'index';
+                $colonne[] = 'codice';
+                $colonne[] = 'claimant';
+                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                    $colonne[] = 'gestore';
+                }
+                $colonne[] = 'soi';
+                $colonne[] = 'amountReserved';
+                $colonne[] = 'note';
+                $colonne[] = 'monthly';
+                $colonne[] = 'stato';
+                $colonne[] = 'operazioni';
+                break;
+            case $this->V_MONTLY_REPORT:
+                $colonne[] = 'index';
+                $colonne[] = 'codice';
+                $colonne[] = 'claimant';
+                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                    $colonne[] = 'gestore';
+                }
+                $colonne[] = 'amountReserved';
+                $colonne[] = 'note';
+                $colonne[] = 'audit';
+                $colonne[] = 'percentuale';
+                $colonne[] = 'azioni';
+                $colonne[] = 'stato';
+                $colonne[] = 'operazioni';
+                break;
         }
-        if ($this->hasRole('C_RECUPERI_H')) {
-            $colonne[] = 'datiRecupero';
-        } else {
-            $colonne[] = 'note';
-        }
-        $colonne[] = 'stato';
-        $colonne[] = 'operazioni';
         return $colonne;
     }
 

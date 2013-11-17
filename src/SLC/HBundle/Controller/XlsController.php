@@ -19,19 +19,71 @@ class XlsController extends Controller {
         Traits\TabelloneController;
 
     /**
-     * @Route("/{monthly_report}",                 name="claims_hospital_xls",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-personale/{monthly_report}",       name="claims_hospital_personale_xls",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi/{monthly_report}",          name="claims_hospital_chiuso_xls",        defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-tutti/{monthly_report}",           name="claims_hospital_tutti_xls",         defaults={"monthly_report": false, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-aperti/{monthly_report}",          name="claims_hospital_aperti_xls",        defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi-completo/{monthly_report}", name="claims_hospital_chiusi_xls",        defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-completo/{monthly_report}",        name="claims_hospital_completo_xls",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-senza-dasc/{monthly_report}",      name="claims_hospital_senza_dasc_xls",    defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-senza-gestore/{monthly_report}",   name="claims_hospital_senza_gestore_xls", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-recuperati/{monthly_report}",      name="claims_hospital_recuperati_xls",    defaults={"monthly_report": false, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-recupero/{monthly_report}",        name="claims_hospital_recupero_xls",      defaults={"monthly_report": false, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("/{monthly_report}",                  name="claims_hospital_xls",                  defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/{monthly_report}",        name="claims_hospital_personale_xls",        defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi/{monthly_report}",           name="claims_hospital_chiuso_xls",           defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-tutti/{monthly_report}",            name="claims_hospital_tutti_xls",            defaults={"monthly_report": false, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/{monthly_report}",           name="claims_hospital_aperti_xls",           defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi-completo/{monthly_report}",  name="claims_hospital_chiusi_xls",           defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-completo/{monthly_report}",         name="claims_hospital_completo_xls",         defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-senza-dasc/{monthly_report}",       name="claims_hospital_senza_dasc_xls",       defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-senza-gestore/{monthly_report}",    name="claims_hospital_senza_gestore_xls",    defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-recuperati/{monthly_report}",       name="claims_hospital_recuperati_xls",       defaults={"monthly_report": false, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-recupero/{monthly_report}",         name="claims_hospital_recupero_xls",         defaults={"monthly_report": false, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-mr/{monthly_report}",               name="claims_mr_hospital_xls",               defaults={"monthly_report": true, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-personale/{monthly_report}",     name="claims_mr_hospital_personale_xls",     defaults={"monthly_report": true, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-completo/{monthly_report}",      name="claims_mr_hospital_completo_xls",      defaults={"monthly_report": true, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-mr-senza-gestore/{monthly_report}", name="claims_mr_hospital_senza_gestore_xls", defaults={"monthly_report": true, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
     public function xlsAction($mode, $monthly_report) {
+        $excelService = $this->get('xls.service_xls5');
+        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
+
+        $excel = $excelService->excelObj;
+        /* @var $excel \PHPExcel */
+
+        $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
+                ->setLastModifiedBy($this->getUser()->getCliente()->getNome())
+                ->setTitle(($monthly_report ? "Montly Report " : "Riepilogo " ) . date('m/Y'))
+                ->setSubject(($monthly_report ? "Montly Report " : "Riepilogo " ) . date('m/Y'))
+                ->setDescription("Generato automaticamente da JF-System")
+                ->setKeywords($monthly_report ? "Montly Report, Hospital" : "Riepilogo, Hospital")
+                ->setCategory($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
+
+        $colonne = $this->getColonne($mode, $monthly_report);
+
+        $filtri = $this->buildFiltri($mode);
+        if($monthly_report) {
+            $filtri['in']['inMonthlyReport'] = true;
+        }
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+
+        $sheet = $excel->setActiveSheetIndex(0);
+        /* @var $sheet \PHPExcel_Worksheet */
+
+        $this->fillSheet($sheet, $colonne, $entities, $monthly_report);
+
+        $excel->getActiveSheet()->setTitle($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+
+        //create the response
+        $response = $excelService->getResponse();
+        /* @var $response \Symfony\Component\HttpFoundation\Response */
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . ($monthly_report ? "Monthly-report" . date('-m-Y') : "Riepilogo" . date('-d-m-Y') ) . '.xls;');
+
+        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+    }
+
+    /**
+     */
+    public function xlsMonthlyAction($mode, $monthly_report) {
         $excelService = $this->get('xls.service_xls5');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
 //        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
@@ -318,6 +370,8 @@ class XlsController extends Controller {
                             $valore = $entity->getNote() ? $entity->getNote() : '';
                         }
                         break;
+                    case 'Monthly Report':
+                        $valore = $entity->getTextMonthlyReport() ? $entity->getTextMonthlyReport() : '';
                     case 'Stato pratica':
                         $valore = $entity->getStatoPratica() ? $entity->getStatoPratica()->getStato() : '-';
                         break;
@@ -357,6 +411,7 @@ class XlsController extends Controller {
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
                     case 'Dati recupero':
+                    case 'Monthly Report':
                     case 'Note':
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => true));
                         break;
@@ -409,6 +464,9 @@ class XlsController extends Controller {
             $colonne[chr($colonna++)] = array('nome' => 'Dati recupero', 'larghezza' => 50);
         } else {
             $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
+            if($monthly_report) {
+                $colonne[chr($colonna++)] = array('nome' => 'Monthly Report', 'larghezza' => 50);
+            }
         }
         $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
         return $colonne;

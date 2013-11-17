@@ -1,0 +1,9 @@
+<td class="month">
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        <div class="typography2 nocursor" contenteditable="true">
+    {% endif %}
+        {{ entity.textMonthlyReport|raw|nl2br }}
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        </div>
+    {% endif %}
+</td>

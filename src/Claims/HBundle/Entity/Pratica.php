@@ -607,6 +607,38 @@ class Pratica {
      */
     private $alignedAt;
 
+    /*
+     * AUDIT
+     */
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="in_audiy", type="boolean", nullable=true)
+     */
+    private $inAudit;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="audiy", type="text", nullable=true)
+     */
+    private $audit;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="azioni", type="text", nullable=true)
+     */
+    private $azioni;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="percentuale", type="integer", nullable=true)
+     */
+    private $percentuale;
+
     /**
      * Constructor
      */
@@ -2211,7 +2243,7 @@ class Pratica {
         $this->rivalsista = $rivalsista;
         return $this;
     }
-    
+
     public function getAlignedAt() {
         return $this->alignedAt;
     }
@@ -2221,22 +2253,58 @@ class Pratica {
         return $this;
     }
 
+    public function getInAudit() {
+        return $this->inAudit;
+    }
+
+    public function setInAudit($in_audit) {
+        $this->inAudit = $in_audit;
+        return $this;
+    }
+
+    public function getAudit() {
+        return $this->audit;
+    }
+
+    public function setAudit($audit) {
+        $this->audit = $audit;
+        return $this;
+    }
+
+    public function getAzioni() {
+        return $this->azioni;
+    }
+
+    public function setAzioni($azioni) {
+        $this->azioni = $azioni;
+        return $this;
+    }
+
+    public function getPercentuale() {
+        return $this->percentuale;
+    }
+
+    public function setPercentuale($percentuale) {
+        $this->percentuale = $percentuale;
+        return $this;
+    }
+
     public function getStatoAlign() {
         $diff = $this->alignedAt->diff(new \DateTime(), true);
         /* @var $diff \DateInterval */
-        if($diff->d <= 7) {
+        if ($diff->d <= 7) {
             return 'green';
         }
-        if($diff->d <= 15) {
+        if ($diff->d <= 15) {
             return 'yellow';
         }
-        if($diff->d <= 30) {
+        if ($diff->d <= 30) {
             return 'red';
         }
         return 'purple';
     }
-    
-        public function __toString() {
+
+    public function __toString() {
         return $this->getCodice() . ' - ' . $this->getClaimant();
     }
 

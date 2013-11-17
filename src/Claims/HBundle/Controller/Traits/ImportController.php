@@ -4,10 +4,14 @@ namespace Claims\HBundle\Controller\Traits;
 
 trait ImportController {
 
-    protected function salvaPratica(\JF\ACLBundle\Entity\Cliente $cliente, \Claims\HBundle\Entity\Pratica &$pratica, &$pratiche_aggiornate, &$pratiche_nuove) {
+    protected function salvaPratica(\JF\ACLBundle\Entity\Cliente $cliente, \Claims\HBundle\Entity\Pratica &$pratica, &$pratiche_aggiornate, &$pratiche_nuove, $mr = false) {
         $old = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'codice' => $pratica->getCodice()));
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
+            if ($mr) {
+                $old->setInMonthlyReport(true);
+                $this->persist($old);
+            }
             $log = array();
             if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
                 $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
@@ -32,21 +36,23 @@ trait ImportController {
             $checkPriorita = true;
             if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
                 $_log = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
-                if($pratica->getAmountReserved() == 0) {
-                    $evento = $this->newEvento($this->DEFINITO, $old, null, $_log);
-                    $this->persist($evento);
-                    if($old->getPriorita()->getPriorita() != 'Chiuso') {
-                        $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Pre-Chiusura')));
+                if (!$mr) {
+                    if ($pratica->getAmountReserved() == 0) {
+                        $evento = $this->newEvento($this->DEFINITO, $old, null, $_log);
+                        $this->persist($evento);
+                        if ($old->getPriorita()->getPriorita() != 'Chiuso') {
+                            $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Pre-Chiusura')));
+                            $checkPriorita = false;
+                        }
+                    } elseif ($pratica->getAmountReserved() < 0) {
+                        $evento = $this->newEvento($this->RIPASSATONP, $old, null, $_log);
+                        $this->persist($evento);
+                        $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Ripassato NP')));
                         $checkPriorita = false;
+                    } elseif ($old->getAmountReserved() < 0) {
+                        $evento = $this->newEvento($this->RISERVA, $old, null, $_log);
+                        $this->persist($evento);
                     }
-                } elseif($pratica->getAmountReserved() < 0) {
-                    $evento = $this->newEvento($this->RIPASSATONP, $old, null, $_log);
-                    $this->persist($evento);
-                    $old->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Ripassato NP')));
-                    $checkPriorita = false;
-                } elseif($old->getAmountReserved() < 0) {
-                    $evento = $this->newEvento($this->RISERVA, $old, null, $_log);
-                    $this->persist($evento);
                 }
                 $log[] = $_log;
                 $old->setAmountReserved($pratica->getAmountReserved());
@@ -160,17 +166,22 @@ trait ImportController {
                 $old->setComments($pratica->getComments());
             }
 
-            if (count($log) > 0) {
+            if ($mr || count($log) > 0) {
                 $old->addLog($log);
-                $this->persist($old);
-                $pratiche_aggiornate[] = $old;
-                $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
-                $this->persist($evento);
+                if (!$mr) {
+                    $this->persist($old);
+                    $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
+                    $this->persist($evento);
+                }
             }
+
+            $pratiche_aggiornate[] = $old;
         } else {
-            $pratica->setDataImport(new \DateTime());
-            $pratica->addLog(array('Importata pratica'));
-            $this->persist($pratica);
+            if (!$mr) {
+                $pratica->setDataImport(new \DateTime());
+                $pratica->addLog(array('Importata pratica'));
+                $this->persist($pratica);
+            }
             $pratiche_nuove[] = $pratica;
         }
     }

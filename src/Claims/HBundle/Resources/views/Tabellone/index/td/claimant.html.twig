@@ -1,5 +1,8 @@
 <td class="center">
     {{ entity.claimant }}
+    {% if 'soi' not in tds %} 
+        <br/>SOI: <abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr>
+    {% endif %}
     {% if 'giudizioale' not in tds %} 
         {% if entity.giudiziale %}<br/><abbr title="{{ entity.court|trim }}">Giud.</abbr>{% endif %}
     {% endif %}

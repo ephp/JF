@@ -1,6 +1,6 @@
 <td class="note">
     {% if app.user.hasRole(['C_GESTORE_H']) %}
-        <div class="typography{% if 'audit' in tds %}2{% endif %}" contenteditable="true" id="note_{{ entity.slug}}">
+        <div class="typography{% if 'audit' in tds or 'monthly' in tds %}2{% endif %}" contenteditable="true" id="note_{{ entity.slug}}">
     {% endif %}
     {{ entity.notePulite|nl2br }}
     {% if app.user.hasRole(['C_GESTORE_H']) %}

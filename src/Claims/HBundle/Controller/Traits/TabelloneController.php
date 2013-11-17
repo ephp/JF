@@ -384,7 +384,6 @@ trait TabelloneController {
                 if (in_array($mode, array('completo', 'senza_gestore'))) {
                     $colonne[] = 'gestore';
                 }
-                $colonne[] = 'soi';
                 $colonne[] = 'amountReserved';
                 $colonne[] = 'note';
                 $colonne[] = 'monthly';

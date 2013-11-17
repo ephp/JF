@@ -4,12 +4,12 @@ namespace Claims\HBundle\Controller\Traits;
 
 trait ImportController {
 
-    protected function salvaPratica(\JF\ACLBundle\Entity\Cliente $cliente, \Claims\HBundle\Entity\Pratica &$pratica, &$pratiche_aggiornate, &$pratiche_nuove, $mr = false) {
+    protected function salvaPratica(\JF\ACLBundle\Entity\Cliente $cliente, \Claims\HBundle\Entity\Pratica &$pratica, &$pratiche_aggiornate, &$pratiche_nuove, $audit = false) {
         $old = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'codice' => $pratica->getCodice()));
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
-            if ($mr) {
-                $old->setInMonthlyReport(true);
+            if ($audit) {
+                $old->setInAudit(true);
                 $this->persist($old);
             }
             $log = array();
@@ -36,7 +36,7 @@ trait ImportController {
             $checkPriorita = true;
             if (($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) != ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved())) {
                 $_log = "AMOUNT RESERVED: da '" . ($old->getAmountReserved() < 0 ? 'NP' : $old->getAmountReserved()) . "' a '" . ($pratica->getAmountReserved() < 0 ? 'NP' : $pratica->getAmountReserved()) . "'";
-                if (!$mr) {
+                if (!$audit) {
                     if ($pratica->getAmountReserved() == 0) {
                         $evento = $this->newEvento($this->DEFINITO, $old, null, $_log);
                         $this->persist($evento);
@@ -166,9 +166,9 @@ trait ImportController {
                 $old->setComments($pratica->getComments());
             }
 
-            if ($mr || count($log) > 0) {
+            if ($audit || count($log) > 0) {
                 $old->addLog($log);
-                if (!$mr) {
+                if (!$audit) {
                     $this->persist($old);
                     $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
                     $this->persist($evento);
@@ -177,7 +177,7 @@ trait ImportController {
 
             $pratiche_aggiornate[] = $old;
         } else {
-            if (!$mr) {
+            if (!$audit) {
                 $pratica->setDataImport(new \DateTime());
                 $pratica->addLog(array('Importata pratica'));
                 $this->persist($pratica);

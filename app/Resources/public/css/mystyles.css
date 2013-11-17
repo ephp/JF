@@ -211,6 +211,12 @@ textarea.expand:focus {
     font-size: 1.25em;
 }
 
+input.percent {
+    width: 60px !important;
+    padding-right: 20px;
+    background-image: url(/bundles/claimscore/images/percent.png)
+}
+
 td.TAC{
     width: 80px;
 }

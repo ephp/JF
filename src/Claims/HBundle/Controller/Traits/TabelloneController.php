@@ -391,7 +391,7 @@ trait TabelloneController {
                 $colonne[] = 'stato';
                 $colonne[] = 'operazioni';
                 break;
-            case $this->V_MONTLY_REPORT:
+            case $this->V_AUDIT:
                 $colonne[] = 'index';
                 $colonne[] = 'codice';
                 $colonne[] = 'claimant';

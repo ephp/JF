@@ -64,11 +64,11 @@ class ImportController extends Controller {
     public function callbackAction() {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
-        $mr = $this->getParam('mr') == 'checked';
-        if ($mr) {
-            $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($this->getUser()->getCliente());
+        $audit = $this->getParam('mr') == 'checked';
+        if ($audit) {
+            $this->getRepository('ClaimsHBundle:Pratica')->cancellaAudit($this->getUser()->getCliente());
         }
-        $out = $this->importBdx($this->getUser()->getCliente(), $source, $mr);
+        $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
         return $out;
     }
 
@@ -154,7 +154,7 @@ class ImportController extends Controller {
         return $this->jsonResponse($out);
     }
 
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $mr = false) {
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche_aggiornate = $pratiche_nuove = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
@@ -380,7 +380,7 @@ class ImportController extends Controller {
                                     default: break;
                                 }
                             }
-                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $mr);
+                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $audit);
                             $this->getEm()->commit();
                         } catch (\Exception $e) {
                             $this->getEm()->rollback();

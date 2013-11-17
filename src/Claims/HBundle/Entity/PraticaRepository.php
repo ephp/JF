@@ -362,6 +362,21 @@ UPDATE claims_h_pratiche p
         $connection->executeUpdate($q, $params);
     }
 
+    public function cancellaAudit(\JF\ACLBundle\Entity\Cliente $cliente) {
+        $connection = $this->getEntityManager()->getConnection();
+        $q = "   
+UPDATE claims_h_pratiche p 
+   SET p.in_audit = :false
+ WHERE p.cliente_id = :cliente
+";
+        $params = array(
+            'false' => false,
+            'cliente' => $cliente->getId(),
+        );
+
+        $connection->executeUpdate($q, $params);
+    }
+
     public function cercaDaMR(\JF\ACLBundle\Entity\Cliente $cliente, $claimant, $ospedale, $anno) {
         $anno = intval($anno) - 2000;
         $claimant = trim($claimant);

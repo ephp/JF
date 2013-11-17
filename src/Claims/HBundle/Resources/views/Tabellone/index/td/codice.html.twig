@@ -20,4 +20,7 @@
     {% if entity.inMonthlyReport %}
         <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
     {% endif %}
+    {% if entity.inAudit %}
+        <span class="ico-alarm" title="Sotto Audit"></span>
+    {% endif %}
 </td>

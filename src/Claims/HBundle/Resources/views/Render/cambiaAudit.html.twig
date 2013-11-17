@@ -1,0 +1,15 @@
+<div style="display: none; width: 600px" id="fb_cambia_audit">
+    <form id="cambia_audit">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-pen-2"></span>
+            </div>
+            <h1>Scrivi audit<small id="cambia_audit_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <textarea name="audit[audit]" style="width: 100%;" id="audit_audit"></textarea>
+        <input type="hidden" name="audit[id]" id="audit_id" value="" />    
+        <button type="button" onclick="assegnaNote();" class="btn" id="bt_cambia_audit">Scrivi</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_audit"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

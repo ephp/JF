@@ -614,14 +614,14 @@ class Pratica {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="in_audiy", type="boolean", nullable=true)
+     * @ORM\Column(name="in_audit", type="boolean", nullable=true)
      */
     private $inAudit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="audiy", type="text", nullable=true)
+     * @ORM\Column(name="audit", type="text", nullable=true)
      */
     private $audit;
 

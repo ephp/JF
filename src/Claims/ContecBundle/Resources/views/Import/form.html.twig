@@ -10,9 +10,9 @@
 <div class="row-fluid">
     <div class="span6">
         <div class="block">
-{{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
-<label for="mr">Monthly Report</label>
-<input id="mr" type="checkbox" value="1" />
+            <label for="mr">Audit</label>
+            <input id="mr" type="checkbox" value="1" {% if app.request.get('audit') %}checked="checked"{% endif %} />
+            {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
 {% javascripts  
     '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
     '@ClaimsContecBundle/Resources/public/js/form.js'

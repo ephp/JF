@@ -19,23 +19,27 @@ class XlsController extends Controller {
         Traits\TabelloneController;
 
     /**
-     * @Route("/{monthly_report}",                  name="claims_hospital_xls",                  defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-personale/{monthly_report}",        name="claims_hospital_personale_xls",        defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi/{monthly_report}",           name="claims_hospital_chiuso_xls",           defaults={"monthly_report": false, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-tutti/{monthly_report}",            name="claims_hospital_tutti_xls",            defaults={"monthly_report": false, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-aperti/{monthly_report}",           name="claims_hospital_aperti_xls",           defaults={"monthly_report": false, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi-completo/{monthly_report}",  name="claims_hospital_chiusi_xls",           defaults={"monthly_report": false, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-completo/{monthly_report}",         name="claims_hospital_completo_xls",         defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-senza-dasc/{monthly_report}",       name="claims_hospital_senza_dasc_xls",       defaults={"monthly_report": false, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-senza-gestore/{monthly_report}",    name="claims_hospital_senza_gestore_xls",    defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-recuperati/{monthly_report}",       name="claims_hospital_recuperati_xls",       defaults={"monthly_report": false, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-recupero/{monthly_report}",         name="claims_hospital_recupero_xls",         defaults={"monthly_report": false, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-mr/{monthly_report}",               name="claims_mr_hospital_xls",               defaults={"monthly_report": true, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-personale/{monthly_report}",     name="claims_mr_hospital_personale_xls",     defaults={"monthly_report": true, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-completo/{monthly_report}",      name="claims_mr_hospital_completo_xls",      defaults={"monthly_report": true, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-mr-senza-gestore/{monthly_report}", name="claims_mr_hospital_senza_gestore_xls", defaults={"monthly_report": true, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("/{vista}",                     name="claims_hospital_xls",                     defaults={"vista": 1, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/{vista}",           name="claims_hospital_personale_xls",           defaults={"vista": 1, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi/{vista}",              name="claims_hospital_chiuso_xls",              defaults={"vista": 1, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-tutti/{vista}",               name="claims_hospital_tutti_xls",               defaults={"vista": 1, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/{vista}",              name="claims_hospital_aperti_xls",              defaults={"vista": 1, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi-completo/{vista}",     name="claims_hospital_chiusi_xls",              defaults={"vista": 1, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-completo/{vista}",            name="claims_hospital_completo_xls",            defaults={"vista": 1, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-senza-dasc/{vista}",          name="claims_hospital_senza_dasc_xls",          defaults={"vista": 1, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-senza-gestore/{vista}",       name="claims_hospital_senza_gestore_xls",       defaults={"vista": 1, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-recuperati/{vista}",          name="claims_hospital_recuperati_xls",          defaults={"vista": 1, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-recupero/{vista}",            name="claims_hospital_recupero_xls",            defaults={"vista": 1, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-mr/{vista}",                  name="claims_mr_hospital_xls",                  defaults={"vista": 2, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-personale/{vista}",        name="claims_mr_hospital_personale_xls",        defaults={"vista": 2, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-completo/{vista}",         name="claims_mr_hospital_completo_xls",         defaults={"vista": 2, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-mr-senza-gestore/{vista}",    name="claims_mr_hospital_senza_gestore_xls",    defaults={"vista": 2, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-audit/{vista}",               name="claims_audit_hospital_xls",               defaults={"vista": 3, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-personale/{vista}",     name="claims_audit_hospital_personale_xls",     defaults={"vista": 3, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-completo/{vista}",      name="claims_audit_hospital_completo_xls",      defaults={"vista": 3, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-audit-senza-gestore/{vista}", name="claims_audit_hospital_senza_gestore_xls", defaults={"vista": 3, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
-    public function xlsAction($mode, $monthly_report) {
+    public function xlsAction($mode, $vista) {
         $excelService = $this->get('xls.service_xls5');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
 //        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
@@ -45,26 +49,29 @@ class XlsController extends Controller {
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
                 ->setLastModifiedBy($this->getUser()->getCliente()->getNome())
-                ->setTitle(($monthly_report ? "Montly Report " : "Riepilogo " ) . date('m/Y'))
-                ->setSubject(($monthly_report ? "Montly Report " : "Riepilogo " ) . date('m/Y'))
+                ->setTitle($this->vistaTitle($vista) . ' ' . date('m/Y'))
+                ->setSubject($this->vistaTitle($vista) . ' ' . date('m/Y'))
                 ->setDescription("Generato automaticamente da JF-System")
-                ->setKeywords($monthly_report ? "Montly Report, Hospital" : "Riepilogo, Hospital")
-                ->setCategory($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
+                ->setKeywords($this->vistaTitle($vista) . ", Hospital")
+                ->setCategory($this->vistaTitle($vista) . " Hospital");
 
-        $colonne = $this->getColonne($mode, $monthly_report);
+        $colonne = $this->getColonne($mode, $vista);
 
         $filtri = $this->buildFiltri($mode);
-        if($monthly_report) {
+        if ($vista == $this->V_MONTLY_REPORT) {
             $filtri['in']['inMonthlyReport'] = true;
+        }
+        if ($vista == $this->V_AUDIT) {
+            $filtri['in']['inAudit'] = true;
         }
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
 
         $sheet = $excel->setActiveSheetIndex(0);
         /* @var $sheet \PHPExcel_Worksheet */
 
-        $this->fillSheet($sheet, $colonne, $entities, $monthly_report);
+        $this->fillSheet($sheet, $colonne, $entities, $vista == $this->V_MONTLY_REPORT);
 
-        $excel->getActiveSheet()->setTitle($monthly_report ? "Montly Report Hospital" : "Riepilogo Hospital");
+        $excel->getActiveSheet()->setTitle($this->vistaTitle($vista) . " Hospital");
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
@@ -72,13 +79,25 @@ class XlsController extends Controller {
         $response = $excelService->getResponse();
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . ($monthly_report ? "Monthly-report" . date('-m-Y') : "Riepilogo" . date('-d-m-Y') ) . '.xls;');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . (str_replace(' ', '_', $this->vistaTitle($vista)) . date('-d-m-Y') ) . '.xls;');
 
         // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
         $response->headers->set('Pragma', 'public');
         $response->headers->set('Cache-Control', 'maxage=1');
         $response->sendHeaders();
         return $response;
+    }
+
+    private function vistaTitle($vista) {
+        switch ($vista) {
+            case $this->V_MONTLY_REPORT:
+                return "Monthly Report";
+            case $this->V_AUDIT:
+                return "Audit";
+            case $this->V_STANDARD:
+            default:
+                return "Riepilogo";
+        }
     }
 
     /**
@@ -331,14 +350,14 @@ class XlsController extends Controller {
                         break;
                     case 'Recupero Offerta Nostra':
                         $valore = $entity->getRecuperoOffertaNostra();
-                        if($valore <= 100) {
-                            $valore = $valore/100;
+                        if ($valore <= 100) {
+                            $valore = $valore / 100;
                         }
                         break;
                     case 'Recupero Offerta Loro':
                         $valore = $entity->getRecuperoOffertaLoro();
-                        if($valore <= 100) {
-                            $valore = $valore/100;
+                        if ($valore <= 100) {
+                            $valore = $valore / 100;
                         }
                         break;
                     case 'LT Fees Paid':
@@ -355,7 +374,7 @@ class XlsController extends Controller {
                             if ($entity->getNote()) {
                                 $txt = String::strip_tags($entity->getNote());
                                 $valore = "Note
-{$txt}".($entity->getNoteDataModifica() ? "
+{$txt}" . ($entity->getNoteDataModifica() ? "
 ({$entity->getNoteDataModifica()->format('d-m-Y')})" : "");
                             } else {
                                 $mr = $entity->getMonthlyReport();
@@ -367,11 +386,17 @@ class XlsController extends Controller {
                                 }
                             }
                         } else {
-                            $valore = $entity->getNote() ? $entity->getNote() : '';
+                            $valore = $entity->getNote() ?: '';
                         }
                         break;
                     case 'Monthly Report':
-                        $valore = $entity->getTextMonthlyReport() ? $entity->getTextMonthlyReport() : '';
+                        $valore = $entity->getTextMonthlyReport() ?: '';
+                    case 'Audit':
+                        $valore = $entity->getAudit() ?: '';
+                    case 'Azioni Future':
+                        $valore = $entity->getAzioni() ?: '';
+                    case 'Percentuale':
+                        $valore = $entity->getPercentuale() ? $entity->getPercentuale() / 100 : 0;
                     case 'Stato pratica':
                         $valore = $entity->getStatoPratica() ? $entity->getStatoPratica()->getStato() : '-';
                         break;
@@ -401,8 +426,8 @@ class XlsController extends Controller {
                         break;
                     case 'Recupero Offerta Nostra':
                     case 'Recupero Offerta Loro':
-                        if($valore) {
-                            if($valore <= 1) {
+                        if ($valore) {
+                            if ($valore <= 1) {
                                 $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
                             } else {
                                 $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
@@ -410,8 +435,14 @@ class XlsController extends Controller {
                         }
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
+                    case 'Percentuale':
+                        $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
+                        $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                        break;
                     case 'Dati recupero':
                     case 'Monthly Report':
+                    case 'Audit':
+                    case 'Azioni future':
                     case 'Note':
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => true));
                         break;
@@ -433,42 +464,73 @@ class XlsController extends Controller {
         $sheet->freezePaneByColumnAndRow(0, 1);
     }
 
-    protected function getColonne($mode, $monthly_report = false) {
+    protected function getColonne($mode, $view = 1) {
         $colonna = ord('A');
         $colonne = array();
-        $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
-        $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
-        $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
-        $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
-        if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'np', 'npcg'))) {
-            $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
-        }
-        $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
-        if (in_array($mode, array('bookeeping'))) {
-            $colonne[chr($colonna++)] = array('nome' => 'LT Fees Paid', 'larghezza' => 20);
-            $colonne[chr($colonna++)] = array('nome' => 'LT Fees Reserve', 'larghezza' => 20);
-        } else {
-            if (in_array($mode, array('recupero', 'recuperati'))) {
-                $colonne[chr($colonna++)] = array('nome' => 'Offerta Nostra', 'larghezza' => 20);
-                $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Nostra', 'larghezza' => 20);
-                $colonne[chr($colonna++)] = array('nome' => 'Offerta Loro', 'larghezza' => 20);
-                $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Loro', 'larghezza' => 20);
-            } else {
-                $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
-                if (in_array($mode, array('np', 'reserve'))) {
-                    $colonne[chr($colonna++)] = array('nome' => 'First Reserve Indication', 'larghezza' => 20);
+        switch ($view) {
+            case $this->V_STANDARD:
+                $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
+                if (in_array($mode, array('aperti', 'completo', 'chiusi', 'senza_dasc', 'senza_gestore', 'cerca', 'np', 'npcg'))) {
+                    $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
                 }
-            }
-        }
-        if (!$monthly_report && $this->hasRole('C_RECUPERI_H')) {
-            $colonne[chr($colonna++)] = array('nome' => 'Dati recupero', 'larghezza' => 50);
-        } else {
-            $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
-            if($monthly_report) {
+                $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
+                if (in_array($mode, array('bookeeping'))) {
+                    $colonne[chr($colonna++)] = array('nome' => 'LT Fees Paid', 'larghezza' => 20);
+                    $colonne[chr($colonna++)] = array('nome' => 'LT Fees Reserve', 'larghezza' => 20);
+                } else {
+                    if (in_array($mode, array('recupero', 'recuperati'))) {
+                        $colonne[chr($colonna++)] = array('nome' => 'Offerta Nostra', 'larghezza' => 20);
+                        $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Nostra', 'larghezza' => 20);
+                        $colonne[chr($colonna++)] = array('nome' => 'Offerta Loro', 'larghezza' => 20);
+                        $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Loro', 'larghezza' => 20);
+                    } else {
+                        $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                        if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
+                            $colonne[chr($colonna++)] = array('nome' => 'First Reserve Indication', 'larghezza' => 20);
+                        }
+                    }
+                }
+                if ($this->hasRole('C_RECUPERI_H')) {
+                    $colonne[chr($colonna++)] = array('nome' => 'Dati recupero', 'larghezza' => 50);
+                } else {
+                    $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
+                }
+                $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
+                break;
+            case $this->V_MONTLY_REPORT:
+                $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
+                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                    $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
+                }
+                $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Monthly Report', 'larghezza' => 50);
-            }
+                $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
+                break;
+            case $this->V_MONTLY_REPORT:
+                $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
+                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                    $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
+                }
+                $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
+                $colonne[chr($colonna++)] = array('nome' => 'Audit', 'larghezza' => 50);
+                $colonne[chr($colonna++)] = array('nome' => 'Percentuale', 'larghezza' => 50);
+                $colonne[chr($colonna++)] = array('nome' => 'Azioni future', 'larghezza' => 50);
+                $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
+                break;
         }
-        $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
         return $colonne;
     }
 

@@ -1,0 +1,9 @@
+<td class="audit">
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        <div class="typography2 nocursor" contenteditable="true">
+    {% endif %}
+        {{ entity.audit|raw|nl2br }}
+    {% if app.user.hasRole(['C_GESTORE_H']) %}
+        </div>
+    {% endif %}
+</td>

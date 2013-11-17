@@ -40,7 +40,7 @@ class AuditController extends Controller {
             'mode' => $mode,
             'tds' => $tds,
             'sorting' => $sorting,
-            'twig_button' => 'ClaimsHBundle:MonthlyReport:button.html.twig',
+            'twig_button' => 'ClaimsHBundle:Audit:button.html.twig',
         );
     }
 
@@ -91,16 +91,6 @@ class AuditController extends Controller {
             'class' => $this->getParam('ricerca') ? 'label-success' : 'label-info',
             'icon' => 'ico-search'
         );
-        $out['stampa'] = array(
-            'route' => $this->getParam('_route') . '_stampa',
-            'label' => 'Versione per la stampa',
-            'icon' => 'ico-printer',
-            'class' => 'label-warning',
-            'target' => '_blank'
-        );
-        if ($this->getParam('ricerca')) {
-            $out['stampa']['params'] = array('ricerca' => $this->getParam('ricerca'));
-        }
         return $out;
     }
 
@@ -111,7 +101,7 @@ class AuditController extends Controller {
         $filtri = array(
             'in' => array(
                 'cliente' => $cliente->getId(),
-                'inMonthlyReport' => true,
+                'inAudit' => true,
             ),
             'out' => array(
             ),
@@ -179,102 +169,4 @@ class AuditController extends Controller {
         $this->persist($this->getUser());
         return $filtri;
     }
-
-    /**
-     * @Route("-form", name="claims_audit_hospital_import_form")
-     * @Template()
-     */
-    public function formAction() {
-        return array();
-    }
-
-    /**
-     * @Route("-callback", name="claims_audit_hospital_import_callback", options={"expose": true})
-     * @Template()
-     */
-    public function callbackAction() {
-        set_time_limit(3600);
-        $source = __DIR__ . '/../../../../web' . $this->getParam('file');
-        $out = $this->importBdx($this->getUser()->getCliente(), $source);
-        return $out;
-    }
-
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
-        set_time_limit(3600);
-        $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
-        $pratiche_aggiornate = $pratiche_nuove = array();
-        $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
-        //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
-        $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($cliente);
-        $aggiornamenti = array();
-        foreach ($data->sheets as $sheet) {
-            $sheet = $sheet['cells'];
-            $start = false;
-            $colonne = array();
-            foreach ($sheet as $riga => $valori_riga) {
-                if (!$start) {
-                    if (isset($valori_riga[1]) && in_array($valori_riga[1], array('INSURED'))) {
-                        $colonne = $valori_riga;
-                        $start = true;
-                    }
-                } else {
-                    if (!isset($valori_riga[1]) || !$valori_riga[1]) {
-                        break;
-                    } else {
-                        try {
-                            $this->getEm()->beginTransaction();
-                            $pratiche = $this->getRepository('ClaimsHBundle:Pratica')->cercaDaMR($cliente, $valori_riga[2], $valori_riga[1], $valori_riga[3]);
-                            foreach ($pratiche as $pratica) {
-                                /* @var $pratica \Claims\HBundle\Entity\Pratica */
-                                $pratica->setInMonthlyReport(true);
-                                foreach ($valori_riga as $idx => $value) {
-                                    if (!isset($colonne[$idx])) {
-                                        break;
-                                    }
-                                    switch ($colonne[$idx]) {
-                                        case 'DESCRIPTION OF EVENT':
-                                            if ($value) {
-                                                $pratica->setTextMonthlyReport($value);
-                                            }
-                                            break;
-                                        default: break;
-                                    }
-                                }
-                                $this->persist($pratica);
-                                if ($pratica->getGestore()) {
-                                    $aggiornamenti[$pratica->getGestore()->getId()][] = $pratica;
-                                } else {
-                                    foreach ($cliente->getUtenze() as $gestore) {
-                                        if ($gestore->hasRole('C_ADMIN')) {
-                                            $aggiornamenti[$gestore->getId()][] = $pratica;
-                                        }
-                                    }
-                                }
-                                $aggiornamenti[0][] = $pratica;
-                            }
-                            if(count($pratiche) == 0) {
-                                $aggiornamenti['no'][] = $valori_riga;
-                            }
-                            $this->getEm()->commit();
-                        } catch (\Exception $e) {
-                            $this->getEm()->rollback();
-                            throw $e;
-                        }
-                    }
-                }
-            }
-        }
-        foreach ($cliente->getUtenze() as $gestore) {
-            /* @var $gestore \JF\ACLBundle\Entity\Gestore */
-            if ($gestore->hasRole('C_ADMIN')) {
-                $this->notify($gestore, 'Monthly Report generale', 'ClaimsHBundle:email:monthlyReport', array('pratiche' => $aggiornamenti[0], 'pratiche_non_trovate' => $aggiornamenti['no']));
-            }
-            if (isset($aggiornamenti[$gestore->getId()])) {
-                $this->notify($gestore, 'Monthly Report personale di '.$gestore->getNome(), 'ClaimsHBundle:email:monthlyReport', array('pratiche' => $aggiornamenti[$gestore->getId()]));
-            }
-        }
-
-        return array('pratiche' => $aggiornamenti);
-    }
-
 }

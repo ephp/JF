@@ -30,6 +30,18 @@ $(document).ready(function() {
                 $('#note_note').val($(this).html().trim());
                 assegnaNote();
             }
+            if(td.hasClass('audit')) {
+                $('#cambia_audit_a').text(tr.attr('titolo'));
+                $('#audit_id').val(tr.attr('id'));
+                $('#audit_audit').val($(this).html().trim());
+                assegnaAudit();
+            }
+            if(td.hasClass('azioni')) {
+                $('#cambia_azioni_a').text(tr.attr('titolo'));
+                $('#azioni_id').val(tr.attr('id'));
+                $('#azioni_azioni').val($(this).html().trim());
+                assegnaAzioni();
+            }
             if(td.hasClass('dati_recupero')) {
                 $('#cambia_dati_recupero_a').text(tr.attr('titolo'));
                 $('#dati_recupero_id').val(tr.attr('id'));
@@ -112,6 +124,54 @@ function assegnaNote() {
         var riga = $('#' + $('#note_id').val());
         var note = riga.find('.note').find('a');
         note.text(out.note);
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.label');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        $.fancybox.close();
+    });
+}
+
+function assegnaAudit() {
+    $('#bt_cambia_audit').hide();
+    $('#wait_cambia_audit').show();
+    var form = $('#cambia_audit');
+    $.post(Routing.generate('claims_hospital_cambia_audit'), form.serialize(), function(out) {
+        var riga = $('#' + $('#audit_id').val());
+        var audit = riga.find('.audit').find('a');
+        audit.text(out.audit);
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.label');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        $.fancybox.close();
+    });
+}
+
+function assegnaAzioni() {
+    $('#bt_cambia_azioni').hide();
+    $('#wait_cambia_azioni').show();
+    var form = $('#cambia_azioni');
+    $.post(Routing.generate('claims_hospital_cambia_azioni'), form.serialize(), function(out) {
+        var riga = $('#' + $('#azioni_id').val());
+        var azioni = riga.find('.azioni').find('a');
+        azioni.text(out.azioni);
         var label = riga.find('.label');
         var abbr = label.find('abbr');
         label = riga.find('.label');

@@ -96,11 +96,17 @@
 {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
     {% render(controller("ClaimsHBundle:Render:cambiaStato")) %}
 {% endif %}
-{% if app.user.hasRole(['C_GESTORE_H']) %}
+{% if 'note' in tds %}
     {% render(controller("ClaimsHBundle:Render:cambiaNote")) %}
 {% endif %}
-{% if app.user.hasRole(['C_RECUPERI_H']) %}
+{% if 'datiRecupero' in tds %}
     {% render(controller("ClaimsHBundle:Render:cambiaDatiRecupero")) %}
+{% endif %}
+{% if 'audit' in tds %}
+    {% render(controller("ClaimsHBundle:Render:cambiaAudit")) %}
+{% endif %}
+{% if 'azioni' in tds %}
+    {% render(controller("ClaimsHBundle:Render:cambiaAzioni")) %}
 {% endif %}
 {% if app.user.hasRole('C_ADMIN') %}
     {% render(controller("ClaimsHBundle:Render:cambiaDasc")) %}

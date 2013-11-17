@@ -57,6 +57,24 @@ class RenderController extends Controller {
     }
 
     /**
+     * @Route("/audit", name="render_claims_hospital_audit")
+     * @Template()
+     */
+    public function cambiaAuditAction() {
+        return array(
+        );
+    }
+
+    /**
+     * @Route("/azioni", name="render_claims_hospital_azioni")
+     * @Template()
+     */
+    public function cambiaAzioniAction() {
+        return array(
+        );
+    }
+
+    /**
      * @Route("/dati_recupero", name="render_claims_hospital_dati_recupero")
      * @Template()
      */

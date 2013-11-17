@@ -41,7 +41,7 @@ class TabelloneController extends Controller {
      * @Route("-cerca/",           name="claims_hospital_cerca",         defaults={"mode": "cerca"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
-    public function indexAction($mode) {
+    public function indexAction($mode, $first = true) {
         try {
             $sistemi = $this->getSistemi();
             $sorting = $this->sorting();
@@ -49,9 +49,12 @@ class TabelloneController extends Controller {
             $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
             $tds = $this->getColonne($mode);
         } catch (\Exception $e) {
-            $this->getUser()->setData(null);
+            $this->getUser()->setDato(null);
             $this->persist($this->getUser());
-            return $this->indexAction($mode);
+            if($first) {
+                return $this->indexAction($mode, false);
+            }
+            throw $e;
         }
         return array(
             'pagination' => $pagination,
@@ -255,6 +258,64 @@ class TabelloneController extends Controller {
         }
         $priorita = $pratica->getPriorita();
         return $this->jsonResponse(array('note' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getNote(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
+
+    /**
+     * @Route("-cambia-audit/", name="claims_hospital_cambia_audit", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     */
+    public function cambiaAuditAction() {
+        $req = $this->getParam('audit');
+
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+
+        $audit = $req['audit'];
+
+        try {
+            $this->getEm()->beginTransaction();
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            }
+
+            $pratica->setAudit($audit);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        $priorita = $pratica->getPriorita();
+        return $this->jsonResponse(array('audit' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getAudit(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
+
+    /**
+     * @Route("-cambia-azioni/", name="claims_hospital_cambia_azioni", options={"expose": true, "ACL": {"in_role": {"C_GESTORE_H"}}}, defaults={"_format": "json"})
+     */
+    public function cambiaAzioniAction() {
+        $req = $this->getParam('azioni');
+
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+
+        $azioni = $req['azioni'];
+
+        try {
+            $this->getEm()->beginTransaction();
+
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'Assegnato'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            }
+
+            $pratica->setAzioni($azioni);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        $priorita = $pratica->getPriorita();
+        return $this->jsonResponse(array('azioni' => \Ephp\UtilityBundle\Utility\String::tronca($pratica->getAzioni(), 100), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
 
     /**

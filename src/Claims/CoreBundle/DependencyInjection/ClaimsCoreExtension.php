@@ -56,7 +56,7 @@ class ClaimsCoreExtension extends Extension implements IExtension, ITipiEventi {
             'submenu' => array(),
             'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
             'order' => 110,
-            'a' => array('class' => 'bldblue'),
+            'a' => array('class' => 'blpurple'),
             'icon' => 'ico-tools',
         );
 

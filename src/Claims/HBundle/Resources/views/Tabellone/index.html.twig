@@ -30,13 +30,15 @@
     {% endif %}
 </div>
     
-<div class="row-fluid no-display" id="ricerca">
-    <div class="span12">
-        <div class="widgets">
-            {% render(controller("ClaimsHBundle:Widgets:cerca")) %}
+{% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
+    <div class="row-fluid no-display" id="ricerca">
+        <div class="span12">
+            <div class="widgets">
+                {% render(controller("ClaimsHBundle:Widgets:cerca")) %}
+            </div>
         </div>
     </div>
-</div>
+{% endif %}
 
 {% if sistemi is defined %}
     <div class="row-fluid">

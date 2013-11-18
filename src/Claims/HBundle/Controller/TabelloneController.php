@@ -69,6 +69,39 @@ class TabelloneController extends Controller {
     }
 
     /**
+     * @Route("-ricerca/", name="claims_hospital_ricerca",  defaults={"mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Template("ClaimsHBundle:Tabellone:index.html.twig")
+     */
+    public function ricercaAction($mode, $first = true) {
+        try {
+            $this->getUser()->set('claims_h_sistema', 'tutti');
+            $sistemi = $this->getSistemi();
+            $sorting = $this->sorting();
+            $null = null;
+            $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'));
+            $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+            $tds = $this->getColonne($mode);
+        } catch (\Exception $e) {
+            $this->getUser()->setDato(null);
+            $this->persist($this->getUser());
+            if($first) {
+                return $this->ricercaAction($mode, false);
+            }
+            throw $e;
+        }
+        return array(
+            'pagination' => $pagination,
+            'show_gestore' => true,
+            'links' => $this->buildLinks(),
+            'mode' => $mode,
+            'tds' => $tds,
+            'sistemi' => $sistemi,
+            'sistema' => $this->getUser()->get('claims_h_sistema'),
+            'sorting' => $sorting,
+        );
+    }
+
+    /**
      * @Route("-stati/{stato}",           name="claims_stati_hospital",           defaults={"mode": "default", "stato": "default"},   options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stati-completo/{stato}",  name="claims_stati_hospital_completo",  defaults={"mode": "completo", "stato": "default"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-stati-personale/{stato}", name="claims_stati_hospital_personale", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
@@ -110,6 +143,24 @@ class TabelloneController extends Controller {
     public function stampaAction($mode, $monthly_report) {
         $sistemi = $this->getSistemi();
         $filtri = $this->buildFiltri($mode);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        return array(
+            'entities' => $entities,
+            'show_gestore' => true,
+            'mode' => $mode,
+            'monthly_report' => $monthly_report !== false,
+        );
+    }
+
+    /**
+     * @Route("-ricerca-stampa/{monthly_report}", name="claims_hospital_ricerca_stampa", defaults={"monthly_report": false, "mode": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Template()
+     */
+    public function stampaRicercaAction($mode, $monthly_report) {
+        $this->getUser()->set('claims_h_sistema', 'tutti');
+        $sistemi = $this->getSistemi();
+        $null = null;
+        $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'));
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
         return array(
             'entities' => $entities,

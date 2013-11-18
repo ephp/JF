@@ -99,7 +99,61 @@ class XlsController extends Controller {
                 return "Riepilogo";
         }
     }
+    
+    /**
+     * @Route("-ricerca/{vista}", name="claims_hospital_ricerca_xls", defaults={"vista": 1, "mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Template()
+     */
+    public function stampaRicercaAction($mode, $vista) {
+        $excelService = $this->get('xls.service_xls5');
+        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
+        $excel = $excelService->excelObj;
+        /* @var $excel \PHPExcel */
+
+        $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
+                ->setLastModifiedBy($this->getUser()->getCliente()->getNome())
+                ->setTitle('Ricerca '.$this->vistaTitle($vista) . ' ' . date('m/Y'))
+                ->setSubject('Ricerca '.$this->vistaTitle($vista) . ' ' . date('m/Y'))
+                ->setDescription("Generato automaticamente da JF-System")
+                ->setKeywords('Ricerca '.$this->vistaTitle($vista) . ", Hospital")
+                ->setCategory('Ricerca '.$this->vistaTitle($vista) . " Hospital");
+
+        $colonne = $this->getColonne($mode, $vista);
+
+        $null = null;
+        $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'));
+        if ($vista == $this->V_MONTLY_REPORT) {
+            $filtri['in']['inMonthlyReport'] = true;
+        }
+        if ($vista == $this->V_AUDIT) {
+            $filtri['in']['inAudit'] = true;
+        }
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+
+        $sheet = $excel->setActiveSheetIndex(0);
+        /* @var $sheet \PHPExcel_Worksheet */
+
+        $this->fillSheet($sheet, $colonne, $entities, $vista == $this->V_MONTLY_REPORT);
+
+        $excel->getActiveSheet()->setTitle($this->vistaTitle($vista) . " Hospital");
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+
+        //create the response
+        $response = $excelService->getResponse();
+        /* @var $response \Symfony\Component\HttpFoundation\Response */
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=Ricerca_' . (str_replace(' ', '_', $this->vistaTitle($vista)) . date('-d-m-Y') ) . '.xls;');
+
+        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+    }
+    
     /**
      */
     public function xlsMonthlyAction($mode, $monthly_report) {

@@ -49,6 +49,17 @@ class PraticaRepository extends EntityRepository {
                                     ->setParameter('empty', '')
                                     ->setParameter('false', false);
                             break;
+                        case 'q':
+                            /* @var $value \DateTime */
+                            $q->leftJoin('p.eventi', 'e')
+                                    ->andWhere("
+                                        p.claimant LIKE :{$field}
+                                     OR p.note LIKE :{$field}
+                                     OR p.datiRecupero LIKE :{$field}
+                                     OR e.titolo LIKE :{$field}
+                                     OR e.note LIKE :{$field}")
+                                    ->setParameter($field, "%{$value}%");
+                            break;
                         case 'evento':
                             /* @var $value \DateTime */
                             $da = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));

@@ -5,15 +5,20 @@
             <span class="ico-search"></span>
         </div>
     </div>
-    <form>
+    <form action="{{ path('claims_hospital_ricerca') }}" id="ricerca_h" method="GET">
         <div class="right">
             <h4>Claims Hospital</h4>
             <input name="q" type="text" value="" />
-            <abbr title="Cerca per nome Claimant, all'interno delle Note, dei campi Recupero e del Calendario" class="ico-info">Dove cerca</abbr>
+            <abbr title="Cerca per nome Claimant, all'interno delle Note, dei Dati Recupero e del Calendario" class="ico-info">Dove cerca</abbr>
         </div>
         <div class="bottom">
-            <a href="javascript:$(this).closest('form').submit()">Cerca</a>
+            <a href="javascript:ricercaH()">Cerca</a>
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    function ricercaH() {
+        $('#ricerca_h').submit();
+    }
+</script>
 {% endif %}

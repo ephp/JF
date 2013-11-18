@@ -206,7 +206,7 @@ trait TabelloneController {
         return $out;
     }
 
-    private function buildFiltri(&$mode, &$stato = null) {
+    private function buildFiltri(&$mode, &$stato = null, $q = null) {
         $logger = $this->get('logger');
         $cliente = $this->getUser()->getCliente();
         /* @var $cliente \JF\ACLBundle\Entity\Cliente */
@@ -217,6 +217,9 @@ trait TabelloneController {
             'out' => array(
             ),
         );
+        if($q) {
+            $filtri['in']['q'] = $q;
+        }
         if ($this->getUser()->get('claims_h_sistema') != 'tutti') {
             $filtri['in']['sistema'] = $this->getUser()->get('claims_h_sistema');
         }
@@ -291,6 +294,7 @@ trait TabelloneController {
                 $filtri['out']['gestore'] = null;
                 break;
             case 'completo':
+            case 'cerca':
                 break;
             case 'chiusi':
                 $filtri['in']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));

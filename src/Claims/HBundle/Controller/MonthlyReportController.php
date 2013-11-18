@@ -41,6 +41,7 @@ class MonthlyReportController extends Controller {
             'tds' => $tds,
             'sorting' => $sorting,
             'twig_button' => 'ClaimsHBundle:MonthlyReport:button.html.twig',
+            'query' => $this->getQuery(),
         );
     }
 

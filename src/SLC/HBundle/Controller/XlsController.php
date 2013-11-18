@@ -30,14 +30,15 @@ class XlsController extends Controller {
      * @Route("-senza-gestore/{vista}",       name="claims_hospital_senza_gestore_xls",       defaults={"vista": 1, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Route("-recuperati/{vista}",          name="claims_hospital_recuperati_xls",          defaults={"vista": 1, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
      * @Route("-recupero/{vista}",            name="claims_hospital_recupero_xls",            defaults={"vista": 1, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-mr/{vista}",                  name="claims_mr_hospital_xls",                  defaults={"vista": 2, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-personale/{vista}",        name="claims_mr_hospital_personale_xls",        defaults={"vista": 2, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-completo/{vista}",         name="claims_mr_hospital_completo_xls",         defaults={"vista": 2, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-mr-senza-gestore/{vista}",    name="claims_mr_hospital_senza_gestore_xls",    defaults={"vista": 2, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-audit/{vista}",               name="claims_audit_hospital_xls",               defaults={"vista": 3, "mode": "default"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-audit-personale/{vista}",     name="claims_audit_hospital_personale_xls",     defaults={"vista": 3, "mode": "personale"},      options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-audit-completo/{vista}",      name="claims_audit_hospital_completo_xls",      defaults={"vista": 3, "mode": "completo"},       options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-audit-senza-gestore/{vista}", name="claims_audit_hospital_senza_gestore_xls", defaults={"vista": 3, "mode": "senza_gestore"},  options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-cerca/{vista}",               name="claims_hospital_cerca_xls",               defaults={"vista": 1, "mode": "cerca"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr/{vista}",                  name="claims_mr_hospital_xls",                  defaults={"vista": 2, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-personale/{vista}",        name="claims_mr_hospital_personale_xls",        defaults={"vista": 2, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-completo/{vista}",         name="claims_mr_hospital_completo_xls",         defaults={"vista": 2, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-mr-senza-gestore/{vista}",    name="claims_mr_hospital_senza_gestore_xls",    defaults={"vista": 2, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-audit/{vista}",               name="claims_audit_hospital_xls",               defaults={"vista": 3, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-personale/{vista}",     name="claims_audit_hospital_personale_xls",     defaults={"vista": 3, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-completo/{vista}",      name="claims_audit_hospital_completo_xls",      defaults={"vista": 3, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-audit-senza-gestore/{vista}", name="claims_audit_hospital_senza_gestore_xls", defaults={"vista": 3, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
     public function xlsAction($mode, $vista) {
         $excelService = $this->get('xls.service_xls5');

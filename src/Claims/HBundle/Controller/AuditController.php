@@ -41,6 +41,7 @@ class AuditController extends Controller {
             'tds' => $tds,
             'sorting' => $sorting,
             'twig_button' => 'ClaimsHBundle:Audit:button.html.twig',
+            'query' => $this->getQuery(),
         );
     }
 

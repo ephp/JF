@@ -151,7 +151,7 @@ class RenderController extends Controller {
     private function createCercaForm(Pratica $entity, $mode) {
         $form = $this->createForm(new RicercaType($this->getUser()->getCliente()), $entity, array(
             'action' => $this->generateUrl('claims_hospital_'.$mode),
-            'method' => 'POST',
+            'method' => 'GET',
         ));
 
         $form->add('submit', 'submit', array('label' => ' Cerca', 'attr' => array('class' => 'btn ico-search')));

@@ -65,6 +65,7 @@ class TabelloneController extends Controller {
             'sistemi' => $sistemi,
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
+            'query' => $this->getQuery(),
         );
     }
 
@@ -98,6 +99,7 @@ class TabelloneController extends Controller {
             'sistemi' => $sistemi,
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
+            'query' => $this->getQuery(),
         );
     }
 
@@ -122,6 +124,7 @@ class TabelloneController extends Controller {
             'sistemi' => $sistemi,
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
+            'query' => $this->getQuery(),
         );
     }
 

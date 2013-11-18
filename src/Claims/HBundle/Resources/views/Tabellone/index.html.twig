@@ -12,6 +12,11 @@
         <span class="ico-archive"></span>
     </div>
     <h1>JF-Claims <small>Hospital</small></h1>
+    {% if app.user.hasRole(['C_GESTORE_H', 'C_RECUPERI_H']) %}
+        <div class="icon blue right white">
+            <a href="javascript:$('#ricerca').slideToggle();"><span class="ico-search" title="Ricerca"></span></a>
+        </div>
+    {% endif %}
     <div class="icon yellow right white">
         <a target="_blank" href="{{ path(app.request.get('_route') ~ '_stampa')}}{% if app.request.queryString %}?{{app.request.queryString }}{% endif %}"><span class="ico-printer" title="Stampa"></span></a>
     </div>
@@ -24,8 +29,15 @@
         {% include twig_button %}
     {% endif %}
 </div>
-
     
+<div class="row-fluid no-display" id="ricerca">
+    <div class="span12">
+        <div class="widgets">
+            {% render(controller("ClaimsHBundle:Widgets:cerca")) %}
+        </div>
+    </div>
+</div>
+
 {% if sistemi is defined %}
     <div class="row-fluid">
         <div class="span12">

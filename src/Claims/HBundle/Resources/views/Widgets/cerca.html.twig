@@ -1,4 +1,4 @@
-{% if not entity.bloccato %}
+{% if not app.user.cliente.bloccato %}
 <div class="widget blue icon">
     <div class="left">
         <div class="icon">
@@ -7,11 +7,12 @@
     </div>
     <form>
         <div class="right">
-            <b>Claims Hospital</b><br/>
+            <h4>Claims Hospital</h4>
             <input name="q" type="text" value="" />
+            <abbr title="Cerca per nome Claimant, all'interno delle Note, dei campi Recupero e del Calendario" class="ico-info">Dove cerca</abbr>
         </div>
         <div class="bottom">
-            <a href="{{ path('utenze') }}">Gestisci</a>
+            <a href="javascript:$(this).closest('form').submit()">Cerca</a>
         </div>
     </form>
 </div>

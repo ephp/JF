@@ -32,8 +32,8 @@ trait CoreExtension {
             if(!isset($widgets[$role])) {
                 $widgets[$role] = array();
             }
+            $widgets[$role][$key] = array('name' => $name, 'render' => $render, 'params' => $params);
         }
-        $widgets[$role][$key] = array('name' => $name, 'render' => $render, 'params' => $params);
     }
 
 }

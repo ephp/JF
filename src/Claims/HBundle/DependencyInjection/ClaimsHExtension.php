@@ -51,49 +51,48 @@ class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
                 'show' => array('in_role' => array('R_EPH')),
                 'order' => 10,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Borderaux Hospital',
                 'route' => 'claims_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 10,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Audit Hospital',
                 'route' => 'claims_audit_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 15,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Monthly Report Hospital',
                 'route' => 'claims_mr_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 17,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Stati pratiche Hospital',
                 'route' => 'claims_stati_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H')),
                 'order' => 20,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Calendario Hospital',
                 'route' => 'claims_calendario_hospital',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
                 'order' => 30,
             );
-            
+
             $menu['claims']['submenu'][] = array(
                 'label' => 'Ritardi Hospital',
                 'route' => 'claims_h_ritardi',
                 'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('cl.h-pratiche' => array('cal', 'full', 'trial', 'slc'))),
                 'order' => 60,
             );
-
         } else {
 
             $menu['admin']['submenu']['claims']['submenu'][] = array(
@@ -102,7 +101,6 @@ class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
                 'show' => array('in_role' => array('R_EPH')),
                 'order' => 10,
             );
-
         }
 
         $container->setParameter('jf.menu', $menu);
@@ -127,7 +125,11 @@ class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
     }
 
     public function setWidgets(ContainerBuilder $container) {
-        
+        $widgets = $container->getParameter('jf.widgets');
+
+        $this->newWidget($widgets, 'claims.h.cerca', 'Cerca Pratiche Hospital', array('C_GESTORE_H', 'C_RECUPERI_H'), 'ClaimsHBundle:Widgets:cerca');
+
+        $container->setParameter('jf.widgets', $widgets);
     }
 
     public function setTipoEventi(ContainerBuilder $container) {

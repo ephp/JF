@@ -1,0 +1,18 @@
+{% if not entity.bloccato %}
+<div class="widget blue icon">
+    <div class="left">
+        <div class="icon">
+            <span class="ico-search"></span>
+        </div>
+    </div>
+    <form>
+        <div class="right">
+            <b>Claims Hospital</b><br/>
+            <input name="q" type="text" value="" />
+        </div>
+        <div class="bottom">
+            <a href="{{ path('utenze') }}">Gestisci</a>
+        </div>
+    </form>
+</div>
+{% endif %}

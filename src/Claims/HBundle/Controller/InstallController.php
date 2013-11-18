@@ -36,7 +36,7 @@ class InstallController extends Controller {
                     'ClaimsHBundle:Install:pratiche_base.txt.twig',             //TWIG descrizione
                     365,                                                        //Durata
                     array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'),            //Ruoli abilitati
-                    array(),                                                    //Widget abilitati
+                    array('claims.h.cerca'),                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => false,                                 //  Invio email giornaliere
@@ -56,7 +56,7 @@ class InstallController extends Controller {
                     365,                                                        //Durata
                     array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
                                                                                 //Ruoli abilitati
-                    array(),                                                    //Widget abilitati
+                    array('claims.h.cerca'),                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere
@@ -79,7 +79,7 @@ class InstallController extends Controller {
                     365,                                                        //Durata
                     array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
                                                                                 //Ruoli abilitati
-                    array(),                                                    //Widget abilitati
+                    array('claims.h.cerca'),                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere
@@ -102,7 +102,7 @@ class InstallController extends Controller {
                     30,                                                         //Durata
                     array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
                                                                                 //Ruoli abilitati
-                    array(),                                                    //Widget abilitati
+                    array('claims.h.cerca'),                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere
@@ -126,7 +126,7 @@ class InstallController extends Controller {
                     null,                                                       //Durata
                     array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H', 'C_SUPVIS_H'),
                                                                                 //Ruoli abilitati
-                    array(),                                                    //Widget abilitati
+                    array('claims.h.cerca'),                                    //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         'daily_email' => true,                                  //  Invio email giornaliere

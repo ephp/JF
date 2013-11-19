@@ -403,6 +403,12 @@ class XlsController extends Controller {
                     case 'Offerta Loro':
                         $valore = $entity->getOffertaLoro();
                         break;
+                    case 'Worstcase Scenario':
+                        $valore = $entity->getWorstcaseScenario();
+                        break;
+                    case 'Proposed Reserve':
+                        $valore = $entity->getProposedReserve();
+                        break;
                     case 'Recupero Offerta Nostra':
                         $valore = $entity->getRecuperoOffertaNostra();
                         if ($valore <= 100) {
@@ -476,6 +482,8 @@ class XlsController extends Controller {
                     case 'LT Fees Reserve':
                     case 'Offerta Nostra':
                     case 'Offerta Loro':
+                    case 'Worstcase Scenario':
+                    case 'Proposed Reserve':
                         $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
@@ -581,7 +589,9 @@ class XlsController extends Controller {
                 $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Audit', 'larghezza' => 50);
-                $colonne[chr($colonna++)] = array('nome' => 'Percentuale', 'larghezza' => 50);
+                $colonne[chr($colonna++)] = array('nome' => 'Worstcase Scenario', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Proposed Reserve', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Percentuale', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Azioni future', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
                 break;

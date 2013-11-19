@@ -404,6 +404,8 @@ trait TabelloneController {
                 $colonne[] = 'amountReserved';
                 $colonne[] = 'note';
                 $colonne[] = 'audit';
+                $colonne[] = 'worstcase';
+                $colonne[] = 'proposed';
                 $colonne[] = 'percentuale';
                 $colonne[] = 'azioni';
                 $colonne[] = 'stato';

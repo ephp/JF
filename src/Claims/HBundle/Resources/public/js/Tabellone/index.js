@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    sanitizeCurrency([$('.currency')]);
+    
     $('span.label').click(function() {
         var tr = $(this).closest('tr');
         $('#cambia_priorita_a').text(tr.attr('titolo'));
@@ -57,6 +59,16 @@ $(document).ready(function() {
     $('.goto-mr').click(function(){
         var to = $(this).attr('to');
         $('#'+to).focus().append('<br/>'+$(this).attr('title'));
+    });
+    
+    $('.goto').click(function(){
+        var from = $(this).attr('from');
+        var to = $(this).attr('to');
+        if(from) {
+            $('#'+to).focus().append('<br/>'+$('#'+from).html());
+        } else {
+            $('#'+to).focus().append('<br/>'+$(this).attr('title'));
+        }
     });
 
     $('td.stato_pratica').click(function() {

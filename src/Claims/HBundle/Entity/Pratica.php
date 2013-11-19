@@ -640,6 +640,20 @@ class Pratica {
     private $percentuale;
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="worstcase_scenario", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $worstcaseScenario;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="proposed_reserve", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $proposedReserve;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -2288,8 +2302,26 @@ class Pratica {
         $this->percentuale = $percentuale;
         return $this;
     }
+    
+    public function getWorstcaseScenario() {
+        return $this->worstcaseScenario;
+    }
 
-    public function getStatoAlign() {
+    public function getProposedReserve() {
+        return $this->proposedReserve;
+    }
+
+    public function setWorstcaseScenario($worstcaseScenario) {
+        $this->worstcaseScenario = $worstcaseScenario;
+        return $this;
+    }
+
+    public function setProposedReserve($proposedReserve) {
+        $this->proposedReserve = $proposedReserve;
+        return $this;
+    }
+
+        public function getStatoAlign() {
         $diff = $this->alignedAt->diff(new \DateTime(), true);
         /* @var $diff \DateInterval */
         if ($diff->d <= 7) {

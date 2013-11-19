@@ -14,13 +14,13 @@
     <a href="{{ path('claims_hospital_dettagli', { 'slug': entity.slug }) }}" class="fancybox icon">
         <span class="icon-info-sign" title="Click per vedere la scheda">
     </a>
-    {% if app.user.hasRole(['C_GESTORE_H']) and 'note' in tds and entity.monthlyReport %} 
-        <span class="ico-forward-2 goto-mr" title="{% if entity.monthlyReport.note|trim != '' %}{{ entity.monthlyReport.note }}{% else %}{{ entity.monthlyReport.titolo }}{% endif %}" to="note_{{ entity.slug}}"></span>
+    {% if app.user.hasRole(['C_GESTORE_H']) and ('note' in tds or 'audit' in tds) and entity.monthlyReport %} 
+        <span class="ico-forward-2 goto" title="{% if entity.monthlyReport.note|trim != '' %}{{ entity.monthlyReport.note }}{% else %}{{ entity.monthlyReport.titolo }}{% endif %}" to="{% if 'audit' in tds %}audit{% else %}note{% endif %}_{{ entity.slug}}"></span>
     {% endif %}
     {% if entity.inMonthlyReport %}
         <span class="ico-star" title="{{ entity.textMonthlyReport }}"></span>
     {% endif %}
     {% if entity.inAudit %}
-        <span class="ico-alarm" title="Sotto Audit"></span>
+        <span class="ico-alarm goto" title="Copia note in Audit" from="note_{{ entity.slug}}" to="audit_{{ entity.slug}}"></span>
     {% endif %}
 </td>

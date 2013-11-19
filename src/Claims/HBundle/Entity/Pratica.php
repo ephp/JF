@@ -1646,7 +1646,7 @@ class Pratica {
     public function getReportSoi($encode = false) {
         if ($encode) {
             $soi = $this->severityOfInjury();
-            return $soi[$this->reportSoi];
+            return isset($soi[$this->reportSoi]) ? $soi[$this->reportSoi] : $soi[intval($this->reportSoi)];
         }
         return $this->reportSoi;
     }

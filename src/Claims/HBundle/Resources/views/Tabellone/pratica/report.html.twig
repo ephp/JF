@@ -182,6 +182,7 @@
         <div class="block">
             <a href="{{ path('claims_hospital_report_pratica_new', {'slug': entity.slug}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label label-success ico-pen"> Aggiungi report</span></a>
             <a href="{{ path('claims_hospital_stampa_report', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label label-warning ico-printer"> Versione per la stampa</span></a>
+            <a href="{{ path('claims_hospital_word_report', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label dblue ico-file-3"> Versione per la stampa</span></a>
         </div>
     </div>
 </div>

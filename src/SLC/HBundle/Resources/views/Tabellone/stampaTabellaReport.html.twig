@@ -1,0 +1,149 @@
+{% extends '::word.html.twig' %}
+{% block body -%}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h1 class="ico-file-3">Report {{ entity }}</h1>
+        </div>
+    </div>
+</div>
+<table>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Claimant:</b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.claimant }}</td>
+        <td colspan="2"><b>TPA:</b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.ospedale.sistema.nome }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>SOI:</b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.getReportSoi(true) }}</td>
+        <td colspan="2"><b>N.Claim:</b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.codice }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Data evento (DOL):</b></td>
+        <td colspan="4" style="text-align: center;">{% if entity.reportDol %}{{ entity.reportDol|date('d/m/Y') }}{% endif %}</td>
+        <td colspan="2"><b>Data reclamo (DON):</b></td>
+        <td colspan="4" style="text-align: center;">{% if entity.reportDon %}{{ entity.reportDon|date('d/m/Y') }}{% endif %}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Descrizione evento:</b></td>
+        <td colspan="10">{{ entity.reportDescrizione|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>MPL:</b></td>
+        <td colspan="10">{{ entity.getReportMpl(true) }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Giudiziale:</b></td>
+        <td colspan="10">{{ entity.reportGiudiziale }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Other Policies:</b></td>
+        <td colspan="10">{{ entity.reportOtherPolicies|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Tipo danno (TPL):</b></td>
+        <td colspan="4">{{ entity.getReportTypeOfLoss(true) }}</td>
+        <td colspan="2"><b>Dipartimento ospedaliero:</b></td>
+        <td colspan="4">{{ entity.getReportServiceProvider(true) }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Possible Recovery:</b></td>
+        <td colspan="4">{{ entity.reportPossibleRecovery }} €</td>
+        <td colspan="2"><b>Amount Reserved:</b></td>
+        <td colspan="4">{% if entity.reportAmountReserved < 0 %}N.P.{% else %}{{ entity.reportAmountReserved }} €{% endif %}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Applicable Deductable:</b></td>
+        <td colspan="4">{{ entity.reportApplicableDeductable }} € </td>
+        <td colspan="6"></td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Future Conduct:</b></td>
+        <td colspan="10">{{ entity.reportFutureConduct|raw }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="6"></td>
+        <td colspan="6">AVV. {{ entity.reportGestore.nome|upper }}</td>
+    </tr>
+</table>
+
+{% for report in entity.reports %}
+<div style="clear: both; page-break-after: always;"></div>
+<div class="page-header">
+        {% if no_back is not defined %}
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+        {% endif %}
+    <h2>Report #{{ entity.number }} del {{ entity.data|date('d/m/Y')}} <small>{{ entity.pratica }}</small></h2>
+</div>
+<table border="1">
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Copertura:</b></td>
+        <td colspan="9">{{ report.copertura|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Copertura:</b></td>
+        <td colspan="9">{{ report.copertura|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Stato:</b></td>
+        <td colspan="9">{{ report.stato|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Descrizione in fatto:</b></td>       
+        <td colspan="9">{{ report.descrizioneInFatto|nl2br }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Relazione avversaria:</b></td>    
+        <td colspan="9">{{ report.relazioneAvversaria|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Relazione ex adverso:</b></td>   
+        <td colspan="9">{{ report.relazioneExAdverso|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Medico Legale 1:</b></td>    
+        <td colspan="9">{{ report.MedicoLegale1|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Medico Legale 2:</b></td>      
+        <td colspan="9">{{ report.MedicoLegale2|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Medico Legale 3:</b></td>    
+        <td colspan="9">{{ report.MedicoLegale3|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Valutazione responsabilita:</b></td>     
+        <td colspan="9">{{ report.valutazioneResponsabilita|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Analisi danno:</b></td>    
+        <td colspan="9">{{ report.analisiDanno|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Riserva:</b></td>    
+        <td colspan="9">{{ report.riserva|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Possibile rivalsa:</b></td>     
+        <td colspan="9">{{ report.possibileRivalsa|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Azioni:</b></td>    
+        <td colspan="9">{{ report.azioni|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="3"><b>Richiesta SA:</b></td>     
+        <td colspan="9">{{ report.richiestaSa|nl2br }}</td>        
+    </tr>
+    <tr style="vertical-align: top">          
+        <td colspan="3"><b>Note:</b></td>     
+        <td colspan="9">{{ report.notePulite|nl2br }}</td>        
+    </tr>
+</table>
+{% endfor %}
+{% endblock %}

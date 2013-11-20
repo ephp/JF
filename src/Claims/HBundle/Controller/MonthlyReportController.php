@@ -70,7 +70,10 @@ class MonthlyReportController extends Controller {
     public function consegnaAction($sistema) {
         $tipoEvento = $this->getTipoEvento($this->CONSEGNA_MONTHLY_REPORT);
         /* @var $tipoEvento \Ephp\CalendarBundle\Entity\Tipo */
-        $n = $this->updateSql("INSERT INTO claims_h_eventi (
+        try {
+            $this->getEm()->beginTransaction();
+
+            $n = $this->updateSql("INSERT INTO claims_h_eventi (
 	`pratica_id`, 
 	`cliente_id`, 
 	`calendario_id`, 
@@ -98,23 +101,28 @@ class MonthlyReportController extends Controller {
     WHERE s.nome = :sistema
       AND p.cliente_id = :cliente
 ;", array(
-            'calendario' => $tipoEvento->getCalendario()->getId(),
-            'tipo' => $tipoEvento->getId(),
-            'titolo' => $tipoEvento->getNome(),
-            'true' => true,
-            'zero' => 0,
-            'sistema' => $sistema,
-            'cliente' => $this->getUser()->getCliente()->getId(),
-                )
-        );
-        $m = $this->updateSql("UPDATE claims_h_pratiche p
+                'calendario' => $tipoEvento->getCalendario()->getId(),
+                'tipo' => $tipoEvento->getId(),
+                'titolo' => $tipoEvento->getNome(),
+                'true' => true,
+                'zero' => 0,
+                'sistema' => $sistema,
+                'cliente' => $this->getUser()->getCliente()->getId(),
+                    )
+            );
+            $m = $this->updateSql("UPDATE claims_h_pratiche p
             SET p.in_monthly_report = :false
             WHERE p.cliente_id = :cliente
 ;", array(
-            'false' => false,
-            'cliente' => $this->getUser()->getCliente()->getId(),
-                )
-        );
+                'false' => false,
+                'cliente' => $this->getUser()->getCliente()->getId(),
+                    )
+            );
+            $this->getEm()->commit();
+        } catch (\Exception $ex) {
+            $this->getEm()->rollback();
+            throw $ex;
+        }
         return array(
             'n' => $n,
             'm' => $m,

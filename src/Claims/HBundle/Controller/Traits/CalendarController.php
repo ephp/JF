@@ -29,6 +29,8 @@ trait CalendarController {
     protected $RISERVA                      = "RES";
     protected $DEFINITO                     = "DEF";
     protected $RIPASSATONP                  = "RNP";
+    protected $CONSEGNA_MONTHLY_REPORT      = "CMR";
+    protected $CONSEGNA_AUDIT               = "CAU";
 
     /**
      * @return \Ephp\Bundle\CalendarBundle\Entity\Calendario
@@ -131,6 +133,12 @@ trait CalendarController {
                     break;
                 case $this->RIPASSATONP:
                     $tipo = $_tipo->createTipo($this->RIPASSATONP, 'Ripassato a N.P.', 'ff0000', $cal, false, false, false);
+                    break;
+                case $this->CONSEGNA_MONTHLY_REPORT:
+                    $tipo = $_tipo->createTipo($this->CONSEGNA_MONTHLY_REPORT, 'Consegna Monthly Report', '228822', $cal, false, false, true);
+                    break;
+                case $this->CONSEGNA_AUDIT:
+                    $tipo = $_tipo->createTipo($this->CONSEGNA_AUDIT, 'Consegna Audit', '228822', $cal, false, false, true);
                     break;
             }
         }

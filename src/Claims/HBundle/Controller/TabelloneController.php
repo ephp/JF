@@ -49,7 +49,7 @@ class TabelloneController extends Controller {
             $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
             $tds = $this->getColonne($mode);
         } catch (\Exception $e) {
-            $this->getUser()->setDato(null);
+            $this->getUser()->setDati(null);
             $this->persist($this->getUser());
             if($first) {
                 return $this->indexAction($mode, false);
@@ -83,7 +83,7 @@ class TabelloneController extends Controller {
             $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
             $tds = $this->getColonne($mode);
         } catch (\Exception $e) {
-            $this->getUser()->setDato(null);
+            $this->getUser()->setDati(null);
             $this->persist($this->getUser());
             if($first) {
                 return $this->ricercaAction($mode, false);

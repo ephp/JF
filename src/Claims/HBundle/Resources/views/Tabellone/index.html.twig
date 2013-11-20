@@ -126,5 +126,8 @@
 {% if app.user.hasRole('C_ADMIN') %}
     {% render(controller("ClaimsHBundle:Render:cambiaDasc")) %}
     {% render(controller("ClaimsHBundle:Render:cambiaGestore")) %}
+    {% if 'monthly' in tds %}
+        {% render(controller("ClaimsHBundle:Render:consegnaMonthly")) %}
+    {% endif %}
 {% endif %}
 {% endblock %}

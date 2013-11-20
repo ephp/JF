@@ -48,7 +48,7 @@ trait CalendarController {
 
     /**
      * @param string $tipo
-     * @return \Ephp\Bundle\CalendarBundle\Entity\Tipo
+     * @return \Ephp\CalendarBundle\Entity\Tipo
      */
     protected function getTipoEvento($sigla) {
         $cal = $this->getCalendar();

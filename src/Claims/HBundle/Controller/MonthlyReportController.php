@@ -63,6 +63,65 @@ class MonthlyReportController extends Controller {
         );
     }
 
+    /**
+     * @Route("-consegna/{sistema}", name="claims_mr_hospital_consegna", options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Template()
+     */
+    public function consegnaAction($sistema) {
+        $tipoEvento = $this->getTipoEvento($this->CONSEGNA_MONTHLY_REPORT);
+        /* @var $tipoEvento \Ephp\CalendarBundle\Entity\Tipo */
+        $n = $this->updateSql("INSERT INTO claims_h_eventi (
+	`pratica_id`, 
+	`cliente_id`, 
+	`calendario_id`, 
+	`tipo_id`, 
+	`data_ora`, 
+	`giorno_intero`, 
+	`titolo`, 
+	`note`, 
+	`importante`, 
+	`delta_g`
+)  
+	SELECT p.id,
+	       :cliente,
+	       :calendario,
+	       :tipo,
+	       now(),
+	       :true,
+	       :titolo,
+	       p.note,
+	       :true,
+	       :zero
+     FROM claims_h_pratiche p
+     LEFT JOIN claims_h_ospedali o ON p.ospedale_id = o.id
+     LEFT JOIN claims_h_sistemi s ON o.sistema_id = s.id
+    WHERE s.nome = :sistema
+      AND p.cliente_id = :cliente
+;", array(
+            'calendario' => $tipoEvento->getCalendario()->getId(),
+            'tipo' => $tipoEvento->getId(),
+            'titolo' => $tipoEvento->getNome(),
+            'true' => true,
+            'zero' => 0,
+            'sistema' => $sistema,
+            'cliente' => $this->getUser()->getCliente()->getId(),
+                )
+        );
+        $m = $this->updateSql("UPDATE claims_h_pratiche p
+            SET p.in_monthly_report = :false
+            WHERE p.cliente_id = :cliente
+;", array(
+            'false' => false,
+            'cliente' => $this->getUser()->getCliente()->getId(),
+                )
+        );
+        return array(
+            'n' => $n,
+            'm' => $m,
+            'sistema' => $sistema,
+        );
+    }
+
     private function buildLinks($full = true) {
         $out = array();
         if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
@@ -243,7 +302,7 @@ class MonthlyReportController extends Controller {
                                 }
                                 $aggiornamenti[0][] = $pratica;
                             }
-                            if(count($pratiche) == 0) {
+                            if (count($pratiche) == 0) {
                                 $aggiornamenti['no'][] = $valori_riga;
                             }
                             $this->getEm()->commit();
@@ -261,7 +320,7 @@ class MonthlyReportController extends Controller {
                 $this->notify($gestore, 'Monthly Report generale', 'ClaimsHBundle:email:monthlyReport', array('pratiche' => $aggiornamenti[0], 'pratiche_non_trovate' => $aggiornamenti['no']));
             }
             if (isset($aggiornamenti[$gestore->getId()])) {
-                $this->notify($gestore, 'Monthly Report personale di '.$gestore->getNome(), 'ClaimsHBundle:email:monthlyReport', array('pratiche' => $aggiornamenti[$gestore->getId()]));
+                $this->notify($gestore, 'Monthly Report personale di ' . $gestore->getNome(), 'ClaimsHBundle:email:monthlyReport', array('pratiche' => $aggiornamenti[$gestore->getId()]));
             }
         }
 

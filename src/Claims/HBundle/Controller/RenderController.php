@@ -178,6 +178,16 @@ class RenderController extends Controller {
             'entity' => $this->find('ClaimsHBundle:Pratica', $id),
         );
     }
+    
+    /**
+     * @Route("/monthly", name="render_claims_hospital_monthly")
+     * @Template()
+     */
+    public function consegnaMonthlyAction() {
+        return array(
+            'sistemi' => $this->findAll('ClaimsHBundle:Sistema'),
+        );
+    }
 
     
 }

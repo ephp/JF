@@ -139,7 +139,7 @@ class ImportController extends Controller {
                     foreach ($ospedali as $ospedale) {
                         $o[] = $ospedale->getId();
                     }
-                    $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'ospedale' => $o, 'alignedAt' => null), array('inAudit' => 'DESC', 'inMonthlyReport' => 'DESC', 'anno' => 'ASC', 'codice' => 'ASC'));
+                    $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'ospedale' => $o), array('alignedAt' => 'ASC', 'inAudit' => 'DESC', 'inMonthlyReport' => 'DESC', 'anno' => 'ASC', 'codice' => 'ASC'));
                     /* @var $pratica \Claims\HBundle\Entity\Pratica */
                     $pratica->setAlignedAt(new \DateTime());
                     $this->persist($pratica);

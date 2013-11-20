@@ -1,9 +1,11 @@
-<div class="icon red right white">
-    <a href="{{ path('contec_import_form', {'audit': 1}) }}"><span class="ico-upload-2" title="Carica Audit Contec"></span></a>
-</div>
-<div class="icon purple right white todo">
-    <a href="{{ path('contec_import_form', {'audit': 1}) }}"><span class="ico-upload-2" title="Carica Audit Ravinale"></span></a>
-</div>
-<div class="icon dblue right white">
-    <a href="#fb_consegna" class="fancybox"><span class="ico-chevron-right" title="Consegna Audit"></span></a>
-</div>
+{% if app.user.hasRole('C_ADMIN') %}
+    <div class="icon red right white">
+        <a href="{{ path('contec_import_form', {'audit': 1}) }}"><span class="ico-upload-2" title="Carica Audit Contec"></span></a>
+    </div>
+    <div class="icon purple right white todo">
+        <a href="javascript:;"><span class="ico-upload-2" title="Carica Audit Ravinale"></span></a>
+    </div>
+    <div class="icon dblue right white">
+        <a href="#fb_consegna" class="fancybox"><span class="ico-chevron-right" title="Consegna Audit"></span></a>
+    </div>
+{% endif %}

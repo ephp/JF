@@ -129,5 +129,8 @@
     {% if 'monthly' in tds %}
         {% render(controller("ClaimsHBundle:Render:consegnaMonthly")) %}
     {% endif %}
+    {% if 'audit' in tds %}
+        {% render(controller("ClaimsHBundle:Render:consegnaAudit")) %}
+    {% endif %}
 {% endif %}
 {% endblock %}

@@ -93,7 +93,7 @@ class RenderController extends Controller {
             'stati' => $stati,
         );
     }
-    
+
     /**
      * @Route("/dettagli", name="render_claims_hospital_dettagli")
      * @Template()
@@ -102,7 +102,7 @@ class RenderController extends Controller {
         return array(
         );
     }
-    
+
     /**
      * @Route("/ricerca/{mode}", name="render_claims_hospital_ricerca")
      * @Template()
@@ -110,10 +110,10 @@ class RenderController extends Controller {
     public function ricercaAction($mode) {
         $entity = new Pratica();
         $params = $this->getParam('ricerca');
-        if($params) {
+        if ($params) {
             foreach ($params as $param => $value) {
-                if(!in_array($param, array('submit', '_token')) && $value) {
-                    $fx = \Doctrine\Common\Util\Inflector::camelize('set_'.$param);
+                if (!in_array($param, array('submit', '_token')) && $value) {
+                    $fx = \Doctrine\Common\Util\Inflector::camelize('set_' . $param);
                     switch ($param) {
                         case 'ospedale':
                             $value = $this->find('ClaimsHBundle:Ospedale', $value);
@@ -150,7 +150,7 @@ class RenderController extends Controller {
      */
     private function createCercaForm(Pratica $entity, $mode) {
         $form = $this->createForm(new RicercaType($this->getUser()->getCliente()), $entity, array(
-            'action' => $this->generateUrl('claims_hospital_'.$mode),
+            'action' => $this->generateUrl('claims_hospital_' . $mode),
             'method' => 'GET',
         ));
 
@@ -158,7 +158,7 @@ class RenderController extends Controller {
 
         return $form;
     }
-    
+
     /**
      * @Route("/evento/{id}", name="render_claims_hospital_evento")
      * @Template()
@@ -168,7 +168,7 @@ class RenderController extends Controller {
             'entity' => $this->find('ClaimsHBundle:Pratica', $id),
         );
     }
-    
+
     /**
      * @Route("/link/{id}", name="render_claims_hospital_link")
      * @Template()
@@ -178,16 +178,29 @@ class RenderController extends Controller {
             'entity' => $this->find('ClaimsHBundle:Pratica', $id),
         );
     }
-    
+
     /**
-     * @Route("/monthly", name="render_claims_hospital_monthly")
-     * @Template()
+     * @Route("/audit", name="render_claims_hospital_audit")
+     * @Template("ClaimsHBundle:Render:consegnaMonthlyAudit.html.twig")
      */
     public function consegnaMonthlyAction() {
         return array(
+            'route' => 'claims_mr_hospital_consegna',
+            'label' => 'Monthly Report',
             'sistemi' => $this->findAll('ClaimsHBundle:Sistema'),
         );
     }
 
-    
+    /**
+     * @Route("/audit", name="render_claims_hospital_audit")
+     * @Template("ClaimsHBundle:Render:consegnaMonthlyAudit.html.twig")
+     */
+    public function consegnaAuditAction() {
+        return array(
+            'route' => 'claims_audit_hospital_consegna',
+            'label' => 'Audit',
+            'sistemi' => $this->findAll('ClaimsHBundle:Sistema'),
+        );
+    }
+
 }

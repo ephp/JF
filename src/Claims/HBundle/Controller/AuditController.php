@@ -63,6 +63,83 @@ class AuditController extends Controller {
         );
     }
 
+    /**
+     * @Route("-consegna/{sistema}", name="claims_audit_hospital_consegna", options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Template()
+     */
+    public function consegnaAction($sistema) {
+        $tipoEvento = $this->getTipoEvento($this->CONSEGNA_AUDIT);
+        /* @var $tipoEvento \Ephp\CalendarBundle\Entity\Tipo */
+        try {
+            $this->getEm()->beginTransaction();
+
+            $n = $this->updateSql("INSERT INTO claims_h_eventi (
+	`pratica_id`, 
+	`cliente_id`, 
+	`calendario_id`, 
+	`tipo_id`, 
+	`data_ora`, 
+	`giorno_intero`, 
+	`titolo`, 
+	`note`, 
+	`importante`, 
+	`delta_g`
+)  
+	SELECT p.id,
+	       :cliente,
+	       :calendario,
+	       :tipo,
+	       now(),
+	       :true,
+	       :titolo,
+	       CONCAT(
+                    'AUDIT:\n', 
+                    IF(p.audit IS NULL, 'N.P.', p.audit), '\n',
+                    'WORSTCASE SCENARIO:\n', 
+                    IF(p.worstcase_scenario IS NULL, '0', p.worstcase_scenario), ' €\n',
+                    'PROPOSED RESERVE:\n', 
+                    IF(p.proposed_reserve IS NULL, '0', p.proposed_reserve), ' €\n',
+                    'PERCENT:\n', 
+                    IF(p.percentuale IS NULL, '0', p.percentuale), '%\n',
+                    'AZIONI FUTURE:\n', 
+                    IF(p.azioni IS NULL, 'Non indicate', p.azioni)),
+	       :true,
+	       :zero
+     FROM claims_h_pratiche p
+     LEFT JOIN claims_h_ospedali o ON p.ospedale_id = o.id
+     LEFT JOIN claims_h_sistemi s ON o.sistema_id = s.id
+    WHERE s.nome = :sistema
+      AND p.cliente_id = :cliente
+;", array(
+                'calendario' => $tipoEvento->getCalendario()->getId(),
+                'tipo' => $tipoEvento->getId(),
+                'titolo' => $tipoEvento->getNome(),
+                'true' => true,
+                'zero' => 0,
+                'sistema' => $sistema,
+                'cliente' => $this->getUser()->getCliente()->getId(),
+                    )
+            );
+            $m = $this->updateSql("UPDATE claims_h_pratiche p
+            SET p.in_audit = :false
+            WHERE p.cliente_id = :cliente
+;", array(
+                'false' => false,
+                'cliente' => $this->getUser()->getCliente()->getId(),
+                    )
+            );
+            $this->getEm()->commit();
+        } catch (\Exception $ex) {
+            $this->getEm()->rollback();
+            throw $ex;
+        }
+        return array(
+            'n' => $n,
+            'm' => $m,
+            'sistema' => $sistema,
+        );
+    }
+
     private function buildLinks($full = true) {
         $out = array();
         if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {

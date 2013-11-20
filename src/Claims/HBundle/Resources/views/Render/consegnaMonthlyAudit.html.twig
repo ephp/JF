@@ -1,9 +1,9 @@
-<div style="display: none; width: 250px" id="fb_consegna_monthly">
+<div style="display: none; width: 250px" id="fb_consegna">
     <div class="page-header">
         <div class="icon">
             <span class="ico-chevron-right"></span>
         </div>
-        <h1>Consegna <small>Monthly Report</small></h1>
+        <h1>Consegna <small>{{ label }}</small></h1>
     </div>
     <div class="row-fluid">
         <div class="span12">
@@ -11,7 +11,7 @@
                 <div class="data-fluid center">
                     Scegli il sistema:
                     {% for sistema in sistemi %}
-                        <a href="{{ path('claims_mr_hospital_consegna', {'sistema': sistema.nome}) }}"><span class="label label-green" style="margin-bottom: 3px;">{{ sistema.nome }}</span></a>
+                        <a href="{{ path(route, {'sistema': sistema.nome}) }}"><span class="label label-green" style="margin-bottom: 3px;">{{ sistema.nome }}</span></a>
                     {% endfor %}
                 </div>            
             </div>            

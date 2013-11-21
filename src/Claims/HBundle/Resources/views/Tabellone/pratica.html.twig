@@ -49,13 +49,16 @@
                     <li class=""><a href="#tab_imp" data-toggle="tab">Importa</a></li>
                     <li class=""><a href="#tab_info" data-toggle="tab">Scheda</a></li>
                     <li class=""><a href="#tab_repo" data-toggle="tab">Report</a></li>
+                    {% if entity.inAudit %}
+                        <li class=""><a href="#tab_audit" data-toggle="tab">Audit</a></li>
+                    {% endif %}
                     {% if entity.recupero or entity.recuperato %}
                         <li class=""><a href="#tab_rec" data-toggle="tab">Recupero</a></li>
                     {% endif %}
                     <li class=""><a href="#tab_note" data-toggle="tab">Note</a></li>
                     <li class=""><a href="#tab_link" data-toggle="tab">Link e Documenti</a></li>
                     <li class=""><a href="#tab_upd" data-toggle="tab">Aggiornamenti</a></li>
-                    {% if app.user.cliente.get('slc.h.import-import.on', false) %}
+                    {% if false and app.user.cliente.get('slc.h.import-import.on', false) %}
                         <li class="icon"><a class="ico-shuffle" href="{{ path('slc_import_claim', {'slug': entity.slug}) }}"> JF-Claims</a></li>
                     {% endif %}
                 </ul>
@@ -72,6 +75,11 @@
                     <div class="tab-pane" id="tab_repo">
                         {% include 'ClaimsHBundle:Tabellone:pratica/report.html.twig' %}
                     </div>
+                    {% if entity.inAudit %}
+                        <div class="tab-pane" id="tab_audit">
+                            {% include 'ClaimsHBundle:Tabellone:pratica/audit.html.twig' %}
+                        </div>
+                    {% endif %}
                     {% if entity.recupero or entity.recuperato %}
                         <div class="tab-pane" id="tab_rec">
                             {% if entity.recupero %}

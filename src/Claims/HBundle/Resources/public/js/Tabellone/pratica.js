@@ -5,6 +5,16 @@ $(document).ready(function() {
     sanitizeUrl([$('.auto_url')]);
     autoupdate();
     checkUm();
+    
+    $('.goto').click(function(){
+        var from = $(this).attr('from');
+        var to = $(this).attr('to');
+        if(from) {
+            $('#'+to).focus().val($('#'+to).val()+'<br/>'+$('#'+from).val());
+        } else {
+            $('#'+to).focus().append('<br/>'+$(this).attr('title'));
+        }
+    });
 });
 
 function aggiungiEvento() {
@@ -93,7 +103,10 @@ function _autoupdate($this) {
 }
 
 function autoupdate() {
-    $('.autoupdate').change(function() {
+//    $('.autoupdate').change(function() {
+//        _autoupdate($(this));
+//    });
+    $('.autoupdate').blur(function() {
         _autoupdate($(this));
     });
 

@@ -2302,7 +2302,7 @@ class Pratica {
         $this->percentuale = $percentuale;
         return $this;
     }
-    
+
     public function getWorstcaseScenario() {
         return $this->worstcaseScenario;
     }
@@ -2321,7 +2321,7 @@ class Pratica {
         return $this;
     }
 
-        public function getStatoAlign() {
+    public function getStatoAlign() {
         $diff = $this->alignedAt->diff(new \DateTime(), true);
         /* @var $diff \DateInterval */
         if ($diff->d <= 7) {
@@ -2345,36 +2345,66 @@ class Pratica {
         $da->setTime(0, 0, 0);
         $a = \DateTime::createFromFormat('d-m-Y', $day->format('d-m-Y'));
         $a->setTime(23, 59, 59);
-        $criteria = Criteria::create()
-                ->where(Criteria::expr()->gte("data_ora", $da))
-                ->andWhere(Criteria::expr()->lte("data_ora", $a))
-        ;
-
-        return $this->eventi->matching($criteria);
+        try {
+            $criteria = Criteria::create()
+                    ->where(Criteria::expr()->gte("data_ora", $da))
+                    ->andWhere(Criteria::expr()->lte("data_ora", $a))
+            ;
+            return $this->eventi->matching($criteria);
+        } catch (Exception $ex) {
+            $criteria = Criteria::create()
+                    ->where(Criteria::expr()->gte("dataOra", $da))
+                    ->andWhere(Criteria::expr()->lte("dataOra", $a))
+            ;
+            return $this->eventi->matching($criteria);
+        }
     }
 
-    public function getMonthlyReport() {
+    public function getMonthlyReport($fix = false) {
         $a = new \DateTime();
         $a->setTime(23, 59, 59);
-        $criteria = Criteria::create()
-                ->where(Criteria::expr()->lte("data_ora", $a))
-                ->orderBy(array('data_ora' => 'desc'));
-        ;
-
-        $evs = $this->eventi->matching($criteria);
-        foreach ($evs as $ev) {
-            /* @var $ev \Claims\HBundle\Entity\Evento */
-            switch ($ev->getTipo()->getSigla()) {
-                case 'OTH': case 'EJW': case 'MRV': case 'EML':
-                    return $ev;
-                case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
-                    if (trim($ev->getNote())) {
+        if(!$fix) {
+            $criteria = Criteria::create()
+                    ->where(Criteria::expr()->lte("data_ora", $a))
+                    ->orderBy(array('data_ora' => 'desc'))
+            ;
+            $evs = $this->eventi->matching($criteria);
+            foreach ($evs as $ev) {
+                /* @var $ev \Claims\HBundle\Entity\Evento */
+                switch ($ev->getTipo()->getSigla()) {
+                    case 'OTH': case 'JWE': case 'RVE': case 'EML':
                         return $ev;
-                    }
-                case 'JWB': case 'CNT': case 'RVP': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
-                default:
-                    break;
+                    case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
+                        if (trim($ev->getNote())) {
+                            return $ev;
+                        }
+                    case 'JWB': case 'CNT': case 'RVP': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
+                    default:
+                        break;
+                }
             }
+        } else {
+            $criteria = Criteria::create()
+                    ->where(Criteria::expr()->lte("dataOra", $a))
+                    ->orderBy(array('dataOra' => 'desc'))
+            ;
+            $evs = $this->eventi->matching($criteria); 
+            $mr = null;
+            foreach ($evs as $ev) {
+                /* @var $ev \Claims\HBundle\Entity\Evento */
+                switch ($ev->getTipo()->getSigla()) {
+                    case 'OTH': case 'JWE': case 'RVE': case 'EML':
+                        $mr = $ev;
+                    case 'ASC': case 'VIM': case 'RPM': case 'RER': case 'RSA': case 'TAX': case 'VER':
+                        if (trim($ev->getNote())) {
+                            $mr = $ev;
+                        }
+                    case 'JWB': case 'CNT': case 'RVP': case 'RIS': case 'CHS': case 'CHG': case 'PRI':
+                    default:
+                        break;
+                }
+            }
+            return $mr;
         }
         return null;
     }

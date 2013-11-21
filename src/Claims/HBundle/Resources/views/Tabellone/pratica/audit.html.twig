@@ -1,0 +1,53 @@
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block icon no-margin">
+            <h3 class="ico-pencil">Note</h3>
+        </div>
+        <textarea id="note_audit" class="expand autoupdate autogrow note" readonly="readonly" pratica="{{ entity.slug }}" name="note" placeholder="Inserisci qui le tue note">{{ entity.notePulite }}</textarea>
+        <span class="goto" title="Copia note in Audit" from="note_audit" to="audit">Copia</span>
+    </div>
+    <div class="span6">
+        <div class="block icon no-margin">
+            <h3 class="ico-star">Attività</h3>
+        </div>
+        {% set attivita = entity.monthlyReport(true)%}
+        <textarea id="attivita_audit" class="expand attivita" readonly="readonly" placeholder="Nessuna attività">{% if attivita %}{{ attivita.titolo }}{% if attivita.note %} {{ attivita.notePulite|raw }}{% endif %}{% endif %}</textarea>
+        <span class="goto" title="copia attività in Audit" from="attivita_audit" to="audit">Copia</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-alarm">Audit</h3>
+        </div>
+        <textarea id="audit" class="expand autoupdate autogrow audit" pratica="{{ entity.slug }}" name="audit" placeholder="Inserisci qui l'audit">{{ entity.audit }}</textarea>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span4">
+        <div class="block icon no-margin">
+            <h3 class="ico-money">Worstcase Scenario</h3>
+        </div>
+        <input type="text" value="{{ entity.worstcaseScenario }}" class="currency eur autoupdate" pratica="{{ entity.slug }}" name="worstcaseScenario" />
+    </div>
+    <div class="span4">
+        <div class="block icon no-margin">
+            <h3 class="ico-money-bag">Proposed Reserve</h3>
+        </div>
+        <input type="text" value="{{ entity.proposedReserve }}" class="currency eur autoupdate" pratica="{{ entity.slug }}" name="proposedReserve" />
+    </div>
+    <div class="span4">
+        <div class="block icon no-margin">
+            <h3 class="ico-chart">Percent</h3>
+        </div>
+        <input type="text" value="{{ entity.percentuale }}" class="percent autoupdate" pratica="{{ entity.slug }}" name="percentuale" />
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h3 class="ico-cube">Azioni future</h3>
+        </div>
+        <textarea class="expand autoupdate autogrow azioni" pratica="{{ entity.slug }}" name="azioni" placeholder="Inserisci qui le azioni future da seguire">{{ entity.azioni }}</textarea>
+    </div>
+</div>

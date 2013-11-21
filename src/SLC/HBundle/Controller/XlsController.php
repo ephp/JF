@@ -19,26 +19,30 @@ class XlsController extends Controller {
         Traits\TabelloneController;
 
     /**
-     * @Route("/{vista}",                     name="claims_hospital_xls",                     defaults={"vista": 1, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-personale/{vista}",           name="claims_hospital_personale_xls",           defaults={"vista": 1, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi/{vista}",              name="claims_hospital_chiuso_xls",              defaults={"vista": 1, "mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-tutti/{vista}",               name="claims_hospital_tutti_xls",               defaults={"vista": 1, "mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-aperti/{vista}",              name="claims_hospital_aperti_xls",              defaults={"vista": 1, "mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-chiusi-completo/{vista}",     name="claims_hospital_chiusi_xls",              defaults={"vista": 1, "mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-completo/{vista}",            name="claims_hospital_completo_xls",            defaults={"vista": 1, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-senza-dasc/{vista}",          name="claims_hospital_senza_dasc_xls",          defaults={"vista": 1, "mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-senza-gestore/{vista}",       name="claims_hospital_senza_gestore_xls",       defaults={"vista": 1, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-recuperati/{vista}",          name="claims_hospital_recuperati_xls",          defaults={"vista": 1, "mode": "recuperati"},    options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-recupero/{vista}",            name="claims_hospital_recupero_xls",            defaults={"vista": 1, "mode": "recupero"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
-     * @Route("-cerca/{vista}",               name="claims_hospital_cerca_xls",               defaults={"vista": 1, "mode": "cerca"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr/{vista}",                  name="claims_mr_hospital_xls",                  defaults={"vista": 2, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-personale/{vista}",        name="claims_mr_hospital_personale_xls",        defaults={"vista": 2, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-mr-completo/{vista}",         name="claims_mr_hospital_completo_xls",         defaults={"vista": 2, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-mr-senza-gestore/{vista}",    name="claims_mr_hospital_senza_gestore_xls",    defaults={"vista": 2, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Route("-audit/{vista}",               name="claims_audit_hospital_xls",               defaults={"vista": 3, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-audit-personale/{vista}",     name="claims_audit_hospital_personale_xls",     defaults={"vista": 3, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-audit-completo/{vista}",      name="claims_audit_hospital_completo_xls",      defaults={"vista": 3, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-audit-senza-gestore/{vista}", name="claims_audit_hospital_senza_gestore_xls", defaults={"vista": 3, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("/{vista}",                       name="claims_hospital_xls",                       defaults={"vista": 1, "mode": "default"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/{vista}",             name="claims_hospital_personale_xls",             defaults={"vista": 1, "mode": "personale"},       options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi/{vista}",                name="claims_hospital_chiuso_xls",                defaults={"vista": 1, "mode": "chiuso"},          options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-tutti/{vista}",                 name="claims_hospital_tutti_xls",                 defaults={"vista": 1, "mode": "tutti"},           options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/{vista}",                name="claims_hospital_aperti_xls",                defaults={"vista": 1, "mode": "aperti"},          options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-chiusi-completo/{vista}",       name="claims_hospital_chiusi_xls",                defaults={"vista": 1, "mode": "chiusi"},          options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-completo/{vista}",              name="claims_hospital_completo_xls",              defaults={"vista": 1, "mode": "completo"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-senza-dasc/{vista}",            name="claims_hospital_senza_dasc_xls",            defaults={"vista": 1, "mode": "senza_dasc"},      options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-senza-gestore/{vista}",         name="claims_hospital_senza_gestore_xls",         defaults={"vista": 1, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-recuperati/{vista}",            name="claims_hospital_recuperati_xls",            defaults={"vista": 1, "mode": "recuperati"},      options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-recupero/{vista}",              name="claims_hospital_recupero_xls",              defaults={"vista": 1, "mode": "recupero"},        options={"ACL": {"in_role": {"C_RECUPERI_H"}}})
+     * @Route("-cerca/{vista}",                 name="claims_hospital_cerca_xls",                 defaults={"vista": 1, "mode": "cerca"},           options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr/{vista}",                    name="claims_mr_hospital_xls",                    defaults={"vista": 2, "mode": "default"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-personale/{vista}",          name="claims_mr_hospital_personale_xls",          defaults={"vista": 2, "mode": "personale"},       options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-mr-completo/{vista}",           name="claims_mr_hospital_completo_xls",           defaults={"vista": 2, "mode": "completo"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-mr-senza-gestore/{vista}",      name="claims_mr_hospital_senza_gestore_xls",      defaults={"vista": 2, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-audit/{vista}",                 name="claims_audit_hospital_xls",                 defaults={"vista": 3, "mode": "default"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-personale/{vista}",       name="claims_audit_hospital_personale_xls",       defaults={"vista": 3, "mode": "personale"},       options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-np-personale/{vista}",    name="claims_audit_hospital_np_personale_xls",    defaults={"vista": 3, "mode": "np_personale"},    options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-no-np-personale/{vista}", name="claims_audit_hospital_no_np_personale_xls", defaults={"vista": 3, "mode": "no_np_personale"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-audit-completo/{vista}",        name="claims_audit_hospital_completo_xls",        defaults={"vista": 3, "mode": "completo"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-audit-np-completo/{vista}",     name="claims_audit_hospital_np_completo_xls",     defaults={"vista": 3, "mode": "np_completo"},     options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-audit-no-np-completo/{vista}",  name="claims_audit_hospital_no_np_completo_xls",  defaults={"vista": 3, "mode": "no_np_completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-audit-senza-gestore/{vista}",   name="claims_audit_hospital_senza_gestore_xls",   defaults={"vista": 3, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
     public function xlsAction($mode, $vista) {
         $excelService = $this->get('xls.service_xls5');
@@ -58,7 +62,15 @@ class XlsController extends Controller {
 
         $colonne = $this->getColonne($mode, $vista);
 
-        $filtri = $this->buildFiltri($mode);
+        switch($vista) {
+            case $this->V_STANDARD:
+            case $this->V_MONTLY_REPORT:
+                $filtri = $this->buildFiltri($mode);
+                break;
+            case $this->V_AUDIT:
+                $filtri = $this->buildFiltriAudit($mode);
+                break;
+        }
         if ($vista == $this->V_MONTLY_REPORT) {
             $filtri['in']['inMonthlyReport'] = true;
         }
@@ -598,5 +610,102 @@ class XlsController extends Controller {
         }
         return $colonne;
     }
+
+    private function buildFiltriAudit(&$mode, &$stato = null) {
+        $logger = $this->get('logger');
+        $cliente = $this->getUser()->getCliente();
+        /* @var $cliente \JF\ACLBundle\Entity\Cliente */
+        $filtri = array(
+            'in' => array(
+                'cliente' => $cliente->getId(),
+                'inAudit' => true,
+            ),
+            'out' => array(
+            ),
+        );
+        $dati = $this->getUser()->getDati();
+        switch ($mode) {
+            // Legge in cache l'ultimo tipo di visualizzazione
+            case 'default':
+                $set_default = false;
+                if ($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
+                    if (!isset($dati['claims_h_mr']) || (!$this->getUser()->hasRole(array('C_ADMIN')) && in_array($dati['claims_h'], array('senza_dasc', 'senza_gestore', 'chiusi')))) {
+                        $set_default = true;
+                    }
+                    $default = 'personale';
+                } elseif ($this->getUser()->hasRole(array('C_ADMIN'))) {
+                    if (!isset($dati['claims_h_mr']) || (!$this->getUser()->hasRole(array('C_GESTORE_H')) && in_array($dati['claims_h'], array('personale', 'chiuso')))) {
+                        $set_default = true;
+                    }
+                    $default = 'completo';
+                }
+                $mode = $set_default ? $default : $dati['claims_h'];
+                $logger->notice($mode);
+                return $this->buildFiltri($mode, $stato);
+            case 'personale':
+                if ($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
+                break;
+            case 'np_personale':
+                if ($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
+                $filtri['in']['amountReserved'] = -1;
+                break;
+            case 'no_np_personale':
+                if ($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
+                $filtri['out']['amountReserved'] = -1;
+                break;
+
+            case 'completo':
+                break;
+            case 'np_completo':
+                $filtri['in']['amountReserved'] = -1;
+                break;
+            case 'no_np_completo':
+                $filtri['out']['amountReserved'] = -1;
+                break;
+
+            case 'senza_gestore':
+                $filtri['in']['gestore'] = null;
+                $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
+                break;
+            default:
+                break;
+        }
+        $datiCliente = $cliente->getDati();
+        if (isset($datiCliente['slc_h-analisi'])) {
+            $analisi = $datiCliente['slc_h-analisi'];
+            if (isset($analisi['sigle']) && $analisi['sigle']) {
+                $sigle = explode(',', $analisi['sigle']);
+                $ospedali = $this->findBy('ClaimsHBundle:Ospedale', array('sigla' => $sigle));
+                $idOspedali = array();
+                foreach ($ospedali as $ospedale) {
+                    $idOspedali[] = $ospedale->getId();
+                }
+                if (!$this->getUser()->hasRole('C_SUPVIS_H') && $this->getRequest()->get('hidden')) {
+                    $filtri['in']['ospedale'] = $idOspedali;
+                } else {
+                    $filtri['out']['ospedale'] = $idOspedali;
+                }
+            }
+        }
+        $filtri['ricerca'] = $this->getParam('ricerca', array());
+        $filtri['sorting'] = $dati['claims_h_sorting'];
+        $dati['claims_h_mr'] = $mode;
+        $this->getUser()->setDati($dati);
+        $this->persist($this->getUser());
+        return $filtri;
+    }
+
 
 }

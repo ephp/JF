@@ -22,10 +22,14 @@ class AuditController extends Controller {
         Traits\TabelloneController;
 
     /**
-     * @Route("/",               name="claims_audit_hospital",               defaults={"mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-personale/",     name="claims_audit_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-completo/",      name="claims_audit_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-senza-gestore/", name="claims_audit_hospital_senza_gestore", defaults={"mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("/",                name="claims_audit_hospital",                 defaults={"mode": "default"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-personale/",      name="claims_audit_hospital_personale",       defaults={"mode": "personale"},       options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-np-personale/",   name="claims_audit_hospital_np_personale",    defaults={"mode": "np_personale"},    options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-no-nppersonale/", name="claims_audit_hospital_no_np_personale", defaults={"mode": "no_np_personale"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-completo/",       name="claims_audit_hospital_completo",        defaults={"mode": "completo"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-np-completo/",    name="claims_audit_hospital_np_completo",     defaults={"mode": "np_completo"},     options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-no-np-completo/", name="claims_audit_hospital_no_np_completo",  defaults={"mode": "no_np_completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-senza-gestore/",  name="claims_audit_hospital_senza_gestore",   defaults={"mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template("ClaimsHBundle:Tabellone:index.html.twig")
      */
     public function indexAction($mode) {
@@ -46,10 +50,14 @@ class AuditController extends Controller {
     }
 
     /**
-     * @Route("-stampa/{monthly_report}",               name="claims_audit_hospital_stampa",               defaults={"monthly_report": false, "mode": "default"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-personale/{monthly_report}",     name="claims_audit_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-stampa-completo/{monthly_report}",      name="claims_audit_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
-     * @Route("-stampa-senza-gestore/{monthly_report}", name="claims_audit_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
+     * @Route("-stampa/{monthly_report}",                 name="claims_audit_hospital_stampa",                 defaults={"monthly_report": false, "mode": "default"},         options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-personale/{monthly_report}",       name="claims_audit_hospital_personale_stampa",       defaults={"monthly_report": false, "mode": "personale"},       options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-np-personale/{monthly_report}",    name="claims_audit_hospital_np_personale_stampa",    defaults={"monthly_report": false, "mode": "np_personale"},    options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-no-np-personale/{monthly_report}", name="claims_audit_hospital_no_np_personale_stampa", defaults={"monthly_report": false, "mode": "no_np_personale"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-stampa-completo/{monthly_report}",        name="claims_audit_hospital_completo_stampa",        defaults={"monthly_report": false, "mode": "completo"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-stampa-np-completo/{monthly_report}",     name="claims_audit_hospital_np_completo_stampa",     defaults={"monthly_report": false, "mode": "np_completo"},     options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-stampa-no-np-completo/{monthly_report}",  name="claims_audit_hospital_no_np_completo_stampa",  defaults={"monthly_report": false, "mode": "no_np_completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
+     * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_audit_hospital_senza_gestore_stampa",   defaults={"monthly_report": false, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
      * @Template()
      */
     public function stampaAction($mode, $monthly_report) {
@@ -148,11 +156,31 @@ class AuditController extends Controller {
                 'label' => 'Personale',
                 'icon' => 'ico-user',
             );
+            $out['np_personale'] = array(
+                'route' => 'claims_audit_hospital_np_personale',
+                'label' => 'N.P. Personale',
+                'icon' => 'ico-user',
+            );
+            $out['no_np_personale'] = array(
+                'route' => 'claims_audit_hospital_no_np_personale',
+                'label' => 'Non N.P. Personale',
+                'icon' => 'ico-user',
+            );
         }
         if ($this->getUser()->hasRole(array('C_ADMIN', 'C_RECUPERI_H'))) {
             $out['completo'] = array(
                 'route' => 'claims_audit_hospital_completo',
                 'label' => 'Completo',
+                'icon' => 'ico-group',
+            );
+            $out['np_completo'] = array(
+                'route' => 'claims_audit_hospital_np_completo',
+                'label' => 'N.P. Completo',
+                'icon' => 'ico-group',
+            );
+            $out['no_np_completo'] = array(
+                'route' => 'claims_audit_hospital_no_np_completo',
+                'label' => 'Non N.P. Completo',
                 'icon' => 'ico-group',
             );
         }
@@ -209,11 +237,31 @@ class AuditController extends Controller {
                 } else {
                     $filtri['in']['gestore'] = $this->getUser()->getId();
                 }
-                $filtri['out']['priorita'] = $this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Chiuso'));
-                $filtri['out']['dasc'] = null;
+                break;
+            case 'np_personale':
+                if ($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
+                $filtri['in']['amountReserved'] = -1;
+                break;
+            case 'no_np_personale':
+                if ($this->getUser()->hasRole('C_RECUPERI_H')) {
+                    $filtri['in']['recuperi'] = $this->getUser()->getId();
+                } else {
+                    $filtri['in']['gestore'] = $this->getUser()->getId();
+                }
+                $filtri['out']['amountReserved'] = -1;
                 break;
 
             case 'completo':
+                break;
+            case 'np_completo':
+                $filtri['in']['amountReserved'] = -1;
+                break;
+            case 'no_np_completo':
+                $filtri['out']['amountReserved'] = -1;
                 break;
 
             case 'senza_gestore':
@@ -247,4 +295,5 @@ class AuditController extends Controller {
         $this->persist($this->getUser());
         return $filtri;
     }
-}
+
+}    

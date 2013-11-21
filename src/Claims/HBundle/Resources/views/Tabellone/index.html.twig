@@ -91,7 +91,7 @@
         </div>       
     </div> 
 {% endif %}
-{% render(controller("ClaimsHBundle:Render:ricerca", {'mode': mode, 'ricerca': app.request.get('ricerca')})) %}
+{% render(controller("ClaimsHBundle:Render:ricerca", {'mode': 'completo', 'ricerca': app.request.get('ricerca')})) %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">

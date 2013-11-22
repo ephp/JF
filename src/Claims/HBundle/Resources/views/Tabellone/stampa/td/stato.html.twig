@@ -1,0 +1,7 @@
+<td class="center stato_pratica" title="{{ entity.status }}">
+    {% if entity.statoPratica %}
+        {{ entity.statoPratica.stato }}
+    {% else %}
+        N.D.
+    {% endif %}
+</td>

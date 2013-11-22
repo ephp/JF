@@ -1,11 +1,7 @@
 {% form_theme edit_form '::form_aries_layout.html.twig' %}
 
-<div class="page-header">
-    <div class="icon">
-        <span class="ico-cog"></span>
-    </div>
-    <h1>Report <small>{{ entity.pratica }}</small></h1>
-</div>
+{% include "ClaimsHBundle:Tabellone:stampaReport/copertina.html.twig" with {'entity': entity.pratica, 'no_back': true} %}
+
 {{ form_start(edit_form) }}
     <div class="row-fluid">
         <div class="span12">
@@ -21,7 +17,10 @@
     </div>
 {{ form_end(edit_form) }}
 <a href="{{ path('claims_hospital_report', {'slug': entity.pratica.slug}) }}" onclick="return loadAjax($(this));">
-    <span class="label label-inverse">Concludi</span>
+    <span class="label label-inverse">Concludi Modifiche</span>
+</a>
+<a href="{{ path('claims_hospital_report', {'slug': entity.pratica.slug, 'chiudi': true}) }}" onclick="return loadAjax($(this));">
+    <span class="label red">Chiudi Report</span>
 </a>
 <script type="text/javascript">
     var id = null;

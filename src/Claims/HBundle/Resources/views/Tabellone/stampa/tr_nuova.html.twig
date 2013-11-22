@@ -1,0 +1,5 @@
+<tr id="{{ entity.slug }}">
+    {% for td in tds %}
+        {% include "ClaimsHBundle:Tabellone:stampa/td/"~td~".html.twig" %}
+    {% endfor %}
+</tr>

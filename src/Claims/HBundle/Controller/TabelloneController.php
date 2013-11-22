@@ -51,7 +51,7 @@ class TabelloneController extends Controller {
         } catch (\Exception $e) {
             $this->getUser()->setDati(null);
             $this->persist($this->getUser());
-            if($first) {
+            if ($first) {
                 return $this->indexAction($mode, false);
             }
             throw $e;
@@ -85,7 +85,7 @@ class TabelloneController extends Controller {
         } catch (\Exception $e) {
             $this->getUser()->setDati(null);
             $this->persist($this->getUser());
-            if($first) {
+            if ($first) {
                 return $this->ricercaAction($mode, false);
             }
             throw $e;
@@ -114,11 +114,13 @@ class TabelloneController extends Controller {
         $sorting = $this->sorting();
         $filtri = $this->buildFiltri($mode, $stato);
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+        $tds = $this->getColonne($mode);
         return array(
             'pagination' => $pagination,
             'show_gestore' => true,
             'links' => $this->buildLinks(false),
             'mode' => $mode,
+            'tds' => $tds,
             'stati' => $this->findBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $this->getUser()->getCliente()->getId(), 'tab' => true)),
             'stato' => $stato,
             'sistemi' => $sistemi,
@@ -147,10 +149,12 @@ class TabelloneController extends Controller {
         $sistemi = $this->getSistemi();
         $filtri = $this->buildFiltri($mode);
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode);
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'tds' => $tds,
             'monthly_report' => $monthly_report !== false,
         );
     }
@@ -165,10 +169,12 @@ class TabelloneController extends Controller {
         $null = null;
         $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'));
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode);
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'tds' => $tds,
             'monthly_report' => $monthly_report !== false,
         );
     }
@@ -183,10 +189,12 @@ class TabelloneController extends Controller {
         $sistemi = $this->getSistemi();
         $filtri = $this->buildFiltri($mode, $stato);
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode);
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'tds' => $tds,
         );
     }
 
@@ -492,6 +500,9 @@ class TabelloneController extends Controller {
                 $twig = 'ClaimsHBundle:Tabellone:dettagli.html.twig';
                 break;
             case "claims_hospital_report":
+                if ($this->getParam('chiudi')) {
+                    $this->chiudiReport($pratica);
+                }
                 $twig = 'ClaimsHBundle:Tabellone:pratica/report.html.twig';
                 break;
             case "claims_hospital_stampa_pratica":
@@ -981,6 +992,16 @@ class TabelloneController extends Controller {
             $pratica->setReportSoi($pratica->getSoi());
             $pratica->setReportTypeOfLoss($pratica->getTypeOfLoss());
             $this->persist($pratica);
+        }
+    }
+
+    private function chiudiReport(Pratica $pratica) {
+        foreach ($pratica->getReports() as $report) {
+            /* @var $report \Claims\HBundle\Entity\Report */
+            if (!$report->getValidato()) {
+                $report->setValidato(true);
+                $this->persist($report);
+            }
         }
     }
 

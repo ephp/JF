@@ -167,6 +167,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% set numero = false %}
                     {% for report in entity.reports %}
                         <tr>
                             <td class="center">{{ report.data|date('d/m/Y') }}</td>
@@ -175,9 +176,12 @@
                                 <a href="{{ path('claims_hospital_report_pratica_show', {'slug': entity.slug, 'numero': report.number}) }}" class="button green" onclick="return loadAjax($(this));">
                                     <div class="icon"><span class="ico-eye"></span></div>
                                 </a>
-                                <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': report.number}) }}" class="button yellow" onclick="return loadAjax($(this));">
-                                    <div class="icon"><span class="ico-pencil"></span></div>
-                                </a>
+                                {% if not report.validato %}
+                                    {% set numero = report.number %}
+                                    <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': report.number}) }}" class="button yellow" onclick="return loadAjax($(this));">
+                                        <div class="icon"><span class="ico-pencil"></span></div>
+                                    </a>
+                                {% endif %}
                             </th>
                         </tr>
                     {% endfor %}
@@ -187,7 +191,11 @@
     </div>
     <div class="span6">
         <div class="block">
-            <a href="{{ path('claims_hospital_report_pratica_new', {'slug': entity.slug}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label label-success ico-pen"> Aggiungi report</span></a>
+            {% if numero %}
+                <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': numero}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label yellow ico-pen"> Complata report {{ numero }}</span></a>
+            {% else %}
+                <a href="{{ path('claims_hospital_report_pratica_new', {'slug': entity.slug}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label green ico-pen"> Aggiungi report</span></a>
+            {% endif %}
             {% if app.user.cliente.get('slc.h-analisi.on', false) %}
                 <a href="{{ path('claims_hospital_word_report', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label dblue ico-file-3"> Esporta Word</span></a>
             {% endif %}

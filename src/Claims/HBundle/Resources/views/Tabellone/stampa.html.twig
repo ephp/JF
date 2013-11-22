@@ -1,18 +1,12 @@
 {% extends '::stampa.html.twig' %}
 {% block body -%}
-{% if app.user.cliente.get('slc.h-analisi.on', false) %}
-<a href="{{ path(app.request.get('_route')|replace({'stampa': 'xls'}), app.request.get('_route_params', {})) }}" target="_blank">
-{% endif %}
 <div class="page-header">
     <div class="icon">
         <span class="ico-archive"></span>
     </div>
     <h1>JF-Claims <small>Hospital</small></h1>
 </div>
-{% if app.user.cliente.get('slc.h-analisi.on', false) %}
-</a>
-{% endif %}
     
-{% include "ClaimsHBundle:Tabellone:stampa/table.html.twig" %}
+{% include "ClaimsHBundle:Tabellone:stampa/table_nuova.html.twig" %}
 
 {% endblock %}

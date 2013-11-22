@@ -6,21 +6,21 @@
     {% endif %}
     <h1>Report #{{ entity.number }} del {{ entity.data|date('d/m/Y')}} <small>{{ entity.pratica }}</small></h1>
 </div>
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Copertura', 'span_value': 9, 'value': entity.copertura|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Stato', 'span_value': 9, 'value': entity.stato|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Descrizione in fatto', 'span_value': 9, 'value': entity.descrizioneInFatto|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Relazione avversaria', 'span_value': 9, 'value': entity.relazioneAvversaria|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Relazione ex adverso', 'span_value': 9, 'value': entity.relazioneExAdverso|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 1', 'span_value': 9, 'value': entity.MedicoLegale1|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 2', 'span_value': 9, 'value': entity.MedicoLegale2|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 3', 'span_value': 9, 'value': entity.MedicoLegale3|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Valutazione responsabilita', 'span_value': 9, 'value': entity.valutazioneResponsabilita|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Analisi danno', 'span_value': 9, 'value': entity.analisiDanno|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Riserva', 'span_value': 9, 'value': entity.riserva|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Possibile rivalsa', 'span_value': 9, 'value': entity.possibileRivalsa|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Azioni', 'span_value': 9, 'value': entity.azioni|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Richiesta SA', 'span_value': 9, 'value': entity.richiestaSa|nl2br} %}
-{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Note', 'span_value': 9, 'value': entity.notePulite|nl2br, 'last': true} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Copertura', 'span_value': 9, 'value': entity.copertura} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Stato', 'span_value': 9, 'value': entity.stato} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Descrizione in fatto', 'span_value': 9, 'value': entity.descrizioneInFatto} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Relazione avversaria', 'span_value': 9, 'value': entity.relazioneAvversaria} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Relazione ex adverso', 'span_value': 9, 'value': entity.relazioneExAdverso} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 1', 'span_value': 9, 'value': entity.MedicoLegale1} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 2', 'span_value': 9, 'value': entity.MedicoLegale2} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Medico Legale 3', 'span_value': 9, 'value': entity.MedicoLegale3} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Valutazione responsabilita', 'span_value': 9, 'value': entity.valutazioneResponsabilita} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Analisi danno', 'span_value': 9, 'value': entity.analisiDanno} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Riserva', 'span_value': 9, 'value': entity.riserva} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Possibile rivalsa', 'span_value': 9, 'value': entity.possibileRivalsa} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Azioni', 'span_value': 9, 'value': entity.azioni} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Richiesta SA', 'span_value': 9, 'value': entity.richiestaSa} %}
+{% include 'ClaimsHBundle:Tabellone:commons/repo_brick.html.twig' with {'span_label': 3, 'label': 'Note', 'span_value': 9, 'value': entity.note, 'last': true} %}
 {% if no_back is not defined %}
     <a href="{{ path('claims_hospital_report', {'slug': entity.pratica.slug}) }}" onclick="return loadAjax($(this));">
         <span class="label label-inverse">Torna indietro</span>

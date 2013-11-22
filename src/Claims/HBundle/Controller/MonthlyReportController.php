@@ -50,15 +50,17 @@ class MonthlyReportController extends Controller {
      * @Route("-stampa-personale/{monthly_report}",     name="claims_mr_hospital_personale_stampa",     defaults={"monthly_report": false, "mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-stampa-completo/{monthly_report}",      name="claims_mr_hospital_completo_stampa",      defaults={"monthly_report": false, "mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-stampa-senza-gestore/{monthly_report}", name="claims_mr_hospital_senza_gestore_stampa", defaults={"monthly_report": false, "mode": "senza_gestore"}, options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Template()
+     * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
      */
     public function stampaAction($mode, $monthly_report) {
         $filtri = $this->buildFiltri($mode);
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode, $this->V_MONTLY_REPORT);
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'tds' => $tds,
             'monthly_report' => $monthly_report !== false,
         );
     }

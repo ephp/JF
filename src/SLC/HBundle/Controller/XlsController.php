@@ -464,12 +464,16 @@ class XlsController extends Controller {
                         break;
                     case 'Monthly Report':
                         $valore = $entity->getTextMonthlyReport() ?: '';
+                        break;
                     case 'Audit':
                         $valore = $entity->getAudit() ?: '';
+                        break;
                     case 'Azioni Future':
                         $valore = $entity->getAzioni() ?: '';
+                        break;
                     case 'Percentuale':
                         $valore = $entity->getPercentuale() ? $entity->getPercentuale() / 100 : 0;
+                        break;
                     case 'Stato pratica':
                         $valore = $entity->getStatoPratica() ? $entity->getStatoPratica()->getStato() : '-';
                         break;
@@ -589,7 +593,7 @@ class XlsController extends Controller {
                 $colonne[chr($colonna++)] = array('nome' => 'Monthly Report', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
                 break;
-            case $this->V_MONTLY_REPORT:
+            case $this->V_AUDIT:
                 $colonne[chr($colonna++)] = array('nome' => 'Pratica', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);

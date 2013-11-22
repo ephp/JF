@@ -1,3 +1,17 @@
 <div class="block no-margin">
-    {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' %}
+    {% if uumm is not defined %}{% set uumm = '' %}{% endif %}
+    <div class="span{{ span_label }}">
+        <div class="block bold">
+        {{ label }}
+        </div>
+    </div>
+    <div class="span{{ span_value }}">
+        <div class="block tright">
+        {% if title is defined %}
+            <abbr title="{{ title }}">{{ value|raw|nl2br }}</abbr> {{ uumm }}
+        {% else %}
+            {{ value|nl2br|raw }} {{ uumm }}
+        {% endif %}
+        </div>
+    </div>
 </div>

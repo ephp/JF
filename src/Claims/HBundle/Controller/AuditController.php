@@ -58,15 +58,17 @@ class AuditController extends Controller {
      * @Route("-stampa-np-completo/{monthly_report}",     name="claims_audit_hospital_np_completo_stampa",     defaults={"monthly_report": false, "mode": "np_completo"},     options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-stampa-no-np-completo/{monthly_report}",  name="claims_audit_hospital_no_np_completo_stampa",  defaults={"monthly_report": false, "mode": "no_np_completo"},  options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-stampa-senza-gestore/{monthly_report}",   name="claims_audit_hospital_senza_gestore_stampa",   defaults={"monthly_report": false, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
-     * @Template()
+     * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
      */
     public function stampaAction($mode, $monthly_report) {
         $filtri = $this->buildFiltri($mode);
         $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode, $this->V_AUDIT);
         return array(
             'entities' => $entities,
             'show_gestore' => true,
             'mode' => $mode,
+            'tds' => $tds,
             'monthly_report' => $monthly_report !== false,
         );
     }

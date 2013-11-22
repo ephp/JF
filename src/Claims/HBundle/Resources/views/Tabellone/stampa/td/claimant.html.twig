@@ -1,0 +1,9 @@
+<td class="center">
+    {{ entity.claimant }}
+    {% if 'soi' not in tds %} 
+        <br/>SOI: {{ entity.soi }}
+    {% endif %}
+    {% if 'giudiziale' not in tds %} 
+        {% if entity.giudiziale %}<br/>Giud: {{ entity.court|trim }}{% endif %}
+    {% endif %}
+</td>

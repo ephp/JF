@@ -172,7 +172,7 @@ class ImportController extends Controller {
                     }
                 } else {
                     if (!isset($valori_riga[2]) || !$valori_riga[2]) {
-                        break;
+                        continue;
                     } else {
                         try {
                             $this->getEm()->beginTransaction();

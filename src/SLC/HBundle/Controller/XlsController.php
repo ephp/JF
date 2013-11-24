@@ -459,17 +459,17 @@ class XlsController extends Controller {
                                 }
                             }
                         } else {
-                            $valore = $entity->getNote() ?: '';
+                            $valore = $entity->getNote() ? String::strip_tags($entity->getNote()) : '';
                         }
                         break;
                     case 'Monthly Report':
                         $valore = $entity->getTextMonthlyReport() ?: '';
                         break;
                     case 'Audit':
-                        $valore = $entity->getAudit() ?: '';
+                        $valore = $entity->getAudit() ? String::strip_tags($entity->getAudit()) : '';
                         break;
                     case 'Azioni Future':
-                        $valore = $entity->getAzioni() ?: '';
+                        $valore = $entity->getAzioni() ? String::strip_tags($entity->getAzioni()) : '';
                         break;
                     case 'Percentuale':
                         $valore = $entity->getPercentuale() ? $entity->getPercentuale() / 100 : 0;

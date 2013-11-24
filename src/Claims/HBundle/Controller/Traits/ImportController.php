@@ -165,7 +165,6 @@ trait ImportController {
                 $log[] = "COMMENTS: da '" . $old->getComments() . "' a '" . $pratica->getComments() . "'";
                 $old->setComments($pratica->getComments());
             }
-
             if ($audit || count($log) > 0) {
                 $old->addLog($log);
                 if (!$audit) {
@@ -173,9 +172,8 @@ trait ImportController {
                     $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
                     $this->persist($evento);
                 }
+                $pratiche_aggiornate[] = $old;
             }
-
-            $pratiche_aggiornate[] = $old;
         } else {
             if (!$audit) {
                 $pratica->setDataImport(new \DateTime());

@@ -104,10 +104,10 @@ class RenderController extends Controller {
     }
 
     /**
-     * @Route("/ricerca/{mode}", name="render_claims_hospital_ricerca")
+     * @Route("/ricerca/{route}", name="render_claims_hospital_ricerca")
      * @Template()
      */
-    public function ricercaAction($mode) {
+    public function ricercaAction($route) {
         $entity = new Pratica();
         $params = $this->getParam('ricerca');
         if ($params) {
@@ -132,7 +132,7 @@ class RenderController extends Controller {
                 }
             }
         }
-        $form = $this->createCercaForm($entity, $mode);
+        $form = $this->createCercaForm($entity, $route);
         $form->handleRequest($this->getRequest());
 
         return array(
@@ -148,9 +148,9 @@ class RenderController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCercaForm(Pratica $entity, $mode) {
+    private function createCercaForm(Pratica $entity, $route) {
         $form = $this->createForm(new RicercaType($this->getUser()->getCliente()), $entity, array(
-            'action' => $this->generateUrl('claims_hospital_' . $mode),
+            'action' => $this->generateUrl($route),
             'method' => 'GET',
         ));
 

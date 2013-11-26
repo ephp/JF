@@ -2,7 +2,7 @@
     {% if app.user.hasRole(['C_GESTORE_H']) %}
         <div class="typography2 nocursor" contenteditable="true" id="audit_{{ entity.slug}}">
     {% endif %}
-        {{ entity.audit|raw|nl2br }}
+        {{ entity.auditPulito|nl2br }}
     {% if app.user.hasRole(['C_GESTORE_H']) %}
         </div>
     {% endif %}

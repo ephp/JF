@@ -385,7 +385,7 @@ trait TabelloneController {
                 $colonne[] = 'index';
                 $colonne[] = 'codice';
                 $colonne[] = 'claimant';
-                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                if (in_array($mode, array('cerca', 'completo', 'senza_gestore'))) {
                     $colonne[] = 'gestore';
                 }
                 $colonne[] = 'amountReserved';
@@ -398,7 +398,7 @@ trait TabelloneController {
                 $colonne[] = 'index';
                 $colonne[] = 'codice';
                 $colonne[] = 'claimant';
-                if (in_array($mode, array('completo', 'np_completo', 'no_np_completo', 'senza_gestore'))) {
+                if (in_array($mode, array('cerca', 'completo', 'np_completo', 'no_np_completo', 'senza_gestore'))) {
                     $colonne[] = 'gestore';
                 }
                 $colonne[] = 'amountReserved';

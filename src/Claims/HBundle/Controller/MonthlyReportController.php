@@ -42,6 +42,62 @@ class MonthlyReportController extends Controller {
             'sorting' => $sorting,
             'twig_button' => 'ClaimsHBundle:MonthlyReport:button.html.twig',
             'query' => $this->getQuery(),
+            'route_ricerca' => 'claims_mr_hospital_ricerca', 
+        );
+    }
+
+    /**
+     * @Route("-ricerca/", name="claims_mr_hospital_ricerca",  defaults={"mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Template("ClaimsHBundle:Tabellone:index.html.twig")
+     */
+    public function ricercaAction($mode, $first = true) {
+        try {
+            $this->getUser()->set('claims_h_sistema', 'tutti');
+            $sistemi = $this->getSistemi();
+            $sorting = $this->sorting();
+            $null = null;
+            $filtri = $this->buildFiltri($mode);
+            $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+            $tds = $this->getColonne($mode, $this->V_MONTLY_REPORT);
+        } catch (\Exception $e) {
+            $this->getUser()->setDati(null);
+            $this->persist($this->getUser());
+            if ($first) {
+                return $this->ricercaAction($mode, false);
+            }
+            throw $e;
+        }
+        return array(
+            'pagination' => $pagination,
+            'show_gestore' => true,
+            'links' => $this->buildLinks(),
+            'mode' => $mode,
+            'tds' => $tds,
+            'sistemi' => $sistemi,
+            'sistema' => $this->getUser()->get('claims_h_sistema'),
+            'sorting' => $sorting,
+            'query' => $this->getQuery(),
+            'route_ricerca' => 'claims_audit_hospital_ricerca', 
+        );
+    }
+
+    /**
+     * @Route("-ricerca-stampa/{monthly_report}", name="claims_mr_hospital_ricerca_stampa", defaults={"monthly_report": false, "mode": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
+     */
+    public function stampaRicercaAction($mode, $monthly_report) {
+        $this->getUser()->set('claims_h_sistema', 'tutti');
+        $sistemi = $this->getSistemi();
+        $null = null;
+        $filtri = $this->buildFiltri($mode);
+        $entities = $this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri)->getQuery()->execute();
+        $tds = $this->getColonne($mode, $this->V_MONTLY_REPORT);
+        return array(
+            'entities' => $entities,
+            'show_gestore' => true,
+            'mode' => $mode,
+            'tds' => $tds,
+            'monthly_report' => $monthly_report !== false,
         );
     }
 

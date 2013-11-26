@@ -2280,6 +2280,10 @@ class Pratica {
         return $this->audit;
     }
 
+    public function getAuditPulito() {
+        return \Ephp\UtilityBundle\Utility\String::strip_tags($this->audit);
+    }
+
     public function setAudit($audit) {
         $this->audit = $audit;
         return $this;

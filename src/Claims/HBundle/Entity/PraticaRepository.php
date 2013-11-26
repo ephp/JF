@@ -194,6 +194,8 @@ class PraticaRepository extends EntityRepository {
             foreach ($filtri['in'] as $field => $value) {
                 switch ($field) {
                     case 'cliente':
+                    case 'inAudit':
+                    case 'inMonthlyReport':
                         if (is_array($value)) {
                             if (count($value) == 0) {
                                 $value[] = 0;

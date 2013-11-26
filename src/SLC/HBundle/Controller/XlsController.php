@@ -115,6 +115,8 @@ class XlsController extends Controller {
     
     /**
      * @Route("-ricerca/{vista}", name="claims_hospital_ricerca_xls", defaults={"vista": 1, "mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-ricerca/{vista}", name="claims_mr_hospital_ricerca_xls", defaults={"vista": 2, "mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-ricerca/{vista}", name="claims_audit_hospital_ricerca_xls", defaults={"vista": 3, "mode": "cerca"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Template()
      */
     public function stampaRicercaAction($mode, $vista) {
@@ -415,7 +417,7 @@ class XlsController extends Controller {
                     case 'Offerta Loro':
                         $valore = $entity->getOffertaLoro();
                         break;
-                    case 'Worstcase Scenario':
+                    case 'MPL':
                         $valore = $entity->getWorstcaseScenario();
                         break;
                     case 'Proposed Reserve':
@@ -471,7 +473,7 @@ class XlsController extends Controller {
                     case 'Azioni Future':
                         $valore = $entity->getAzioni() ? String::strip_tags($entity->getAzioni()) : '';
                         break;
-                    case 'Percentuale':
+                    case '% Rejection':
                         $valore = $entity->getPercentuale() ? $entity->getPercentuale() / 100 : 0;
                         break;
                     case 'Stato pratica':
@@ -498,7 +500,7 @@ class XlsController extends Controller {
                     case 'LT Fees Reserve':
                     case 'Offerta Nostra':
                     case 'Offerta Loro':
-                    case 'Worstcase Scenario':
+                    case 'MPL':
                     case 'Proposed Reserve':
                         $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
@@ -514,7 +516,7 @@ class XlsController extends Controller {
                         }
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
-                    case 'Percentuale':
+                    case '% Rejection':
                         $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
@@ -584,7 +586,7 @@ class XlsController extends Controller {
                 $colonne[chr($colonna++)] = array('nome' => 'Dasc', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Giudiziale', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
-                if (in_array($mode, array('completo', 'senza_gestore'))) {
+                if (in_array($mode, array('cerca', 'completo', 'senza_gestore'))) {
                     $colonne[chr($colonna++)] = array('nome' => 'Gestore', 'larghezza' => 10);
                 }
                 $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
@@ -605,9 +607,9 @@ class XlsController extends Controller {
                 $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Audit', 'larghezza' => 50);
-                $colonne[chr($colonna++)] = array('nome' => 'Worstcase Scenario', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'MPL', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Proposed Reserve', 'larghezza' => 20);
-                $colonne[chr($colonna++)] = array('nome' => 'Percentuale', 'larghezza' => 10);
+                $colonne[chr($colonna++)] = array('nome' => '% Rejection', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Azioni future', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
                 break;

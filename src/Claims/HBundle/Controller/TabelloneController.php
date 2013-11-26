@@ -31,7 +31,7 @@ class TabelloneController extends Controller {
      * @Route("-personale/",       name="claims_hospital_personale",     defaults={"mode": "personale"},     options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-chiusi/",          name="claims_hospital_chiuso",        defaults={"mode": "chiuso"},        options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-tutti/",           name="claims_hospital_tutti",         defaults={"mode": "tutti"},         options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Route("-aperti/",          name="claims_hospital_aperti",        defaults={"mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     * @Route("-aperti/",          name="claims_hospital_aperti",       defaults={"mode": "aperti"},        options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("-chiusi-completo/", name="claims_hospital_chiusi",        defaults={"mode": "chiusi"},        options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-completo/",        name="claims_hospital_completo",      defaults={"mode": "completo"},      options={"ACL": {"in_role": {"C_ADMIN", "C_RECUPERI_H"}}})
      * @Route("-senza-dasc/",      name="claims_hospital_senza_dasc",    defaults={"mode": "senza_dasc"},    options={"ACL": {"in_role": {"C_ADMIN"}}})
@@ -66,6 +66,7 @@ class TabelloneController extends Controller {
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
             'query' => $this->getQuery(),
+            'route_ricerca' => 'claims_hospital_ricerca', 
         );
     }
 
@@ -100,6 +101,7 @@ class TabelloneController extends Controller {
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
             'query' => $this->getQuery(),
+            'route_ricerca' => 'claims_hospital_ricerca', 
         );
     }
 
@@ -127,6 +129,7 @@ class TabelloneController extends Controller {
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
             'query' => $this->getQuery(),
+            'route_ricerca' => 'claims_hospital_ricerca', 
         );
     }
 

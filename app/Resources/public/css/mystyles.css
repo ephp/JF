@@ -241,3 +241,28 @@ div.white a, div.white a span {
 div.white a:hover, div.white a span:hover {
     color: #eee !important;
 }
+
+div.pre-footer {
+    height: 50px;
+    width: 100%;
+}
+
+div.footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+    background-color: #111111;
+    margin-top: 2px solid #000000;
+    z-index: 100;
+}
+
+div.footer-tools {
+    margin-right: 100px;
+}
+
+ul.navigation {
+    z-index: 200;
+}

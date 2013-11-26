@@ -82,7 +82,7 @@ body { min-height: 100%; font-family: "Segoe UI", arial, sans-serif; font-size: 
 
 
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 2048px) {
     .wrapper{margin: 0px 10px;}
     .body{margin-left: 0px; padding-left: 0px; margin-top: 0px; z-index: 10;}
     

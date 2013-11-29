@@ -28,6 +28,7 @@ class RicercaType extends AbstractType {
                 ->add('status', null, array('required' => false, 'attr' => array('style' => 'max-width: 400px')))
                 ->add('statoPratica', null, array('required' => false, 'empty_value' => 'Tutti', 'attr' => array('style' => 'max-width: 400px')))
                 ->add('priorita', null, array('required' => false, 'empty_value' => 'Tutte', 'attr' => array('style' => 'max-width: 400px')))
+                ->add('aperti', 'choice', array('mapped' => false, 'required' => false, 'empty_value' => 'Tutti', 'choices' => array('Sì' => 'Solo aperti', 'No' => 'Solo chiusi'), 'attr' => array('style' => 'max-width: 400px')))
                 ->add('gestore', null, array('required' => false, 'empty_value' => 'Tutti', 'property' => 'nome', 'query_builder' => function(\JF\ACLBundle\Entity\GestoreRepository $er) use ($cliente) {
                         return $er->createQueryBuilder('g')
                         ->where('g.cliente = :gid')

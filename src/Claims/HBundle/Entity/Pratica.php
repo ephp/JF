@@ -2408,6 +2408,7 @@ class Pratica {
                         break;
                 }
             }
+            $mr->setNote(str_replace('"', "'", \Ephp\UtilityBundle\Utility\String::strip_tags($mr->getNote(), true)));
             return $mr;
         }
         return null;

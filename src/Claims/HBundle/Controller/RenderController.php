@@ -115,6 +115,9 @@ class RenderController extends Controller {
                 if (!in_array($param, array('submit', '_token')) && $value) {
                     $fx = \Doctrine\Common\Util\Inflector::camelize('set_' . $param);
                     switch ($param) {
+                        case 'aperti':
+                            $fx = false;
+                            break;
                         case 'ospedale':
                             $value = $this->find('ClaimsHBundle:Ospedale', $value);
                             break;
@@ -128,11 +131,27 @@ class RenderController extends Controller {
                             $value = $this->find('ClaimsCoreBundle:Priorita', $value);
                             break;
                     }
-                    $entity->$fx($value);
+                    if($fx) {
+                        $entity->$fx($value);
+                    }
                 }
             }
         }
         $form = $this->createCercaForm($entity, $route);
+        if ($params) {
+            foreach ($params as $param => $value) {
+                if (!in_array($param, array('submit', '_token')) && $value) {
+                    switch ($param) {
+                        case 'aperti':
+                            $form->get($param)->setData($value);
+                            break;
+                        default:
+                            $fx = false;
+                            break;
+                    }
+                }
+            }
+        }
         $form->handleRequest($this->getRequest());
 
         return array(

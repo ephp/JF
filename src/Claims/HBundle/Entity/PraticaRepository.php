@@ -240,6 +240,16 @@ class PraticaRepository extends EntityRepository {
                                         ->setParameter($field, '');
                             }
                             break;
+                        case 'aperti':
+                            $priorita = $this->getEntityManager()->getRepository('ClaimsCoreBundle:Priorita')->findOneBy(array('priorita' => 'Chiuso'));
+                            if ($value == 'Sì') {
+                                $q->andWhere("p.priorita != :{$field}")
+                                        ->setParameter($field, $priorita->getId());
+                            } else {
+                                $q->andWhere("p.priorita = :{$field}")
+                                        ->setParameter($field, $priorita->getId());
+                            }
+                            break;
                         default:
                             $q->andWhere("p.{$field} = :{$field}")
                                     ->setParameter($field, $value);

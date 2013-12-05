@@ -3,16 +3,20 @@ $(document).ready(function() {
 });
 
 function cambiaGestore() {
-    $('.chg').click(function() {
-        tr = $(this).closest('tr');
-        $('#assegna_gestore_a').text(tr.attr('titolo'));
-        $('#cd_id').val(tr.attr('cd'));
-        $('#cd_gestore').val(tr.attr('gestore'));
+    $('a.gestore').click(function() {
+        var tr = $(this).closest('tr');
+        $('#cambia_gestore_a').text(tr.attr('titolo'));
+        $('#gestore_id').val(tr.attr('id'));
+        $('#gestore_gestore').val(tr.attr('gestore'));
+        $('#bt_cambia_gestore').show();
+        $('#wait_cambia_gestore').hide();
     });
 }
 
 function assegnaGestore() {
-    form = $('#assegna_gestore_scheda');
+    $('#bt_cambia_gestore').hide();
+    $('#wait_cambia_gestore').show();
+    var form = $('#cambia_gestore');
     $.post(Routing.generate('claims_h_countdown_assegna_gestore'), form.serialize(), function(out) {
         window.location = out.redirect;
     });

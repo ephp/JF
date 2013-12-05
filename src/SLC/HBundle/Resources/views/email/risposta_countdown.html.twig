@@ -1,0 +1,20 @@
+{% extends '::email.html.twig' %}
+{% set titolo = 'Agenda giornaliera di '~gestore.nome %}
+
+{% block content %}
+<div>
+    {{ testo|nl2br }}
+    <br/>
+    <br/>
+    <small>
+        {{ gestore.nome }}
+    </small>
+</div>
+
+{% if allegati|length > 0 %}
+<hr/>
+<div>
+    Sono presenti {{ allegati|length }} allegati
+</div>
+{% endif %}
+{% endblock %}

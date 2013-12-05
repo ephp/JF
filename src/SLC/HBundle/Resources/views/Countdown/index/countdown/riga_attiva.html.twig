@@ -4,31 +4,29 @@
     <td style="text-align: center;">{{ entity.giorniRimanenti }}</td>
     <td>{{ entity.email.subject }}</td>
     <td>{{ entity.email.fromName }}</td>
-    <td>
-        {% if entity.pratica %}
-            <button type="button" onclick="javascript:window.location='{{ path('claims_hospital_pratica', {'slug': entity.pratica.slug}) }}'">
-                Apri pratica
-                {{ entity.pratica.codice }}
-            </button>
-            <br/>
-            {{ entity.pratica.claimant }}
-        {% endif %}
-    </td>
+    {% if entity.pratica %}
+        {% include "ClaimsHBundle:Tabellone:index/td/claimant.html.twig" with {'entity': entity.pratica, 'tds': ['cc']} %}
+    {% else %}
+        <td class="center">
+            -
+        </td>
+    {% endif %}
     {% if gest is defined %}
-        {% if entity.gestore or entity.responsedAt %}
-            <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox">{{ entity.gestore.sigla }}</a></td>
-        {% else %}
-            <td style="text-align: center" class="chg"><a href="#fb_assegna_gestore" class="fancybox">Assegna</a></td>
-        {% endif %}
+        {% include "ClaimsHBundle:Tabellone:index/td/gestore.html.twig" with {'entity': entity, 'tds': ['cc']} %}
     {% endif %}
     <td>
-        <button type="button" onclick="leggi('#{{ prefisso }}_riga_{{ entity.id }}_leggi');">
-            Leggi
-        </button>
-        {% if app.user.hasRole('ROLE_ADMIN') and not entity.gestore and not entity.responsedAt %}
-            <button type="button" onclick="if(confirm('Vuoi cancellare il countdown {{ entity.email.subject|upper }}')) { window.location='{{ path('claims_h_countdown_delete', {'id': entity.id}) }}'; }">
-                Cancella
-            </button>
+        <a href="javascript:leggi('#{{ prefisso }}_riga_{{ entity.id }}_leggi');" class="button green">
+            <div class="icon"><span class="ico-eye-open"></span></div>
+        </a>
+        {% if entity.pratica %}
+            <a href="{{ path('claims_hospital_pratica', {'slug': entity.pratica.slug}) }}" target="_blank" class="button yellow">
+                <div class="icon"><span class="ico-pencil"></span></div>
+            </a>
+        {% endif %}
+        {% if app.user.hasRole('C_ADMIN') and not entity.gestore and not entity.responsedAt %}
+            <a href="javascript:if(confirm('Vuoi cancellare il countdown {{ entity.email.subject|upper }}')) { window.location='{{ path('claims_h_countdown_delete', {'id': entity.id}) }}'; }:" class="button red">
+                <div class="icon"><span class="ico-remove-sign"></span></div>
+            </a>
         {% endif %}
     </td>
 </tr>
@@ -48,12 +46,12 @@
         {% endif %}
     </td>
     <td style="vertical-align: middle">
-        <button type="button" onclick="rispondi('#{{ prefisso }}_riga_{{ entity.id }}_rispondi');">
-            {% if entity.stato == 'C' %}Risposta{% else %}Rispondi{% endif %}
-        </button>
-        <button type="button" onclick="$('.rh').hide();">
-            Chiudi
-        </button>
+        <a href="javascript:rispondi('#{{ prefisso }}_riga_{{ entity.id }}_rispondi');" class="button blue">
+            <div class="icon"><span class="ico-reply"></span></div>
+        </a>
+        <a href="javascript:$('.rh').hide();" class="button red">
+            <div class="icon"><span class="ico-eye-close"></span></div>
+        </a>
     </td>
 </tr>
 <tr id="{{ prefisso }}_riga_{{ entity.id }}_rispondi" class="rh rh-{{ entity.id }}" style="display: none">
@@ -78,30 +76,32 @@
                 </div>
             {% endif %}
         {% else %}
-            <form action="{{ path('claims_h_countdown_reply', {'id': entity.id}) }}" method="post" class="p_input" id="fileupload_{{ entity.id }}">
+            <form action="{{ path('claims_h_countdown_reply', {'id': entity.id}) }}" method="post" class="p_input" id="fileupload_{{ prefisso }}_{{ entity.id }}">
                 <h3>RE: {{ entity.email.subject }} [RECD-{{ entity.id }}]</h3>
-                <table>
+                <table style="width: 100%;">
                     <tr>
                         <td colspan="2" style="text-align: center">
-                            <textarea name="email[testo]" id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_txt"  style="background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; width: 95%;"></textarea>
+                            <textarea name="email[testo]" id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_txt" style="background-color: #ffffff; border: 1px solid #888888; height: 300px; padding: 10px; width: 95%;"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td style="width: 50%">
                             <input type="hidden" id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_docs" name="email[docs]" value="[]" />
-                            {% render 'EphpGestoriBundle:Profilo:uploadMulti' with {
-                                        'id': 'fileupload_' ~ entity.id,
-                                        'field': 'documenti_' ~ entity.id,
+                            {#% render(controller('EphpDragDropBundle:Render:uploadNf', {
+                            })) %#}
+                            {% render(controller('SLCHBundle:Countdown:uploadMulti', {
+                                        'id': 'fileupload_' ~ prefisso ~ '_' ~ entity.id,
+                                        'field': 'documenti_' ~ prefisso ~ '_' ~ entity.id,
                                         'values': '',
                                         'dir': 'attach_countdown/' ~ entity.id
-                            } %}
+                            })) %}
                         </td>
                         <td style="width: 50%">
                             <ul id="{{ prefisso }}_riga_{{ entity.id }}_rispondi_ul"></ul>
                         </td>
                     </tr>
                 </table>
-                <button type="submit" id="bt_{{ entity.id }}" style="display: none;">
+                <button type="submit" id="bt_{{ prefisso }}_{{ entity.id }}" style="display: none;">
                     Invia Risposta
                 </button>
             </form> 
@@ -109,7 +109,7 @@
     </td>
     <td style="vertical-align: bottom">
         {% if entity.stato != 'C' %}
-            <button type="button" onclick="$('#fileupload_{{ entity.id }}').submit();" style="margin-bottom: 50px;">
+            <button type="button" onclick="$('#fileupload_{{ prefisso }}_{{ entity.id }}').submit();" style="margin-bottom: 50px;">
                 Invia Risposta
             </button>
         {% endif %}

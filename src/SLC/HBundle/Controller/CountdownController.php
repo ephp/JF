@@ -13,7 +13,9 @@ use Claims\HBundle\Entity\Countdown;
  */
 class CountdownController extends Controller {
 
-    use \Ephp\UtilityBundle\Controller\Traits\BaseController;
+    use \Ephp\DragDropBundle\Controller\Traits\DragDropController,
+        \Ephp\ImapBundle\Controller\Traits\ImapController,
+        \Ephp\UtilityBundle\Controller\Traits\BaseController;
 
     /**
      * Lists all Gestore entities.
@@ -23,22 +25,22 @@ class CountdownController extends Controller {
      */
     public function indexAction() {
         $gestore = $this->getUser();
+        /* @var $gestore \JF\ACLBundle\Entity\Gestore */
         $cliente = $gestore->getCliente();
         $nuovi = false;
         $aperti = false;
         $chiusi = false;
         $miei_aperti = false;
         $miei_chiusi = false;
-        if($this->getUser()->hasRole('C_ADMIN')) {
+        if ($gestore->hasRole('C_ADMIN', 'C_RECUPERI_H')) {
             $nuovi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
             $aperti = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
             $chiusi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
         }
-        if($this->getUser()->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
+        if ($gestore->hasRole(array('C_GESTORE_H', 'C_RECUPERI_H'))) {
             $miei_aperti = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A', 'gestore' => $gestore->getId()), array('sended_at' => 'ASC'));
             $miei_chiusi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C', 'gestore' => $gestore->getId()), array('sended_at' => 'DESC'));
         }
-
         return array(
             'gestore' => $gestore,
             'nuovi' => $nuovi,
@@ -57,11 +59,11 @@ class CountdownController extends Controller {
      * @Template()
      */
     public function assegnaGestoreCountdownAction() {
-        $req = $this->getRequest()->get('cd');
+        $req = $this->getRequest()->get('gestore');
 
-        $cd = $this->find('SLCHBundle:Countdown', $req['id']);
+        $cd = $this->find('SLCHBundle:Countdown', str_replace('n_riga_', '', $req['id']));
         /* @var $cd Countdown */
-        $gestore = $this->findOneBy('JFACLBundle:Gestore', array('sigla' => $req['gestore']));
+        $gestore = $this->findOneBy('JFACLBundle:Gestore', array('slug' => $req['gestore']));
         /* @var $gestore \JF\ACLBundle\Entity\Gestore */
 
         $genera = is_null($cd->getGestore());
@@ -94,7 +96,6 @@ class CountdownController extends Controller {
         return $this->redirect($this->generateUrl('claims_h_countdown'));
     }
 
-
     /**
      * Lists all Scheda entities.
      *
@@ -121,20 +122,39 @@ class CountdownController extends Controller {
             $message->attach(\Swift_Attachment::fromPath($this->dir() . $doc));
         }
 
-        
+
         $message->getHeaders()->addTextHeader('X-Mailer', 'PHP v' . phpversion());
         $this->get('mailer')->send($message);
-        
+
         $countdown->setStato('C');
         $countdown->setResponsedAt(new \DateTime());
-        if(!$countdown->getGestore()) {
+        if (!$countdown->getGestore()) {
             $countdown->setGestore($gestore);
         }
         $this->persist($countdown);
-        
+
         return $this->redirect($this->generateUrl('claims_h_countdown'));
     }
 
+    /**
+     * Lists all Scheda entities.
+     *
+     * @Route("-uploadMulti", name="email_upload_multi")
+     * @Template("EphpDragDropBundle:DragDrop:multi.html.php")
+     */
+    public function uploadMultiAction() {
+        return $this->multiFile();
+    }
+
+    /**
+     * Lists all Scheda entities.
+     *
+     * @Route("-uploadJs", name="tabellone_upload_js")
+     * @Template("SLCHBundle:Countdown:js.html.php")
+     */
+    public function uploadJsAction() {
+        return array();
+    }
 
 }
 

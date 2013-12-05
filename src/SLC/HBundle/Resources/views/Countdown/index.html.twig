@@ -10,6 +10,7 @@ Countdown
 {% endjavascripts %}
 {% endblock %}
 {% block content %}
+{% render(controller("SLCHBundle:Countdown:uploadJs")) %}
 <div class="page-header">
     <div class="icon">
         <span class="ico-time"></span>
@@ -22,70 +23,68 @@ Countdown
     <div class="span12">
         <div class="block">
             <div class="data-fluid tabbable">                    
-                {% set nuovi = false %}
+                {% set notempty = false %}
                 <ul class="nav nav-tabs">
                 {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-n">Nuovi</a></li>
-                    {% set nuovi = true %}
+                    <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-n" data-toggle="tab">Nuovi</a></li>
+                    {% set notempty = true %}
                 {% endif %}
                 {% if miei_aperti|length > 0 %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-a">Countdown aperti</a></li>
-                    {% set nuovi = true %}
+                    <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-a" data-toggle="tab">Countdown aperti</a></li>
+                    {% set notempty = true %}
                 {% endif %}
                 {% if miei_chiusi|length > 0 %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-c">Countdown chiusi</a></li>
-                    {% set nuovi = true %}
+                    <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-c" data-toggle="tab">Countdown chiusi</a></li>
+                    {% set notempty = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and aperti|length > 0 %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-o">Countdown aperti ufficio</a></li>
-                    {% set nuovi = true %}
+                    <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-o" data-toggle="tab">Countdown aperti ufficio</a></li>
+                    {% set notempty = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and chiusi|length > 0 %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-r">Countdown chiusi ufficio</a></li>
-                    {% set nuovi = true %}
+                    <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-r" data-toggle="tab">Countdown chiusi ufficio</a></li>
+                    {% set notempty = true %}
                 {% endif %}
-                {% if not nuovi %}
-                    <li {% if not nuovi %}class="active"{% endif %}><a href="#tabs-m">Messaggio</a></li>
-                    {% set nuovi = true %}
+                {% if not notempty %}
+                    <li class="active"><a href="#tabs-m" data-toggle="tab">Messaggio</a></li>
                 {% endif %}
                 </ul>
-                {% set nuovi = false %}
+                {% set notempty = false %}
                 <div class="tab-content">
                 {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
-                    <div id="tabs-n" {% if nuovi %}class="no-display"{% endif %}>
+                    <div id="tabs-n" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
                     </div>
-                    {% set nuovi = true %}
+                    {% set notempty = true %}
                 {% endif %}
                 {% if miei_aperti|length > 0 %}
-                    <div id="tabs-a" {% if nuovi %}class="no-display"{% endif %}>
+                    <div id="tabs-a" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'a', 'entities': miei_aperti} %}
                     </div>
-                    {% set nuovi = true %}
+                    {% set notempty = true %}
                 {% endif %}
                 {% if miei_chiusi|length > 0 %}
-                    <div id="tabs-c" {% if nuovi %}class="no-display"{% endif %}>
+                    <div id="tabs-c" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'c', 'entities': miei_chiusi} %}
                     </div>
-                    {% set nuovi = true %}
+                    {% set notempty = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and aperti|length > 0 %}
-                    <div id="tabs-o" {% if nuovi %}class="no-display"{% endif %}>
+                    <div id="tabs-o" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'o', 'entities': aperti, 'gest': true} %}
                     </div>
-                    {% set nuovi = true %}
+                    {% set notempty = true %}
                 {% endif %}
                 {% if app.user.hasRole('C_ADMIN') and chiusi|length > 0 %}
-                    <div id="tabs-r" {% if nuovi %}class="no-display"{% endif %}>
+                    <div id="tabs-r" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'r', 'entities': chiusi, 'gest': true} %}
                     </div>
-                    {% set nuovi = true %}
+                    {% set notempty = true %}
                 {% endif %}
-                {% if not nuovi %}
-                    <div id="tabs-m" {% if nuovi %}class="no-display"{% endif %}>
+                {% if not notempty %}
+                    <div id="tabs-m" class="tab-pane active">
                         Nessun countdown attivo
                     </div>
-                    {% set nuovi = true %}
                 {% endif %}
                 </div>
             </div>
@@ -93,25 +92,10 @@ Countdown
     </div>
 </div>
 
+{% if app.user.hasRole(['C_ADMIN', 'C_RECUPERI_H']) %}
+    {% render(controller("ClaimsHBundle:Render:cambiaGestore")) %}
+{% endif %}
 
-<div class="no-display" id="fb_assegna_gestore">
-    <form id="assegna_gestore_scheda">
-        <li>Assegna il gestore a <span id="assegna_gestore_a"></span></a></li>
-        <div style="clear: both"></div>
-        <select name="cd[gestore]" id="cd_gestore">
-            <option value="">Nessuno</option>
-            {% for ges in gestori %}
-                <option value="{{ ges.sigla }}">{{ges.nome}}</option>
-            {% endfor %}
-        </select>
-        <input type="hidden" name="cd[id]" id="cd_id" value="" />    
-        <button type="button" onclick="assegnaGestore()">Assegna</button>
-    </form>
-</div>
-
-<script type="text/javascript">
-
-</script>
 <script type="text/html" id="li">
     <li id="r_{id}"><a href="{url}" target="_blank">{name}</a> ({size} byte) <button onclick="cancella('r_{id}','{delete_url}')">X</button></li>
 </script>

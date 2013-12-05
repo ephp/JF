@@ -1,5 +1,14 @@
 <td class="center">
+    {% if 'cc' in tds %} 
+        {{ entity.codice }}<br/>
+    {% endif %}
+    {% if 'cc' in tds %}
+        <a target="_blank" style="font-weight: bold" href="{{ path('claims_hospital_pratica', {'slug': entity.slug}) }}">
+    {% endif %}
     {{ entity.claimant }}
+    {% if 'cc' in tds %}
+        </a>
+    {% endif %}
     {% if 'soi' not in tds %} 
         <br/>SOI: <abbr title="{{ entity.soi(true) }}">{{ entity.soi }}</abbr>
     {% endif %}

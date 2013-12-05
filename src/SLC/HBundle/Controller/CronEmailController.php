@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ephp\UtilityBundle\Utility\Debug;
-use Claims\HBundle\Entity\Countdown;
+use SLC\HBundle\Entity\Countdown;
 
 /**
  * @Route("/h/email")
@@ -66,7 +66,7 @@ class CronEmailController extends Controller {
                     $pratica = $this->findPratica($body);
                     $countdown->setEmail($header);
                     $countdown->setSendedAt($header->getDate());
-                    $countdown->setScheda($pratica);
+                    $countdown->setPratica($pratica);
                     $countdown->setStato('N');
                     $this->persist($countdown);
                     $this->getEm()->commit();

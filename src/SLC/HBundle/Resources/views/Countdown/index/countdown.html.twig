@@ -1,19 +1,19 @@
 {% set small = true %}
-<table class="records_list">
+<table class="table grid" cellpadding="0" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>#</th>
             <th>Giorni</th>
             <th>Subject</th>
             <th>Mittente</th>
-            <th>Scheda</th>
+            <th>Pratica</th>
             {% if gest is defined %}
                 <th>Gestore</th>
             {% endif %}
             <th>Operazioni</th>
         </tr>
     </thead>
-    <tbody id="tb_container">
-        {% include 'ClaimsHBundle:Countdown:index/countdown/tbody.html.twig' %}
+    <tbody id="tb_{{ prefisso }}_container">
+        {% include 'SLCHBundle:Countdown:index/countdown/tbody.html.twig' %}
     </tbody>
 </table>            

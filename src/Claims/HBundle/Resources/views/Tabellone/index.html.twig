@@ -91,7 +91,9 @@
         </div>       
     </div> 
 {% endif %}
-{% render(controller("ClaimsHBundle:Render:ricerca", {'route': route_ricerca, 'ricerca': app.request.get('ricerca')})) %}
+{% if route_ricerca is defined %}
+    {% render(controller("ClaimsHBundle:Render:ricerca", {'route': route_ricerca, 'ricerca': app.request.get('ricerca')})) %}
+{% endif %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">

@@ -11,7 +11,7 @@ trait TabelloneController {
             'label' => 'Analisi N.P.',
             'route' => 'slc_hospital_np',
         );
-        $out['npsd'] = array(
+        $out['npsg'] = array(
             'label' => 'Analisi N.P. (senza gestore)',
             'route' => 'slc_hospital_np_sg',
         );
@@ -31,19 +31,6 @@ trait TabelloneController {
                 'icon' => 'ico-money',
             );
         }
-        $out['xls'] = array(
-            'route' => $this->getParam('_route') . '_xls',
-            'label' => 'Esporta XLS',
-            'icon' => 'ico-table',
-            'class' => 'label-important',
-        );
-        $out['stampa'] = array(
-            'route' => $this->getParam('_route') . '_stampa',
-            'label' => 'Versione per la stampa',
-            'icon' => 'ico-printer',
-            'class' => 'label-warning',
-            'target' => '_blank'
-        );
         return $out;
     }
 
@@ -185,4 +172,32 @@ trait TabelloneController {
         $this->persist($this->getUser());
         return $filtri;
     }
+
+    protected function getColonneSlc($mode, $view = 1) {
+        $colonne = array();
+                $colonne[] = 'index';
+                $colonne[] = 'codice';
+                $colonne[] = 'dasc';
+                $colonne[] = 'giudiziale';
+                $colonne[] = 'claimant';
+                if (in_array($mode, array('np', 'npsg', 'npcg', 'riserve'))) {
+                    $colonne[] = 'gestore';
+                }
+                $colonne[] = 'soi';
+                if (in_array($mode, array('bookeeping'))) {
+                    $colonne[] = 'ltFees';
+                } else {
+                    $colonne[] = 'amountReserved';
+                    $colonne[] = 'firstReserve';
+                }
+                if ($this->hasRole('C_RECUPERI_H')) {
+                    $colonne[] = 'datiRecupero';
+                } else {
+                    $colonne[] = 'note';
+                }
+                $colonne[] = 'stato';
+                $colonne[] = 'operazioni';
+        return $colonne;
+    }
+
 }

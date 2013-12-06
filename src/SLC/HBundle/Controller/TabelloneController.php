@@ -22,15 +22,20 @@ class TabelloneController extends Controller {
      * @Route("/analisi-np-cg",   name="slc_hospital_np_cg",      defaults={"tab": "npcg"},       options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("/analisi-riserve", name="slc_hospital_riserve",    defaults={"tab": "riserve"},    options={"ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      * @Route("/bookeeping",      name="slc_hospital_bookeeping", defaults={"tab": "bookeeping"}, options={"ACL": {"in_role": {"R_SUPER"}}})
-     * @Template()
+     * @Template("ClaimsHBundle:Tabellone:index.html.twig")
      */
     public function indexAction($tab) {
         $filtri = $this->buildFiltriSlc($tab);
         $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
+        $tds = $this->getColonneSlc($tab);
+
         return array(
             'links' => $this->buildLinksSlc(),
             'pagination' => $pagination,
             'tabopen' => $tab,
+            'mode' => $tab,
+            'tds' => $tds,
+            'query' => $this->getQuery(),
         );
     }
 

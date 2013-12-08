@@ -408,6 +408,9 @@ class XlsController extends Controller {
                     case 'Amount Reserved':
                         $valore = $entity->getAmountReserved() > 0 ? $entity->getAmountReserved() : 'N.P.';
                         break;
+                    case 'Settlement Authority':
+                        $valore = $entity->getSettlementAuthority();
+                        break;
                     case 'First Reserve Indication':
                         $valore = $entity->getFirstReserveIndication();
                         break;
@@ -502,6 +505,7 @@ class XlsController extends Controller {
                     case 'Offerta Loro':
                     case 'MPL':
                     case 'Proposed Reserve':
+                    case 'Settlement Authority':
                         $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
                         $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
                         break;
@@ -569,6 +573,7 @@ class XlsController extends Controller {
                         $colonne[chr($colonna++)] = array('nome' => 'Recupero Offerta Loro', 'larghezza' => 20);
                     } else {
                         $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                        $colonne[chr($colonna++)] = array('nome' => 'Settlement Authority', 'larghezza' => 20);
                         if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
                             $colonne[chr($colonna++)] = array('nome' => 'First Reserve Indication', 'larghezza' => 20);
                         }
@@ -591,6 +596,7 @@ class XlsController extends Controller {
                 }
                 $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Settlement Authority', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Monthly Report', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Stato pratica', 'larghezza' => 20);
@@ -605,6 +611,7 @@ class XlsController extends Controller {
                 }
                 $colonne[chr($colonna++)] = array('nome' => 'SOI', 'larghezza' => 10);
                 $colonne[chr($colonna++)] = array('nome' => 'Amount Reserved', 'larghezza' => 20);
+                $colonne[chr($colonna++)] = array('nome' => 'Settlement Authority', 'larghezza' => 20);
                 $colonne[chr($colonna++)] = array('nome' => 'Note', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'Audit', 'larghezza' => 50);
                 $colonne[chr($colonna++)] = array('nome' => 'MPL', 'larghezza' => 20);

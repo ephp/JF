@@ -368,6 +368,7 @@ trait TabelloneController {
                         $colonne[] = 'offerte';
                     } else {
                         $colonne[] = 'amountReserved';
+                        $colonne[] = 'sa';
                         if (in_array($mode, array('np', 'npcg', 'npsg', 'reserve'))) {
                             $colonne[] = 'firstReserve';
                         }
@@ -389,6 +390,7 @@ trait TabelloneController {
                     $colonne[] = 'gestore';
                 }
                 $colonne[] = 'amountReserved';
+                $colonne[] = 'sa';
                 $colonne[] = 'note';
                 $colonne[] = 'monthly';
                 $colonne[] = 'stato';
@@ -402,6 +404,7 @@ trait TabelloneController {
                     $colonne[] = 'gestore';
                 }
                 $colonne[] = 'amountReserved';
+                $colonne[] = 'sa';
                 $colonne[] = 'note';
                 $colonne[] = 'audit';
                 $colonne[] = 'worstcase';

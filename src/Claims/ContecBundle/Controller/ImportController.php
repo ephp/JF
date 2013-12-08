@@ -972,8 +972,9 @@ class ImportController extends Controller {
         $crx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($c[0], 0, strpos($c[0], '[0]'))) . '\[1\]="[^\n]+";/';
         preg_match($orx, $source, $o1);
         preg_match($crx, $source, $c1);
-        $os = substr($o1[0], strpos($o1[0], '"') + 1, strlen($o1[0]) - strpos($o1[0], '"') - 2);
-        $cs = str_replace('\\n', '\n', substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '"') - 2));
+        $os = substr($o1[0], strpos($o1[0], '"') + 1, strlen($o1[0]) - strpos($o1[0], '";') - 2);
+        $cs = str_replace('\\n', '\n', substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '";') - 2));
+        Debug::vd(array('orx' => $orx, 'crx' => $crx, 'o1' => $o1, 'c1' => $c1, 'titolo' => $os, 'note' => $cs));
         return array('titolo' => $os, 'note' => $cs);
     }
 

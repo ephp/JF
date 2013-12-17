@@ -68,6 +68,7 @@ class CronEmailController extends Controller {
                     $countdown->setSendedAt($header->getDate());
                     $countdown->setPratica($pratica);
                     $countdown->setStato('N');
+                    $countdown->setGestore($this->findOneBy('JFACLBundle:Gestore', array('cliente' => $cliente->getId(), 'email' => $header->getFromAddress())));
                     $this->persist($countdown);
                     $this->getEm()->commit();
                 } catch (\Exception $e) {

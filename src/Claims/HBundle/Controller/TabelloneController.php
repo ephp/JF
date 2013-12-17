@@ -164,7 +164,7 @@ class TabelloneController extends Controller {
 
     /**
      * @Route("-ricerca-stampa/{monthly_report}", name="claims_hospital_ricerca_stampa", defaults={"monthly_report": false, "mode": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
-     * @Template()
+     * @Template("ClaimsHBundle:Tabellone:stampa.html.twig")
      */
     public function stampaRicercaAction($mode, $monthly_report) {
         $this->getUser()->set('claims_h_sistema', 'tutti');

@@ -32,8 +32,10 @@ class CountdownController extends Controller {
         $chiusi = false;
         $miei_aperti = false;
         $miei_chiusi = false;
-        if ($gestore->hasRole('C_ADMIN', 'C_RECUPERI_H')) {
+        if ($gestore->hasRole(array('C_ADMIN', 'C_RECUPERI_H'))) {
             $nuovi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'N'), array('sended_at' => 'ASC'));
+        }
+        if ($gestore->hasRole('C_ADMIN')) {
             $aperti = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'A'), array('sended_at' => 'ASC'));
             $chiusi = $this->findBy('SLCHBundle:Countdown', array('cliente' => $cliente->getId(), 'stato' => 'C'), array('sended_at' => 'DESC'));
         }

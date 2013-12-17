@@ -25,7 +25,7 @@ Countdown
             <div class="data-fluid tabbable">                    
                 {% set notempty = false %}
                 <ul class="nav nav-tabs">
-                {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
+                {% if app.user.hasRole(['C_ADMIN', 'C_RECUPERI_H']) and nuovi|length > 0 %}
                     <li {% if not notempty %}class="active"{% endif %}><a href="#tabs-n" data-toggle="tab">Nuovi</a></li>
                     {% set notempty = true %}
                 {% endif %}
@@ -51,7 +51,7 @@ Countdown
                 </ul>
                 {% set notempty = false %}
                 <div class="tab-content">
-                {% if app.user.hasRole('C_ADMIN') and nuovi|length > 0 %}
+                {% if app.user.hasRole(['C_ADMIN', 'C_RECUPERI_H']) and nuovi|length > 0 %}
                     <div id="tabs-n" class="tab-pane {% if not notempty %}active{% endif %}">
                         {% include 'SLCHBundle:Countdown:index/countdown.html.twig' with {'prefisso': 'n', 'entities': nuovi, 'gest': true} %}
                     </div>

@@ -491,7 +491,7 @@ class ImportController extends Controller {
             $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
             /* @var $sistema \Claims\HBundle\Entity\Pratica */
             list($cookies, $reqTime) = $this->login($sistema, $dati['cl_h_contec-import']);
-            $this->enterScheda($sistema, $pratica, $cookies, $reqTime);
+            $this->enterScheda($sistema, $pratica, $cookies, $reqTime, true);
             $this->logout($sistema, $cookies);
         }
         return $this->redirect($this->generateUrl('claims_hospital_pratica', array('slug' => $pratica->getSlug())));
@@ -663,7 +663,7 @@ class ImportController extends Controller {
         return $xls;
     }
 
-    private function enterScheda(Sistema $sistema, Pratica $pratica, $cookies, $reqTime) {
+    private function enterScheda(Sistema $sistema, Pratica $pratica, $cookies, $reqTime, $pulizia = true) {
         try {
             $this->getEm()->beginTransaction();
             $get = array(
@@ -794,7 +794,11 @@ class ImportController extends Controller {
                         }
                     }
                 } else {
-                    $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+                    if($pulizia) {
+                        $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB));
+                    } else {
+                        $this->getRepository('ClaimsHBundle:Evento')->cancellaTipoDaPratica($pratica, $this->getTipoEvento($this->EMAIL_JWEB), null, 'From:%');
+                    }
 
                     foreach ($datiScheda['eventi'] as $_evento) {
                         if (isset($_evento['comunicazione'])) {
@@ -970,11 +974,14 @@ class ImportController extends Controller {
         preg_match('/formFields\[[0-9]+\]\[0\]="contenuto";/', $source, $c);
         $orx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($o[0], 0, strpos($o[0], '[0]'))) . '\[1\]="[^\n]+";/';
         $crx = '/' . str_replace(array('[', ']'), array('\\[', '\\]'), substr($c[0], 0, strpos($c[0], '[0]'))) . '\[1\]="[^\n]+";/';
+        $orr = substr($o[0], 0, strpos($o[0], '[0]')) . '[1]="';
+        $crr = substr($c[0], 0, strpos($c[0], '[0]')) . '[1]="';
         preg_match($orx, $source, $o1);
         preg_match($crx, $source, $c1);
-        $os = substr($o1[0], strpos($o1[0], '"') + 1, strlen($o1[0]) - strpos($o1[0], '";') - 2);
-        $cs = str_replace('\\n', '\n', substr($c1[0], strpos($c1[0], '"') + 1, strlen($c1[0]) - strpos($c1[0], '";') - 2));
-        Debug::vd(array('orx' => $orx, 'crx' => $crx, 'o1' => $o1, 'c1' => $c1, 'titolo' => $os, 'note' => $cs));
+        $os = str_replace(array('\\n', $orr, '";'), array('\n', '', ''), $o1[0]);
+        $cs = str_replace(array('\\n', $crr, '";'), array('\n', '', ''), $c1[0]);
+        
+//        Debug::vd(array('orx' => $orx, 'crx' => $crx, 'orr' => $orr, 'crr' => $crr, 'o1' => $o1, 'c1' => $c1, 'titolo' => $os, 'note' => $cs));
         return array('titolo' => $os, 'note' => $cs);
     }
 

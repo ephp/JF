@@ -102,12 +102,19 @@ function _autoupdate($this) {
     }
 }
 
+
 function autoupdate() {
 //    $('.autoupdate').change(function() {
 //        _autoupdate($(this));
 //    });
-    $('.autoupdate').blur(function() {
-        _autoupdate($(this));
+    var old = null;
+    $('.autoupdate').focus(function(){
+        old = $(this).val();
+    }).blur(function() {
+        if($(this).val() !== old) {
+            _autoupdate($(this));
+        }
+        old = null;
     });
 
     $('.star').click(function() {

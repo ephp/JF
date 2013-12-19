@@ -17,6 +17,9 @@ security:
                     dodo:  { password: pci, roles: [ 'ROLE_SUPER_ADMIN' ] }
 
     firewalls:
+        github:
+            pattern:  ^/github/
+            security: false
         andreani:
             pattern:  ^/andreani/
             security: false

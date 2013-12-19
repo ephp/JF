@@ -27,7 +27,6 @@ class DefaultController extends Controller {
         $out = array(
             'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($request->getContent()),
             'content' => $request->getContent(),
-//            'content' => \Ephp\UtilityBundle\Utility\Debug::print_r($request),
         );
         $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 

@@ -1,3 +1,8 @@
+jf_git_hub:
+    resource: "@JFGitHubBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 slch:
     resource: "@SLCHBundle/Controller/"
     type:     annotation

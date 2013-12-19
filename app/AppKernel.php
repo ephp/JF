@@ -44,6 +44,7 @@ class AppKernel extends Kernel
             
             new SLC\ImportBundle\SLCImportBundle(),
             new SLC\HBundle\SLCHBundle(),
+            new JF\GitHubBundle\JFGitHubBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

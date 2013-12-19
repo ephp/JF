@@ -29,6 +29,7 @@ class DefaultController extends Controller {
             'type' => $json,
             'content' => $json->ref,
         );
+        
         $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 
         return $this->jsonResponse($out);

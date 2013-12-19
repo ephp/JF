@@ -26,7 +26,7 @@ class DefaultController extends Controller {
         $user = $this->find('JFACLBundle:Gestore', 1);
         $out = array(
             'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($request->getContent()),
-            'cont' => $request->getContent(),
+            'cont' => \Ephp\UtilityBundle\Utility\Debug::print_r($request),
         );
         $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 

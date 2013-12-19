@@ -24,11 +24,11 @@ class DefaultController extends Controller {
         $request = $this->getRequest();
         
         $user = $this->find('JFACLBundle:Gestore', 1);
+        $json = json_decode(str_replace('payload=', '', urldecode($request->getContent())));
         $out = array(
-            'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($request->getContent()),
-            'content' => urldecode($request->getContent()),
+            'type' => $json,
+            'content' => $json->ref,
         );
-        $json = urldecode($request->getContent());
         $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 
         return $this->jsonResponse($out);

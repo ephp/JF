@@ -28,6 +28,7 @@ class DefaultController extends Controller {
             'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($request->getContent()),
             'content' => urldecode($request->getContent()),
         );
+        $json = urldecode($request->getContent());
         $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 
         return $this->jsonResponse($out);

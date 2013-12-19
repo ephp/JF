@@ -26,7 +26,7 @@ class DefaultController extends Controller {
         $user = $this->find('JFACLBundle:Gestore', 1);
         $json = json_decode(str_replace('payload=', '', urldecode($request->getContent())));
         $out = array(
-            'type' => $json,
+            'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($json),
             'content' => $json->ref,
         );
         

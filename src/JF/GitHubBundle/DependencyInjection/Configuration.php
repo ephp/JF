@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('branch')->defaultValue('master')->cannotBeEmpty()->end()
                     ->scalarNode('name')->defaultValue('Project')->cannotBeEmpty()->end()
                     ->scalarNode('repository_path')->cannotBeEmpty()->end()
+                    ->scalarNode('script_dir')->cannotBeEmpty()->end()
                     ->arrayNode('deploy')
                         ->addDefaultsIfNotSet()
                         ->children()

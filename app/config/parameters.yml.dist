@@ -23,3 +23,5 @@ parameters:
     
     github_branch: master
     github_path: /var/www/http/jf-system.com
+    github_chown: apache.apache
+    github_script_dir: /var/www/http

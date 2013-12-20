@@ -118,16 +118,20 @@ echo \"Finito\"
 htop
              */
             
-            $file = '/var/www/http/deploy.sh';
+            $file = $this->container->getParameter('github.script');;
 
             $handle = fopen($file, 'w');
             fwrite($handle, $sh);
             fclose($handle);
             chmod($file, 0777);
 
+            $output = exec($file, $exec);
+            
+            unlink($file);
+            
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($sh),
-                'content' => nl2br($sh),
+                'content' => nl2br($exec),
             );
 
             $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);

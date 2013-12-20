@@ -24,6 +24,7 @@ class JFGitHubExtension extends Extension {
         $container->setParameter('github.name', $config['name']);
         $container->setParameter('github.path', $config['repository_path']);
         $container->setParameter('github.deploy', $config['deploy']);
+        $container->setParameter('github.script', $config['script_dir'].'/deploy.sh');
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
     }

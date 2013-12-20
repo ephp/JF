@@ -118,6 +118,11 @@ echo \"Finito\"
 htop
              */
             
+            $handle = fopen('/root/deploy.sh', 'w');
+            fwrite($handle, $sh);
+            fclose($handle);
+            chmod('/root/deploy.sh', 0777);
+
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($sh),
                 'content' => $sh,

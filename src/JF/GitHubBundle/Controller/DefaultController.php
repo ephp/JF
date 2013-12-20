@@ -118,7 +118,7 @@ echo \"Finito\"
 htop
              */
             
-            $file = '/root/deploy.sh';
+            $file = '/var/www/http/deploy.sh';
             $handle = fopen($file, 'w');
             fwrite($handle, $sh);
             fclose($handle);

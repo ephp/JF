@@ -126,7 +126,7 @@ htop
 
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($sh),
-                'content' => $sh,
+                'content' => nl2br($sh),
             );
 
             $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);

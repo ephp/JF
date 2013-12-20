@@ -12,17 +12,20 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class JFGitHubExtension extends Extension
-{
+class JFGitHubExtension extends Extension {
+
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
-    {
+    public function load(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $container->setParameter('github.branch', $config['branch']);
+        $container->setParameter('github.name', $config['name']);
+        $container->setParameter('github.path', $config['repository_path']);
+        $container->setParameter('github.deploy', $config['deploy']);
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
     }
+
 }

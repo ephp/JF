@@ -22,18 +22,111 @@ class DefaultController extends Controller {
      */
     public function indexAction() {
         $request = $this->getRequest();
-        
+
         $user = $this->find('JFACLBundle:Gestore', 1);
         $json = json_decode(str_replace('payload=', '', urldecode($request->getContent())));
-        
-        $out = array(
-            'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($json),
-            'content' => $json->ref,
-        );
-        
-        $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
 
-        return $this->jsonResponse($out);
+        $branch = $this->container->getParameter('github.branch');
+        
+        if ('refs/heads/' . $branch == $json->ref) {
+            $files = array();
+            foreach ($json->commits as $commit) {
+                foreach ($commit->added as $file) {
+                    $files[] = $file;
+                }
+                foreach ($commit->removed as $file) {
+                    $files[] = $file;
+                }
+                foreach ($commit->modified as $file) {
+                    $files[] = $file;
+                }
+            }
+
+            $deploy = $this->container->getParameter('github.deploy');
+            $name = $this->container->getParameter('github.name');
+            $path = $this->container->getParameter('github.path');
+            
+            $pre = $deploy['sudo'] ? 'sudo ' : '';
+            
+            $sh = "
+#!/bin/sh
+echo \"Aggiornamento di {$name}\"
+cd {$path}
+sleep 1
+";
+            switch (strtolower($deploy['cache'])) {
+                case 'always':
+                    $sh .= "
+{$pre}rm -rf {$path}/app/cache/*
+# php app/console cache:clear
+                ";
+                break;
+            }
+            switch (strtolower($deploy['git'])) {
+                case 'always':
+                    $sh .= "
+git fetch
+git checkout -f origin/{$branch}
+                ";
+                break;
+            }
+            switch (strtolower($deploy['composer'])) {
+                case 'always':
+                    $sh .= "
+php composer.phar update
+                ";
+                break;
+            }
+            switch (strtolower($deploy['db'])) {
+                case 'doctrine':
+                    $sh .= "
+php app/console doctrine:schema:update --dump-sql
+php app/console doctrine:schema:update --force
+                ";
+                break;
+            }
+            switch (strtolower($deploy['install'])) {
+                case 'always':
+                    $sh .= "
+php app/console assets:install
+                ";
+                break;
+            }
+            switch (strtolower($deploy['dump'])) {
+                case 'always':
+                    $sh .= "
+php app/console assetic:dump
+                ";
+                break;
+            }
+            switch (strtolower($deploy['warmpu'])) {
+                case 'always':
+                    $sh .= "
+php app/console cache:warmup --env=prod --no-debug
+                ";
+                break;
+            }
+            if(isset($deploy['chown'])) {
+                $sh .= "
+chown -R {$deploy['chown']} {$path}
+                ";
+            }
+            $sh .= "
+echo \"Finito\"
+                ";
+            /*
+htop
+             */
+            
+            $out = array(
+                'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($sh),
+                'content' => $sh,
+            );
+
+            $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
+            return $this->jsonResponse($out);
+        }
+        return $this->jsonResponse();
     }
 
 }

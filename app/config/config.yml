@@ -121,3 +121,10 @@ ephp_imap:
     protocol: imap/ssl/novalidate-cert
     username: staff@jf-system.com
     password: livorno76        
+
+jf_git_hub:
+    branch: %github_branch%
+    repository_path: /var/www/http/jf-system.com
+    deploy:
+        sudo: false;
+        chown: apache.apache

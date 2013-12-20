@@ -20,9 +20,28 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('jf_git_hub');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+                ->children()
+                    ->scalarNode('branch')->defaultValue('master')->cannotBeEmpty()->end()
+                    ->scalarNode('name')->defaultValue('Project')->cannotBeEmpty()->end()
+                    ->scalarNode('repository_path')->cannotBeEmpty()->end()
+                    ->arrayNode('deploy')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('sudo')->defaultValue(true)->cannotBeEmpty()->end()            //[true,false]
+                            ->scalarNode('pwd')->defaultValue(true)->cannotBeEmpty()->end()            
+                            ->scalarNode('git')->defaultValue('always')->cannotBeEmpty()->end()         //[always,none]
+                            ->scalarNode('cache')->defaultValue('always')->cannotBeEmpty()->end()       //[always,none]
+                            ->scalarNode('composer')->defaultValue('always')->cannotBeEmpty()->end()    //[always,none]
+                            ->scalarNode('db')->defaultValue('doctrine')->cannotBeEmpty()->end()        //[doctrine,none]
+                            ->scalarNode('dump')->defaultValue('check')->cannotBeEmpty()->end()         //[always,check,none]
+                            ->scalarNode('install')->defaultValue('check')->cannotBeEmpty()->end()      //[always,check,none]
+                            ->scalarNode('warmup')->defaultValue('always')->cannotBeEmpty()->end()      //[always,none]
+                            ->scalarNode('chown')->end()                                                //user.group
+                        ->end()
+                    ->end()
+                ->end()
+        ;
 
         return $treeBuilder;
     }

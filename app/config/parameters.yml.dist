@@ -20,3 +20,6 @@ parameters:
     dimensione_massima_immagine: 2000000
     larghezza_minima_immagine: 200
     altezza_minima_immagine: 200
+    
+    github_branch: master
+    github_path: /var/www/http/jf-system.com

@@ -130,17 +130,11 @@ htop
             unlink($file);
             
             $out = array(
-                'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($output),
-                'content' => nl2br($output),
-            );
-
-            $this->notify($user, 'Test GitHub 1', 'JFGitHubBundle:email:test', $out);
-            $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($exec),
-                'content' => nl2br($exec),
+                'content' => implode('<br/>', $exec),
             );
 
-            $this->notify($user, 'Test GitHub 2', 'JFGitHubBundle:email:test', $out);
+            $this->notify($user, 'GitHub Notify', 'JFGitHubBundle:email:test', $out);
             return $this->jsonResponse($out);
         }
         return $this->jsonResponse();

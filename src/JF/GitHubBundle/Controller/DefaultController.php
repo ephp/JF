@@ -114,9 +114,6 @@ chown -R {$deploy['chown']} {$path}
             $sh .= "
 echo \"Finito\"
                 ";
-            /*
-htop
-             */
             
             $file = $this->container->getParameter('github.script');;
 

@@ -27,7 +27,7 @@ class DefaultController extends Controller {
         $json = json_decode(str_replace('payload=', '', urldecode($request->getContent())));
 
         $branch = $this->container->getParameter('github.branch');
-        
+
         if ('refs/heads/' . $branch == $json->ref) {
             $files = array();
             foreach ($json->commits as $commit) {
@@ -45,9 +45,9 @@ class DefaultController extends Controller {
             $deploy = $this->container->getParameter('github.deploy');
             $name = $this->container->getParameter('github.name');
             $path = $this->container->getParameter('github.path');
-            
+
             $pre = $deploy['sudo'] ? 'sudo ' : '';
-            
+
             $sh = "
 #!/bin/sh
 echo \"Aggiornamento di {$name}\"
@@ -60,22 +60,18 @@ sleep 1
 rm -rf {$path}/app/cache/*
 # php app/console cache:clear
                 ";
-                break;
+                    break;
             }
-            switch (strtolower($deploy['git'])) {
-                case 'always':
-                    $sh .= "
+            $sh .= "
 git fetch
 git checkout -f origin/{$branch}
                 ";
-                break;
-            }
             switch (strtolower($deploy['composer'])) {
                 case 'always':
                     $sh .= "
 php composer.phar update
                 ";
-                break;
+                    break;
             }
             switch (strtolower($deploy['db'])) {
                 case 'doctrine':
@@ -83,30 +79,30 @@ php composer.phar update
 php app/console doctrine:schema:update --dump-sql
 php app/console doctrine:schema:update --force
                 ";
-                break;
+                    break;
             }
             switch (strtolower($deploy['install'])) {
                 case 'always':
                     $sh .= "
 php app/console assets:install
                 ";
-                break;
+                    break;
             }
             switch (strtolower($deploy['dump'])) {
                 case 'always':
                     $sh .= "
 php app/console assetic:dump
                 ";
-                break;
+                    break;
             }
             switch (strtolower($deploy['warmpu'])) {
                 case 'always':
                     $sh .= "
 php app/console cache:warmup --env=prod --no-debug
                 ";
-                break;
+                    break;
             }
-            if(isset($deploy['chown'])) {
+            if (isset($deploy['chown'])) {
                 $sh .= "
 chown -R {$deploy['chown']} {$path}
                 ";
@@ -114,8 +110,9 @@ chown -R {$deploy['chown']} {$path}
             $sh .= "
 echo \"Finito\"
                 ";
-            
-            $file = $this->container->getParameter('github.script');;
+
+            $file = $this->container->getParameter('github.script');
+            ;
 
             $handle = fopen($file, 'w');
             fwrite($handle, $sh);
@@ -123,9 +120,9 @@ echo \"Finito\"
             chmod($file, 0777);
 
             $output = exec($file, $exec);
-            
+
             unlink($file);
-            
+
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($exec),
                 'content' => implode('<br/>', $exec),

@@ -125,7 +125,11 @@ echo \"Finito\"
 
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($exec),
-                'content' => implode('<br/>', $exec),
+                'content' => implode('<hr/>', array(
+                    $sh,
+                    implode('<br/>', $exec),
+                    implode('<br/>', $files),
+                ))
             );
 
             $this->notify($user, 'GitHub Notify', 'JFGitHubBundle:email:test', $out);

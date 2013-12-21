@@ -46,6 +46,8 @@ class DefaultController extends Controller {
             $name = $this->container->getParameter('github.name');
             $path = $this->container->getParameter('github.path');
             
+            $pre = $deploy['sudo'] ? 'sudo ' : '';
+            
             $sh = "
 #!/bin/sh
 echo \"Aggiornamento di {$name}\"

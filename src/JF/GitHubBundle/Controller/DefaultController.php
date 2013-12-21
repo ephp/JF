@@ -59,8 +59,8 @@ sleep 1
                     $sh .= "
 echo \"Cancella cache\"
 rm -rf {$path}/app/cache/*
-# php app/console cache:clear
                 ";
+//# php app/console cache:clear
                     break;
             }
             $sh .= "
@@ -134,7 +134,7 @@ echo \"Finito\"
             $out = array(
                 'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($exec),
                 'content' => implode('<hr/>', array(
-                    $sh,
+                    nl2br($sh),
                     implode('<br/>', $exec),
                     implode('<br/>', $files),
                 ))

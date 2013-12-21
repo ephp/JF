@@ -65,7 +65,7 @@ rm -rf {$path}/app/cache/*
             }
             $sh .= "
 echo \"Allinea Git\"
-git fetch
+git fetch -v
 git checkout -f origin/{$branch}
                 ";
             switch (strtolower($deploy['composer'])) {

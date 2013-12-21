@@ -46,8 +46,6 @@ class DefaultController extends Controller {
             $name = $this->container->getParameter('github.name');
             $path = $this->container->getParameter('github.path');
             
-            $pre = $deploy['sudo'] ? 'sudo ' : '';
-            
             $sh = "
 #!/bin/sh
 echo \"Aggiornamento di {$name}\"
@@ -57,7 +55,7 @@ sleep 1
             switch (strtolower($deploy['cache'])) {
                 case 'always':
                     $sh .= "
-{$pre}rm -rf {$path}/app/cache/*
+rm -rf {$path}/app/cache/*
 # php app/console cache:clear
                 ";
                 break;
@@ -130,11 +128,17 @@ htop
             unlink($file);
             
             $out = array(
-                'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($sh),
+                'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($output),
+                'content' => nl2br($output),
+            );
+
+            $this->notify($user, 'Test GitHub 1', 'JFGitHubBundle:email:test', $out);
+            $out = array(
+                'type' => \Ephp\UtilityBundle\Utility\Debug::typeof($exec),
                 'content' => nl2br($exec),
             );
 
-            $this->notify($user, 'Test GitHub', 'JFGitHubBundle:email:test', $out);
+            $this->notify($user, 'Test GitHub 2', 'JFGitHubBundle:email:test', $out);
             return $this->jsonResponse($out);
         }
         return $this->jsonResponse();

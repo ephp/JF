@@ -57,18 +57,21 @@ sleep 1
             switch (strtolower($deploy['cache'])) {
                 case 'always':
                     $sh .= "
+echo \"Cancella cache\"
 rm -rf {$path}/app/cache/*
 # php app/console cache:clear
                 ";
                     break;
             }
             $sh .= "
+echo \"Allinea Git\"
 git fetch
 git checkout -f origin/{$branch}
                 ";
             switch (strtolower($deploy['composer'])) {
                 case 'always':
                     $sh .= "
+echo \"Lancia Composer\"
 php composer.phar update
                 ";
                     break;
@@ -76,6 +79,7 @@ php composer.phar update
             switch (strtolower($deploy['db'])) {
                 case 'doctrine':
                     $sh .= "
+echo \"Aggiorna DB\"
 php app/console doctrine:schema:update --dump-sql
 php app/console doctrine:schema:update --force
                 ";
@@ -84,6 +88,7 @@ php app/console doctrine:schema:update --force
             switch (strtolower($deploy['install'])) {
                 case 'always':
                     $sh .= "
+echo \"Assets install\"
 php app/console assets:install
                 ";
                     break;
@@ -91,19 +96,22 @@ php app/console assets:install
             switch (strtolower($deploy['dump'])) {
                 case 'always':
                     $sh .= "
+echo \"Assetic dump\"
 php app/console assetic:dump
                 ";
                     break;
             }
-            switch (strtolower($deploy['warmpu'])) {
+            switch (strtolower($deploy['warmup'])) {
                 case 'always':
                     $sh .= "
+echo \"ricostruzione cache\"
 php app/console cache:warmup --env=prod --no-debug
                 ";
                     break;
             }
             if (isset($deploy['chown'])) {
                 $sh .= "
+echo \"CHOWN\"
 chown -R {$deploy['chown']} {$path}
                 ";
             }

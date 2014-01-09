@@ -25,15 +25,9 @@
         <div class="block">
             <a href="#fb_aggiungi_evento" class="fancybox icon"><span class="label label-success ico-calendar"> Aggiungi data</span></a>
 
-            {% for label, cal in eventi %}
-            <h5>{{ label }}</h5>
-            <dl>
-                {% for evento in cal.eventi %}
-                    <dt onclick="$('#d_{{ evento.id }}').toggle();">{{ evento.dataOra|date('d-m-Y') }} - {{ evento.titolo }}</dt>
-                    <dd id="d_{{ evento.id }}" style="display: none">{{ evento.note }}</dd>
-                {% endfor %}
-            </dl>
-            {% endfor %}
+            <div id="daily">
+                {% include 'JFCalendarBundle:Default:eventiGiorno.html.twig' %}
+            </div>
         </div>
     </div>
 </div>

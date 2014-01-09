@@ -35,9 +35,9 @@ trait CalendarController {
         if (!$tipo) {
             $_tipo = $this->getRepository('EphpCalendarBundle:Tipo');
             /* @var $_tipo \Ephp\CalendarBundle\Entity\TipoRepository */
-            $tipi = $this->getUser()->getCliente()->getTipiEventiPrivati($this->container->getParameter('jf.tipi_evento', array()));
+            $tipi = $this->getUser()->getCliente()->getTipiEventiPrivati($this->container->getParameter('jf.tipi_evento', array()), false);
             if(isset($tipi[$sigla])) {
-                $tipo = $_tipo->createTipo($sigla, $tipi[$sigla]['nome'], $tipi[$sigla]['colore'], $cal, $tipi[$sigla]['cancellabile'], $tipi[$sigla]['modificabile'], $tipi[$sigla]['pubblico']);
+                $tipo = $_tipo->createTipo($sigla, $tipi[$sigla]['name'], $tipi[$sigla]['colore'], $cal, $tipi[$sigla]['cancellabile'], $tipi[$sigla]['modificabile'], $tipi[$sigla]['pubblico']);
             } else {
                 throw new \Exception("Tipo evento {$sigla} non disponibile per questa utenza");
             }

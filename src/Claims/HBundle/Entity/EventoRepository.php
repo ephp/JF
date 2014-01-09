@@ -32,10 +32,25 @@ DELETE
                 , $params);
     }
 
-    public function calendarioMese(\JF\ACLBundle\Entity\Gestore $gestore, $mese, $anno) {
+    public function calendarioMese(\JF\ACLBundle\Entity\Gestore $gestore, $mese, $anno, $giorno = null) {
+        $mese = intval($mese);
+        if ($mese < 10) {
+            $mese = "0{$mese}";
+        }
+        if ($giorno) {
+            $giorno = intval($giorno);
+            if ($giorno < 10) {
+                $giorno = "0{$giorno}";
+            }
+        }
         $em = $this->getEntityManager();
         $conn = $em->getConnection();
-        $stmt = $conn->executeQuery("
+        $stmt = $conn->executeQuery($giorno ? "
+SELECT e.id 
+  FROM claims_h_eventi e
+ WHERE e.gestore_id = :gestore
+   AND e.data_ora LIKE '{$anno}-{$mese}-{$giorno}%'
+            " : "
 SELECT e.id 
   FROM claims_h_eventi e
  WHERE e.gestore_id = :gestore

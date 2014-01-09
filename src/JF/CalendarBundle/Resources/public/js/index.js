@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    
+    sanitizeDate([$('.auto_date')]);
+    
     $("#mydatepicker").datepicker({
         dateFormat: 'dd-mm-yy',
         closeText: 'Chiudi',
@@ -13,12 +16,18 @@ $(document).ready(function() {
         firstDay: 1,
         weekHeader: "S",
         onSelect: function(date) {
-            setGiorno(giorni);
-            alert(date);
+            date = Date.create(date, 'it');
+            $.post(Routing.generate('calendario_personale_giorno', {giorno: date.getDate(), mese: date.getMonth() + 1, anno: date.getFullYear()}), {}, function(data) {
+                setGiorno(giorni);
+                $('#daily').html(data);
+            });
         },
         onChangeMonthYear: function(year, month) {
-            setGiorno(giorni);
-            alert(month + '/' + year);
+            $.post(Routing.generate('calendario_personale_json', {mese: month, anno: year}), {}, function(data) {
+                giorni = data;
+                setGiorno(giorni);
+                $('#daily').html('');
+            });
         }
     });
 
@@ -37,9 +46,10 @@ $(document).ready(function() {
 
 function setGiorno(giorni) {
     $.each(giorni, function(giorno, val) {
+        console.log(giorno);
         $('.calendar td').find('a').each(function() {
             $this = $(this);
-            if ($this.html() == giorno) {
+            if (parseInt($this.html()) === parseInt(giorno)) {
                 $.each(val.tipo, function(label, v) {
                     $this.after('<div class="nscal ' + v.css + '" title="' + label + ': ' + v.n + ' event' + (v.n === 1 ? 'o' : 'i') + '">' + v.n + '</div>');
                 });
@@ -54,7 +64,11 @@ function aggiungiEvento() {
     $('#wait_aggiungi_evento').show();
     var form = $('#aggiungi_evento');
     $.post(Routing.generate('calendar_aggiungi_evento'), form.serialize(), function(out) {
-        autoupdateCalendario();
+        $.post(Routing.generate('calendario_personale_json', {mese: out.month, anno: out.year}), {}, function(data) {
+            giorni = data;
+            setGiorno(giorni);
+            $('#daily').html('');
+        });
         $.fancybox.close();
         if($('#evento_intero').val() === 'Sì'){
             $('.ads').toggle();

@@ -70,13 +70,13 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
     public function setTipoEventi(ContainerBuilder $container) {
         $tipiEvento = array();
 
-        $this->newTipoEvento($tipiEvento, 'JFS', 'JF-System', 'ff0000', false, false, false, false);
-        $this->newTipoEvento($tipiEvento, 'JFP', 'JF-System', 'ff0000', false, false, true, false);
-        $this->newTipoEvento($tipiEvento, 'APP', 'Appuntamento', '0000aa', true, true, false, true);
-        $this->newTipoEvento($tipiEvento, 'PRM', 'Promemoria', '00aa00', true, true, false, true);
-        $this->newTipoEvento($tipiEvento, 'SCD', 'Scadenza', 'aa0000', true, true, false, true);
-        $this->newTipoEvento($tipiEvento, 'RIC', 'Riunione con cliente', '00aaaa', true, true, false, true);
-        $this->newTipoEvento($tipiEvento, 'RIU', 'Riunione ufficio', '00aaaa', true, true, true, true);
+        $this->newTipoEvento($tipiEvento, 'System', 'JFS', 'JF-System', 'ff0000', false, false, false, false);
+        $this->newTipoEvento($tipiEvento, 'System', 'JFP', 'JF-System', 'ff0000', false, false, true, false);
+        $this->newTipoEvento($tipiEvento, 'Office', 'APP', 'Appuntamento', '0000aa', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'Office', 'PRM', 'Promemoria', '00aa00', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'Office', 'SCD', 'Scadenza', 'aa0000', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'Office', 'RIC', 'Riunione con cliente', '00aaaa', true, true, false, true);
+        $this->newTipoEvento($tipiEvento, 'Office', 'RIU', 'Riunione ufficio', '00aaaa', true, true, true, true);
         
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }

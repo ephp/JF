@@ -27,7 +27,7 @@ class InstallController extends Controller {
         try {
             $this->getEm()->beginTransaction();
             $this->installPackage($package, 'JF-System Calendar', 'JFCalendarBundle:Install:package.txt.twig');
-            $this->installGruppo($package, $g_cal, 'Calendario personale', 'JFCalendarBundle:Install:calendario.txt.twig');
+            $this->installGruppo($package, $g_cal, 'Calendario Personale', 'JFCalendarBundle:Install:calendario.txt.twig');
             
             $licenze[] = $this->newLicenza(
                     $package, $g_cal, 'free', 1, 'Calendario base',             //Anagrafica licenza 
@@ -40,7 +40,7 @@ class InstallController extends Controller {
                         'reminder' => false,                                    //  Invio automatico degli appuntamenti giornalieri
                         'ical' => false,                                        //  Esportazione ical
                         'calendario_personale' => array(                        //  Eventi per calendario personale 
-                                'label'  => 'Calendario personale',
+                                'label'  => 'Calendario Personale',
                                 'entity' => 'JFCalendarBundle:Evento',
                                 'css'    => 'e_personale',
                             ),

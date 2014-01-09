@@ -10,8 +10,12 @@
         <label for="evento_titolo">Tipo</label>
         <div style="clear: both"></div>
         <select name="evento[tipo]" id="evento_tipo">
-            {% for sigla, tipo in tipi %}
-                <option value="{{ sigla }}">{{ tipo.name }}</option>
+            {% for gruppo, tipos in tipi %}
+                <optgroup label="{{ gruppo }}">
+                    {% for sigla, tipo in tipos %}
+                        <option value="{{ sigla }}">{{ tipo.name }}</option>
+                    {% endfor %}
+                </optgroup>
             {% endfor %}
         </select>
         <div style="clear: both"></div>

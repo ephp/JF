@@ -1,0 +1,16 @@
+{% set eventiPresenti = false %}
+{% for label, cal in eventi %}
+    {% if cal.eventi|length > 0 %}
+        {% set eventiPresenti = true %}
+        <h5>{{ label }}</h5>
+        <dl>
+            {% for evento in cal.eventi %}
+                <dt onclick="$('#d_{{ evento.id }}').toggle();">{{ evento.dataOra|date('d-m-Y') }} - {{ evento.titolo }}</dt>
+                <dd id="d_{{ evento.id }}" style="display: none">{{ evento.note }}</dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+{% endfor %}
+{% if not eventiPresenti %}
+    <h5>Nessun evento presente per oggi</h5>
+{% endif %}

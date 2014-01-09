@@ -139,6 +139,7 @@ class ClaimsHExtension extends Extension implements IExtension, ITipiEventi {
         $this->addLicenzaTipoEvento($tipiEvento, 'UDG', 'cl.h-pratiche');
         $this->addLicenzaTipoEvento($tipiEvento, 'TRB', 'cl.h-pratiche');
         $this->addLicenzaTipoEvento($tipiEvento, 'CNC', 'cl.h-pratiche');
+        $this->addLicenzaTipoEvento($tipiEvento, 'REC', 'cl.h-pratiche');
 
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }

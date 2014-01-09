@@ -20,8 +20,9 @@ class RenderController extends Controller {
      * @Template()
      */
     public function nuovoEventoAction() {
+        $tipi = $this->getUser()->getCliente()->getTipiEventiPrivati($this->container->getParameter('jf.tipi_evento', array()));
         return array(
-            'tipi' => $this->getUser()->getCliente()->getTipiEventiPrivati($this->container->getParameter('jf.tipi_evento', array())),
+            'tipi' => $tipi,
         );
     }
 

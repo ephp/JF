@@ -619,13 +619,13 @@ class Cliente {
                     if (!isset($out[$role])) {
                         $out[$role] = array('role' => str_replace(array('ROLE_', 'R_'), array('', ''), $role), 'n' => 0);
                     }
-                    $out[$role]['n']++;
+                    $out[$role]['n'] ++;
                 }
             }
         }
         usort($out, function($a, $b) {
-                    return $a['n'] > $b['n'];
-                });
+            return $a['n'] > $b['n'];
+        });
         return $out;
     }
 
@@ -672,7 +672,7 @@ class Cliente {
 
             return false;
         } else {
-            if(!is_array($sigla)) {
+            if (!is_array($sigla)) {
                 $sigla = array($sigla);
             }
             $licenze = $this->getLicenzeAttive();
@@ -744,18 +744,26 @@ class Cliente {
         return $this->cache;
     }
 
-    public function getTipiEventiPrivati($tipi) {
+    public function getTipiEventiPrivati($tipi, $raggruppa = true) {
         $out = array();
         $licenze = $this->getLicenze();
-        foreach($tipi as $sigla => $tipo) {
-            if($tipo['permission'] === true) {
-                $out[$sigla] = $tipo;
-            } elseif(is_array($tipo['permission'])) {
+        foreach ($tipi as $sigla => $tipo) {
+            if ($tipo['permission'] === true) {
+                if ($raggruppa) {
+                    $out[$tipo['gruppo']][$sigla] = $tipo;
+                } else {
+                    $out[$sigla] = $tipo;
+                }
+            } elseif (is_array($tipo['permission'])) {
                 foreach ($licenze as $licenza) {
                     $licenza = $licenza->getLicenza();
                     /* @var $licenza \JF\ACLBundle\Entity\Licenza */
-                    if(in_array($licenza->getGruppo()->getSiglaCompleta(), $tipo['permission'])) {
-                        $out[$sigla] = $tipo;
+                    if (in_array($licenza->getGruppo()->getSiglaCompleta(), $tipo['permission'])) {
+                        if ($raggruppa) {
+                            $out[$tipo['gruppo']][$sigla] = $tipo;
+                        } else {
+                            $out[$sigla] = $tipo;
+                        }
                     }
                 }
             }

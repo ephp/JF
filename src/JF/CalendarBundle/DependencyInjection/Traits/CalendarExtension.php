@@ -15,8 +15,8 @@ trait CalendarExtension {
         $this->setTipoEventi($container);
     }
     
-    protected function newTipoEvento(&$tipoEvento, $code, $name, $colore, $cancellabile = true, $modificabile = true, $pubblico = true, $permission = array()) {
-        $tipoEvento[$code] = array('name' => $name, 'colore' => $colore, 'cancellabile' => $cancellabile, 'modificabile' => $modificabile, 'pubblico' => $pubblico, 'permission' => $permission);
+    protected function newTipoEvento(&$tipoEvento, $gruppo, $code, $name, $colore, $cancellabile = true, $modificabile = true, $pubblico = true, $permission = array()) {
+        $tipoEvento[$code] = array('gruppo' => $gruppo, 'name' => $name, 'colore' => $colore, 'cancellabile' => $cancellabile, 'modificabile' => $modificabile, 'pubblico' => $pubblico, 'permission' => $permission);
     }
 
     protected function addLicenzaTipoEvento(&$tipoEvento, $code, $permission) {

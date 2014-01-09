@@ -50,6 +50,8 @@ function setGiorno(giorni) {
         $('.calendar td').find('a').each(function() {
             $this = $(this);
             if (parseInt($this.html()) === parseInt(giorno)) {
+                $td = $this.closest('td');
+                $td.html($this);
                 $.each(val.tipo, function(label, v) {
                     $this.after('<div class="nscal ' + v.css + '" title="' + label + ': ' + v.n + ' event' + (v.n === 1 ? 'o' : 'i') + '">' + v.n + '</div>');
                 });
@@ -57,7 +59,7 @@ function setGiorno(giorni) {
             }
         });
     });
-}
+} 
 
 function aggiungiEvento() {
     $('#bt_aggiungi_evento').hide();

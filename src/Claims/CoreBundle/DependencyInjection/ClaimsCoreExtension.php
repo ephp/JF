@@ -131,6 +131,7 @@ class ClaimsCoreExtension extends Extension implements IExtension, ITipiEventi {
         $this->newTipoEvento($tipiEvento, 'Claims', 'TRB', 'Tribunale', '008CFF', true, true, false);
         $this->newTipoEvento($tipiEvento, 'Claims', 'CNC', 'Cancelleria', '008CFF', true, true, false);
         $this->newTipoEvento($tipiEvento, 'Claims', 'REC', 'Recupero', '008CFF', true, true, false);
+        $this->newTipoEvento($tipiEvento, 'Claims', 'AUD', 'Audit', '008CFF', true, true, false);
 
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }

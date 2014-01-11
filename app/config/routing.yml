@@ -1,3 +1,8 @@
+claims_h_audit:
+    resource: "@ClaimsHAuditBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 jf_git_hub:
     resource: "@JFGitHubBundle/Controller/"
     type:     annotation

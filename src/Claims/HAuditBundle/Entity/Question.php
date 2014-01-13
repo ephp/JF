@@ -22,11 +22,26 @@ class Question {
     private $id;
 
     /**
+     * @var \JF\ACLBundle\Entity\Cliente
+     * 
+     * @ORM\ManyToOne(targetEntity="JF\ACLBundle\Entity\Cliente")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     */
+    private $cliente;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="questione", type="string", length=255)
+     * @ORM\Column(name="question", type="string", length=255)
      */
-    private $questione;
+    private $question;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="example", type="string", length=255)
+     */
+    private $example;
 
     /**
      * @var string
@@ -58,7 +73,7 @@ class Question {
      * @return Question
      */
     public function setQuestione($questione) {
-        $this->questione = $questione;
+        $this->question = $questione;
 
         return $this;
     }
@@ -69,7 +84,7 @@ class Question {
      * @return string 
      */
     public function getQuestione() {
-        return $this->questione;
+        return $this->question;
     }
 
     /**
@@ -114,4 +129,73 @@ class Question {
         return $this->options;
     }
 
+
+    /**
+     * Set question
+     *
+     * @param string $question
+     * @return Question
+     */
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+    
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return string 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set example
+     *
+     * @param string $example
+     * @return Question
+     */
+    public function setExample($example)
+    {
+        $this->example = $example;
+    
+        return $this;
+    }
+
+    /**
+     * Get example
+     *
+     * @return string 
+     */
+    public function getExample()
+    {
+        return $this->example;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param \JF\ACLBundle\Entity\Cliente $cliente
+     * @return Question
+     */
+    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null)
+    {
+        $this->cliente = $cliente;
+    
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return \JF\ACLBundle\Entity\Cliente 
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
 }

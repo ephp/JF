@@ -22,6 +22,14 @@ class Audit {
     private $id;
 
     /**
+     * @var \JF\ACLBundle\Entity\Cliente
+     * 
+     * @ORM\ManyToOne(targetEntity="JF\ACLBundle\Entity\Cliente")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     */
+    private $cliente;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="luogo", type="string", length=255)
@@ -128,4 +136,101 @@ class Audit {
         return $this->note;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pratiche = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->question = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set cliente
+     *
+     * @param \JF\ACLBundle\Entity\Cliente $cliente
+     * @return Audit
+     */
+    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null)
+    {
+        $this->cliente = $cliente;
+    
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return \JF\ACLBundle\Entity\Cliente 
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * Add pratiche
+     *
+     * @param \Claims\HAuditBundle\Entity\Pratica $pratiche
+     * @return Audit
+     */
+    public function addPratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche)
+    {
+        $this->pratiche[] = $pratiche;
+    
+        return $this;
+    }
+
+    /**
+     * Remove pratiche
+     *
+     * @param \Claims\HAuditBundle\Entity\Pratica $pratiche
+     */
+    public function removePratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche)
+    {
+        $this->pratiche->removeElement($pratiche);
+    }
+
+    /**
+     * Get pratiche
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPratiche()
+    {
+        return $this->pratiche;
+    }
+
+    /**
+     * Add question
+     *
+     * @param \Claims\HAuditBundle\Entity\AuditQuestion $question
+     * @return Audit
+     */
+    public function addQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question)
+    {
+        $this->question[] = $question;
+    
+        return $this;
+    }
+
+    /**
+     * Remove question
+     *
+     * @param \Claims\HAuditBundle\Entity\AuditQuestion $question
+     */
+    public function removeQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question)
+    {
+        $this->question->removeElement($question);
+    }
+
+    /**
+     * Get question
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
 }

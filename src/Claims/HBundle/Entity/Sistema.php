@@ -115,7 +115,7 @@ class Sistema {
     }
 
     public function __toString() {
-        return  'Sistema'. $this->nome;
+        return  'Sistema '. $this->nome;
     }
 
 }

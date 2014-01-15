@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+{% form_theme form '::form_aries_layout.html.twig' %}
+
+{% block js %}
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@ClaimsHAuditBundle/Resources/public/js/form.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock js %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Audit Hospital <small>Nuovo Audit</small></h1>
+</div>
+{{ form_start(form) }}
+    <div class="row-fluid">
+        <div class="span5">
+            <div class="block">
+                <div class="data-fluid">
+                    <h2>1. Dati generali</h2>
+                    <h3>2. Caricamento pratiche</h3>
+                    <h3>3. Inserimento domande</h3>
+                    <p>La creazione di un Audit avviene per 3 step.</p>
+                    <p>Nella prima fase inserire il sistema su cui verrà creata l'audit, il luogo e la data inizio audit.</p>
+                    <p> Il campo note non è obbligatorio.</p>
+                </div>
+            </div>
+            <a href="{{ path('claims-h-audit') }}">
+                <span class="label label-inverse">Torna indietro</span>
+            </a>
+        </div>
+        <div class="span7">
+            <div class="block">
+                <div class="data-fluid">
+                    {{ form_row(form.luogo) }}
+                    {{ form_row(form.giorno) }}
+                    {{ form_row(form.note) }}
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

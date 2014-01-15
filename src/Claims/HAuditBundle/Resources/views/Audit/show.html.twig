@@ -5,7 +5,7 @@
     <div class="icon">
         <span class="ico-eye-open"></span>
     </div>
-    <h1>Audit Hospital</h1>
+    <h1>Audit Hospital<small>{{ entity.luogo }} - {{ entity.giorno|date('d/m/Y') }}</small></h1>
 </div>
 <div class="row-fluid">
     <div class="span12">
@@ -14,24 +14,21 @@
                 <table class="table grid" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Luogo</th>
-                            <th>Giorno</th>
-                            <th>Note</th>
-                            <th>Pratiche</th>
-                            <th>Domande</th>
-                            <th width="90" class="TAC">Op.</th>
+                            <th>Gruppo</th>
+                            <th>TPA</th>
+                            <th>Claimant</th>
+                            <th>Avanzamento</th>
+                            <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for entity in entities %}
+                    {% for pratica in entity.pratiche %}
                         <tr>                            
-                            <td>{{ entity.luogo }}</td>
-                            <td>{% if entity.giorno %}{{ entity.giorno|date('d/m/Y') }}{% endif %}</td>
-                            <td>{{ entity.note }}</td>
-                            <td>{{ entity.pratiche|length }}</td>
-                            <td>{{ entity.question|length }}</td>
+                            <td>{{ pratica.gruppo }}</td>
+                            <td>{{ pratica.codice }}</td>
+                            <td>{{ pratica.claimant }}</td>
+                            <td>{{ pratica.question|length }}/{{ entity.question|length }}</td>
                             <td>
-                                {% include ":commons:edit.html.twig" with {'route': path('claims-h-audit_edit', { 'id': entity.id })} %}                    
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
                             </td>
                         </tr>

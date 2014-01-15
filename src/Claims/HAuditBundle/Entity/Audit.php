@@ -28,7 +28,7 @@ class Audit {
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
      */
     private $cliente;
-
+    
     /**
      * @var string
      *
@@ -46,7 +46,7 @@ class Audit {
     /**
      * @var string
      *
-     * @ORM\Column(name="note", type="text")
+     * @ORM\Column(name="note", type="text", nullable=true)
      */
     private $note;
 
@@ -232,5 +232,9 @@ class Audit {
     public function getQuestion()
     {
         return $this->question;
+    }
+    
+    public function __toString() {
+        return $this->luogo;
     }
 }

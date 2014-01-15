@@ -1,0 +1,29 @@
+<div class="block">
+    <div class="head green">
+        <div class="icon"><i class="ico-folder-open"></i></div>
+        <h2>Pratiche sotto audit</h2>
+    </div>  
+    <div class="data-fluid">
+        <table class="table" cellpadding="0" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>TPA</th>
+                    <th>Claimant</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in pratiche %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ entity.codice }}</td>
+                    <td>{{ entity.claimant }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ path('claims-h-audit-questions', {'id': audit}) }}">
+        <span class="label label-inverse">Continua</span>
+    </a>
+</div>

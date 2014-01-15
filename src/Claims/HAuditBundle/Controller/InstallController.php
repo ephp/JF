@@ -19,7 +19,7 @@ class InstallController extends Controller {
      * @Route("-claims-h-audit", name="install_claims_h_audit", defaults={"_format": "json"})
      */
     public function indexAction() {
-        $package = 'cl.h-audit';
+        $package = 'cl.h.audit';
         $g_pratiche = "audit";
         $status = 200;
         $message = 'Ok';
@@ -35,7 +35,7 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'base', 10, 'Gestione base',         //Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',                //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_AUDI_H', 'C_SUPVIS_H'),                            //Ruoli abilitati
+                    array('C_AUDIT_H', 'C_SUPVIS_H'),                            //Ruoli abilitati
                     array('claims.h-audit.cerca'),                              //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package

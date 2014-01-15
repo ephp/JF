@@ -14,6 +14,7 @@
                 <table class="table grid" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
+                            <th width="40">#</th>
                             <th>Gruppo</th>
                             <th>TPA</th>
                             <th>Claimant</th>
@@ -24,6 +25,7 @@
                     <tbody>
                     {% for pratica in entity.pratiche %}
                         <tr>                            
+                            <td>{{ loop.index }}</td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>

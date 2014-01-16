@@ -1,0 +1,11 @@
+{% set value = pratica.value(question.question.id) %}
+<form action="#" method="post" id="risposta">
+    
+    DA FINIRE
+    
+    <input type="hidden" value="{{ question.question.id }}" name="risposta[question]" />
+    <input type="hidden" value="{{ question.ordine }}" name="risposta[ordine]" />
+    <input type="hidden" value="{{ pratica.id }}" name="risposta[pratica]" />
+    <input type="hidden" value="{{ audit.id }}" name="risposta[audit]" />
+    <button type="button" onclick="rispondi();">Avanti</button>
+</form>

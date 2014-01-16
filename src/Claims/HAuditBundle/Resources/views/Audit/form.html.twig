@@ -41,6 +41,11 @@
 %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
+                    {% if entity.question|length > 0 %}
+                        <a href="{{ path('claims-h-audit-questions', {'id': audit}) }}">
+                            <span class="label label-inverse">Vai alla gestione domande</span>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

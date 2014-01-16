@@ -674,4 +674,14 @@ class Pratica {
         return $this->question;
     }
 
+    public function getValue($id) {
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if($question->getQuestion()->getId() == $id) {
+                return $question;
+            }
+        }
+        return false;
+    }
+    
 }

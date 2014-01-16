@@ -120,6 +120,105 @@ class AuditController extends Controller {
     }
 
     /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route(".salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
+     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     */
+    public function rispostaAction() {
+        $req = $this->getParam('risposta');
+        $audit = $this->find('ClaimsHAuditBundle:Audit', $req['audit']);
+        /* @var $audit Audit */
+        if (!$audit) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        $pratica = $this->find('ClaimsHAuditBundle:Pratica', $req['pratica']);
+        /* @var $pratica Pratica */
+        if (!$pratica) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+        $pq = $pratica->getValue($req['question']);
+        if(!$pq) {
+            $pq = new \Claims\HAuditBundle\Entity\PraticaQuestion();
+            $pq->setPratica($pratica);
+            $pq->setQuestion($this->find('ClaimsHAuditBundle:Question', $req['question']));
+            $pq->setOrdine($req['ordine']);
+        }
+        if(is_array($req['value'])) {
+            $pq->setResponse(json_encode($req['value']));
+        } else {
+            $pq->setResponse($req['value']);
+        }
+        $this->persist($pq);
+        
+        $question = null;
+        foreach($audit->getQuestion() as $q) {
+            if($q->getOrdine() == intval($req['ordine']) + 1){
+                $question = $q;
+            }
+        }
+
+        return array(
+            'audit' => $audit,
+            'pratica' => $pratica,
+            'question' => $question,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true})
+     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     */
+    public function questionAction($id, $ordine, $pratica) {
+        $audit = $this->find('ClaimsHAuditBundle:Audit', $id);
+        /* @var $audit Audit */
+        if (!$audit) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        $p = $this->find('ClaimsHAuditBundle:Pratica', $pratica);
+        /* @var $p Pratica */
+        if (!$p) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+        
+        $question = null;
+        foreach($audit->getQuestion() as $q) {
+            if($q->getOrdine() == intval($ordine)){
+                $question = $q;
+            }
+        }
+
+        return array(
+            'audit' => $audit,
+            'pratica' => $p,
+            'question' => $question,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("/{id}/{slug}", name="claims-h-audit_show-pratica")
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     * @Template()
+     */
+    public function showPraticaAction(Audit $entity, $slug) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+
+        $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $slug));
+        
+        return array(
+            'pratica' => $pratica,
+            'audit' => $entity,
+        );
+    }
+
+    /**
      * Displays a form to edit an existing Audit entity.
      *
      * @Route("/{id}/edit", name="claims-h-audit_edit")

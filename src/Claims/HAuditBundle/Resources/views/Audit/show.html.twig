@@ -31,13 +31,15 @@
                             <td>{{ pratica.claimant }}</td>
                             <td>{{ pratica.question|length }}/{{ entity.question|length }}</td>
                             <td>
-                                {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
+                                {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
                             </td>
                         </tr>
                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
                 
-                
-        </tbody>
-    </table>
-
 {% endblock %}

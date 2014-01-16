@@ -1,0 +1,116 @@
+{% extends '::base.html.twig' %}
+
+{% block js %}
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@ClaimsHAuditBundle/Resources/public/js/scheda.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock js %}
+  
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Audit Hospital<small>{{ audit.luogo }} - {{ audit.giorno|date('d/m/Y') }}</small></h1>
+</div>
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block">
+            <div class="data-fluid">
+                <div class="head dblue">                                
+                    <h2>{{ pratica.codice }} - {{ pratica.claimant }}</h2>
+                </div>
+                <div class="data dark">
+                    <h3>{{ pratica.gruppo }}</h3>
+                    <div class="row-fluid">
+                        <div class="block" style="margin-bottom: 5px;">
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'DOL', 'span_value': 2, 'value': pratica.dol|date('d-m-Y')} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'DON', 'span_value': 2, 'value': pratica.don|date('d-m-Y')} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'MFRef', 'span_value': 4, 'value': pratica.mfRef} %}
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="block" style="margin-bottom: 5px;">
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Hospital', 'span_value': 4, 'value': pratica.ospedale} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'DSCode', 'span_value': 4, 'value': pratica.dsCode} %}
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="block" style="margin-bottom: 5px;">
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Reserve', 'span_value': 4, 'value': pratica.reserve, 'uumm': ' €'} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'ProReserve', 'span_value': 4, 'value': pratica.proReserve, 'uumm': ' €'} %}
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="block" style="margin-bottom: 5px;">
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Anno', 'span_value': 2, 'value': pratica.anno} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Mese', 'span_value': 2, 'value': pratica.mese} %}
+                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Payment', 'span_value': 4, 'value': pratica.payment, 'uumm': ' €'} %}
+                        </div>
+                    </div>
+                            
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="block icon no-margin">
+                                    <h3 class="ico-pencil">Note</h3>
+                                </div>
+                                <textarea id="note_audit" class="expand autoupdate autogrow note" pratica="{{ pratica.slug }}" name="note" placeholder="Inserisci qui le tue note">{{ pratica.note }}</textarea>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="block icon no-margin">
+                                    <h3 class="ico-alarm">Audit</h3>
+                                </div>
+                                <textarea id="audit" class="expand autoupdate autogrow audit" pratica="{{ pratica.slug }}" name="auditText" placeholder="Inserisci qui l'audit">{{ pratica.auditText }}</textarea>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span5">
+                                <div class="block icon no-margin">
+                                    <h4 class="ico-money">Worstcase Scenario</h4>
+                                </div>
+                                <input type="text" value="{{ pratica.worstcaseScenario }}" class="currency eur autoupdate" pratica="{{ pratica.slug }}" name="worstcaseScenario" />
+                            </div>
+                            <div class="span5">
+                                <div class="block icon no-margin">
+                                    <h4 class="ico-money-bag">Proposed Reserve</h4>
+                                </div>
+                                <input type="text" value="{{ pratica.proposedReserve }}" class="currency eur autoupdate" pratica="{{ pratica.slug }}" name="proposedReserve" />
+                            </div>
+                            <div class="span2">
+                                <div class="block icon no-margin">
+                                    <h4 class="ico-chart">Percent</h4>
+                                </div>
+                                <input type="text" value="{{ pratica.percentuale }}" class="percent autoupdate" pratica="{{ pratica.slug }}" name="percentuale" />
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="block icon no-margin">
+                                    <h3 class="ico-cube">Azioni future</h3>
+                                </div>
+                                <textarea class="expand autoupdate autogrow azioni" pratica="{{ pratica.slug }}" name="azioni" placeholder="Inserisci qui le azioni future da seguire">{{ pratica.azioni }}</textarea>
+                            </div>
+                        </div>                            
+                            
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="block">
+            <div class="data-fluid" id="question">
+                {% for question in audit.question %}
+                    {% if loop.first %}
+                        {% include "ClaimsHAuditBundle:Audit:question.html.twig" %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

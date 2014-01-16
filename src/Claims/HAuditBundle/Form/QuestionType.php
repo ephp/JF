@@ -29,7 +29,7 @@ class QuestionType extends AbstractType {
                         'select' => 'Menu a tendina',
                         'checkbox' => 'Scelta multipla',
                     ),
-                    'label' => 'Tipo ri capo per la risposta',
+                    'label' => 'Tipo di campo per la risposta',
                 ))
                 ->add('options', 'textarea', array(
                     'label' => 'Opzioni risposte (una risposta per riga)',

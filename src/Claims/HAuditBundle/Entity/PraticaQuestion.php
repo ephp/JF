@@ -144,4 +144,13 @@ class PraticaQuestion {
         return $this->response;
     }
 
+    /**
+     * Get response
+     *
+     * @return array 
+     */
+    public function getResponses() {
+        return json_decode($this->response);
+    }
+
 }

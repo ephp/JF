@@ -11,8 +11,8 @@
     <div class="span12">
         <div class="block">
             <div class="data-fluid">
-                <a href="{{ path('claims-h-audit_show', {'id': entity.id}) }}"><span class="label label-success" style="margin-bottom: 3px;">Riassunto</span></a>
-                <a href="{{ path('claims-h-audit_risposte', {'id': entity.id}) }}"><span class="label label-green" style="margin-bottom: 3px;">Risposte</span></a>
+                <a href="{{ path('claims-h-audit_show', {'id': entity.id}) }}"><span class="label label-green" style="margin-bottom: 3px;">Riassunto</span></a>
+                <a href="{{ path('claims-h-audit_risposte', {'id': entity.id}) }}"><span class="label label-success" style="margin-bottom: 3px;">Risposte</span></a>
             </div>
         </div>
     </div>
@@ -25,10 +25,11 @@
                     <thead>
                         <tr>
                             <th width="40">#</th>
-                            <th>Gruppo</th>
-                            <th>TPA</th>
                             <th>Claimant</th>
                             <th>Avanzamento</th>
+                            {% for question in entity.question %}
+                                <th>{{ question.question.question }}</th>
+                            {% endfor %}
                             <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
@@ -36,10 +37,20 @@
                     {% for pratica in entity.pratiche %}
                         <tr>                            
                             <td>{{ loop.index }}</td>
-                            <td>{{ pratica.gruppo }}</td>
-                            <td>{{ pratica.codice }}</td>
-                            <td>{{ pratica.claimant }}</td>
+                            <td>
+                                <small>{{ pratica.codice }}</small><br/>
+                                {{ pratica.claimant }}<br/>
+                                <small>{{ pratica.gruppo }}</small>
+                            </td>
                             <td>{{ pratica.question|length }}/{{ entity.question|length }}</td>
+                            {% for question in entity.question %}
+                                {% set value = pratica.value(question.question.id) %}
+                                {% if value %}
+                                    {% include "ClaimsHAuditBundle:Audit:risposte/"~question.question.type~".html.twig" %}
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                            {% endfor %}
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
                             </td>

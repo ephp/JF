@@ -39,7 +39,7 @@ class Question {
     /**
      * @var string
      *
-     * @ORM\Column(name="example", type="string", length=255)
+     * @ORM\Column(name="example", type="string", length=255, nullable=true)
      */
     private $example;
 

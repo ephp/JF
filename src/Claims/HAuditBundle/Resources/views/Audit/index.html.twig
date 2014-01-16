@@ -19,7 +19,7 @@
                             <th>Note</th>
                             <th>Pratiche</th>
                             <th>Domande</th>
-                            <th width="90" class="TAC">Op.</th>
+                            <th width="120" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +33,7 @@
                             <td>
                                 {% include ":commons:edit.html.twig" with {'route': path('claims-h-audit_edit', { 'id': entity.id })} %}                    
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
+                                {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id })} %}
                             </td>
                         </tr>
                     {% endfor %}

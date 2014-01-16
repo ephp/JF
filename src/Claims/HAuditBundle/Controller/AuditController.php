@@ -122,6 +122,24 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("-risposte/{id}", name="claims-h-audit_risposte")
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     * @Template()
+     */
+    public function risposteAction(Audit $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route(".salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
@@ -150,6 +168,8 @@ class AuditController extends Controller {
             $pq->setResponse($req['value']);
         }
         $this->persist($pq);
+        
+        $pratica->addQuestion($pq);
         
         $question = null;
         foreach($audit->getQuestion() as $q) {
@@ -399,13 +419,38 @@ class AuditController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $entity->setCliente($this->getUser()->getCliente());
-            $entity->setOptions(explode("\n", $entity->getOptions()));
+            $options = explode("\n", $entity->getOptions());
+            foreach ($options as $id => $option) {
+                $options[$id] = trim($option);
+            }
+            $entity->setOptions($options);
             $this->persist($entity);
 
             return array('question' => $entity);
         }
 
         throw new \Exception($form->getErrorsAsString());
+    }
+    
+    /**
+     * @Route("-autoupdate-pratica/{slug}", name="claims-h-audit-autoupdate", options={"expose": true}, defaults={"_format": "json"})
+     */
+    public function autoupdatePraticaAction($slug) {
+        $req = $this->getParam('pratica');
+
+        $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+        try {
+            $this->getEm()->beginTransaction();
+            $fx = \Doctrine\Common\Util\Inflector::camelize("set_{$req['field']}");
+            $pratica->$fx($req['value']);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($req));
     }
 
     /**

@@ -59,6 +59,11 @@ jf_core:
     prefix:   /
     
 ephp_drag_drop:
+    resource: "@EphpDragDropBundle/Controller/RenderController.php"
+    type:     annotation
+    prefix:   /
+    
+jf_drag_drop:
     resource: "@EphpDragDropBundle/Controller/"
     type:     annotation
     prefix:   /

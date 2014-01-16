@@ -36,6 +36,7 @@ class AppKernel extends Kernel
             new JF\CalendarBundle\JFCalendarBundle(),
             new JF\ACLBundle\JFACLBundle(),
             new JF\AndreaniBundle\JFAndreaniBundle(),
+            new JF\DragDropBundle\JFDragDropBundle(),
             
             new Claims\CoreBundle\ClaimsCoreBundle(),
             new Claims\HBundle\ClaimsHBundle(),

@@ -140,7 +140,7 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route(".salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
+     * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function rispostaAction() {
@@ -188,7 +188,7 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true})
+     * @Route("-q/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function questionAction($id, $ordine, $pratica) {
@@ -220,7 +220,7 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("/{id}/{slug}", name="claims-h-audit_show-pratica")
+     * @Route("-show/{id}/{slug}", name="claims-h-audit_show-pratica")
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()

@@ -1,5 +1,10 @@
 {% extends '::base.html.twig' %}
 
+{% block inline_css %}
+.body .content .table td {line-height: normal;}
+.body .content .table.grid th {line-height: normal;}
+{% endblock inline_css %}
+
 {% block body -%}
 <div class="page-header">
     <div class="icon">
@@ -28,7 +33,7 @@
                             <th>Claimant</th>
                             <th>Avanzamento</th>
                             {% for question in entity.question %}
-                                <th>{{ question.question.question }}</th>
+                                <th style="min-width: 150px;">{{ question.question.question }}</th>
                             {% endfor %}
                             <th width="40" class="TAC">Op.</th>
                         </tr>

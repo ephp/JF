@@ -1,0 +1,12 @@
+{% set value = pratica.value(question.question.id) %}
+<form action="#" method="post" id="risposta">
+    <input id="auto_date" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="auto_date" name="risposta[value]" />
+    <input type="hidden" value="{{ question.question.id }}" name="risposta[question]" />
+    <input type="hidden" value="{{ question.ordine }}" name="risposta[ordine]" />
+    <input type="hidden" value="{{ pratica.id }}" name="risposta[pratica]" />
+    <input type="hidden" value="{{ audit.id }}" name="risposta[audit]" />
+    <button type="button" onclick="rispondi();">Avanti</button>
+</form>
+<script type="text/javascript">
+sanitizeDate([$('.auto_date')]);
+</script>

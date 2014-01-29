@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Audit Hospital <small>Importa pratiche</small></h1>
+</div>
+    <div class="row-fluid">
+        <div class="span12">
+            <h2>{{ entity.luogo }} - {{ entity.giorno|date('d/m/Y') }}</h2>
+            {% if entity.note %}
+            <p>{{ entity.note|nl2br }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span5">
+            <div class="block">
+                <div class="data-fluid">
+                    <h3>1. Dati generali</h3>
+                    <h2>2. Caricamento pratiche</h2>
+                    <h3>3. Inserimento domande</h3>
+                    <p>Nella seconda fase occorre caricare il BDX (formato Contec) per associare le pratiche che andranno sotto audit</p>
+                    <p>Dopo aver caricato il BXD verrà fatto vedere un riepilogo delle pratiche importate e verrà mostrato il tasto "Continua"</p>
+                </div>
+            </div>
+            <a href="{{ path('claims-h-audit_edit', {'id': audit}) }}">
+                <span class="label label-inverse">Torna indietro</span>
+            </a>
+        </div>
+        <div class="span7">
+            <div class="block">
+                <div class="data-fluid" id="form">
+                    <input id="audit" type="hidden" value="{{ audit }}" />
+                    {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@ClaimsHAuditBundle/Resources/public/js/audit.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+                    {% if entity.question|length > 0 %}
+                        <a href="{{ path('claims-h-audit-questions', {'id': audit}) }}">
+                            <span class="label label-inverse">Vai alla gestione domande</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

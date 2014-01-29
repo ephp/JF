@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Audit Hospital<small>{{ entity.luogo }} - {{ entity.giorno|date('d/m/Y') }}</small></h1>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                <a href="{{ path('claims-h-audit_show', {'id': entity.id}) }}"><span class="label label-success" style="margin-bottom: 3px;">Riassunto</span></a>
+                <a href="{{ path('claims-h-audit_risposte', {'id': entity.id}) }}"><span class="label label-green" style="margin-bottom: 3px;">Risposte</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                <table class="table grid" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th width="40">#</th>
+                            <th>Group</th>
+                            <th>TPA</th>
+                            <th>Claimant</th>
+                            <th>Progress</th>
+                            <th width="40" class="TAC">Op.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for pratica in entity.pratiche %}
+                        <tr>                            
+                            <td>{{ loop.index }}</td>
+                            <td>{{ pratica.gruppo }}</td>
+                            <td>{{ pratica.codice }}</td>
+                            <td>{{ pratica.claimant }}</td>
+                            <td>{{ pratica.question|length }}/{{ entity.question|length }}</td>
+                            <td>
+                                {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+                
+{% endblock %}

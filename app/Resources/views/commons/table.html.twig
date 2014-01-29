@@ -1,0 +1,4 @@
+{% if class is not defined %}{% set class = '' %}{% endif %}
+<a href="{{ route }}" class="button {% if disable is defined %}lgray{% else %}green{% endif %} {{ class }}">
+    <div class="icon"><span class="ico-layout-7">{% if label is defined %}{{ label }}{% endif %}</span></div>
+</a>

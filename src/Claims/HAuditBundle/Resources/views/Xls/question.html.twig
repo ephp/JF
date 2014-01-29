@@ -1,0 +1,30 @@
+<div class="head red">      
+    {% if question %}
+    <h2>{{ question.question.question }} - {{ question.ordine + 1 }}/{{ audit.question|length }}</h2>
+    {% else %}
+    <h2>Fine domande</h2>
+    {% endif %}
+</div>
+<div class="data dark">
+    {% if question %}
+        <p>{{ question.question.example }}</p>
+        {% include "ClaimsHAuditBundle:Audit:question/"~question.question.type~".html.twig" %}
+    {% else %}
+        <a href="{{ path('claims-h-audit_show', {'id': audit.id}) }}">
+            <span class="label label-inverse">Torna all'elenco pratiche</span>
+        </a>
+    {% endif %}
+    <div class="pagination pagination-centered pagination-centered center">
+        <ul>
+            <li><a href="{{ path('claims-h-audit_show', {'id': audit.id }) }}"><i class="icon-home"></i></a></li>
+            {% for page in audit.question %}
+                {% if not question or page.ordine != question.ordine %}
+                    <li><a {% if pratica.value(page.question.id) %}class="green" style="color: #fff;"{% endif %} href="javascript:pagina({{ audit.id }}, {{ page.ordine }}, {{ pratica.id }});">{{ page.ordine + 1 }}</a></li>
+                {% else %}
+                    <li><a class="active bold yellow" href="javascript:void(0);">{{ page.ordine + 1 }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>

@@ -185,6 +185,62 @@ class Pratica {
     private $proposedReserve;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="fact", type="text", nullable=true)
+     */
+    private $fact;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="investigation_handling", type="text", nullable=true)
+     */
+    private $investigationHandling;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="liability", type="text", nullable=true)
+     */
+    private $liability;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="quantum", type="text", nullable=true)
+     */
+    private $quantum;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="negotiation_handling", type="text", nullable=true)
+     */
+    private $negotiationHandling;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proceeding_handling", type="text", nullable=true)
+     */
+    private $proceedingHandling;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="our_comments", type="text", nullable=true)
+     */
+    private $ourComments;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nl_damage", type="text", nullable=true)
+     */
+    private $nlDamage;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -640,8 +696,79 @@ class Pratica {
     public function getAudit() {
         return $this->audit;
     }
+    public function getFact() {
+        return $this->fact;
+    }
 
-    /**
+    public function getInvestigationHandling() {
+        return $this->investigationHandling;
+    }
+
+    public function getLiability() {
+        return $this->liability;
+    }
+
+    public function getQuantum() {
+        return $this->quantum;
+    }
+
+    public function getNegotiationHandling() {
+        return $this->negotiationHandling;
+    }
+
+    public function getProceedingHandling() {
+        return $this->proceedingHandling;
+    }
+
+    public function getOurComments() {
+        return $this->ourComments;
+    }
+
+    public function getNlDamage() {
+        return $this->nlDamage;
+    }
+
+    public function setFact($fact) {
+        $this->fact = $fact;
+        return $this;
+    }
+
+    public function setInvestigationHandling($investigationHandling) {
+        $this->investigationHandling = $investigationHandling;
+        return $this;
+    }
+
+    public function setLiability($liability) {
+        $this->liability = $liability;
+        return $this;
+    }
+
+    public function setQuantum($quantum) {
+        $this->quantum = $quantum;
+        return $this;
+    }
+
+    public function setNegotiationHandling($negotiationHandling) {
+        $this->negotiationHandling = $negotiationHandling;
+        return $this;
+    }
+
+    public function setProceedingHandling($proceedingHandling) {
+        $this->proceedingHandling = $proceedingHandling;
+        return $this;
+    }
+
+    public function setOurComments($ourComments) {
+        $this->ourComments = $ourComments;
+        return $this;
+    }
+
+    public function setNlDamage($nlDamage) {
+        $this->nlDamage = $nlDamage;
+        return $this;
+    }
+
+        /**
      * Add question
      *
      * @param \Claims\HAuditBundle\Entity\PraticaQuestion $question
@@ -674,6 +801,10 @@ class Pratica {
         return $this->question;
     }
 
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
     public function getValue($id) {
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */

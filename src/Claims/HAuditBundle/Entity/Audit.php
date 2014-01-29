@@ -237,4 +237,13 @@ class Audit {
     public function __toString() {
         return $this->luogo;
     }
+    
+    public function getResponses() {
+        $n = 0;
+        foreach($this->pratiche as $pratica) {
+            /* @var $pratica Pratica */
+            $n += count($pratica->getQuestion());
+        }
+        return $n;
+    }
 }

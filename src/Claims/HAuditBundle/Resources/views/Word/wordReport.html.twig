@@ -1,0 +1,58 @@
+{% extends '::word.html.twig' %}
+{% block body -%}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block icon no-margin">
+            <h1 class="ico-file-3">Report {{ entity }}</h1>
+        </div>
+    </div>
+</div>
+<table>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Claimant: </b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.claimant }}</td>
+        <td colspan="2"><b>Hospital: </b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.ospedale }}</td>
+    </tr>
+    <tr style="vertical-align: top">
+        <td colspan="2"><b>Group: </b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.group }}</td>
+        <td colspan="2"><b>N.Claim: </b></td>
+        <td colspan="4" style="text-align: center;">{{ entity.codice }}</td>
+    </tr>
+</table>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>1. Fact:</h2>
+<p>{{ report.fact|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>2. Investigation Handling:</h2>
+<p>{{ report.investigationHandling|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>3. Liability:</h2>
+<p>{{ report.liability|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>4. Quantum:</h2>
+<p>{{ report.quantum|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>5. Negotiation Handling:</h2>
+<p>{{ report.negotiationHandling|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>6. Civil/Criminal Proceeding Handling:</h2>
+<p>{{ report.proceedingHandling|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>7. Our Comments:</h2>
+<p>{{ report.ourComments|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+<h2>8. NL Damage:</h2>
+<p>{{ report.nlDamage|nl2br }}</p>
+
+<div style="clear: both; page-break-after: always;"></div>
+{% endblock %}

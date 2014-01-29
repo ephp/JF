@@ -16,7 +16,6 @@
     {% endif %}
     <div class="pagination pagination-centered pagination-centered center">
         <ul>
-            <li><a href="{{ path('claims-h-audit_show', {'id': audit.id }) }}"><i class="icon-home"></i></a></li>
             {% for page in audit.question %}
                 {% if not question or page.ordine != question.ordine %}
                     <li><a {% if pratica.value(page.question.id) %}class="green" style="color: #fff;"{% endif %} href="javascript:pagina({{ audit.id }}, {{ page.ordine }}, {{ pratica.id }});">{{ page.ordine + 1 }}</a></li>
@@ -24,6 +23,7 @@
                     <li><a class="active bold yellow" href="javascript:void(0);">{{ page.ordine + 1 }}</a></li>
                 {% endif %}
             {% endfor %}
+            <li><a href="{{ path('claims-h-audit_show', {'id': audit.id }) }}"><i class="icon-home"></i></a></li>
         </ul>
     </div>
 

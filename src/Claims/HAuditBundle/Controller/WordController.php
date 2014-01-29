@@ -15,9 +15,7 @@ use Ephp\UtilityBundle\PhpWord\HtmlConverter;
 class WordController extends Controller {
 
     use \Ephp\UtilityBundle\Controller\Traits\BaseController,
-        \Ephp\UtilityBundle\Controller\Traits\PaginatorController,
-        \Claims\HBundle\Controller\Traits\TabelloneController,
-        Traits\TabelloneController;
+        \Ephp\UtilityBundle\Controller\Traits\PaginatorController;
 
     /**
      * @Route("-report/{slug}", name="claims_audit_hospital_word_report", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})

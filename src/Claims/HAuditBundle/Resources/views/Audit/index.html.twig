@@ -40,7 +40,7 @@
                             <td>
                                 {% set divisore = (entity.question|length * entity.pratiche|length) %}
                                 {% if divisore == 0 %}
-                                    {% set divisore = 1) %}
+                                    {% set divisore = 1 %}
                                 {% endif %}
                                 {% set percentuale = (100 * entity.responses) / divisore %}
                                 <div class="bar tip" style="width: {{ percentuale|number_format(2) }}%;" data-original-title="{{ percentuale|number_format(2) }}%"></div>

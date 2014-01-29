@@ -1,5 +1,5 @@
 {% set value = pratica.value(question.question.id) %}
-<form action="#" method="post" id="risposta">
+<form action="{{ path('claims-h-audit-risposta') }}" method="post" id="risposta" onsubmit="rispondi(); return false;">
         {% for risposta in question.question.options %}
             <label for="cb{{ loop.index }}"><input type="checkbox" name="risposta[value][]" value="{{ risposta }}" {% if value and risposta in value.responses%}checked="checked"{% endif %} id="cb{{ loop.index }}"/>{{ risposta }}</label>
         {% endfor %}

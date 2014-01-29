@@ -1,5 +1,5 @@
 {% set value = pratica.value(question.question.id) %}
-<form action="#" method="post" id="risposta">
+<form action="{{ path('claims-h-audit-risposta') }}" method="post" id="risposta" onsubmit="rispondi(); return false;">
     <input id="auto_date" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="auto_date" name="risposta[value]" />
     <input type="hidden" value="{{ question.question.id }}" name="risposta[question]" />
     <input type="hidden" value="{{ question.ordine }}" name="risposta[ordine]" />

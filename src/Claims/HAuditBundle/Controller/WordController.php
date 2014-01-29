@@ -22,7 +22,7 @@ class WordController extends Controller {
      */
     public function wordReportAction($slug) {
         $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $slug));
-        /* @var $pratica \Claims\HBundle\Entity\Pratica */
+        /* @var $pratica \Claims\HAuditBundle\Entity\Pratica */
 
         if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
             return $this->createNotFoundException('Utente non autorizzato');

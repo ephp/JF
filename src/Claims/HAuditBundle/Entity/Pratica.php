@@ -696,6 +696,7 @@ class Pratica {
     public function getAudit() {
         return $this->audit;
     }
+
     public function getFact() {
         return $this->fact;
     }
@@ -768,16 +769,15 @@ class Pratica {
         return $this;
     }
 
-        /**
+    /**
      * Add question
      *
      * @param \Claims\HAuditBundle\Entity\PraticaQuestion $question
      * @return Audit
      */
-    public function addQuestion(\Claims\HAuditBundle\Entity\PraticaQuestion $question)
-    {
+    public function addQuestion(\Claims\HAuditBundle\Entity\PraticaQuestion $question) {
         $this->question[] = $question;
-    
+
         return $this;
     }
 
@@ -786,8 +786,7 @@ class Pratica {
      *
      * @param \Claims\HAuditBundle\Entity\PraticaQuestion $question
      */
-    public function removeQuestion(\Claims\HAuditBundle\Entity\PraticaQuestion $question)
-    {
+    public function removeQuestion(\Claims\HAuditBundle\Entity\PraticaQuestion $question) {
         $this->question->removeElement($question);
     }
 
@@ -796,9 +795,12 @@ class Pratica {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getQuestion()
-    {
+    public function getQuestion() {
         return $this->question;
+    }
+
+    public function __toString() {
+        return $this->getGruppo() . ' ' . $this->getClaimant();
     }
 
     /**
@@ -808,11 +810,11 @@ class Pratica {
     public function getValue($id) {
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
-            if($question->getQuestion()->getId() == $id) {
+            if ($question->getQuestion()->getId() == $id) {
                 return $question;
             }
         }
         return false;
     }
-    
+
 }

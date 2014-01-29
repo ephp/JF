@@ -1,6 +1,6 @@
 <?php
 
-namespace JF\HAuditBundle\Controller;
+namespace Claims\HAuditBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,7 +30,7 @@ class WordController extends Controller {
             return $this->createNotFoundException('Utente non autorizzato');
         }
 
-        $twig = 'SLCHBundle:Tabellone:stampaTabellaReport.html.twig';
+        $twig = 'JFAuditHBundle:Word:wordReport.html.twig';
 
         if (!$pratica->getGestore()) {
             $pratica->setGestore($this->getUser());

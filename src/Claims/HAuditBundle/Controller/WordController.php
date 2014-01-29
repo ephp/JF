@@ -28,7 +28,7 @@ class WordController extends Controller {
             return $this->createNotFoundException('Utente non autorizzato');
         }
 
-        $twig = 'JFAuditHBundle:Word:wordReport.html.twig';
+        $twig = 'ClaimsAuditHBundle:Word:wordReport.html.twig';
 
         if (!$pratica->getGestore()) {
             $pratica->setGestore($this->getUser());

@@ -32,7 +32,7 @@ class InstallController extends Controller {
             $this->installGruppo($package, $g_pratiche, 'Gestione audit ospedalieri', 'ClaimsHAuditBundle:Install:audit.txt.twig');
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_pratiche, 'base', 5, 'Evalutation',            //Anagrafica licenza 
+                    $package, $g_pratiche, 'evalutation', 5, 'Evalutation',            //Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
                     100,                                                        //Durata
                     array('C_AUDIT_H', 'C_SUPVIS_H'),                           //Ruoli abilitati
@@ -54,7 +54,7 @@ class InstallController extends Controller {
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
             $licenze[] = $this->newLicenza(
-                    $package, $g_pratiche, 'base', 100, 'Studio Legale Carlesi',//Anagrafica licenza 
+                    $package, $g_pratiche, 'slc', 100, 'Studio Legale Carlesi',//Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
                     null,                                                       //Durata
                     array('C_AUDIT_H', 'C_SUPVIS_H'),                           //Ruoli abilitati

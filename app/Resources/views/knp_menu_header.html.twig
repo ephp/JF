@@ -11,7 +11,7 @@
             {% if item.extra('user') %}
                 <li>
                     <div class="user">
-                        <a href="{{ path('profilo') }}" class="name">
+                        <a href="{{ path('fos_user_profile_show') }}" class="name">
                             <span>{{ item.extra('user').nome }}</span>
                             <span class="sm">{{ item.extra('user').cliente.nome }}</span>
                         </a>

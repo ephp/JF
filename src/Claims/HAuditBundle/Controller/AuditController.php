@@ -34,7 +34,7 @@ class AuditController extends Controller {
      * @Template()
      */
     public function indexAction() {
-        $entities = $this->findAll('ClaimsHAuditBundle:Audit');
+        $entities = $this->getRepository('ClaimsHAuditBundle:Audit')->getAudit($this->getUser()->getCliente())->getQuery()->execute();
 
         return array(
             'entities' => $entities,

@@ -47,10 +47,10 @@
                                 {{ percentuale|number_format(3) }}% ({{ entity.responses }}/{{ entity.question|length * entity.pratiche|length }})
                             </td>
                             <td>
-                                {% include ":commons:download.html.twig" with {'route': path('claims-h-audit-xls', { 'id': entity.id })} %}                    
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
-                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'audit': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id} %}
+                                {% include ":commons:download.html.twig" with {'route': path('claims-h-audit-xls', { 'id': entity.id })} %}                    
                                 {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id }), 'enable': true} %}
+                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id} %}
                             </td>
                         </tr>
                     {% endfor %}

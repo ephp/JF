@@ -339,26 +339,18 @@ class AuditController extends Controller {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
 
-        $oldAudit = $this->findOneBy('ClaimsHAuditBundle:Audit', array('cliente' => $this->getUser()->getCliente()->getId()), array('id' => 'DESC'));
-        /* @var $oldAudit Audit */
-
-        $questions = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => $this->getUser()->getCliente()->getId()));
-
+//        $questions = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => $this->getUser()->getCliente()->getId()));
+        $questions = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null));
         
-        if (count($entity->getQuestion()) == 0 && $oldAudit) {
-            foreach ($oldAudit->getQuestion() as $_question) {
-                /* @var $_question \Claims\HAuditBundle\Entity\AuditQuestion */
+        if (count($entity->getQuestion()) == 0) {
+            foreach ($questions as $i => $_question) {
+                /* @var $_question \Claims\HAuditBundle\Entity\Question */
                 $question = new \Claims\HAuditBundle\Entity\AuditQuestion();
                 $question->setAudit($entity);
-                $question->setOrdine($_question->getOrdine());
-                $question->setQuestion($_question->getQuestion());
+                $question->setOrdine($i);
+                $question->setQuestion($_question);
                 $entity->addQuestion($question);
-                foreach ($questions as $i => $q) {
-                    if($q->getId() == $_question->getQuestion()->getId()) {
-                        unset($questions[$i]);
-                        break;
-                    }
-                }
+                unset($questions[$i]);
             }
         } else {
             foreach ($entity->getQuestion() as $_question) {

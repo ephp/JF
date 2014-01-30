@@ -134,7 +134,7 @@ class AuditController extends Controller {
             $this->remove($entity);
         }
 
-        return $this->redirect($this->generateUrl('claims-h-audit_show'));
+        return $this->redirect($this->generateUrl('claims-h-audit'));
     }
 
     /**

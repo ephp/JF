@@ -30,7 +30,7 @@
                                 <a href="{{ path('claims-h-audit_edit', { 'id': entity.id }) }}">{{ entity.luogo }}</a>
                             </td>
                             <td>{% if entity.giorno %}{{ entity.giorno|date('d/m/Y') }}{% endif %}</td>
-                            <td>{{ entity.note }}</td>
+                            <td>{{ entity.note }}{% if entity.note %}<br/>{% endif %}<small>created by {{ entity.cliente.nome }}</small></td>
                             <td>
                                 <a href="{{ path('claims-h-audit-file', { 'audit': entity.id }) }}">{{ entity.pratiche|length }}</a>
                             </td>

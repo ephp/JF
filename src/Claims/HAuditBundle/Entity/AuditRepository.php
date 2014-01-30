@@ -3,6 +3,7 @@
 namespace Claims\HAuditBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use JF\ACLBundle\Entity\Cliente;
 
 /**
  * AuditRepository
@@ -11,5 +12,11 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class AuditRepository extends EntityRepository {
+    
+    public function getAudit(Cliente $cliente) {
+        return $this->createQueryBuilder('a')
+                ->where('a.cliente = :cliente')
+                ->setParameter('cliente', $cliente->getId());
+    }
     
 }

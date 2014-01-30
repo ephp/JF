@@ -58,14 +58,16 @@ class JFCoreExtension extends Extension implements IExtension {
             'a' => array('class' => 'blred'),
             'icon' => 'ico-monitor',
         );
-        $menu['admin']['submenu'][] = array(
-            'label' => 'Catalogo',
-            'route' => 'catalogo',
-            'show' => array(
-                'in_role' => array('R_SUPER'),
-            ),
-            'order' => 1,
-        );
+        if(false) {
+            $menu['admin']['submenu'][] = array(
+                'label' => 'Catalogo',
+                'route' => 'catalogo',
+                'show' => array(
+                    'in_role' => array('R_SUPER'),
+                ),
+                'order' => 1,
+            );
+        }
         $menu['admin']['submenu'][] = array(
             'label' => 'Licenze',
             'route' => 'index',

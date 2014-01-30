@@ -30,7 +30,7 @@ class InstallController extends Controller {
             $this->installGruppo($package, $g_utenze, 'Gestione utenze', 'JFACLBundle:Install:utenze.txt.twig');
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_utenze, 'free', 1, 'Utenza singola',           //Anagrafica licenza 
+                    $package, $g_utenze, 'free', 1, 'Free package',            //Anagrafica licenza 
                     'JFACLBundle:Install:utenze_free.txt.twig',                 //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
@@ -44,7 +44,7 @@ class InstallController extends Controller {
                     true, true);                                                //Autoinstall-Market
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_utenze, 'small', 5, 'Piccola Azienda',         //Anagrafica licenza 
+                    $package, $g_utenze, 'small', 5, 'Small Business',          //Anagrafica licenza 
                     'JFACLBundle:Install:utenze_small.txt.twig',                //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
@@ -58,7 +58,7 @@ class InstallController extends Controller {
                     false, true);                                               //Autoinstall-Market
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_utenze, 'medium', 10, 'Media Azienda',         //Anagrafica licenza 
+                    $package, $g_utenze, 'medium', 10, 'Medium Business',       //Anagrafica licenza 
                     'JFACLBundle:Install:utenze_medium.txt.twig',               //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
@@ -72,7 +72,7 @@ class InstallController extends Controller {
                     false, true);                                               //Autoinstall-Market
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_utenze, 'big', 25, 'Grande Azienda',           //Anagrafica licenza 
+                    $package, $g_utenze, 'big', 25, 'Large Business',           //Anagrafica licenza 
                     'JFACLBundle:Install:utenze_big.txt.twig',                  //TWIG descrizione
                     null,                                                       //Durata
                     array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
@@ -100,6 +100,20 @@ class InstallController extends Controller {
                     false, true);                                               //Autoinstall-Market
             
             $licenze[] = $this->newLicenza(
+                    $package, $g_utenze, 'smalltry', 3, 'Piccola Azienda try',  //Anagrafica licenza 
+                    'JFACLBundle:Install:utenze_small.txt.twig',                //TWIG descrizione
+                    null,                                                       //Durata
+                    array('R_SUPER', 'R_ADMIN'),                                //Ruoli abilitati
+                    array('jf.acl.locked', 'jf.acl.utenti','jf.acl.licenze'),   //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        'max' => 3,                                             //  Numero massimo di utenti
+                        'rubrica' => false,                                     //  Abilitazione rubrica
+                        ),                                          
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
+            
+            $licenze[] = $this->newLicenza(
                     $package, $g_utenze, 'slc', 100, 'Studio Legale Carlesi',   //Anagrafica licenza 
                     'JFACLBundle:Install:utenze_slc.txt.twig',                  //TWIG descrizione
                     null,                                                       //Durata
@@ -113,7 +127,6 @@ class InstallController extends Controller {
                     0, null,                                                    //Prezzo-Prezzo scontato
                     false, false);                                              //Autoinstall-Market
 
-            
             $this->getEm()->commit();
         } catch (\Exception $e) {
             $this->getEm()->rollback();

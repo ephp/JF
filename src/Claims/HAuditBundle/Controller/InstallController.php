@@ -32,15 +32,38 @@ class InstallController extends Controller {
             $this->installGruppo($package, $g_pratiche, 'Gestione audit ospedalieri', 'ClaimsHAuditBundle:Install:audit.txt.twig');
             
             $licenze[] = $this->newLicenza(
-                    $package, $g_pratiche, 'base', 10, 'Gestione base',         //Anagrafica licenza 
-                    'ClaimsHAuditBundle:Install:audit_base.txt.twig',                //TWIG descrizione
-                    365,                                                        //Durata
-                    array('C_AUDIT_H', 'C_SUPVIS_H'),                            //Ruoli abilitati
+                    $package, $g_pratiche, 'base', 5, 'Evalutation',            //Anagrafica licenza 
+                    'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
+                    100,                                                        //Durata
+                    array('C_AUDIT_H', 'C_SUPVIS_H'),                           //Ruoli abilitati
                     array('claims.h-audit.cerca'),                              //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
                         ),                                          
-                    1500);                                                      //Prezzo
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'base', 10, 'Base Audit Package',    //Anagrafica licenza 
+                    'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
+                    365,                                                        //Durata
+                    array('C_AUDIT_H', 'C_SUPVIS_H'),                           //Ruoli abilitati
+                    array('claims.h-audit.cerca'),                              //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        ),                                          
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
+            $licenze[] = $this->newLicenza(
+                    $package, $g_pratiche, 'base', 100, 'Studio Legale Carlesi',//Anagrafica licenza 
+                    'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
+                    null,                                                       //Durata
+                    array('C_AUDIT_H', 'C_SUPVIS_H'),                           //Ruoli abilitati
+                    array('claims.h-audit.cerca'),                              //Widget abilitati
+                    array(                                                      //Parametri di configurazione
+                        'on' => true,                                           //  Abilitazione del package
+                        ),                                          
+                    0, null,                                                    //Prezzo-Prezzo scontato
+                    false, false);                                              //Autoinstall-Market
             $this->getEm()->commit();
         } catch (\Exception $e) {
             $this->getEm()->rollback();

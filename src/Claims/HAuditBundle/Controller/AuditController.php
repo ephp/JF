@@ -122,6 +122,23 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("/{id}", name="claims-h-audit_delete")
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     */
+    public function deleteAction(Audit $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        
+        $this->remove($entity);
+
+        return $this->redirect($this->generateUrl('claims-h-audit_show'));
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route("-risposte/{id}", name="claims-h-audit_risposte")
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")

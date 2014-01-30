@@ -49,7 +49,7 @@
                             <td>
                                 {% include ":commons:download.html.twig" with {'route': path('claims-h-audit-xls', { 'id': entity.id })} %}                    
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
-                                {% include ":commons:upload.html.twig" with {'route': path('claims-h-audit-xls-file', { 'audit': entity.id })} %}
+                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'audit': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id} %}
                                 {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id }), 'enable': true} %}
                             </td>
                         </tr>

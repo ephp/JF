@@ -50,7 +50,7 @@
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
                                 {% include ":commons:download.html.twig" with {'route': path('claims-h-audit-xls', { 'id': entity.id })} %}                    
                                 {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id }), 'enable': true} %}
-                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id} %}
+                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id, 'question': 'You want to delete the audit ' ~ entity.luogo } %}
                             </td>
                         </tr>
                     {% endfor %}

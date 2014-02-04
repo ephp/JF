@@ -30,7 +30,7 @@ class QuestionController extends Controller
      */
     public function indexAction()
     {
-        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null));
+        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null), array('ordine' => 'desc'));
         $gruppi = $this->findAll('ClaimsHAuditBundle:Gruppo');
         return array(
             'entities' => $entities,

@@ -43,8 +43,23 @@ class QuestionType extends AbstractType {
                         'money' => 'Importo (€)',
                         'select' => 'Menu a tendina',
                         'checkbox' => 'Scelta multipla',
+                        'fx' => 'Formula (TODO)',
                     ),
                     'label' => 'Tipo di campo per la risposta',
+                ))
+                ->add('prepopulate', 'choice', array(
+                    'required' => false,
+                    'choices' => array(
+                        '' => '',
+                        'claimant' => 'Nome Claimnat',
+                        'tpa' => 'TPA',
+                        'dol' => 'DOL',
+                        'don' => 'DON',
+                        'mfRef' => 'MF Ref',
+                        'ospedale' => 'Nome Ospedale',
+                        'dsCode' => 'DS Code',
+                    ),
+                    'label' => 'Compilazione automatica',
                 ))
                 ->add('options', 'textarea', array(
                     'required' => false,

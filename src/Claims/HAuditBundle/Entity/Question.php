@@ -75,6 +75,13 @@ class Question {
     /**
      * @var string
      *
+     * @ORM\Column(name="prePopulate", type="string", length=255, nullable=true)
+     */
+    private $prePopulate;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="ordine", type="integer")
      */
     private $ordine;
@@ -263,6 +270,15 @@ class Question {
 
     public function setOrdine($ordine) {
         $this->ordine = $ordine;
+        return $this;
+    }
+
+    public function getPrePopulate() {
+        return $this->prePopulate;
+    }
+
+    public function setPrePopulate($prePopulate) {
+        $this->prePopulate = $prePopulate;
         return $this;
     }
 

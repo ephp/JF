@@ -808,7 +808,7 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValue($id) {
-        $obj = new Question();
+        $obj = null;
         if(is_object($id)) {
             $obj = $id;
             $id = $obj->getId();
@@ -818,29 +818,41 @@ class Pratica {
             if ($question->getQuestion()->getId() == $id) {
                 return $question;
             }
-            if($obj->getId()) {
-                $pp = $obj->getPrePopulate();
-                switch ($pp) {
-                    case 'claimant':
-                        return $this->getClaimant();
-                    case 'tpa':
-                        return $this->getTpa();
-                    case 'dol':
-                        return $this->getDol()->format('d/m/Y');
-                    case 'don':
-                        return $this->getDon()->format('d/m/Y');
-                    case 'mfRef':
-                        return $this->getMfRef();
-                    case 'ospedale':
-                        return $this->getOspedale();
-                    case 'dsCode':
-                        return $this->getDsCode();
-                    case 'reserve':
-                        return $this->getReserve();
-                    case 'proReserve':
-                        return $this->getProReserve();
-                }
+        }
+        if($obj) {
+            $pp = $obj->getPrePopulate();
+            $out = new PraticaQuestion();
+            $out->setPratica($obj);
+            switch ($pp) {
+                case 'claimant':
+                    $out->setResponse($this->getClaimant());
+                    break;
+                case 'tpa':
+                    $out->setResponse($this->getTpa());
+                    break;
+                case 'dol':
+                    $out->setResponse($this->getDol()->format('d/m/Y'));
+                    break;
+                case 'don':
+                    $out->setResponse($this->getDon()->format('d/m/Y'));
+                    break;
+                case 'mfRef':
+                    $out->setResponse($this->getMfRef());
+                    break;
+                case 'ospedale':
+                    $out->setResponse($this->getOspedale());
+                    break;
+                case 'dsCode':
+                    $out->setResponse($this->getDsCode());
+                    break;
+                case 'reserve':
+                    $out->setResponse($this->getReserve());
+                    break;
+                case 'proReserve':
+                    $out->setResponse($this->getProReserve());
+                    break;
             }
+            return $out;
         }
         return false;
     }

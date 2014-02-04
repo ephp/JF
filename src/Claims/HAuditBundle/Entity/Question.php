@@ -40,7 +40,7 @@ class Question {
     /**
      * @var \Gruppo\JF\ACLBundle\Entity\Cliente
      * 
-     * @ORM\ManyToOne(targetEntity="SottoGruppo")
+     * @ORM\ManyToOne(targetEntity="Sottogruppo")
      * @ORM\JoinColumn(name="sottogruppo_id", referencedColumnName="id", nullable=true)
      */
     private $sottogruppo;

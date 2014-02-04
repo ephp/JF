@@ -170,4 +170,5 @@ class Sottogruppo
                 return $this->title;
         }
     }
+    
 }

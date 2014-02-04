@@ -17,6 +17,7 @@ class SottogruppoType extends AbstractType
         $builder
             ->add('title')
             ->add('titolo')
+            ->add('multiplo')
         ;
     }
     

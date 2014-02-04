@@ -159,7 +159,6 @@ class AuditController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
-     * @Route("-salvarisposta", name="claims-h-audit-risposte", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function rispostaAction() {
@@ -207,6 +206,57 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("-salvarisposta", name="claims-h-audit-risposte", options={"expose": true})
+     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     */
+    public function risposteGruppoAction() {
+        $req = $this->getParam('risposta');
+        $audit = $this->find('ClaimsHAuditBundle:Audit', $this->getParam('audit'));
+        /* @var $audit Audit */
+        if (!$audit) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        $pratica = $this->find('ClaimsHAuditBundle:Pratica', $this->getParam('pratica'));
+        /* @var $pratica Pratica */
+        if (!$pratica) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+        foreach ($req as $qid => $value) {
+            $pq = $pratica->getValue($qid);
+            if (!$pq) {
+                $pq = new \Claims\HAuditBundle\Entity\PraticaQuestion();
+                $pq->setPratica($pratica);
+                $question = $this->find('ClaimsHAuditBundle:Question', $qid);
+                $pq->setQuestion($question);
+                $pq->setOrdine(0);
+                if($question->getSottogruppo()) {
+                    $pq->setGruppo($question->getGruppo());
+                }
+                if($question->getSottogruppo()) {
+                    $pq->setSottogruppo($question->getSottogruppo());
+                }
+            }
+            if (is_array($req['value'])) {
+                $pq->setResponse(json_encode($req['value']));
+            } else {
+                $pq->setResponse($req['value']);
+            }
+            $this->persist($pq);
+            $pratica->addQuestion($pq);
+        }
+
+        $group = $audit->getGroup($this->getParam('ordine') + 1);
+
+        return array(
+            'audit' => $audit,
+            'pratica' => $pratica,
+            'group' => $group,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route("-q/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
@@ -233,6 +283,33 @@ class AuditController extends Controller {
             'audit' => $audit,
             'pratica' => $p,
             'question' => $question,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-g/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposte", options={"expose": true})
+     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     */
+    public function questionsAction($id, $ordine, $pratica) {
+        $audit = $this->find('ClaimsHAuditBundle:Audit', $id);
+        /* @var $audit Audit */
+        if (!$audit) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        $p = $this->find('ClaimsHAuditBundle:Pratica', $pratica);
+        /* @var $p Pratica */
+        if (!$p) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        $group = $audit->getGroup($ordine + 1);
+
+        return array(
+            'audit' => $audit,
+            'pratica' => $pratica,
+            'group' => $group,
         );
     }
 
@@ -347,10 +424,10 @@ class AuditController extends Controller {
                     $question = new \Claims\HAuditBundle\Entity\AuditQuestion();
                     $question->setAudit($entity);
                     $question->setOrdine($_question->getOrdine());
-                    if($_question->getGruppo()) {
+                    if ($_question->getGruppo()) {
                         $question->setGruppo($_question->getGruppo());
                     }
-                    if($_question->getSottogruppo()) {
+                    if ($_question->getSottogruppo()) {
                         $question->setSottogruppo($_question->getSottogruppo());
                     }
                     $question->setQuestion($_question);

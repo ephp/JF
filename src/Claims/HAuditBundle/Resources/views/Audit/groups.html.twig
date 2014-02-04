@@ -20,8 +20,9 @@
                 </fieldset>
             {% endif %}
         {% endfor %}
-        <input type="hidden" value="{{ pratica.id }}" name="risposta[pratica]" />
-        <input type="hidden" value="{{ audit.id }}" name="risposta[audit]" />
+        <input type="hidden" value="{{ group.obj.ordine }}" name="ordine" />
+        <input type="hidden" value="{{ pratica.id }}" name="pratica" />
+        <input type="hidden" value="{{ audit.id }}" name="audit" />
         <button type="button" onclick="rispondiGruppo();">Avanti</button>
         <script type="text/javascript">
             sanitizeDate([$('.auto_date')]);

@@ -1,0 +1,7 @@
+{% set value = pratica.value(question.question.id) %}
+<div>
+    <h4><abbr title="{{ question.question.example }}">{{ question.question.question }}</abbr></h4>
+    {% for risposta in question.question.options %}
+        <label for="{{ question.question.id }}cb{{ loop.index }}"><input type="checkbox" name="risposta[{{ question.question.id }}][]" value="{{ risposta }}" {% if value and risposta in value.responses%}checked="checked"{% endif %} id="{{ question.question.id }}cb{{ loop.index }}"/> {{ risposta }}</label>
+    {% endfor %}
+</div>

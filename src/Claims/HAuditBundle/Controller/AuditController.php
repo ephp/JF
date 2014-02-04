@@ -159,6 +159,7 @@ class AuditController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
+     * @Route("-salvarisposta", name="claims-h-audit-risposte", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function rispostaAction() {

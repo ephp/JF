@@ -58,6 +58,8 @@ class QuestionType extends AbstractType {
                         'mfRef' => 'MF Ref',
                         'ospedale' => 'Nome Ospedale',
                         'dsCode' => 'DS Code',
+                        'reserve' => 'Reserve',
+                        'proReserve' => 'Pro Reserve',
                     ),
                     'label' => 'Compilazione automatica',
                 ))

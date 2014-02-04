@@ -207,7 +207,7 @@ class AuditController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-salvarisposta", name="claims-h-audit-risposte", options={"expose": true})
-     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     * @Template("ClaimsHAuditBundle:Audit:groups.html.twig")
      */
     public function risposteGruppoAction() {
         $req = $this->getParam('risposta');
@@ -290,7 +290,7 @@ class AuditController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-g/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposte", options={"expose": true})
-     * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
+     * @Template("ClaimsHAuditBundle:Audit:groups.html.twig")
      */
     public function groupQuestionsAction($id, $ordine, $pratica) {
         $audit = $this->find('ClaimsHAuditBundle:Audit', $id);

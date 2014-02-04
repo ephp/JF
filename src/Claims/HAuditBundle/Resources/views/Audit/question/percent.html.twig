@@ -1,7 +1,7 @@
 {% set value = pratica.value(question.question.id) %}
 <form action="{{ path('claims-h-audit-risposta') }}" method="post" id="risposta">
     <div style="text-align: left">
-        <input type="number" value="{% if value %}{{ value.response }}{% endif %}" class="percent" min="0" max="100" name="risposta[value]" />
+        <input type="number" value="{% if value %}{{ value.response }}{% endif %}" class="percentual" min="0" max="100" name="risposta[value]" />
     </div>
     <input type="hidden" value="{{ question.question.id }}" name="risposta[question]" />
     <input type="hidden" value="{{ question.ordine }}" name="risposta[ordine]" />

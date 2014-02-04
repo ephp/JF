@@ -236,10 +236,10 @@ class AuditController extends Controller {
                     $pq->setSottogruppo($question->getSottogruppo());
                 }
             }
-            if (is_array($req['value'])) {
-                $pq->setResponse(json_encode($req['value']));
+            if (is_array($value)) {
+                $pq->setResponse(json_encode($value));
             } else {
-                $pq->setResponse($req['value']);
+                $pq->setResponse($value);
             }
             $this->persist($pq);
             $pratica->addQuestion($pq);

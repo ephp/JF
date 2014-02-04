@@ -45,6 +45,22 @@ class PraticaQuestion {
     private $ordine;
 
     /**
+     * @var Gruppo
+     * 
+     * @ORM\ManyToOne(targetEntity="Gruppo")
+     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id", nullable=true)
+     */
+    private $gruppo;
+
+    /**
+     * @var Sottogruppo
+     * 
+     * @ORM\ManyToOne(targetEntity="Sottogruppo")
+     * @ORM\JoinColumn(name="sottogruppo_id", referencedColumnName="id", nullable=true)
+     */
+    private $sottogruppo;
+
+    /**
      * @var text
      *
      * @ORM\Column(name="response", type="text")
@@ -151,6 +167,42 @@ class PraticaQuestion {
      */
     public function getResponses() {
         return json_decode($this->response);
+    }
+
+    /**
+     * 
+     * @param \Claims\HAuditBundle\Entity\Gruppo $gruppo
+     * @return \Claims\HAuditBundle\Entity\PraticaQuestion
+     */
+    public function setGruppo(Gruppo $gruppo) {
+        $this->gruppo = $gruppo;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Gruppo
+     */
+    public function getGruppo() {
+        return $this->gruppo;
+    }
+
+    /**
+     * 
+     * @param \Claims\HAuditBundle\Entity\Sottogruppo $gruppo
+     * @return \Claims\HAuditBundle\Entity\PraticaQuestion
+     */
+    public function setSottogruppo(Sottogruppo $gruppo) {
+        $this->sottogruppo = $gruppo;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Sottogruppo
+     */
+    public function getSottogruppo() {
+        return $this->sottogruppo;
     }
 
 }

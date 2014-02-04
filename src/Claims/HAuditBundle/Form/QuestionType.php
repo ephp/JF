@@ -42,6 +42,7 @@ class QuestionType extends AbstractType {
                         'text' => 'Testo',
                         'textarea' => 'Testo libero',
                         'number' => 'Numero',
+                        'percent' => 'Percentuale',
                         'date' => 'Data',
                         'money' => 'Importo (€)',
                         'select' => 'Menu a tendina',

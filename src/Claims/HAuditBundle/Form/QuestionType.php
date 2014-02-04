@@ -51,7 +51,7 @@ class QuestionType extends AbstractType {
                     'required' => false,
                     'choices' => array(
                         '' => '',
-                        'claimant' => 'Nome Claimnat',
+                        'claimant' => 'Nome Claimnnt',
                         'tpa' => 'TPA',
                         'dol' => 'DOL',
                         'don' => 'DON',

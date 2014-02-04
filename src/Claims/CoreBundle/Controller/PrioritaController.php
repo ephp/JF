@@ -21,7 +21,7 @@ class PrioritaController extends Controller
     /**
      * Lists all Priorita entities.
      *
-     * @Route("/", name="eph_priorita")
+     * @Route("/", name="eph_priorita", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class PrioritaController extends Controller
     /**
      * Creates a new Priorita entity.
      *
-     * @Route("/", name="eph_priorita_create")
+     * @Route("/", name="eph_priorita_create", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("POST")
      * @Template("ClaimsCoreBundle:Priorita:new.html.twig")
      */
@@ -84,7 +84,7 @@ class PrioritaController extends Controller
     /**
      * Displays a form to create a new Priorita entity.
      *
-     * @Route("/new", name="eph_priorita_new")
+     * @Route("/new", name="eph_priorita_new", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class PrioritaController extends Controller
     /**
      * Displays a form to edit an existing Priorita entity.
      *
-     * @Route("/{id}/edit", name="eph_priorita_edit")
+     * @Route("/{id}/edit", name="eph_priorita_edit", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -145,7 +145,7 @@ class PrioritaController extends Controller
     /**
      * Edits an existing Priorita entity.
      *
-     * @Route("/{id}", name="eph_priorita_update")
+     * @Route("/{id}", name="eph_priorita_update", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("PUT")
      * @Template("ClaimsCoreBundle:Priorita:edit.html.twig")
      */

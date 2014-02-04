@@ -29,12 +29,13 @@ class Question {
      */
     private $cliente;
 
-    /**Gruppo\JF\ACLBundle\Entity\Cliente
+    /**
+     * @var \Gruppo\JF\ACLBundle\Entity\Cliente
      * 
      * @ORM\ManyToOne(targetEntity="Gruppo")
      * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id")
      */
-    private $clientegruppo;
+    private $gruppo;
 
     /**
      * @var string
@@ -46,9 +47,23 @@ class Question {
     /**
      * @var string
      *
+     * @ORM\Column(name="domanda", type="string", length=255)
+     */
+    private $domanda;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="example", type="string", length=255, nullable=true)
      */
     private $example;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="esempio", type="string", length=255, nullable=true)
+     */
+    private $esempio;
 
     /**
      * @var string
@@ -205,4 +220,45 @@ class Question {
     {
         return $this->cliente;
     }
+    
+    /**
+     * 
+     * @param \Claims\HAuditBundle\Entity\Gruppo $gruppo
+     * @return \Claims\HAuditBundle\Entity\Question
+     */
+    public function setGruppo(Gruppo $gruppo) {
+        $this->gruppo = $gruppo;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Gruppo
+     */
+    public function getGruppo() {
+        return $this->gruppo;
+    }
+
+    public function getDomanda() {
+        return $this->domanda;
+    }
+
+    public function getEsempio() {
+        return $this->esempio;
+    }
+
+    public function setDomanda($domanda) {
+        $this->domanda = $domanda;
+        return $this;
+    }
+
+    public function setEsempio($esempio) {
+        $this->esempio = $esempio;
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->question;
+    }
+
 }

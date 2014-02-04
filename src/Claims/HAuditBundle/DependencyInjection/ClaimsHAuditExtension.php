@@ -64,6 +64,20 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
             'show' => array('in_role' => array('C_AUDIT_H')),
             'order' => 10,
         );
+        
+        $menu['a_claims']['submenu'][] = array(
+                'label' => 'Gruppi Audit Hospital',
+                'route' => 'eph_gurppi-audit',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 11,
+            );
+        
+        $menu['a_claims']['submenu'][] = array(
+                'label' => 'Domande Audit Hospital',
+                'route' => 'eph_domande-audit',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 11,
+            );
 
         $container->setParameter('jf.menu', $menu);
     }

@@ -41,6 +41,13 @@ class Gruppo
      * @ORM\Column(name="ordine", type="integer")
      */
     private $ordine;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $show;
     
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -168,4 +175,18 @@ class Gruppo
     {
         return $this->question;
     }
+    
+    public function getShow() {
+        return $this->show;
+    }
+
+    public function setShow($show) {
+        $this->show = $show;
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->titolo;
+    }
+
 }

@@ -174,7 +174,7 @@
                     {% if not question.gruppo %}
                         {% include "ClaimsHAuditBundle:Audit:question.html.twig" %}
                     {% else %}
-                        {% include "ClaimsHAuditBundle:Audit:group.html.twig" with {'group': audit.group(1)} %}
+                        {% include "ClaimsHAuditBundle:Audit:groups.html.twig" with {'group': audit.group(1)} %}
                     {% endif %}
                 {% endif %}
             {% endfor %}

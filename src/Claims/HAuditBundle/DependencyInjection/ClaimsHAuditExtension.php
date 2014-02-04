@@ -64,20 +64,27 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
             'show' => array('in_role' => array('C_AUDIT_H')),
             'order' => 10,
         );
-        
+
         $menu['a_claims']['submenu'][] = array(
-                'label' => 'Gruppi Audit Hospital',
-                'route' => 'eph_gurppi-audit',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 11,
-            );
-        
+            'label' => 'Gruppi Audit Hospital',
+            'route' => 'eph_gurppi-audit',
+            'show' => array('in_role' => array('R_EPH')),
+            'order' => 21,
+        );
+
         $menu['a_claims']['submenu'][] = array(
-                'label' => 'Domande Audit Hospital',
-                'route' => 'eph_domande-audit',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 11,
-            );
+            'label' => 'Sottogruppi Audit Hospital',
+            'route' => 'eph_sottogruppi-audit',
+            'show' => array('in_role' => array('R_EPH')),
+            'order' => 22,
+        );
+
+        $menu['a_claims']['submenu'][] = array(
+            'label' => 'Domande Audit Hospital',
+            'route' => 'eph_domande-audit',
+            'show' => array('in_role' => array('R_EPH')),
+            'order' => 20,
+        );
 
         $container->setParameter('jf.menu', $menu);
     }
@@ -100,9 +107,9 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
 
     public function setTipoEventi(ContainerBuilder $container) {
         $tipiEvento = $container->getParameter('jf.tipi_evento');
-        
+
         $this->addLicenzaTipoEvento($tipiEvento, 'AUD', 'cl.h-audit');
-        
+
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
 

@@ -33,9 +33,17 @@ class Question {
      * @var \Gruppo\JF\ACLBundle\Entity\Cliente
      * 
      * @ORM\ManyToOne(targetEntity="Gruppo")
-     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id", nullable=true)
      */
     private $gruppo;
+
+    /**
+     * @var \Gruppo\JF\ACLBundle\Entity\Cliente
+     * 
+     * @ORM\ManyToOne(targetEntity="SottoGruppo")
+     * @ORM\JoinColumn(name="sottogruppo_id", referencedColumnName="id", nullable=true)
+     */
+    private $sottogruppo;
 
     /**
      * @var string
@@ -244,6 +252,24 @@ class Question {
      */
     public function getGruppo() {
         return $this->gruppo;
+    }
+
+    /**
+     * 
+     * @param \Claims\HAuditBundle\Entity\Sottogruppo $gruppo
+     * @return \Claims\HAuditBundle\Entity\Question
+     */
+    public function setSottogruppo(Sottogruppo $gruppo) {
+        $this->gruppo = $gruppo;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Sottogruppo
+     */
+    public function getSottogruppo() {
+        return $this->sottogruppo;
     }
 
     public function getDomanda() {

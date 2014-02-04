@@ -17,6 +17,9 @@ class QuestionType extends AbstractType {
                 ->add('gruppo', null, array(
                     'label' => 'Gruppo',
                 ))
+                ->add('sottogruppo', null, array(
+                    'label' => 'Sottogruppo',
+                ))
                 ->add('ordine', null, array(
                     'label' => 'Ordine',
                 ))

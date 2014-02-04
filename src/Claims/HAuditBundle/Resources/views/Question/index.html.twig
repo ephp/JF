@@ -1,5 +1,11 @@
 {% extends '::base.html.twig' %}
-
+{% block js %}
+{% javascripts  
+    '@ClaimsHAuditBundle/Resources/public/js/domande.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
 {% block body -%}
 <div class="page-header">
     <div class="icon">
@@ -29,7 +35,14 @@
                     {% for entity in entities %}
                         <tr>
                             <td>{{ entity.id }}</td>
-                            <td>{{ entity.options|length }}</td>
+                            <td>
+                                <select class="gruppo" ref="{{ entity.id }}">
+                                    <option value=""></option>
+                                    {% for gruppo in gruppi %}
+                                        <option value="{{ gruppo.id }}">{{ gruppo.titoloLocale(app.session.locale) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
                             <td>{{ entity.question }}<br/>{{ entity.domanda }}</td>
                             <td>{{ entity.example }}<br/>{{ entity.esempio }}</td>
                             <td>{{ entity.type }}{% if entity.options|length > 1 %} ({{ entity.options|length }}){% endif %}</td>

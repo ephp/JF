@@ -24,16 +24,17 @@ class QuestionController extends Controller
     /**
      * Lists all Question entities.
      *
-     * @Route("/", name="eph_domande-audit")
+     * @Route("/", name="eph_domande-audit", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null));
-
+        $gruppi = $this->findAll('ClaimsHAuditBundle:Gruppo');
         return array(
             'entities' => $entities,
+            'gruppi' => $gruppi,
         );
     }
     /**
@@ -41,7 +42,7 @@ class QuestionController extends Controller
      *
      * @Route("/", name="eph_domande-audit_create")
      * @Method("POST")
-     * @Template("ClaimsHAuditBundle:Question:new.html.twig")
+     * @Template("ClaimsHAuditBundle:Question:new.html.twig", options={"ACL": {"in_role": "R_EPH"}})
      */
     public function createAction(Request $request)
     {
@@ -84,7 +85,7 @@ class QuestionController extends Controller
     /**
      * Displays a form to create a new Question entity.
      *
-     * @Route("/new", name="eph_domande-audit_new")
+     * @Route("/new", name="eph_domande-audit_new", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +103,7 @@ class QuestionController extends Controller
     /**
      * Displays a form to edit an existing Question entity.
      *
-     * @Route("/{id}/edit", name="eph_domande-audit_edit")
+     * @Route("/{id}/edit", name="eph_domande-audit_edit", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      * @Template()
@@ -124,7 +125,7 @@ class QuestionController extends Controller
     /**
      * Displays a form to edit an existing Question entity.
      *
-     * @Route("/delete/{id}", name="eph_domande-audit_delete")
+     * @Route("/delete/{id}", name="eph_domande-audit_delete", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      */
@@ -135,6 +136,27 @@ class QuestionController extends Controller
         }
 
         $this->remove($entity);
+
+        return $this->redirect($this->generateUrl('eph_domande-audit'));
+    }
+
+    /**
+     * Displays a form to edit an existing Question entity.
+     *
+     * @Route("/group/{id}/{group}", name="eph_domande-audit_group", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
+     * @ParamConverter("gruppo", class="ClaimsHAuditBundle:Gruppo", options={"id" = "group"})
+     */
+    public function groupAction(Question $entity, \Claims\HAuditBundle\Entity\Gruppo $gruppo)
+    {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Question entity.');
+        }
+
+        $entity->setGruppo($gruppo);
+        
+        $this->persist($entity);
 
         return $this->redirect($this->generateUrl('eph_domande-audit'));
     }
@@ -160,7 +182,7 @@ class QuestionController extends Controller
     /**
      * Edits an existing Question entity.
      *
-     * @Route("/{id}", name="eph_domande-audit_update")
+     * @Route("/{id}", name="eph_domande-audit_update", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("PUT")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      * @Template("ClaimsHAuditBundle:Question:edit.html.twig")

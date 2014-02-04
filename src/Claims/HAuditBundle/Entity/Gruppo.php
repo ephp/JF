@@ -189,4 +189,14 @@ class Gruppo
         return $this->titolo;
     }
 
+    public function getTitoloLocale($locale) {
+        switch(strtolower($locale)){
+            case 'it':
+            case 'it_it':
+            case 'ita':
+                return $this->titolo ?: $this->title;
+            default:
+                return $this->title;
+        }
+    }
 }

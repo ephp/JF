@@ -15,7 +15,7 @@
                 <fieldset>
                     <legend>{{ question.obj.title }}</legend>
                     {% for key, subquestion in question.questions %}
-                        {% include "ClaimsHAuditBundle:Audit:groups/"~question.question.type~".html.twig" with {'question': subquestion} %}
+                        {% include "ClaimsHAuditBundle:Audit:groups/"~subquestion.question.type~".html.twig" with {'question': subquestion} %}
                     {% endfor %}
                 </fieldset>
             {% endif %}

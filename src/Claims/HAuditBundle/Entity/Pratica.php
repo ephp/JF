@@ -808,10 +808,38 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValue($id) {
+        $obj = new Question();
+        if(is_object($id)) {
+            $obj = $id;
+            $id = $obj->getId();
+        }
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
             if ($question->getQuestion()->getId() == $id) {
                 return $question;
+            }
+            if($obj->getId()) {
+                $pp = $obj->getPrePopulate();
+                switch ($pp) {
+                    case 'claimant':
+                        return $this->getClaimant();
+                    case 'tpa':
+                        return $this->getTpa();
+                    case 'dol':
+                        return $this->getDol()->format('d/m/Y');
+                    case 'don':
+                        return $this->getDon()->format('d/m/Y');
+                    case 'mfRef':
+                        return $this->getMfRef();
+                    case 'ospedale':
+                        return $this->getOspedale();
+                    case 'dsCode':
+                        return $this->getDsCode();
+                    case 'reserve':
+                        return $this->getReserve();
+                    case 'proReserve':
+                        return $this->getProReserve();
+                }
             }
         }
         return false;

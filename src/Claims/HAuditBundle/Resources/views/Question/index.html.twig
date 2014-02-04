@@ -43,7 +43,12 @@
                                 </select>
                             </td>
                             <td><input type="number" min="-1" value="{{ entity.ordine }}" class="ordine" ref="{{ entity.id }}" style="width: 50px; text-align: right;"></td>
-                            <td>{% if entity.prePopulate %}<b title="pre-populate: {{ entity.prePopulate }}">{% endif %}{{ entity.question }}<br/>{{ entity.domanda }}{% if entity.prePopulate %}</b>{% endif %}</td>
+                            <td>
+                                {% if entity.prePopulate %}<b title="pre-populate: {{ entity.prePopulate }}">{% endif %}
+                                    {% if entity.sottogruppo %}<i>({{ entity.sottogruppo.title }})</i> {% endif %}{{ entity.question }}<br/>
+                                    {% if entity.sottogruppo %}<i>({{ entity.sottogruppo.titolo }})</i> {% endif %}{{ entity.domanda }}
+                                {% if entity.prePopulate %}</b>{% endif %}
+                            </td>
                             <td>{{ entity.example }}<br/>{{ entity.esempio }}</td>
                             <td>{{ entity.type }}{% if entity.options|length > 1 %} ({{ entity.options|length }}){% endif %}</td>
                             <td>

@@ -304,7 +304,7 @@ class AuditController extends Controller {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
 
-        $group = $audit->getGroup($ordine + 1);
+        $group = $audit->getGroup($ordine);
 
         return array(
             'audit' => $audit,

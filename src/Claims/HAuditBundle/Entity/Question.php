@@ -73,6 +73,13 @@ class Question {
     private $type;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ordine", type="integer")
+     */
+    private $ordine;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="options", type="array")
@@ -151,17 +158,15 @@ class Question {
         return $this->options;
     }
 
-
     /**
      * Set question
      *
      * @param string $question
      * @return Question
      */
-    public function setQuestion($question)
-    {
+    public function setQuestion($question) {
         $this->question = $question;
-    
+
         return $this;
     }
 
@@ -170,8 +175,7 @@ class Question {
      *
      * @return string 
      */
-    public function getQuestion()
-    {
+    public function getQuestion() {
         return $this->question;
     }
 
@@ -181,10 +185,9 @@ class Question {
      * @param string $example
      * @return Question
      */
-    public function setExample($example)
-    {
+    public function setExample($example) {
         $this->example = $example;
-    
+
         return $this;
     }
 
@@ -193,8 +196,7 @@ class Question {
      *
      * @return string 
      */
-    public function getExample()
-    {
+    public function getExample() {
         return $this->example;
     }
 
@@ -204,10 +206,9 @@ class Question {
      * @param \JF\ACLBundle\Entity\Cliente $cliente
      * @return Question
      */
-    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null)
-    {
+    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null) {
         $this->cliente = $cliente;
-    
+
         return $this;
     }
 
@@ -216,11 +217,10 @@ class Question {
      *
      * @return \JF\ACLBundle\Entity\Cliente 
      */
-    public function getCliente()
-    {
+    public function getCliente() {
         return $this->cliente;
     }
-    
+
     /**
      * 
      * @param \Claims\HAuditBundle\Entity\Gruppo $gruppo
@@ -254,6 +254,15 @@ class Question {
 
     public function setEsempio($esempio) {
         $this->esempio = $esempio;
+        return $this;
+    }
+
+    public function getOrdine() {
+        return $this->ordine;
+    }
+
+    public function setOrdine($ordine) {
+        $this->ordine = $ordine;
         return $this;
     }
 

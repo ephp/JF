@@ -23,8 +23,8 @@
                 <table class="table" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Group</th>
+                            <th>Order</th>
                             <th>Question<br/>Domanda</th>
                             <th>Example<br/>Esempio</th>
                             <th>Type</th>
@@ -34,15 +34,15 @@
                     <tbody>
                     {% for entity in entities %}
                         <tr>
-                            <td>{{ entity.id }}</td>
                             <td>
                                 <select class="gruppo" ref="{{ entity.id }}">
                                     <option value=""></option>
                                     {% for gruppo in gruppi %}
-                                        <option value="{{ gruppo.id }}">{{ gruppo.titoloLocale(app.session.locale) }}</option>
+                                        <option value="{{ gruppo.id }}" {% if entity.gruppo and entity.gruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
                                     {% endfor %}
                                 </select>
                             </td>
+                            <td><input type="number" min="-1" value="{{ entity.ordine }}" class="ordine" ref="{{ entity.id }}" style="width: 50px; text-align: right;"></td>
                             <td>{{ entity.question }}<br/>{{ entity.domanda }}</td>
                             <td>{{ entity.example }}<br/>{{ entity.esempio }}</td>
                             <td>{{ entity.type }}{% if entity.options|length > 1 %} ({{ entity.options|length }}){% endif %}</td>

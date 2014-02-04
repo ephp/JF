@@ -14,14 +14,29 @@ class QuestionType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
+                ->add('gruppo', null, array(
+                    'label' => 'Gruppo',
+                ))
+                ->add('ordine', null, array(
+                    'label' => 'Ordine',
+                ))
                 ->add('question', null, array(
-                    'label' => 'Domanda',
+                    'label' => 'Question',
                 ))
                 ->add('example', null, array(
-                    'label' => 'Esempio risposta',
+                    'label' => 'Question Note',
+                ))
+                ->add('domanda', null, array(
+                    'required' => false,
+                    'label' => 'Domanda',
+                ))
+                ->add('esempio', null, array(
+                    'required' => false,
+                    'label' => 'Note domanda',
                 ))
                 ->add('type', 'choice', array(
                     'choices' => array(
+                        'text' => 'Testo',
                         'textarea' => 'Testo libero',
                         'number' => 'Numero',
                         'date' => 'Data',
@@ -32,6 +47,7 @@ class QuestionType extends AbstractType {
                     'label' => 'Tipo di campo per la risposta',
                 ))
                 ->add('options', 'textarea', array(
+                    'required' => false,
                     'label' => 'Opzioni risposte (una risposta per riga)',
                 ))
         ;

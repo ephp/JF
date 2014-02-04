@@ -358,7 +358,7 @@ class AuditController extends Controller {
             }
         }
 
-        return $this->jsonResponse(array('redirect' => $this->generateUrl('claims-h-audit_show', array('id' => $entity->getId()))));
+        return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $entity->getId())));
     }
 
     /**

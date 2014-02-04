@@ -30,7 +30,7 @@ class Question {
     private $cliente;
 
     /**
-     * @var \Gruppo\JF\ACLBundle\Entity\Cliente
+     * @var Gruppo
      * 
      * @ORM\ManyToOne(targetEntity="Gruppo")
      * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id", nullable=true)
@@ -38,7 +38,7 @@ class Question {
     private $gruppo;
 
     /**
-     * @var \Gruppo\JF\ACLBundle\Entity\Cliente
+     * @var Sottogruppo
      * 
      * @ORM\ManyToOne(targetEntity="Sottogruppo")
      * @ORM\JoinColumn(name="sottogruppo_id", referencedColumnName="id", nullable=true)
@@ -260,7 +260,7 @@ class Question {
      * @return \Claims\HAuditBundle\Entity\Question
      */
     public function setSottogruppo(Sottogruppo $gruppo) {
-        $this->gruppo = $gruppo;
+        $this->sottogruppo = $gruppo;
         return $this;
     }
 

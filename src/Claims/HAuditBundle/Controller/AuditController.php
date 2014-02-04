@@ -292,7 +292,7 @@ class AuditController extends Controller {
      * @Route("-g/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposte", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
-    public function questionsAction($id, $ordine, $pratica) {
+    public function groupQuestionsAction($id, $ordine, $pratica) {
         $audit = $this->find('ClaimsHAuditBundle:Audit', $id);
         /* @var $audit Audit */
         if (!$audit) {

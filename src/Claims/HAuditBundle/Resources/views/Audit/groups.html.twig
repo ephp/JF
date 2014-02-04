@@ -40,7 +40,7 @@
             {% for page in audit.question %}
                 {% if gruppo.id is not defined or gruppo.id != page.gruppo.id %}
                     {% set gruppo = page.gruppo %}
-                    <li><a href="javascript:gruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
+                    <li><a href="javascript:paginaGruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
                 {% endif %}
             {% endfor %}
             <li><a href="{{ path('claims-h-audit_show', {'id': audit.id }) }}"><i class="icon-home"></i></a></li>

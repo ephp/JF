@@ -308,7 +308,7 @@ class AuditController extends Controller {
 
         return array(
             'audit' => $audit,
-            'pratica' => $pratica,
+            'pratica' => $p,
             'group' => $group,
         );
     }

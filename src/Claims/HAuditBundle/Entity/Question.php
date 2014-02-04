@@ -29,6 +29,13 @@ class Question {
      */
     private $cliente;
 
+    /**Gruppo\JF\ACLBundle\Entity\Cliente
+     * 
+     * @ORM\ManyToOne(targetEntity="Gruppo")
+     * @ORM\JoinColumn(name="gruppo_id", referencedColumnName="id")
+     */
+    private $clientegruppo;
+
     /**
      * @var string
      *

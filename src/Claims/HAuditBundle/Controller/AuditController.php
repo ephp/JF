@@ -346,8 +346,12 @@ class AuditController extends Controller {
                     $question = new \Claims\HAuditBundle\Entity\AuditQuestion();
                     $question->setAudit($entity);
                     $question->setOrdine($_question->getOrdine());
-                    $question->setGruppo($_question->getGruppo());
-                    $question->setSottogruppo($_question->getSottogruppo());
+                    if($_question->getGruppo()) {
+                        $question->setGruppo($_question->getGruppo());
+                    }
+                    if($_question->getSottogruppo()) {
+                        $question->setSottogruppo($_question->getSottogruppo());
+                    }
                     $question->setQuestion($_question);
                     $this->persist($question);
                 }

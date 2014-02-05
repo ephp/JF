@@ -208,9 +208,23 @@ class Pratica {
     /**
      * @var string
      *
+     * @ORM\Column(name="cronology", type="text", nullable=true)
+     */
+    private $cronology;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="quantum", type="text", nullable=true)
      */
     private $quantum;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="claims_handling", type="text", nullable=true)
+     */
+    private $claimsHandling;
 
     /**
      * @var string
@@ -236,9 +250,23 @@ class Pratica {
     /**
      * @var string
      *
+     * @ORM\Column(name="comments_llr", type="text", nullable=true)
+     */
+    private $commentsLLR;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="nl_damage", type="text", nullable=true)
      */
     private $nlDamage;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nl_comments", type="text", nullable=true)
+     */
+    private $nlComments;
 
     /**
      * Constructor
@@ -768,8 +796,39 @@ class Pratica {
         $this->nlDamage = $nlDamage;
         return $this;
     }
+    public function getCronology() {
+        return $this->cronology;
+    }
 
-    /**
+    public function getClaimsHandling() {
+        return $this->claimsHandling;
+    }
+
+    public function getCommentsLLR() {
+        return $this->commentsLLR;
+    }
+
+    public function getNlComments() {
+        return $this->nlComments;
+    }
+
+    public function setCronology($cronology) {
+        $this->cronology = $cronology;
+    }
+
+    public function setClaimsHandling($claimsHandling) {
+        $this->claimsHandling = $claimsHandling;
+    }
+
+    public function setCommentsLLR($commentsLLR) {
+        $this->commentsLLR = $commentsLLR;
+    }
+
+    public function setNlComments($nlComments) {
+        $this->nlComments = $nlComments;
+    }
+
+        /**
      * Add question
      *
      * @param \Claims\HAuditBundle\Entity\PraticaQuestion $question

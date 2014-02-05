@@ -211,7 +211,7 @@ textarea.expand:focus {
     font-size: 1.25em;
 }
 
-input.percent {
+input.percent, input.percentual {
     width: 50px !important;
     padding-right: 20px;
     background-image: url(/bundles/claimscore/images/percent.png);

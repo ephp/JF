@@ -867,11 +867,51 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValue($id) {
+        $obj = null;
+        if(is_object($id)) {
+            $obj = $id;
+            $id = $obj->getId();
+        }
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
             if ($question->getQuestion()->getId() == $id) {
                 return $question;
             }
+        }
+        if($obj) {
+            $pp = $obj->getPrePopulate();
+            $out = new PraticaQuestion();
+            $out->setPratica($obj);
+            switch ($pp) {
+                case 'claimant':
+                    $out->setResponse($this->getClaimant());
+                    break;
+                case 'tpa':
+                    $out->setResponse($this->getTpa());
+                    break;
+                case 'dol':
+                    $out->setResponse($this->getDol()->format('d/m/Y'));
+                    break;
+                case 'don':
+                    $out->setResponse($this->getDon()->format('d/m/Y'));
+                    break;
+                case 'mfRef':
+                    $out->setResponse($this->getMfRef());
+                    break;
+                case 'ospedale':
+                    $out->setResponse($this->getOspedale());
+                    break;
+                case 'dsCode':
+                    $out->setResponse($this->getDsCode());
+                    break;
+                case 'reserve':
+                    $out->setResponse($this->getReserve());
+                    break;
+                case 'proReserve':
+                    $out->setResponse($this->getProReserve());
+                    break;
+            }
+            return $out;
         }
         return false;
     }

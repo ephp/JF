@@ -1,0 +1,50 @@
+<div class="head red">      
+    {% if group %}
+    <h2>{{ group.obj.title }} - {{ group.obj.ordine }}/10</h2>
+    {% else %}
+    <h2>Fine domande</h2>
+    {% endif %}
+</div>
+<div class="data dark">
+    {% if group %}
+    <form action="{{ path('claims-h-audit-risposte') }}" method="post" id="risposta" onsubmit="rispondi(); return false;">
+        {% for key, question in group.questions %}
+            {% if key|first == 'q' %}
+                {% include "ClaimsHAuditBundle:Audit:groups/"~question.question.type~".html.twig" with {'question': question} %}
+            {% else %}
+                <fieldset>
+                    <legend>{{ question.obj.title }}</legend>
+                    {% for key, subquestion in question.questions %}
+                        {% include "ClaimsHAuditBundle:Audit:groups/"~subquestion.question.type~".html.twig" with {'question': subquestion} %}
+                    {% endfor %}
+                </fieldset>
+            {% endif %}
+        {% endfor %}
+        <input type="hidden" value="{{ group.obj.ordine }}" name="ordine" />
+        <input type="hidden" value="{{ pratica.id }}" name="pratica" />
+        <input type="hidden" value="{{ audit.id }}" name="audit" />
+        <button type="button" onclick="rispondiGruppo();">Avanti</button>
+        <script type="text/javascript">
+            sanitizeDate([$('.auto_date')]);
+            sanitizeCurrency([$('.currency')]);
+        </script>
+    </form>
+    {% else %}
+        <a href="{{ path('claims-h-audit_show', {'id': audit.id}) }}">
+            <span class="label label-inverse">Torna all'elenco pratiche</span>
+        </a>
+    {% endif %}
+    <div class="pagination pagination-centered pagination-centered center">
+        <ul>
+            {% set gruppo = false %}
+            {% for page in audit.question %}
+                {% if gruppo.id is not defined or gruppo.id != page.gruppo.id %}
+                    {% set gruppo = page.gruppo %}
+                    <li><a href="javascript:paginaGruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li><a href="{{ path('claims-h-audit_show', {'id': audit.id }) }}"><i class="icon-home"></i></a></li>
+        </ul>
+    </div>
+
+</div>

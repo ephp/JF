@@ -5,33 +5,29 @@
     <div class="icon">
         <span class="ico-cog"></span>
     </div>
-    <h1>Gruppo</h1>
+    <h1>Sottogruppo</h1>
 </div>
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
             <div class="data-fluid">
-                <a href="{{ path('eph_gurppi-audit_new') }}">
-                    <span class="label label-important">Nuovo gruppo</span>
+                <a href="{{ path('eph_sottogruppi-audit_new') }}">
+                    <span class="label label-important">Nuovo sottogruppo</span>
                 </a>
                 <table class="table" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Title<br/>Titolo</th>
-                            <th>Ordine</th>
-                            <th>Show</th>
+                            <th>Multiplo</th>
                             <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for entity in entities %}
                         <tr>
-                            <td>{{ entity.id }}</td>
                             <td>{{ entity.title }}<br/>{{ entity.titolo }}</td>
-                            <td>{{ entity.ordine }}</td>
                             <td width="40" class="no-padding js-show">
-                                {% if entity.show %}
+                                {% if entity.multiplo %}
                                     <a href="javascript:void()" class="button green role">
                                         <div class="icon"><span class="ico-check"></span></div>
                                     </a>
@@ -43,7 +39,7 @@
                             </td>
                             <td>
                 <ul>                    
-                    {% include ":commons:edit.html.twig" with {'route': path('eph_gurppi-audit_edit', { 'id': entity.id })} %}
+                    {% include ":commons:edit.html.twig" with {'route': path('eph_sottogruppi-audit_edit', { 'id': entity.id })} %}
                 </ul>
                             </td>
                         </tr>

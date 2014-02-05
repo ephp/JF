@@ -246,4 +246,24 @@ class Audit {
         }
         return $n;
     }
+    
+    public function getGroup($ordine) {
+        $out = array(
+            'obj' => null,
+            'questions' => array(),
+        );
+        foreach($this->question as $question) {
+            /* @var $question AuditQuestion */
+            if($question->getGruppo()->getOrdine() == $ordine) {
+                $out['obj'] = $question->getGruppo();
+                if($question->getSottogruppo()) {
+                    $out['questions']['sg'.$question->getSottogruppo()->getId()]['obj'] = $question->getSottogruppo();
+                    $out['questions']['sg'.$question->getSottogruppo()->getId()]['questions']['d'.$question->getId()] = $question;
+                } else {
+                    $out['questions']['q'.$question->getId()] = $question;
+                }
+            }
+        }
+        return $out;
+    }
 }

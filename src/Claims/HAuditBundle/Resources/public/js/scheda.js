@@ -14,6 +14,17 @@ function pagina(audit, ordine, pratica) {
     });
 }
 
+function rispondiGruppo() {
+    $.post(Routing.generate('claims-h-audit-risposte'), $('#risposta').serialize(), function(html) {
+        $('#question').html(html);
+    });
+}
+function paginaGruppo(audit, ordine, pratica) {
+    $.post(Routing.generate('claims-h-audit-get-risposte', {'id': audit, 'ordine': ordine, 'pratica': pratica}), function(html) {
+        $('#question').html(html);
+    });
+}
+
 
 function _autoupdate($this) {
     val = $this.val();

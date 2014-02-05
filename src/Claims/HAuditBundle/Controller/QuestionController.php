@@ -30,7 +30,7 @@ class QuestionController extends Controller
      */
     public function indexAction()
     {
-        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null));
+        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null), array('ordine' => 'desc'));
         $gruppi = $this->findAll('ClaimsHAuditBundle:Gruppo');
         return array(
             'entities' => $entities,
@@ -40,9 +40,9 @@ class QuestionController extends Controller
     /**
      * Creates a new Question entity.
      *
-     * @Route("/", name="eph_domande-audit_create")
+     * @Route("/", name="eph_domande-audit_create", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("POST")
-     * @Template("ClaimsHAuditBundle:Question:new.html.twig", options={"ACL": {"in_role": "R_EPH"}})
+     * @Template("ClaimsHAuditBundle:Question:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -50,6 +50,22 @@ class QuestionController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        
+        if(!$entity->getDomanda()) {
+            $entity->setDomanda('');
+        }
+        if(!$entity->getEsempio()) {
+            $entity->setEsempio('');
+        }
+        if(!$entity->getOptions()) {
+            $entity->setOptions('');
+        }
+        $options = explode("\n", $entity->getOptions());
+        foreach ($options as $i => $option) {
+            $options[$i] = trim($option);
+        }
+        $entity->setOptions($options);
+        
         if ($form->isValid()) {
             $this->persist($entity);
 
@@ -114,6 +130,8 @@ class QuestionController extends Controller
             throw $this->createNotFoundException('Unable to find Question entity.');
         }
 
+        $entity->setOptions(implode("\n", $entity->getOptions()));
+        
         $editForm = $this->createEditForm($entity);
 
         return array(
@@ -144,7 +162,7 @@ class QuestionController extends Controller
      * Displays a form to edit an existing Question entity.
      *
      * @Route("/group/{id}/{group}", name="eph_domande-audit_group", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
-     * @Method("GET")
+     * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      * @ParamConverter("gruppo", class="ClaimsHAuditBundle:Gruppo", options={"id" = "group"})
      */
@@ -158,7 +176,27 @@ class QuestionController extends Controller
         
         $this->persist($entity);
 
-        return $this->redirect($this->generateUrl('eph_domande-audit'));
+        return $this->jsonResponse(array('ststus' => 200));
+    }
+
+    /**
+     * Displays a form to edit an existing Question entity.
+     *
+     * @Route("/ordine/{id}/{order}", name="eph_domande-audit_order", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
+     * @Method("POST")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
+     */
+    public function orderAction(Question $entity, $order)
+    {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Question entity.');
+        }
+
+        $entity->setOrdine($order);
+        
+        $this->persist($entity);
+
+        return $this->jsonResponse(array('ststus' => 200));
     }
 
     /**
@@ -195,6 +233,12 @@ class QuestionController extends Controller
         }
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+        
+        $options = explode("\n", $entity->getOptions());
+        foreach ($options as $i => $option) {
+            $options[$i] = trim($option);
+        }
+        $entity->setOptions($options);
 
         if ($editForm->isValid()) {
             $this->persist($entity);

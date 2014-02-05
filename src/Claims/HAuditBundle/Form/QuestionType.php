@@ -14,24 +14,61 @@ class QuestionType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
+                ->add('gruppo', null, array(
+                    'label' => 'Gruppo',
+                ))
+                ->add('sottogruppo', null, array(
+                    'label' => 'Sottogruppo',
+                ))
+                ->add('ordine', null, array(
+                    'label' => 'Ordine',
+                ))
                 ->add('question', null, array(
-                    'label' => 'Domanda',
+                    'label' => 'Question',
                 ))
                 ->add('example', null, array(
-                    'label' => 'Esempio risposta',
+                    'label' => 'Question Note',
+                ))
+                ->add('domanda', null, array(
+                    'required' => false,
+                    'label' => 'Domanda',
+                ))
+                ->add('esempio', null, array(
+                    'required' => false,
+                    'label' => 'Note domanda',
                 ))
                 ->add('type', 'choice', array(
                     'choices' => array(
+                        'text' => 'Testo',
                         'textarea' => 'Testo libero',
                         'number' => 'Numero',
+                        'percent' => 'Percentuale',
                         'date' => 'Data',
                         'money' => 'Importo (€)',
                         'select' => 'Menu a tendina',
                         'checkbox' => 'Scelta multipla',
+                        'fx' => 'Formula (TODO)',
                     ),
                     'label' => 'Tipo di campo per la risposta',
                 ))
+                ->add('prepopulate', 'choice', array(
+                    'required' => false,
+                    'choices' => array(
+                        '' => '',
+                        'claimant' => 'Nome Claimnnt',
+                        'tpa' => 'TPA',
+                        'dol' => 'DOL',
+                        'don' => 'DON',
+                        'mfRef' => 'MF Ref',
+                        'ospedale' => 'Nome Ospedale',
+                        'dsCode' => 'DS Code',
+                        'reserve' => 'Reserve',
+                        'proReserve' => 'Pro Reserve',
+                    ),
+                    'label' => 'Compilazione automatica',
+                ))
                 ->add('options', 'textarea', array(
+                    'required' => false,
                     'label' => 'Opzioni risposte (una risposta per riga)',
                 ))
         ;

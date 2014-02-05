@@ -50,7 +50,7 @@ class Pratica {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ospedale", type="string", length=64)
+     * @ORM\Column(name="ospedale", type="string", length=255)
      */
     private $ospedale;
 

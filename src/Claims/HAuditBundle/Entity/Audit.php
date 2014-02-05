@@ -61,6 +61,7 @@ class Audit {
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AuditQuestion", mappedBy="audit", cascade="all")
+     * @ORM\OrderBy({"ordine" = "ASC"})
      */
     private $question;
 

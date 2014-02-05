@@ -81,6 +81,7 @@ function sanitizePartialDate(fields) {
         });
     });
 }
+
 function sanitizeCurrencyFormat(fields) {
     fields.forEach(function(field) {
         field.change(function() {

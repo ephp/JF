@@ -128,7 +128,7 @@ function _sanitizeCurrencyFormat(field) {
     if(!field.val()) {
         return;
     }
-    value = field.val().replace(",", ".").remove(/[^0-9\.]/g);
+    value = field.val().replace(",", "").remove(/[^0-9\.]/g);
     n = 0;
     i = 0;
     nc = 0;
@@ -150,5 +150,5 @@ function _sanitizeCurrencyFormat(field) {
         value = Math.abs(parseFloat(value === '' || value === '.' ? 0 : value));
         field.val(value.toFixed(2));
     }
-    field.val(parseFloat(field.val()).format(2, '.', ','));
+    field.val(parseFloat(field.val()).format(2, ',', '.'));
 }

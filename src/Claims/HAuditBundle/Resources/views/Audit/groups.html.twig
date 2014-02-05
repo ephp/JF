@@ -25,8 +25,8 @@
         <input type="hidden" value="{{ audit.id }}" name="audit" />
         <button type="button" onclick="rispondiGruppo();">Avanti</button>
         <script type="text/javascript">
-            sanitizeDate([$('.auto_date')]);
-            sanitizeCurrency([$('.currency')]);
+            sanitizePartialDate([$('.auto_date')]);
+            sanitizeCurrencyFormat([$('.currency')]);
         </script>
     </form>
     {% else %}

@@ -59,13 +59,17 @@ function sanitizePartialDate(fields) {
                 return false;
             }
             d = new Date();
-            if (value.endsWith('gg') || value === 'oggi' || value === 'domani') {
+            if (value.endsWith('gg') || value.endsWith('dd') || value === 'oggi' || value === 'domani' || value === 'today' || value === 'tomorrow') {
                 switch (value) {
                     case '0gg':
                     case 'oggi':
+                    case '0dd':
+                    case 'today':
                         break;
                     case '1gg':
                     case 'domani':
+                    case '1dd':
+                    case 'tomorrow':
                         d = calcolaData(d, 1);
                         break;
                     default:
@@ -81,17 +85,17 @@ function sanitizePartialDate(fields) {
                 numeri = $(this).val().replace(/\-/g, "/").replace(/\./g, "/").replace(/\//g, " ").words();
                 if(numeri.length === 3) {
                     d.setUTCDate(parseInt(numeri[0], 10));
-                    d.setUTCMonth(parseInt(numeri[1], 10));
+                    d.setUTCMonth(parseInt(numeri[1], 10) - 1);
                     d.setUTCFullYear(parseInt(numeri[2], 10) < 100 ? 2000 + parseInt(numeri[2], 10) : parseInt(numeri[2], 10));
                 } 
                 if(numeri.length === 2) {
                     d.setUTCDate(1);
-                    d.setUTCMonth(parseInt(numeri[0], 10));
+                    d.setUTCMonth(parseInt(numeri[0], 10) - 1);
                     d.setUTCFullYear(parseInt(numeri[1], 10) < 100 ? 2000 + parseInt(numeri[1], 10) : parseInt(numeri[1], 10));
                 } 
                 if(numeri.length === 1) {
                     d.setUTCDate(1);
-                    d.setUTCMonth(1);
+                    d.setUTCMonth(0);
                     d.setUTCFullYear(parseInt(numeri[0], 10) < 100 ? 2000 + parseInt(numeri[0], 10) : parseInt(numeri[0], 10));
                 } 
                 g = parseInt(d.getUTCDate()) < 10 ? '0'+d.getUTCDate() : d.getUTCDate();

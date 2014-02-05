@@ -100,7 +100,7 @@ function sanitizePartialDate(fields) {
                 } 
                 g = parseInt(d.getUTCDate()) < 10 ? '0'+d.getUTCDate() : d.getUTCDate();
                 m = parseInt(d.getUTCMonth()) + 1 < 10 ? '0'+(parseInt(d.getUTCMonth()) + 1) : (parseInt(d.getUTCMonth()) + 1);
-                a = d.getUTCFullYear() - (parseInt(m) === 12 ? 1 : 0);
+                a = d.getUTCFullYear();
                 if(numeri.length === 1) {
                     $(this).val(a);
                 } else if(numeri.length === 2) {

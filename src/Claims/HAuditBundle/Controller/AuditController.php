@@ -222,27 +222,46 @@ class AuditController extends Controller {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
         foreach ($req as $qid => $value) {
-            $pq = $pratica->getValue($qid);
-            if (!$pq) {
-                $pq = new \Claims\HAuditBundle\Entity\PraticaQuestion();
-                $pq->setPratica($pratica);
-                $question = $this->find('ClaimsHAuditBundle:Question', $qid);
-                $pq->setQuestion($question);
-                $pq->setOrdine(0);
-                if($question->getSottogruppo()) {
-                    $pq->setGruppo($question->getGruppo());
-                }
-                if($question->getSottogruppo()) {
-                    $pq->setSottogruppo($question->getSottogruppo());
-                }
-            }
             if (is_array($value)) {
-                $pq->setResponse(json_encode($value));
+                $ris = $pratica->getRisposte($qid);
+                foreach ($ris as $r) {
+                    $this->remove($r);
+                }
+                foreach ($value as $i => $v) {
+                    $pq = new \Claims\HAuditBundle\Entity\PraticaQuestion();
+                    $pq->setPratica($pratica);
+                    $question = $this->find('ClaimsHAuditBundle:Question', $qid);
+                    $pq->setQuestion($question);
+                    $pq->setOrdine($i);
+                    if ($question->getSottogruppo()) {
+                        $pq->setGruppo($question->getGruppo());
+                    }
+                    if ($question->getSottogruppo()) {
+                        $pq->setSottogruppo($question->getSottogruppo());
+                    }
+                    $pq->setResponse($v);
+                    $this->persist($pq);
+                    $pratica->addQuestion($pq);
+                }
             } else {
+                $pq = $pratica->getValue($qid);
+                if (!$pq) {
+                    $pq = new \Claims\HAuditBundle\Entity\PraticaQuestion();
+                    $pq->setPratica($pratica);
+                    $question = $this->find('ClaimsHAuditBundle:Question', $qid);
+                    $pq->setQuestion($question);
+                    $pq->setOrdine(0);
+                    if ($question->getSottogruppo()) {
+                        $pq->setGruppo($question->getGruppo());
+                    }
+                    if ($question->getSottogruppo()) {
+                        $pq->setSottogruppo($question->getSottogruppo());
+                    }
+                }
                 $pq->setResponse($value);
+                $this->persist($pq);
+                $pratica->addQuestion($pq);
             }
-            $this->persist($pq);
-            $pratica->addQuestion($pq);
         }
 
         $group = $audit->getGroup($this->getParam('ordine') + 1);

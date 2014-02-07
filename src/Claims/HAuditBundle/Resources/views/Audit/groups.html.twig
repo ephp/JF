@@ -14,9 +14,55 @@
             {% else %}
                 <fieldset>
                     <legend>{{ question.obj.title }}</legend>
-                    {% for key, subquestion in question.questions %}
-                        {% include "ClaimsHAuditBundle:Audit:groups/"~subquestion.question.type~".html.twig" with {'question': subquestion} %}
-                    {% endfor %}
+                    <table class="table grid">
+                        <thead>
+                            <tr>
+                                {% for key2, subquestion in question.questions %}
+                                    {% include "ClaimsHAuditBundle:Audit:groups_th/"~subquestion.question.type~".html.twig" with {'question': subquestion} %}
+                                {% endfor %}
+                                {% if question.obj.multiplo %}
+                                    <th width="40">
+                                        <a href="javascript:addRow('{{ key }}')" class="button green">
+                                            <div class="icon"><span class="ico-plus-sign">{% if label is defined %}{{ label }}{% endif %}</span></div>
+                                        </a>
+                                    </th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody id="body_{{key}}">
+                            {% if not question.obj.multiplo %}
+                                {% for key2, subquestion in question.questions %}
+                                    {% include "ClaimsHAuditBundle:Audit:groups_td/"~subquestion.question.type~".html.twig" with {'question': subquestion, 'n': 0} %}
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <script type="text/html" id="row_{{ key }}">
+                        <tr id="row_{{key}}_r{n}">
+                            {% for key2, subquestion in question.questions %}
+                                {% include "ClaimsHAuditBundle:Audit:groups_td/"~subquestion.question.type~".html.twig" with {'question': subquestion, 'n': '{n}', 'value': false} %}
+                            {% endfor %}
+                            {% if question.obj.multiplo %}
+                                <td>
+                                    <a href="javascript:delRow('#row_{{ key }}_r{n}')" class="button red">
+                                        <div class="icon"><span class="ico-minus-sign">{% if label is defined %}{{ label }}{% endif %}</span></div>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    </script>
+                    <script type="text/javascript" id="row_{{ key }}">
+                        {% if question.obj.multiplo %}
+                            {% for key2, subquestion in question.questions %}
+                                {% for risposta in pratica.risposte(subquestion.question.id) %}
+                                    addRisposta('{{key}}', {{risposta.question.id}}, {{risposta.ordine}}, "{{risposta.response}}");
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            sanitizePartialDate([$('.auto_date_{{key}}_r0')]);
+                            sanitizeCurrencyFormat([$('.currency_{{key}}_r0')]);
+                        {% endif %}
+                    </script>
                 </fieldset>
             {% endif %}
         {% endfor %}

@@ -1,5 +1,5 @@
-{% set value = pratica.value(question.question) %}
+{% set value = pratica.value(question.question, 0) %}
 <div>
     <h4><abbr title="{{ question.question.example }}">{{ question.question.question }}</abbr></h4>
-    <input type="text" value="{% if value %}{{ value.response }}{% endif %}" class="currency eur" name="risposta[{{ question.question.id }}]" />
+    <input id="risposta_{{ question.question.id }}" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="currency eur" name="risposta[{{ question.question.id }}]" />
 </div>

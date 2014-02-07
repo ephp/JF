@@ -796,6 +796,7 @@ class Pratica {
         $this->nlDamage = $nlDamage;
         return $this;
     }
+
     public function getCronology() {
         return $this->cronology;
     }
@@ -828,7 +829,7 @@ class Pratica {
         $this->nlComments = $nlComments;
     }
 
-        /**
+    /**
      * Add question
      *
      * @param \Claims\HAuditBundle\Entity\PraticaQuestion $question
@@ -867,53 +868,103 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValue($id) {
+//        \Ephp\UtilityBundle\Utility\Debug::pr(array($id, $ordine));
         $obj = null;
-        if(is_object($id)) {
+        if (is_object($id)) {
             $obj = $id;
             $id = $obj->getId();
         }
-        foreach ($this->question as $question) {
-            /* @var $question PraticaQuestion */
-            if ($question->getQuestion()->getId() == $id) {
-                return $question;
+        $risposte = $this->getRisposte($id);
+        if (count($risposte) == 1 && $risposte[0]->getOrdine() == 0) {
+            return $risposte[0];
+        }
+        if (count($risposte) > 1 || (count($risposte) == 1 && $risposte[0]->getOrdine() > 0)) {
+            foreach ($risposte as $risposta) {
+                return $risposta;
             }
         }
-        if($obj) {
+        // per il pre-populate
+        if ($obj) {
             $pp = $obj->getPrePopulate();
-            $out = new PraticaQuestion();
-            $out->setPratica($obj);
+            $resp = new PraticaQuestion();
+            $resp->setPratica($obj);
             switch ($pp) {
                 case 'claimant':
-                    $out->setResponse($this->getClaimant());
+                    $resp->setResponse($this->getClaimant());
                     break;
                 case 'tpa':
-                    $out->setResponse($this->getTpa());
+                    $resp->setResponse($this->getTpa());
                     break;
                 case 'dol':
-                    $out->setResponse($this->getDol()->format('d/m/Y'));
+                    $resp->setResponse($this->getDol()->format('d/m/Y'));
                     break;
                 case 'don':
-                    $out->setResponse($this->getDon()->format('d/m/Y'));
+                    $resp->setResponse($this->getDon()->format('d/m/Y'));
                     break;
                 case 'mfRef':
-                    $out->setResponse($this->getMfRef());
+                    $resp->setResponse($this->getMfRef());
                     break;
                 case 'ospedale':
-                    $out->setResponse($this->getOspedale());
+                    $resp->setResponse($this->getOspedale());
                     break;
                 case 'dsCode':
-                    $out->setResponse($this->getDsCode());
+                    $resp->setResponse($this->getDsCode());
                     break;
                 case 'reserve':
-                    $out->setResponse($this->getReserve());
+                    $resp->setResponse($this->getReserve());
                     break;
                 case 'proReserve':
-                    $out->setResponse($this->getProReserve());
+                    $resp->setResponse($this->getProReserve());
                     break;
             }
+            return $resp;
+        }
+        return false;
+    }
+
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
+    public function getValues($id) {
+//        \Ephp\UtilityBundle\Utility\Debug::pr(array($id, $ordine));
+        $obj = null;
+        if (is_object($id)) {
+            $obj = $id;
+            $id = $obj->getId();
+        }
+        $risposte = $this->getRisposte($id);
+        if (count($risposte) == 1 && $risposte[0]->getOrdine() == 0) {
+            return $risposte[0]->setResponse(array($risposte[0]->getResponse()));
+        }
+        if (count($risposte) > 1 || (count($risposte) == 1 && $risposte[0]->getOrdine() > 0)) {
+            $res = array();
+            $out = null;
+            foreach ($risposte as $risposta) {
+                if (!$out) {
+                    $out = $risposta;
+                }
+                $res[] = $risposta->getResponse();
+            }
+            $out->setResponse($res);
             return $out;
         }
         return false;
+    }
+
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
+    public function getRisposte($id) {
+        $out = array();
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getQuestion()->getId() == $id) {
+                $out[] = $question;
+            }
+        }
+        return $out;
     }
 
 }

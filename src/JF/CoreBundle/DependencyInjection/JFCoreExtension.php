@@ -58,7 +58,7 @@ class JFCoreExtension extends Extension implements IExtension {
             'a' => array('class' => 'blred'),
             'icon' => 'ico-monitor',
         );
-        if(false) {
+        if(true) {
             $menu['admin']['submenu'][] = array(
                 'label' => 'Catalogo',
                 'route' => 'catalogo',

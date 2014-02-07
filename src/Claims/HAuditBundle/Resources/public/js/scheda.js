@@ -14,17 +14,20 @@ function pagina(audit, ordine, pratica) {
     });
 }
 
+var risposte = {};
+
 function rispondiGruppo() {
     $.post(Routing.generate('claims-h-audit-risposte'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
+        risposte = {};
     });
 }
 function paginaGruppo(audit, ordine, pratica) {
     $.post(Routing.generate('claims-h-audit-get-risposte', {'id': audit, 'ordine': ordine, 'pratica': pratica}), function(html) {
         $('#question').html(html);
+        risposte = {};
     });
 }
-
 
 function _autoupdate($this) {
     val = $this.val();
@@ -49,7 +52,6 @@ function autoupdate() {
         old = null;
     });
 }
-
 
 function sanitizePartialDate(fields) {
     fields.forEach(function(field) {
@@ -151,4 +153,45 @@ function _sanitizeCurrencyFormat(field) {
         field.val(value.toFixed(2));
     }
     field.val(parseFloat(field.val()).format(2, ',', '.'));
+}
+
+var righe = {};
+
+function addRow(table, riga) {
+    if(!righe[table]) {
+        righe[table] = 0;
+    }
+    if(!riga) {
+        righe[table]++;
+        riga = righe[table]; 
+    }
+    $('#body_'+table).append($('#row_'+table).html().assign({'n': riga}));
+    sanitizePartialDate([$('.auto_date_'+table+'_r'+riga)]);
+    sanitizeCurrencyFormat([$('.currency_'+table+'_r'+riga)]);
+}
+function delRow(row) {
+    $row = $(row);
+    $row.animate({opacity: 0.5}, 500, function() {
+        if(confirm('Delete this row?')) {
+            $row.animate({opacity: 0}, 500, function() {
+                $row.remove();
+            });
+        } else {
+            $row.animate({opacity: 1}, 500)
+        }
+    });
+}
+
+function addRisposta(table, question, riga, response) {
+    if(!risposte[table]) {
+        risposte[table] = {};
+    }
+    if(!risposte[table][riga]) {
+        addRow(table, riga);
+        risposte[table][riga] = true;
+    }
+    if(riga > righe[table]) {
+        righe[table] = riga;
+    }
+    $('#risposta_'+question+'_r'+riga).val(response);
 }

@@ -1,0 +1,6 @@
+{% if value is not defined %}
+    {% set value = pratica.value(question.question, 0) %}
+{% endif %}
+<td>
+    <input id="risposta_{{ question.question.id }}_r{{n}}" name="risposta[{{ question.question.id }}][{{n}}]" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="auto_date_{{key}}_r{{n}}" /><br/>
+</td>

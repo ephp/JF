@@ -1,6 +1,6 @@
-{% set value = pratica.value(question.question) %}
+{% set value = pratica.value(question.question, 0) %}
 <div>
     <h4><abbr title="{{ question.question.example }}">{{ question.question.question }}</abbr></h4>
-    <input id="auto_date" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="auto_date" name="risposta[{{ question.question.id }}]" /><br/>
+    <input id="risposta_{{ question.question.id }}" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="auto_date" name="risposta[{{ question.question.id }}]" /><br/>
     e.g.: use <b>dd/mm/yyyy</b>, <b>mm/yyyy</b>, <b>yyyy</b> or the sintax <b>today</b>, <b>tomorrow</b> or <b>5dd</b>
 </div>

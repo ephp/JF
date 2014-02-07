@@ -338,6 +338,28 @@ class Question {
         return $this;
     }
 
+    public function getDomandaLocale($locale) {
+        switch (strtolower($locale)) {
+            case 'it':
+            case 'it_it':
+            case 'ita':
+                return $this->domanda ? : $this->question;
+            default:
+                return $this->question;
+        }
+    }
+
+    public function getEsempioLocale($locale) {
+        switch (strtolower($locale)) {
+            case 'it':
+            case 'it_it':
+            case 'ita':
+                return $this->esempio ? : $this->example;
+            default:
+                return $this->example;
+        }
+    }
+
     public function __toString() {
         return $this->question;
     }

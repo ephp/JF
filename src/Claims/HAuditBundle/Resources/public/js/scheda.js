@@ -6,6 +6,9 @@ $(document).ready(function() {
 function rispondi() {
     $.post(Routing.generate('claims-h-audit-risposta'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
+        $.post(Routing.generate('claims-h-audit-rieilogo', {id: $('#pratica').val()}), function(html) {
+            $('#riepilogo').html(html);
+        });
     });
 }
 function pagina(audit, ordine, pratica) {
@@ -20,6 +23,9 @@ function rispondiGruppo() {
     $.post(Routing.generate('claims-h-audit-risposte'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
         risposte = {};
+        $.post(Routing.generate('claims-h-audit-riepilogo', {'id': $('#pratica').val()}), function(html) {
+            $('#riepilogo').html(html);
+        });
     });
 }
 function paginaGruppo(audit, ordine, pratica) {
@@ -86,19 +92,19 @@ function sanitizePartialDate(fields) {
             } else {
                 numeri = $(this).val().replace(/\-/g, "/").replace(/\./g, "/").replace(/\//g, " ").words();
                 if (numeri.length === 3) {
-                    d.setUTCDate(parseInt(numeri[0], 10));
-                    d.setUTCMonth(parseInt(numeri[1], 10) - 1);
                     d.setUTCFullYear(parseInt(numeri[2], 10) < 100 ? 2000 + parseInt(numeri[2], 10) : parseInt(numeri[2], 10));
+                    d.setUTCMonth(parseInt(numeri[1], 10) - 1);
+                    d.setUTCDate(parseInt(numeri[0], 10));
                 }
                 if (numeri.length === 2) {
-                    d.setUTCDate(1);
-                    d.setUTCMonth(parseInt(numeri[0], 10) - 1);
                     d.setUTCFullYear(parseInt(numeri[1], 10) < 100 ? 2000 + parseInt(numeri[1], 10) : parseInt(numeri[1], 10));
+                    d.setUTCMonth(parseInt(numeri[0], 10) - 1);
+                    d.setUTCDate(1);
                 }
                 if (numeri.length === 1) {
-                    d.setUTCDate(1);
-                    d.setUTCMonth(0);
                     d.setUTCFullYear(parseInt(numeri[0], 10) < 100 ? 2000 + parseInt(numeri[0], 10) : parseInt(numeri[0], 10));
+                    d.setUTCMonth(0);
+                    d.setUTCDate(1);
                 }
                 g = parseInt(d.getUTCDate()) < 10 ? '0' + d.getUTCDate() : d.getUTCDate();
                 m = parseInt(d.getUTCMonth()) + 1 < 10 ? '0' + (parseInt(d.getUTCMonth()) + 1) : (parseInt(d.getUTCMonth()) + 1);

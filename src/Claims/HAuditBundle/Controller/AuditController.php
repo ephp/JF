@@ -206,6 +206,25 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("-riepilogo/{id}", name="claims-h-audit-riepilogo", options={"expose": true})
+     * @Template("ClaimsHAuditBundle:Audit:showPratica/riepilogo.html.twig")
+     */
+    public function riepilogoGruppoAction($id) {
+        $pratica = $this->find('ClaimsHAuditBundle:Pratica', $id);
+        /* @var $pratica Pratica */
+        if (!$pratica) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        return array(
+            'audit' => $pratica->getAudit(),
+            'pratica' => $pratica,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route("-salvarisposte", name="claims-h-audit-risposte", options={"expose": true})
      * @Template("ClaimsHAuditBundle:Audit:groups.html.twig")
      */

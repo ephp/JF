@@ -158,6 +158,7 @@ class PraticaQuestion {
      */
     public function getResponse() {
         return $this->response;
+        return is_array($this->response) ? implode('\n', $this->response) : $this->response;
     }
 
     /**

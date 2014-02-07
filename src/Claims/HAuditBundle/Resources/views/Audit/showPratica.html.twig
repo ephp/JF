@@ -32,7 +32,10 @@
                     <h2>{{ pratica.codice }} - {{ pratica.claimant }}</h2>
                 </div>
                 <div class="data dark">
-                    <h3>{{ pratica.gruppo }}</h3>
+                    <div  id="riepilogo">
+                        {% include "ClaimsHAuditBundle:Audit:showPratica/riepilogo.html.twig" %}
+                    </div>
+{#
                     <div class="row-fluid">
                         <div class="block" style="margin-bottom: 5px;">
                             {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'DOL', 'span_value': 2, 'value': pratica.dol|date('d-m-Y')} %}
@@ -59,6 +62,7 @@
                             {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Payment', 'span_value': 4, 'value': pratica.payment, 'uumm': ' €'} %}
                         </div>
                     </div>
+#}
                     {% for question in audit.question %}
                         {% if loop.first %}
                             {% if not question.gruppo %}

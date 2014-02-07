@@ -3,6 +3,7 @@
 namespace Claims\HAuditBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Audit
@@ -28,7 +29,7 @@ class Audit {
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
      */
     private $cliente;
-    
+
     /**
      * @var string
      *
@@ -140,22 +141,20 @@ class Audit {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->pratiche = new \Doctrine\Common\Collections\ArrayCollection();
         $this->question = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Set cliente
      *
      * @param \JF\ACLBundle\Entity\Cliente $cliente
      * @return Audit
      */
-    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null)
-    {
+    public function setCliente(\JF\ACLBundle\Entity\Cliente $cliente = null) {
         $this->cliente = $cliente;
-    
+
         return $this;
     }
 
@@ -164,8 +163,7 @@ class Audit {
      *
      * @return \JF\ACLBundle\Entity\Cliente 
      */
-    public function getCliente()
-    {
+    public function getCliente() {
         return $this->cliente;
     }
 
@@ -175,10 +173,9 @@ class Audit {
      * @param \Claims\HAuditBundle\Entity\Pratica $pratiche
      * @return Audit
      */
-    public function addPratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche)
-    {
+    public function addPratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche) {
         $this->pratiche[] = $pratiche;
-    
+
         return $this;
     }
 
@@ -187,8 +184,7 @@ class Audit {
      *
      * @param \Claims\HAuditBundle\Entity\Pratica $pratiche
      */
-    public function removePratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche)
-    {
+    public function removePratiche(\Claims\HAuditBundle\Entity\Pratica $pratiche) {
         $this->pratiche->removeElement($pratiche);
     }
 
@@ -197,8 +193,7 @@ class Audit {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPratiche()
-    {
+    public function getPratiche() {
         return $this->pratiche;
     }
 
@@ -208,10 +203,9 @@ class Audit {
      * @param \Claims\HAuditBundle\Entity\AuditQuestion $question
      * @return Audit
      */
-    public function addQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question)
-    {
+    public function addQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question) {
         $this->question[] = $question;
-    
+
         return $this;
     }
 
@@ -220,8 +214,7 @@ class Audit {
      *
      * @param \Claims\HAuditBundle\Entity\AuditQuestion $question
      */
-    public function removeQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question)
-    {
+    public function removeQuestion(\Claims\HAuditBundle\Entity\AuditQuestion $question) {
         $this->question->removeElement($question);
     }
 
@@ -230,41 +223,57 @@ class Audit {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getQuestion()
-    {
+    public function getQuestion() {
         return $this->question;
     }
-    
+
+    /**
+     * Get question
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPreviewQuestion() {
+        $out = array();
+        foreach($this->question as $question) {
+            /* @var $question AuditQuestion */
+            if($question->getQuestion()->getAnteprima() > 0) {
+                $out[$question->getQuestion()->getAnteprima()] = $question->getQuestion();
+            }
+        }
+        return $out;
+    }
+
     public function __toString() {
         return $this->luogo;
     }
-    
+
     public function getResponses() {
         $n = 0;
-        foreach($this->pratiche as $pratica) {
+        foreach ($this->pratiche as $pratica) {
             /* @var $pratica Pratica */
             $n += count($pratica->getQuestion());
         }
         return $n;
     }
-    
+
     public function getGroup($ordine) {
         $out = array(
             'obj' => null,
             'questions' => array(),
         );
-        foreach($this->question as $question) {
+        foreach ($this->question as $question) {
             /* @var $question AuditQuestion */
-            if($question->getGruppo()->getOrdine() == $ordine) {
+            if ($question->getGruppo()->getOrdine() == $ordine) {
                 $out['obj'] = $question->getGruppo();
-                if($question->getSottogruppo()) {
-                    $out['questions']['sg'.$question->getSottogruppo()->getId()]['obj'] = $question->getSottogruppo();
-                    $out['questions']['sg'.$question->getSottogruppo()->getId()]['questions']['d'.$question->getId()] = $question;
+                if ($question->getSottogruppo()) {
+                    $out['questions']['sg' . $question->getSottogruppo()->getId()]['obj'] = $question->getSottogruppo();
+                    $out['questions']['sg' . $question->getSottogruppo()->getId()]['questions']['d' . $question->getId()] = $question;
                 } else {
-                    $out['questions']['q'.$question->getId()] = $question;
+                    $out['questions']['q' . $question->getId()] = $question;
                 }
             }
         }
         return $out;
     }
+
 }

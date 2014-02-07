@@ -868,12 +868,12 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValue($id) {
-//        \Ephp\UtilityBundle\Utility\Debug::pr(array($id, $ordine));
         $obj = null;
         if (is_object($id)) {
             $obj = $id;
             $id = $obj->getId();
         }
+//        \Ephp\UtilityBundle\Utility\Debug::pr('S'.$id, true);
         $risposte = $this->getRisposte($id);
         if (count($risposte) == 1 && $risposte[0]->getOrdine() == 0) {
             return $risposte[0];
@@ -927,27 +927,56 @@ class Pratica {
      * @return PraticaQuestion|boolean
      */
     public function getValues($id) {
-//        \Ephp\UtilityBundle\Utility\Debug::pr(array($id, $ordine));
+        $_r = new PraticaQuestion();
         $obj = null;
         if (is_object($id)) {
             $obj = $id;
             $id = $obj->getId();
         }
+//        \Ephp\UtilityBundle\Utility\Debug::pr('M'.$id, true);
         $risposte = $this->getRisposte($id);
         if (count($risposte) == 1 && $risposte[0]->getOrdine() == 0) {
-            return $risposte[0]->setResponse(array($risposte[0]->getResponse()));
+            return $_r->setResponse(array($risposte[0]->getResponse()));
         }
         if (count($risposte) > 1 || (count($risposte) == 1 && $risposte[0]->getOrdine() > 0)) {
             $res = array();
-            $out = null;
             foreach ($risposte as $risposta) {
-                if (!$out) {
-                    $out = $risposta;
-                }
                 $res[] = $risposta->getResponse();
             }
-            $out->setResponse($res);
-            return $out;
+            return $_r->setResponse($res);
+        }
+        if ($obj) {
+            $pp = $obj->getPrePopulate();
+            switch ($pp) {
+                case 'claimant':
+                    $_r->setResponse($this->getClaimant());
+                    break;
+                case 'tpa':
+                    $_r->setResponse($this->getTpa());
+                    break;
+                case 'dol':
+                    $_r->setResponse($this->getDol()->format('d/m/Y'));
+                    break;
+                case 'don':
+                    $_r->setResponse($this->getDon()->format('d/m/Y'));
+                    break;
+                case 'mfRef':
+                    $_r->setResponse($this->getMfRef());
+                    break;
+                case 'ospedale':
+                    $_r->setResponse($this->getOspedale());
+                    break;
+                case 'dsCode':
+                    $_r->setResponse($this->getDsCode());
+                    break;
+                case 'reserve':
+                    $_r->setResponse($this->getReserve());
+                    break;
+                case 'proReserve':
+                    $_r->setResponse($this->getProReserve());
+                    break;
+            }
+            return $_r->setResponse(array($_r->getResponse()));
         }
         return false;
     }

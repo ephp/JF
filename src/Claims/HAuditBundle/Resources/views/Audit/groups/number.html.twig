@@ -1,5 +1,5 @@
 {% set value = pratica.value(question.question) %}
 <div>
-    <h4><abbr title="{{ question.question.example }}">{{ question.question.question }}</abbr></h4>
+    <h4><abbr title="{{ question.question.esempioLocale(app.request.locale) }}">{{ question.question.domandaLocale(app.request.locale) }}</abbr></h4>
     <input id="risposta_{{ question.question.id }}" type="number" value="{% if value %}{{ value.response }}{% endif %}" name="risposta[{{ question.question.id }}]" />
 </div>

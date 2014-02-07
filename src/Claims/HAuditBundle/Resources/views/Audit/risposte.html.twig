@@ -30,24 +30,15 @@
                     <thead>
                         <tr>
                             <th width="40">#</th>
-                            <th>Claimant</th>
-                            <th>Progress</th>
                             {% for question in entity.question %}
-                                <th style="min-width: 150px;">{{ question.question.question }}</th>
+                                <th style="min-width: 150px;">{{ question.question.domandaLocale(app.request.locale) }}</th>
                             {% endfor %}
-                            <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for pratica in entity.pratiche %}
                         <tr>                            
                             <td>{{ loop.index }}</td>
-                            <td>
-                                <small>{{ pratica.codice }}</small><br/>
-                                {{ pratica.claimant }}<br/>
-                                <small>{{ pratica.gruppo }}</small>
-                            </td>
-                            <td>{{ pratica.question|length }}/{{ entity.question|length }}</td>
                             {% for question in entity.question %}
                                 {% set value = pratica.value(question.question.id) %}
                                 {% if value %}
@@ -56,9 +47,6 @@
                                     <td>-</td>
                                 {% endif %}
                             {% endfor %}
-                            <td>
-                                {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
-                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

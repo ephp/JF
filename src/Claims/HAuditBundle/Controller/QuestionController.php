@@ -48,7 +48,7 @@ class QuestionController extends Controller {
      * @Template()
      */
     public function indexSmallAction() {
-        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null), array('ordine' => 'desc'));
+        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null), array('ordine' => 'asc'));
         return array(
             'entities' => $entities,
         );

@@ -61,7 +61,7 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
         $menu['claims_audit']['submenu'][] = array(
             'label' => 'New Audit Hospital',
             'route' => 'claims-h-audit_new',
-            'show' => array('in_role' => array('C_AUDIT_H')),
+            'show' => array('in_role' => array('C_AUDIT_HC')),
             'order' => 10,
         );
 
@@ -86,6 +86,13 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
             'order' => 20,
         );
 
+        $menu['claims_audit']['submenu'][] = array(
+            'label' => 'Questions Audit Hospital',
+            'route' => 'domande-audit',
+            'show' => array('in_role' => array('C_AUDIT_HQ')),
+            'order' => 30,
+        );
+
         $container->setParameter('jf.menu', $menu);
     }
 
@@ -100,7 +107,9 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
     public function setRoles(ContainerBuilder $container) {
         $roles = $container->getParameter('jf.roles');
 
-        $this->newRole($roles, 'C_AUDIT_H', 'C-AUD', 'Audit');
+        $this->newRole($roles, 'C_AUDIT_H', 'C-AUDH', 'Audit');
+        $this->newRole($roles, 'C_AUDIT_HC', 'C-AUDHC', 'Audit Creator');
+        $this->newRole($roles, 'C_AUDIT_HQ', 'C-AUDHQ', 'Question Revisor');
 
         $container->setParameter('jf.roles', $roles);
     }

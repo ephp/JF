@@ -11,11 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Claims\HAuditBundle\Entity\Question;
 use Claims\HAuditBundle\Form\QuestionType;
+use Claims\HAuditBundle\Form\QuestionSmallType;
 
 /**
  * Question controller.
  *
- * @Route("/eph/domande-audit")
+ * @Route("/domande-audit")
  */
 class QuestionController extends Controller {
 
@@ -24,7 +25,7 @@ class QuestionController extends Controller {
     /**
      * Lists all Question entities.
      *
-     * @Route("/", name="eph_domande-audit", options={"ACL": {"in_role": "R_EPH"}})
+     * @Route("-full/", name="eph_domande-audit", options={"ACL": {"in_role": {"R_EPH"}}})
      * @Method("GET")
      * @Template()
      */
@@ -36,6 +37,20 @@ class QuestionController extends Controller {
             'entities' => $entities,
             'gruppi' => $gruppi,
             'sottogruppi' => $sottogruppi,
+        );
+    }
+
+    /**
+     * Lists all Question entities.
+     *
+     * @Route("/", name="domande-audit", options={"ACL": {"in_role": {"C_AUDIT_HQ"}}})
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexSmallAction() {
+        $entities = $this->findBy('ClaimsHAuditBundle:Question', array('cliente' => null), array('ordine' => 'desc'));
+        return array(
+            'entities' => $entities,
         );
     }
 
@@ -111,29 +126,6 @@ class QuestionController extends Controller {
         return array(
             'entity' => $entity,
             'form' => $form->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to edit an existing Question entity.
-     *
-     * @Route("/{id}/edit", name="eph_domande-audit_edit", options={"ACL": {"in_role": "R_EPH"}})
-     * @Method("GET")
-     * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
-     * @Template()
-     */
-    public function editAction(Question $entity) {
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Question entity.');
-        }
-
-        $entity->setOptions(implode("\n", $entity->getOptions()));
-
-        $editForm = $this->createEditForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -216,7 +208,7 @@ class QuestionController extends Controller {
     /**
      * Displays a form to edit an existing Question entity.
      *
-     * @Route("/preview/{id}/{preview}", name="eph_domande-audit_preview", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
+     * @Route("/preview/{id}/{preview}", name="eph_domande-audit_preview", options={"ACL": {"in_role": {"R_EPH", "C_AUDIT_HQ"}}, "expose": true},defaults={"_format": "json"})
      * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      */
@@ -231,11 +223,11 @@ class QuestionController extends Controller {
 
         return $this->jsonResponse(array('status' => 200));
     }
-    
+
     /**
      * Displays a form to edit an existing Question entity.
      *
-     * @Route("/text/{id}/{type}", name="eph_domande-audit_text", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
+     * @Route("/text/{id}/{type}", name="eph_domande-audit_text", options={"ACL": {"in_role": {"R_EPH", "C_AUDIT_HQ"}}, "expose": true},defaults={"_format": "json"})
      * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      */
@@ -267,7 +259,7 @@ class QuestionController extends Controller {
     /**
      * Displays a form to edit an existing Question entity.
      *
-     * @Route("/research/{id}", name="eph_domande-audit_research", options={"ACL": {"in_role": "R_EPH"}, "expose": true},defaults={"_format": "json"})
+     * @Route("/research/{id}", name="eph_domande-audit_research", options={"ACL": {"in_role": {"R_EPH", "C_AUDIT_HQ"}}, "expose": true},defaults={"_format": "json"})
      * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      */
@@ -288,6 +280,34 @@ class QuestionController extends Controller {
     }
 
     /**
+     * Displays a form to edit an existing Question entity.
+     *
+     * @Route("/{id}/fulledit", name="eph_domande-audit_edit", options={"ACL": {"in_role": "R_EPH"}})
+     * @Route("/{id}/edit", name="eph_domande-audit_edit-small", options={"ACL": {"in_role": "C_AUDIT_HQ"}})
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
+     * @Template()
+     */
+    public function editAction(Question $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Question entity.');
+        }
+
+        $entity->setOptions(implode("\n", $entity->getOptions()));
+
+        if($this->getParam('_route') == 'eph_domande-audit_edit') {
+            $editForm = $this->createEditForm($entity);
+        } else {
+            $editForm = $this->createEditSmallForm($entity);
+        }
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
+    }
+
+    /**
      * Creates a form to edit a Question entity.
      *
      * @param Question $entity The entity
@@ -304,11 +324,29 @@ class QuestionController extends Controller {
 
         return $form;
     }
+    /**
+     * Creates a form to edit a Question entity.
+     *
+     * @param Question $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditSmallForm(Question $entity) {
+        $form = $this->createForm(new QuestionSmallType(), $entity, array(
+            'action' => $this->generateUrl('eph_domande-audit_update-small', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn')));
+
+        return $form;
+    }
 
     /**
      * Edits an existing Question entity.
      *
-     * @Route("/{id}", name="eph_domande-audit_update", options={"ACL": {"in_role": "R_EPH"}})
+     * @Route("/{id}/full", name="eph_domande-audit_update", options={"ACL": {"in_role": "R_EPH"}})
+     * @Route("/{id}", name="eph_domande-audit_update-small", options={"ACL": {"in_role": "C_AUDIT_HQ"}})
      * @Method("PUT")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Question")
      * @Template("ClaimsHAuditBundle:Question:edit.html.twig")
@@ -318,7 +356,12 @@ class QuestionController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Question entity.');
         }
-        $editForm = $this->createEditForm($entity);
+        if($this->getParam('_route') == 'eph_domande-audit_update') {
+            $editForm = $this->createEditForm($entity);
+        } else {
+            $editForm = $this->createEditSmallForm($entity);
+        }
+        
         $editForm->handleRequest($request);
 
         $options = explode("\n", $entity->getOptions());
@@ -330,7 +373,11 @@ class QuestionController extends Controller {
         if ($editForm->isValid()) {
             $this->persist($entity);
 
-            return $this->redirect($this->generateUrl('eph_domande-audit'));
+            if($this->getParam('_route') == 'eph_domande-audit_update') {
+                return $this->redirect($this->generateUrl('eph_domande-audit'));
+            } else {
+                return $this->redirect($this->generateUrl('domande-audit'));
+            }
         }
 
         return array(

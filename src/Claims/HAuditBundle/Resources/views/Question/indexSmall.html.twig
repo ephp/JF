@@ -24,7 +24,7 @@
                     <thead>
                         <tr>
                             <th>Group<br/>Subgroup</th>
-                            <th>Order<br/>Preview</th>
+                            <th>Preview order</th>
                             <th>Question<br/>Domanda</th>
                             <th>Example<br/>Esempio</th>
                             <th>Type</th>
@@ -35,31 +35,16 @@
                     {% for entity in entities %}
                         <tr>
                             <td>
-                                <select class="gruppo" ref="{{ entity.id }}">
-                                    <option value=""></option>
-                                    {% for gruppo in gruppi %}
-                                        <option value="{{ gruppo.id }}" {% if entity.gruppo and entity.gruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
-                                    {% endfor %}
-                                </select>
-                                <br/>
-                                <select class="sottogruppo" ref="{{ entity.id }}">
-                                    <option value=""></option>
-                                    {% for gruppo in sottogruppi %}
-                                        <option value="{{ gruppo.id }}" {% if entity.sottogruppo and entity.sottogruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
-                                    {% endfor %}
-                                </select>
+                                {% if entity.gruppo %}{{ entity.gruppo.titoloLocale(app.request.locale) }}{% else %}<i>No Group</i>{% endif %}<br/>
+                                {% if entity.sottogruppo %}{{ entity.sottogruppo.titoloLocale(app.request.locale) }}{% else %}-{% endif %}
                             </td>
                             <td>
-                                <input type="number" value="{{ entity.ordine }}" class="ordine" ref="{{ entity.id }}" style="width: 50px; text-align: right; margin:0px;">
-                                <br/>
                                 <input type="number" value="{{ entity.anteprima }}" class="anteprima" ref="{{ entity.id }}" style="width: 50px; text-align: right; margin:0px;">
                             </td>
                             <td>
-                                {% if entity.prePopulate %}<b title="pre-populate: {{ entity.prePopulate }}">{% endif %}
-                                    <input type="text" value="{{ entity.question }}" class="question" ref="{{ entity.id }}" style="width: 300px;"> EN
-                                    <br/>
-                                    <input type="text" value="{{ entity.domanda }}" class="domanda" ref="{{ entity.id }}" style="width: 300px;"> IT
-                                {% if entity.prePopulate %}</b>{% endif %}
+                                <input type="text" value="{{ entity.question }}" class="question" ref="{{ entity.id }}" style="width: 300px;"> EN
+                                <br/>
+                                <input type="text" value="{{ entity.domanda }}" class="domanda" ref="{{ entity.id }}" style="width: 300px;"> IT
                             </td>
                             <td>
                                 <input type="text" value="{{ entity.example }}" class="example" ref="{{ entity.id }}" style="width: 300px;">
@@ -68,9 +53,7 @@
                             </td>
                             <td>{{ entity.type }}{% if entity.options|length > 1 %} ({{ entity.options|length }}){% endif %}</td>
                             <td>
-                                {% include ":commons:edit.html.twig" with {'route': path('eph_domande-audit_edit', { 'id': entity.id })} %}
-                                {% include ":commons:delete.html.twig" with {'route': path('eph_domande-audit_delete', { 'id': entity.id }), 'question': 'You want to delete the question ' ~ entity.question } %}
-                                <br/>
+                                {% include ":commons:edit.html.twig" with {'route': path('eph_domande-audit_edit-small', { 'id': entity.id })} %}
                                 {% if entity.ricerca %}
                                     <a href="javascript:ricerca({{ entity.id }})" id="search_{{ entity.id }}" class="button green role">
                                         <div class="icon"><span class="ico-search"></span></div>

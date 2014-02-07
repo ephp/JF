@@ -40,6 +40,7 @@ class CalendarioController extends Controller {
             'links' => $this->buildLinks(),
             'mode' => $mode,
             'data' => $data,
+            'route_ricerca' => 'claims_hospital_ricerca',
         );
     }
 

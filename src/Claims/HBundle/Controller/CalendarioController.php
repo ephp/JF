@@ -16,7 +16,7 @@ use JF\ACLBundle\Entity\Gestore;
 use Ephp\UtilityBundle\Utility\Time;
 
 /**
- * @Route("/claims-hospital/calendario")
+ * @Route("/claims-hospital-calendario")
  */
 class CalendarioController extends Controller {
 

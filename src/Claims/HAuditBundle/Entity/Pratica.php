@@ -936,7 +936,8 @@ class Pratica {
 //        \Ephp\UtilityBundle\Utility\Debug::pr('M'.$id, true);
         $risposte = $this->getRisposte($id);
         if (count($risposte) == 1 && $risposte[0]->getOrdine() == 0) {
-            return $_r->setResponse(array($risposte[0]->getResponse()));
+            $_r->setResponse(array($risposte[0]->getResponse()));
+            return $_r; 
         }
         if (count($risposte) > 1 || (count($risposte) == 1 && $risposte[0]->getOrdine() > 0)) {
             $res = array();
@@ -980,6 +981,23 @@ class Pratica {
         }
         return false;
     }
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
+    public function getSubgroupValues($id) {
+        $_r = new PraticaQuestion();
+        $risposte = $this->getRisposteSottogruppo($id);
+        $out = $tmp = array();
+        foreach ($risposte as $risposta) {
+            $tmp[$risposta->getOrdine()][$risposta->getQuestion()->getOrdine()] = $risposta->getResponse();
+        }
+        foreach ($tmp as $i => $t) {
+            $out[$i] = implode(' | ', $t);
+        }
+        $_r->setResponse($out);
+        return $_r;
+    }
 
     /**
      * @param integer $id
@@ -990,6 +1008,21 @@ class Pratica {
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
             if ($question->getQuestion()->getId() == $id) {
+                $out[] = $question;
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
+    public function getRisposteSottogruppo($id) {
+        $out = array();
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getQuestion()->getSottogruppo() && $question->getQuestion()->getSottogruppo()->getId() == $id) {
                 $out[] = $question;
             }
         }

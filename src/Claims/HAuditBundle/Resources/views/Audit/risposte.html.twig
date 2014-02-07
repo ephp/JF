@@ -30,8 +30,18 @@
                     <thead>
                         <tr>
                             <th width="40">#</th>
+                            {% set name = '' %}
+                            {% set prev_name = '' %}
                             {% for question in entity.question %}
-                                <th style="min-width: 150px;">{{ question.question.domandaLocale(app.user.locale) }}</th>
+                                {% if question.sottogruppo %}
+                                    {% set name = question.sottogruppo.titoloLocale(app.user.locale) %}
+                                {% else %}
+                                    {% set name = question.question.domandaLocale(app.user.locale) %}
+                                {% endif %}
+                                {% if name != prev_name %}
+                                    <th style="min-width: 150px;">{{ name }}</th>
+                                    {% set prev_name = name %}
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     </thead>
@@ -39,13 +49,34 @@
                     {% for pratica in entity.pratiche %}
                         <tr>                            
                             <td>{{ loop.index }}</td>
+                            {% set name = '' %}
+                            {% set prev_name = '' %}
                             {% for question in entity.question %}
-                                {% set value = pratica.value(question.question.id) %}
-                                {% if value %}
-                                    {% include "ClaimsHAuditBundle:Audit:risposte/"~question.question.type~".html.twig" %}
+                                {% if question.sottogruppo %}
+                                    {% set name = question.sottogruppo.titoloLocale(app.user.locale) %}
                                 {% else %}
-                                    <td>-</td>
+                                    {% set name = question.question.domandaLocale(app.user.locale) %}
                                 {% endif %}
+                                {% if name != prev_name %}
+                                    {% if question.sottogruppo %}
+                                        {% set values = pratica.subgroupValues(question.sottogruppo.id) %}
+                                    {% else %}
+                                        {% set values = pratica.values(question.question) %}
+                                    {% endif %}
+                                    <td style="min-width: 150px;"{% if question.sottogruppo %} nowrap{% endif %}>
+                                        {% if values %}
+                                            {% for value in values.response %}
+                                                {{ value }}<br/>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td>-</td>
+                                        {% endif %}
+                                    </td>
+                                    {% set prev_name = name %}
+                                {% endif %}
+{#
+                                    {% include "ClaimsHAuditBundle:Audit:risposte/"~question.question.type~".html.twig" %}
+#}
                             {% endfor %}
                         </tr>
                     {% endfor %}

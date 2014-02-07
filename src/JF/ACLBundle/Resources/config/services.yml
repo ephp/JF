@@ -1,9 +1,9 @@
 services:
-    acl.locale_listener:
-        class: JF\ACLBundle\Listener\LocaleListener
-        arguments: ["@security.context", "%kernel.default_locale%"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelRequest }  
+#    acl.locale_listener:
+#        class: JF\ACLBundle\Listener\LocaleListener
+#        arguments: ["@security.context", "%kernel.default_locale%"]
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.controller, method: onKernelRequest }  
     acl.lock_listener_execute:
         class: JF\ACLBundle\Listener\Lock
         arguments: ["@router", "@service_container", "@security.context"]

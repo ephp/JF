@@ -38,14 +38,14 @@
                                 <select class="gruppo" ref="{{ entity.id }}">
                                     <option value=""></option>
                                     {% for gruppo in gruppi %}
-                                        <option value="{{ gruppo.id }}" {% if entity.gruppo and entity.gruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
+                                        <option value="{{ gruppo.id }}" {% if entity.gruppo and entity.gruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.user.locale) }}</option>
                                     {% endfor %}
                                 </select>
                                 <br/>
                                 <select class="sottogruppo" ref="{{ entity.id }}">
                                     <option value=""></option>
                                     {% for gruppo in sottogruppi %}
-                                        <option value="{{ gruppo.id }}" {% if entity.sottogruppo and entity.sottogruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
+                                        <option value="{{ gruppo.id }}" {% if entity.sottogruppo and entity.sottogruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.user.locale) }}</option>
                                     {% endfor %}
                                 </select>
                             </td>

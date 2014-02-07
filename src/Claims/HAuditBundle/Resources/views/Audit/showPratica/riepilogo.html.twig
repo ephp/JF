@@ -14,7 +14,7 @@
             <div class="span{{ span }}">
                 <div class="block">
                     <div class="audit no-margin">
-                        <h6>{{ domanda.domandaLocale(app.request.locale) }}</h6>
+                        <h6>{{ domanda.domandaLocale(app.user.locale) }}</h6>
                         {% set values = pratica.values(domanda) %}
                         <ul id="ul_{{ domanda.id }}">
                         {% for value in values.response %}

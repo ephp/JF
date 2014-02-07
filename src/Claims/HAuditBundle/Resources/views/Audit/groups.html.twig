@@ -1,6 +1,6 @@
 <div class="head red">      
     {% if group %}
-    <h2>{{ group.obj.titoloLocale(app.request.locale) }} - {{ group.obj.ordine }}/10</h2>
+    <h2>{{ group.obj.titoloLocale(app.user.locale) }} - {{ group.obj.ordine }}/10</h2>
     {% else %}
     <h2>Fine domande</h2>
     {% endif %}
@@ -13,7 +13,7 @@
                 {% include "ClaimsHAuditBundle:Audit:groups/"~question.question.type~".html.twig" with {'question': question} %}
             {% else %}
                 <fieldset>
-                    <legend>{{ question.obj.titoloLocale(app.request.locale) }}</legend>
+                    <legend>{{ question.obj.titoloLocale(app.user.locale) }}</legend>
                     <table class="table grid">
                         <thead>
                             <tr>

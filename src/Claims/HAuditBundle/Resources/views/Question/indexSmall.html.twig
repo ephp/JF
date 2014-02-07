@@ -35,8 +35,8 @@
                     {% for entity in entities %}
                         <tr>
                             <td>
-                                {% if entity.gruppo %}{{ entity.gruppo.titoloLocale(app.request.locale) }}{% else %}<i>No Group</i>{% endif %}<br/>
-                                {% if entity.sottogruppo %}{{ entity.sottogruppo.titoloLocale(app.request.locale) }}{% else %}-{% endif %}
+                                {% if entity.gruppo %}{{ entity.gruppo.titoloLocale(app.user.locale) }}{% else %}<i>No Group</i>{% endif %}<br/>
+                                {% if entity.sottogruppo %}{{ entity.sottogruppo.titoloLocale(app.user.locale) }}{% else %}-{% endif %}
                             </td>
                             <td>
                                 <input type="number" value="{{ entity.anteprima }}" class="anteprima" ref="{{ entity.id }}" style="width: 50px; text-align: right; margin:0px;">

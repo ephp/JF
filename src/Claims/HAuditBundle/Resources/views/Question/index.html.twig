@@ -23,8 +23,8 @@
                 <table class="table" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Group</th>
-                            <th>Order</th>
+                            <th>Group<br/>Subgroup</th>
+                            <th>Order<br/>Preview</th>
                             <th>Question<br/>Domanda</th>
                             <th>Example<br/>Esempio</th>
                             <th>Type</th>
@@ -41,19 +41,46 @@
                                         <option value="{{ gruppo.id }}" {% if entity.gruppo and entity.gruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
                                     {% endfor %}
                                 </select>
+                                <br/>
+                                <select class="sottogruppo" ref="{{ entity.id }}">
+                                    <option value=""></option>
+                                    {% for gruppo in sottogruppi %}
+                                        <option value="{{ gruppo.id }}" {% if entity.sottogruppo and entity.sottogruppo.id == gruppo.id %}selected="selected"{% endif %}>{{ gruppo.titoloLocale(app.request.locale) }}</option>
+                                    {% endfor %}
+                                </select>
                             </td>
-                            <td><input type="number" min="-1" value="{{ entity.ordine }}" class="ordine" ref="{{ entity.id }}" style="width: 50px; text-align: right;"></td>
+                            <td>
+                                <input type="number" value="{{ entity.ordine }}" class="ordine" ref="{{ entity.id }}" style="width: 50px; text-align: right; margin:0px;">
+                                <br/>
+                                <input type="number" value="{{ entity.anteprima }}" class="anteprima" ref="{{ entity.id }}" style="width: 50px; text-align: right; margin:0px;">
+                            </td>
                             <td>
                                 {% if entity.prePopulate %}<b title="pre-populate: {{ entity.prePopulate }}">{% endif %}
-                                    {% if entity.sottogruppo %}<i>({{ entity.sottogruppo.title }})</i> {% endif %}{{ entity.question }}<br/>
-                                    {% if entity.sottogruppo %}<i>({{ entity.sottogruppo.titolo }})</i> {% endif %}{{ entity.domanda }}
+                                    <input type="text" value="{{ entity.question }}" class="question" ref="{{ entity.id }}" style="width: 300px;"> EN
+                                    <br/>
+                                    <input type="text" value="{{ entity.domanda }}" class="domanda" ref="{{ entity.id }}" style="width: 300px;"> IT
                                 {% if entity.prePopulate %}</b>{% endif %}
                             </td>
-                            <td>{{ entity.example }}<br/>{{ entity.esempio }}</td>
+                            <td>
+                                <input type="text" value="{{ entity.example }}" class="example" ref="{{ entity.id }}" style="width: 300px;">
+                                <br/>
+                                <input type="text" value="{{ entity.esempio }}" class="esempio" ref="{{ entity.id }}" style="width: 300px;">
+                            </td>
                             <td>{{ entity.type }}{% if entity.options|length > 1 %} ({{ entity.options|length }}){% endif %}</td>
                             <td>
-                    {% include ":commons:edit.html.twig" with {'route': path('eph_domande-audit_edit', { 'id': entity.id })} %}
-                    {% include ":commons:delete.html.twig" with {'route': path('eph_domande-audit_delete', { 'id': entity.id }), 'question': 'You want to delete the question ' ~ entity.question } %}
+                                {% include ":commons:edit.html.twig" with {'route': path('eph_domande-audit_edit', { 'id': entity.id })} %}
+                                {% include ":commons:delete.html.twig" with {'route': path('eph_domande-audit_delete', { 'id': entity.id }), 'question': 'You want to delete the question ' ~ entity.question } %}
+                                <br/>
+                                {% if entity.ricerca %}
+                                    <a href="javascript:ricerca({{ entity.id }})" id="search_{{ entity.id }}" class="button green role">
+                                        <div class="icon"><span class="ico-search"></span></div>
+                                    </a>
+                                {% else %}
+                                    <a href="javascript:ricerca({{ entity.id }})" id="search_{{ entity.id }}" class="button red role">
+                                        <div class="icon"><span class="ico-search"></span></div>
+                                    </a>
+                                {% endif %}
+
                             </td>
                         </tr>
                     {% endfor %}

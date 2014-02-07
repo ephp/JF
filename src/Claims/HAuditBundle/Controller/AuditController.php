@@ -221,6 +221,10 @@ class AuditController extends Controller {
         if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
+        if(!$pratica->getGestore()) {
+            $pratica->setGestore($this->getUser());
+            $this->persist($pratica);
+        }
         foreach ($req as $qid => $value) {
             if (is_array($value)) {
                 $ris = $pratica->getRisposte($qid);

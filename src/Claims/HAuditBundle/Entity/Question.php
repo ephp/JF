@@ -95,6 +95,20 @@ class Question {
     private $ordine;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="anteprima", type="integer", nullable=true)
+     */
+    private $anteprima;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ricerca", type="boolean", nullable=true)
+     */
+    private $ricerca;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="options", type="array")
@@ -297,6 +311,22 @@ class Question {
     public function setOrdine($ordine) {
         $this->ordine = $ordine;
         return $this;
+    }
+
+    public function getAnteprima() {
+        return $this->anteprima;
+    }
+
+    public function getRicerca() {
+        return $this->ricerca;
+    }
+
+    public function setAnteprima($anteprima) {
+        $this->anteprima = $anteprima;
+    }
+
+    public function setRicerca($ricerca) {
+        $this->ricerca = $ricerca;
     }
 
     public function getPrePopulate() {

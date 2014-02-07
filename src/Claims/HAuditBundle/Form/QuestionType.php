@@ -15,13 +15,13 @@ class QuestionType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 ->add('gruppo', null, array(
-                    'label' => 'Gruppo',
+                    'label' => 'Group',
                 ))
                 ->add('sottogruppo', null, array(
-                    'label' => 'Sottogruppo',
+                    'label' => 'Subgroup',
                 ))
                 ->add('ordine', null, array(
-                    'label' => 'Ordine',
+                    'label' => 'Orger',
                 ))
                 ->add('question', null, array(
                     'label' => 'Question',
@@ -36,6 +36,14 @@ class QuestionType extends AbstractType {
                 ->add('esempio', null, array(
                     'required' => false,
                     'label' => 'Note domanda',
+                ))
+                ->add('anteprima', null, array(
+                    'required' => false,
+                    'label' => 'Preview',
+                ))
+                ->add('ricerca', null, array(
+                    'required' => false,
+                    'label' => 'Searchable',
                 ))
                 ->add('type', 'choice', array(
                     'choices' => array(

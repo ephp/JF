@@ -30,7 +30,6 @@ class XlsController extends Controller {
         }
 
         $excelService = $this->get('phpexcel');
-//        $excelService = $this->get('xls.service_xls5');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
 
         $excel = $excelService->createPHPExcelObject();
@@ -57,7 +56,7 @@ class XlsController extends Controller {
         $excel->setActiveSheetIndex(0);
 
         //create the response
-                // create the writer
+        // create the writer
         $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
         // create the response
         $response = $this->get('phpexcel')->createStreamedResponse($writer);

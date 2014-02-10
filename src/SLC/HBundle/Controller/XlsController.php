@@ -45,11 +45,10 @@ class XlsController extends Controller {
      * @Route("-audit-senza-gestore/{vista}",   name="claims_audit_hospital_senza_gestore_xls",   defaults={"vista": 3, "mode": "senza_gestore"},   options={"ACL": {"in_role": {"C_ADMIN"}}})
      */
     public function xlsAction($mode, $vista) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -88,8 +87,10 @@ class XlsController extends Controller {
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-        //create the response
-        $response = $excelService->getResponse();
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . (str_replace(' ', '_', $this->vistaTitle($vista)) . date('-d-m-Y') ) . '.xls;');
@@ -120,11 +121,10 @@ class XlsController extends Controller {
      * @Template()
      */
     public function stampaRicercaAction($mode, $vista) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -156,8 +156,10 @@ class XlsController extends Controller {
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-        //create the response
-        $response = $excelService->getResponse();
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=Ricerca_' . (str_replace(' ', '_', $this->vistaTitle($vista)) . date('-d-m-Y') ) . '.xls;');
@@ -172,11 +174,10 @@ class XlsController extends Controller {
     /**
      */
     public function xlsMonthlyAction($mode, $monthly_report) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -201,8 +202,10 @@ class XlsController extends Controller {
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-        //create the response
-        $response = $excelService->getResponse();
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . ($monthly_report ? "Monthly-report" . date('-m-Y') : "Riepilogo" . date('-d-m-Y') ) . '.xls;');
@@ -220,11 +223,10 @@ class XlsController extends Controller {
      * @Route("-stati-personale", name="claims_stati_hospital_personale_all_xls", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function allXlsStatiAction($mode) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -277,11 +279,10 @@ class XlsController extends Controller {
      * @Route("-stati-personale/{stato}", name="claims_stati_hospital_personale_xls", defaults={"mode": "personale", "stato": "default"}, options={"ACL": {"in_role": {"C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function xlsStatiAction($mode, $stato) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -308,9 +309,10 @@ class XlsController extends Controller {
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-
-        //create the response
-        $response = $excelService->getResponse();
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . "Stato-pratica-" . \Doctrine\Common\Util\Inflector::camelize($stato->getStato()) . date('-d-m-Y') . '.xls;');
@@ -331,11 +333,10 @@ class XlsController extends Controller {
      * @Route("-slc/bookeeping",      name="slc_hospital_bookeeping_xls", defaults={"mode": "bookeeping"}, options={"ACL": {"in_role": {"R_SUPER"}}})
      */
     public function xlsAnalisiAction($mode) {
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
-//        \Ephp\UtilityBundle\Utility\Debug::info($excelService->excelObj);
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -361,8 +362,10 @@ class XlsController extends Controller {
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
-        //create the response
-        $response = $excelService->getResponse();
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . "Analisi-{$mode}-" . date('-d-m-Y') . '.xls;');

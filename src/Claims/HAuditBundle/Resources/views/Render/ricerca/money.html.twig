@@ -1,0 +1,13 @@
+<div>
+    <label>{{ question.domandaLocale(app.user.locale) }}</label>
+    <table class="no-margin no-padding">
+        <tr>
+            <td>
+                <input type="text" value="{% if ricerca[question.id] is defined %}{{ ricerca[question.id]['from'] }}{% endif %}" class="currency eur" name="ricerca[{{ question.id }}][from]" placeholder="from" />
+            </td>
+            <td>
+                <input type="text" value="{% if ricerca[question.id] is defined %}{{ ricerca[question.id]['to'] }}{% endif %}" class="currency eur" name="ricerca[{{ question.id }}][to]" placeholder="to" />
+            </td>
+        </tr>
+    </table>
+</div>

@@ -18,10 +18,12 @@
             <div class="data-fluid">
                 <a href="{{ path('claims-h-audit_show', {'id': entity.id}) }}"><span class="label label-green" style="margin-bottom: 3px;">Riassunto</span></a>
                 <a href="{{ path('claims-h-audit_risposte', {'id': entity.id}) }}"><span class="label label-success" style="margin-bottom: 3px;">Risposte</span></a>
+                <a href="#fb_ricerca" class="fancybox"><span class="label label-info ico-search" style="margin-bottom: 3px;">&nbsp;Ricerca</span></a>
             </div>
         </div>
     </div>
 </div>
+{% render(controller("ClaimsHAuditBundle:Render:ricerca", {'id': entity.id, 'route': route, 'ricerca': ricerca})) %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
@@ -46,7 +48,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for pratica in entity.pratiche %}
+                    {% for pratica in pratiche %}
                         <tr>                            
                             <td>{{ loop.index }}</td>
                             {% set name = '' %}

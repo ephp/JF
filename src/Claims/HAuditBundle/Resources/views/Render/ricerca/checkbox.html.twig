@@ -1,0 +1,9 @@
+<div>
+    <label>{{ question.domandaLocale(app.user.locale) }}</label>
+    <select name="ricerca[{{ question.id }}]">
+        <option value="" ></option>
+        {% for risposta in question.options %}
+            <option value="{{ risposta }}" {% if ricerca[question.id] is defined and ricerca[question.id] == risposta%}selected="selected"{% endif %}>{{ risposta }}</option>
+        {% endfor %}
+    </select>
+</div>

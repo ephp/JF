@@ -377,7 +377,7 @@ div.tagsinput div input{line-height: 20px; height: 20px; font-size: 11px; margin
     .row-form{padding: 10px 15px; vertical-align: baseline; }
         .row-form > [class^="span"]{color: #333; line-height: 30px;}        
         
-        input[type="text"], input[type="email"], input[type="url"], input[type="password"], textarea, select{ 
+        input[type="text"], input[type="number"], input[type="email"], input[type="url"], input[type="password"], textarea, select{ 
                             border-color: #CCC; width: 100%; font-size: 12px; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; 
                             display: inline-block; -moz-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px; color: #4C4C4C; height: 30px; margin-bottom: 0px;
                             -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;}

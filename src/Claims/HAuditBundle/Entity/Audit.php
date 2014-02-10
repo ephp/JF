@@ -234,9 +234,9 @@ class Audit {
      */
     public function getPreviewQuestion() {
         $out = array();
-        foreach($this->question as $question) {
+        foreach ($this->question as $question) {
             /* @var $question AuditQuestion */
-            if($question->getQuestion()->getAnteprima() > 0) {
+            if ($question->getQuestion()->getAnteprima() > 0) {
                 $out[$question->getQuestion()->getAnteprima()] = $question->getQuestion();
             }
         }
@@ -274,6 +274,27 @@ class Audit {
             }
         }
         return $out;
+    }
+
+    public function getSearchQuestion() {
+        $out = array();
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getQuestion()->getRicerca()) {
+                $out[] = $question->getQuestion();
+            }
+        }
+        return $out;
+    }
+
+    public function getQuestionFromId($id) {
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getQuestion()->getId() == $id) {
+                return $question->getQuestion();
+            }
+        }
+        return false;
     }
 
 }

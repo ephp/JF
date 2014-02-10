@@ -12,308 +12,68 @@ use Doctrine\ORM\EntityRepository;
  */
 class PraticaRepository extends EntityRepository {
 
-    public function filtra($filtri = array()) {
-        if (!isset($filtri['in'])) {
-            $filtri['in'] = array();
-        }
-        if (!isset($filtri['out'])) {
-            $filtri['out'] = array();
-        }
-        if (!isset($filtri['lt'])) {
-            $filtri['lt'] = array();
-        }
-        if (!isset($filtri['gt'])) {
-            $filtri['gt'] = array();
-        }
-        if (!isset($filtri['bt'])) {
-            $filtri['bt'] = array();
-        }
-        if (!isset($filtri['sorting'])) {
-            $filtri['sorting'] = 'anno';
-        }
-        $q = $this->createQueryBuilder('p');
-        if (!isset($filtri['ricerca']) || count($filtri['ricerca']) == 0) {
-            foreach ($filtri['in'] as $field => $value) {
-                if (is_null($value)) {
-                    $q->andWhere("p.{$field} IS NULL");
-                } else {
-                    switch ($field) {
-                        case 'recuperi':
-                            $q->andWhere("p.recupero = :true OR p.gestore = :gestore")
-                                    ->setParameter('true', true)
-                                    ->setParameter('gestore', $value);
+    public function ricerca(Audit $audit, $filtri = array()) {
+        $q = $this->createQueryBuilder('p')->where('p.audit = :audit')->setParameter('audit', $audit->getId());
+        if (!count($filtri) == 0) {
+            $sql_select = ' SELECT p.id ';
+            $sql_from = '   FROM claims_h_audit_pratiche p LEFT JOIN claims_h_audit_pratica_question r ON r.pratica_id = p.id';
+            $sql_where = '  WHERE p.audit_id = ' . $audit->getId() . ' ';
+            $_ids = array();
+            $ids = false;
+            $q->leftJoin('p.question', 'q');
+            foreach ($filtri as $id => $value) {
+                if ($value && $value != array('from' => '', 'to' => '')) {
+                    $sql_and = '   AND ';
+                    $sql_params = array();
+                    $question = $this->getEntityManager()->getRepository('ClaimsHAuditBundle:Question')->find($id);
+                    /* @var $question Question */
+                    switch ($question->getType()) {
+                        case 'checkbox':
+                        case 'select':
+                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response = :r' . $question->getId();
+                            $sql_params['q' . $question->getId()] = $question->getId();
+                            $sql_params['r' . $question->getId()] = $value;
                             break;
-                        case 'recuperati':
-                            $q->andWhere("p.datiRecupero IS NOT NULL OR p.recuperoResponsabile IS NOT NULL OR p.recuperoSollecitoAsl IS NOT NULL OR p.recuperoCopiaPolizza IS NOT NULL OR p.recuperoEmailLiquidatore IS NOT NULL OR p.recuperoQuietanze IS NOT NULL OR p.recuperoOffertaNostra IS NOT NULL OR p.recuperoOffertaLoro IS NOT NULL OR (p.recuperoAzioneDiRecupero IS NOT NULL AND p.recuperoAzioneDiRecupero != :empty)")
-                                    ->andWhere("p.recupero = :false OR p.recupero IS NULL")
-                                    ->setParameter('empty', '')
-                                    ->setParameter('false', false);
+                        case 'date':
+                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
+                            $sql_params['q' . $question->getId()] = $question->getId();
+                            $sql_params['r' . $question->getId()] = '%' . $value;
                             break;
-                        case 'q':
-                            /* @var $value \DateTime */
-                            $q->leftJoin('p.eventi', 'e')
-                                    ->andWhere("
-                                        p.claimant LIKE :{$field}
-                                     OR p.note LIKE :{$field}
-                                     OR p.datiRecupero LIKE :{$field}
-                                     OR e.titolo LIKE :{$field}
-                                     OR e.note LIKE :{$field}")
-                                    ->setParameter($field, "%{$value}%");
+                        case 'text':
+                        case 'textarea':
+                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
+                            $sql_params['q' . $question->getId()] = $question->getId();
+                            $sql_params['r' . $question->getId()] = '%' . $value . '%';
                             break;
-                        case 'evento':
-                            /* @var $value \DateTime */
-                            $da = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));
-                            $a = \DateTime::createFromFormat('d-m-Y', $value->format('d-m-Y'));
-                            $da->setTime(0, 0, 0);
-                            $a->setTime(23, 59, 59);
-                            $q->leftJoin('p.eventi', 'e');
-                            $q->andWhere("e.data_ora BETWEEN :da AND :a")
-                                    ->setParameter('da', $da)
-                                    ->setParameter('a', $a);
+                        case 'money':
+                        case 'number':
+                        case 'percent':
+                        case 'fx':
+                            $sql_and .= '(r.question_id = :q' . $question->getId() . ' AND CAST(r.response AS UNSIGNED) BETWEEN :rf' . $question->getId() . ' AND :rt' . $question->getId() . ' )';
+                            $sql_params['q' . $question->getId()] = $question->getId();
+                            $sql_params['rf' . $question->getId()] = isset($value['from']) && $value['from'] != '' ? $value['from'] : -999999999;
+                            $sql_params['rt' . $question->getId()] = isset($value['to']) && $value['to'] != '' ? $value['to'] : 999999999;
                             break;
-                        case 'sistema':
-                            $q->leftJoin('p.ospedale', 'h');
-                            $q->leftJoin('h.sistema', 's');
-                            $q->andWhere("s.nome = :sistema")
-                                    ->setParameter('sistema', $value);
-                            break;
-                        case 'evento_recupero':
-                            $q->leftJoin('e.tipo', 't');
-                            $q->andWhere("p.gestore = :gestore OR t.sigla = :sigla")
-                                    ->setParameter('gestore', $value)
-                                    ->setParameter('sigla', 'RCM');
-                            break;
-                        case 'claimant':
-                            $q->andWhere("p.{$field} LIKE :{$field}")
-                                    ->setParameter($field, "%{$value}%");
-                            break;
-                        case 'dasc':
-                        case 'dol':
-                        case 'don':
-                        case 'medical_examiner':
-                        case 'legal_team':
-                            $q->andWhere("p.{$field} = :{$field}")
-                                    ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
-                            break;
-                        default:
-                            if (is_array($value)) {
-                                if (count($value) == 0) {
-                                    $value[] = 0;
-                                }
-                                $q->andWhere($q->expr()->in("p.{$field}", $value));
-                            } else {
-                                $q->andWhere("p.{$field} = :{$field}")
-                                        ->setParameter($field, $value);
-                            }
-                            break;
+                    }
+                    $sql = $sql_select . $sql_from . $sql_where . $sql_and;
+                    $connection = $this->getEntityManager()->getConnection();
+                    $rows = $connection->executeQuery($sql, $sql_params);
+                    $_ids[$question->getId()] = array();
+                    foreach ($rows as $row) {
+                        $_ids[$question->getId()][] = $row['id'];
                     }
                 }
             }
-            foreach ($filtri['out'] as $field => $value) {
-                if (is_null($value)) {
-                    $q->andWhere("p.{$field} IS NOT NULL");
+            foreach ($_ids as $_id) {
+                if (!$ids) {
+                    $ids = $_id;
                 } else {
-                    switch ($field) {
-                        case 'claimant':
-                            $q->andWhere("p.{$field} NOT LIKE :{$field}")
-                                    ->setParameter($field, "%{$value}%");
-                            break;
-                        case 'dasc':
-                        case 'dol':
-                        case 'don':
-                        case 'medical_examiner':
-                        case 'legal_team':
-                            $q->andWhere("p.{$field} != :{$field}")
-                                    ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
-                            break;
-                        default:
-                            if (is_array($value)) {
-                                if (count($value) == 0) {
-                                    $value[] = 0;
-                                }
-                                $q->andWhere($q->expr()->notIn("p.{$field}", $value));
-                            } else {
-                                $q->andWhere("p.{$field} != :{$field}")
-                                        ->setParameter($field, $value);
-                            }
-                            break;
-                    }
+                    $ids = array_intersect($ids, $_id);
                 }
             }
-            foreach ($filtri['gt'] as $field => $value) {
-                switch ($field) {
-                    case 'dasc':
-                    case 'dol':
-                    case 'don':
-                    case 'medical_examiner':
-                    case 'legal_team':
-                        $q->andWhere("p.{$field} >= :{$field}")
-                                ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
-                        break;
-                    default:
-                        $q->andWhere("p.{$field} >= :{$field}")
-                                ->setParameter($field, $value);
-                        break;
-                }
-            }
-            foreach ($filtri['lt'] as $field => $value) {
-                switch ($field) {
-                    case 'dasc':
-                    case 'dol':
-                    case 'don':
-                    case 'medical_examiner':
-                    case 'legal_team':
-                        $q->andWhere("p.{$field} <= :{$field}")
-                                ->setParameter($field, \DateTime::createFromFormat('d-m-Y', $value));
-                        break;
-                    default:
-                        $q->andWhere("p.{$field} <= :{$field}")
-                                ->setParameter($field, $value);
-                        break;
-                }
-            }
-            foreach ($filtri['bt'] as $field => $value) {
-                switch ($field) {
-                    case 'dasc':
-                    case 'dol':
-                    case 'don':
-                    case 'medical_examiner':
-                    case 'legal_team':
-                        $q->andWhere("p.{$field} BETWEEN :{$field}_from AND {$field}_to")
-                                ->setParameter($field . '_from', \DateTime::createFromFormat('d-m-Y', $value[0]))
-                                ->setParameter($field . '_to', \DateTime::createFromFormat('d-m-Y', $value[1]));
-                        break;
-                    default:
-                        $q->andWhere("p.{$field} BETWEEN :{$field}_from AND {$field}_to")
-                                ->setParameter($field . '_from', $value[0])
-                                ->setParameter($field . '_to', $value[1]);
-                        break;
-                }
-            }
-        } else {
-            foreach ($filtri['in'] as $field => $value) {
-                switch ($field) {
-                    case 'cliente':
-                    case 'inAudit':
-                    case 'inMonthlyReport':
-                        if (is_array($value)) {
-                            if (count($value) == 0) {
-                                $value[] = 0;
-                            }
-                            $q->andWhere($q->expr()->in("p.{$field}", $value));
-                        } else {
-                            $q->andWhere("p.{$field} = :{$field}")
-                                    ->setParameter($field, $value);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            foreach ($filtri['ricerca'] as $field => $value) {
-                if ($value) {
-                    switch ($field) {
-                        case 'submit':
-                        case '_token':
-                            break;
-                        case 'claimant':
-                        case 'codice':
-                        case 'status':
-                            $q->andWhere("p.{$field} LIKE :{$field}")
-                                    ->setParameter($field, "%{$value}%");
-                            break;
-                        case 'amountReserved':
-                            if ($value == 'N.P.') {
-                                $q->andWhere("p.amountReserved < :{$field}")
-                                        ->setParameter($field, 0);
-                            } else {
-                                $q->andWhere("p.amountReserved >= :{$field}")
-                                        ->setParameter($field, 0);
-                            }
-                            break;
-                        case 'court':
-                            if ($value == 'Sì') {
-                                $q->andWhere("p.court != :{$field}")
-                                        ->setParameter($field, '');
-                            } else {
-                                $q->andWhere("p.court = :{$field}")
-                                        ->setParameter($field, '');
-                            }
-                            break;
-                        case 'aperti':
-                            $priorita = $this->getEntityManager()->getRepository('ClaimsCoreBundle:Priorita')->findOneBy(array('priorita' => 'Chiuso'));
-                            if ($value == 'Sì') {
-                                $q->andWhere("p.priorita != :{$field}")
-                                        ->setParameter($field, $priorita->getId());
-                            } else {
-                                $q->andWhere("p.priorita = :{$field}")
-                                        ->setParameter($field, $priorita->getId());
-                            }
-                            break;
-                        default:
-                            $q->andWhere("p.{$field} = :{$field}")
-                                    ->setParameter($field, $value);
-                            break;
-                    }
-                }
-            }
+            $q->andWhere($q->expr()->in('p.id', $ids));
         }
-        switch ($filtri['sorting']) {
-            case 'anno':
-                $q->leftJoin('p.ospedale', 'o');
-                $q->orderBy('p.anno', 'asc');
-                $q->addOrderBy('o.sigla', 'asc');
-                break;
-            case 'ianno':
-                $q->leftJoin('p.ospedale', 'o');
-                $q->orderBy('p.anno', 'desc');
-                $q->addOrderBy('o.sigla', 'desc');
-                break;
-            case 'soi':
-                $q->orderBy('p.soi', 'asc');
-                $q->addOrderBy('p.amountReserved', 'desc');
-                break;
-            case 'isoi':
-                $q->orderBy('p.soi', 'desc');
-                $q->addOrderBy('p.amountReserved', 'desc');
-                break;
-            case 'dasc':
-                $q->orderBy('p.dasc', 'asc');
-                break;
-            case 'idasc':
-                $q->orderBy('p.dasc', 'desc');
-                break;
-            case 'claimant':
-                $q->orderBy('p.claimant', 'asc');
-                break;
-            case 'iclaimant':
-                $q->orderBy('p.claimant', 'desc');
-                break;
-            case 'attivita':
-                $q->leftJoin('p.eventi', 'e');
-                $q->orderBy('e.data_ora', 'asc');
-                break;
-            case 'iattivita':
-                $q->leftJoin('p.eventi', 'e');
-                $q->orderBy('e.data_ora', 'desc');
-                break;
-            case 'importazione':
-                $q->orderBy('p.dataImport', 'desc');
-                $q->addOrderBy('p.id', 'desc');
-                break;
-            case 'iimportazione':
-                $q->orderBy('p.dataImport', 'asc');
-                $q->addOrderBy('p.id', 'desc');
-                break;
-            default:
-                if ($filtri['sorting']{0} == '-') {
-                    $q->orderBy('p.' . substr($filtri['sorting'], 1), 'desc');
-                } else {
-                    $q->orderBy('p.' . $filtri['sorting'], 'asc');
-                }
-                break;
-        }
-        return $q;
+        return $q->getQuery()->execute();
     }
 
     public function cancellaAudit(Audit $audit) {
@@ -330,4 +90,3 @@ DELETE FROM claims_h_audit_pratiche
     }
 
 }
-

@@ -1,0 +1,56 @@
+{% if ricerca|length > 0 %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block">
+                <b>Research Criteria:</b>
+                {% for campo, valore in ricerca %}
+                    {% if valore %}
+                        {% if valore %}
+                            {% if valore is iterable %}
+                                {% if valore.from or valore.to %}
+                                    <span class="label label-info">{{ entity.questionFromId(campo).domandaLocale(app.user.locale) }}: {% if valore.from %}from {{ valore.from }}{% endif %}{% if valore.to %} to {{ valore.to }}{% endif %}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="label label-info">{{ entity.questionFromId(campo).domandaLocale(app.user.locale) }}: {{ valore }}</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+<div style="display: none" id="fb_ricerca">
+    <form action="{{ route }}" method="get">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-search"></span>
+            </div>
+            <h1>Audit Research</h1>
+        </div>   
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="block">
+                    <div class="data-fluid">
+                        {% set questions = entity.searchQuestion %}
+                        {% set n = ((questions|length) / 2)|number_format(0) %}
+                        {% for question in questions %}
+                            {% if loop.index0 == n %}
+                    </div>
+                </div>
+            </div>
+            <div class="span6">
+                <div class="block">
+                    <div class="data-fluid">
+                            {% endif %}
+                            {% include 'ClaimsHAuditBundle:Render:ricerca/'~question.type~'.html.twig' %}
+                        {% endfor %}
+                        <div style="margin-top: 26px">
+                            <button type="submit" class="btn blue">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

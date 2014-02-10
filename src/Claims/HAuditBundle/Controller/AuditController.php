@@ -116,6 +116,8 @@ class AuditController extends Controller {
 
         return array(
             'entity' => $entity,
+            'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
+            'ricerca' => $this->getParam('ricerca', array()),
         );
     }
 
@@ -141,7 +143,6 @@ class AuditController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-risposte/{id}", name="claims-h-audit_risposte")
-     * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()
      */
@@ -149,9 +150,14 @@ class AuditController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
+        
+        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()));
 
         return array(
             'entity' => $entity,
+            'pratiche' => $pratiche,
+            'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
+            'ricerca' => $this->getParam('ricerca', array()),
         );
     }
 

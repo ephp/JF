@@ -1,0 +1,4 @@
+<div>
+    <label>{{ question.domandaLocale(app.user.locale) }}</label>
+    <input type="text" value="{% if ricerca[question.id] is defined %}{{ ricerca[question.id] }}{% endif %}" name="ricerca[{{ question.id }}]" />
+</div>

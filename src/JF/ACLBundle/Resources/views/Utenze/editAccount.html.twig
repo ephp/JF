@@ -17,13 +17,13 @@
                 <div class="data-fluid">
                     {{ form_rest(edit_form) }}
                 </div>
+                <a href="{{ path('index') }}">
+                    <span class="label label-inverse">Torna indietro</span>
+                </a>
             </div>
         </div>
     </div>
 {{ form_end(edit_form) }}
-<a href="{{ path('index') }}">
-    <span class="label label-inverse">Torna indietro</span>
-</a>
 <script type="text/javascript">
     $('label.required').addClass('label').closest('.row-form').children('.span9').addClass('subform').hide();
     $('label.required').click(function(){

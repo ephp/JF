@@ -15,16 +15,6 @@
     <h1>Utenze <small>{{ entities|length }}/{{ app.user.get('jf.acl-utenze.max') }}</small></h1>
 </div>
 
-{% if app.user.get('jf.acl-utenze.max') > entities|length %}
-    <a href="{{ path('utenze_new') }}">
-        <span class="label label-important">Nuova utenza</span>
-    </a>
-{% else %}
-    Per creare nuove utenze è necessario un upgrade di licenza!
-    <a href="{{ path('catalogo') }}">
-        <span class="label label-success"> Vai al catalogo</span>
-    </a>
-{% endif %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
@@ -36,6 +26,16 @@
                 </ul>
             </div>                
             <div class="data-fluid">
+                {% if app.user.get('jf.acl-utenze.max') > entities|length %}
+                    <a href="{{ path('utenze_new') }}">
+                        <span class="label label-important">Nuova utenza</span>
+                    </a>
+                {% else %}
+                    Per creare nuove utenze è necessario un upgrade di licenza!
+                    <a href="{{ path('catalogo') }}">
+                        <span class="label label-success"> Vai al catalogo</span>
+                    </a>
+                {% endif %}
                 <table class="table" cellpadding="0" cellspacing="0" width="100%">
                     <thead>
                         <tr>

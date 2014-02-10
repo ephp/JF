@@ -33,12 +33,12 @@
                     {{ form_row(edit_form.email) }}
                     {{ form_row(edit_form.lastname) }}
                 </div>
+                {{ form_rest(edit_form) }}
+                <a href="{{ path('utenze') }}">
+                    <span class="label label-inverse">Torna indietro</span>
+                </a>
             </div>
         </div>
     </div>
-    {{ form_rest(edit_form) }}
 {{ form_end(edit_form) }}
-<a href="{{ path('utenze') }}">
-    <span class="label label-inverse">Torna indietro</span>
-</a>
 {% endblock %}

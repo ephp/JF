@@ -126,4 +126,12 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
         
     }
 
+    public function setSync(ContainerBuilder $container) {
+        $sync = $container->getParameter('jf.sync');
+
+        $this->newSync($sync, '\Claims\HAuditBundle\Controller\SyncController', 'fetchAction', 'pushAction');
+
+        $container->setParameter('jf.sync', $sync);
+    }
+
 }

@@ -134,5 +134,12 @@ class JFACLExtension extends Extension implements IExtension {
 
         $container->setParameter('jf.widgets', $widgets);
     }
+    
+    public function setSync(ContainerBuilder $container) {
+        $sync = $container->getParameter('jf.sync');
 
+        $this->newSync($sync, '\JF\ACLBundle\Controller\SyncController', 'fetchAction', 'pushAction');
+
+        $container->setParameter('jf.sync', $sync);
+    }
 }

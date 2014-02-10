@@ -81,4 +81,8 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
 
+    public function setSync(ContainerBuilder $container) {
+        
+    }
+
 }

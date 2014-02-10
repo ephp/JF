@@ -74,4 +74,8 @@ class SLCHExtension extends Extension implements IExtension {
         
     }
 
+    public function setSync(ContainerBuilder $container) {
+        
+    }
+
 }

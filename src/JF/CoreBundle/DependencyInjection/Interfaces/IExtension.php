@@ -13,4 +13,6 @@ interface IExtension {
     public function setRoles(\Symfony\Component\DependencyInjection\ContainerBuilder $container);
 
     public function setInstall(\Symfony\Component\DependencyInjection\ContainerBuilder $container);
+
+    public function setSync(\Symfony\Component\DependencyInjection\ContainerBuilder $container);
 }

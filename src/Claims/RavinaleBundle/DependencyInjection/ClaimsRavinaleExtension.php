@@ -77,4 +77,8 @@ class ClaimsRavinaleExtension extends Extension implements IExtension {
         
     }
 
+    public function setSync(ContainerBuilder $container) {
+        
+    }
+
 }

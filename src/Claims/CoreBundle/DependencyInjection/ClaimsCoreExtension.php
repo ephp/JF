@@ -135,5 +135,9 @@ class ClaimsCoreExtension extends Extension implements IExtension, ITipiEventi {
 
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
+    
+    public function setSync(ContainerBuilder $container) {
+        
+    }
 
 }

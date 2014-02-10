@@ -29,10 +29,11 @@ class XlsController extends Controller {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
 
-        $excelService = $this->get('xls.service_xls5');
+        $excelService = $this->get('phpexcel');
+//        $excelService = $this->get('xls.service_xls5');
         /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
 
-        $excel = $excelService->excelObj;
+        $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
 
         $excel->getProperties()->setCreator($this->getUser()->getCliente()->getNome())
@@ -47,7 +48,7 @@ class XlsController extends Controller {
 
         $sheet = $excel->setActiveSheetIndex(0);
         /* @var $sheet \PHPExcel_Worksheet */
-        
+
         $excel->getActiveSheet()->setTitle('Hospital Audit');
 
         $this->fillSheet($sheet, $colonne, $entity->getPratiche());
@@ -56,7 +57,10 @@ class XlsController extends Controller {
         $excel->setActiveSheetIndex(0);
 
         //create the response
-        $response = $excelService->getResponse();
+                // create the writer
+        $writer = $this->get('phpexcel')->createWriter($excel, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . (str_replace(' ', '_', 'Hospital Audit ' . $entity->getLuogo()) . date('-d-m-Y') ) . '.xls;');
@@ -79,73 +83,55 @@ class XlsController extends Controller {
             /* @var $entity \Claims\HAuditBundle\Entity\Pratica */
             foreach ($colonne as $colonna => $titolo) {
                 $valore = '';
-                switch ($titolo['nome']) {
-                    case 'Number':
-                        $valore = $entity->getCodice();
-                        break;
-                    case 'Claimant':
-                        $valore = $entity->getClaimant();
-                        break;
-                    case 'Group':
-                        $valore = $entity->getGruppo();
-                        break;
-                    //TODO DA QUI
-                    default:
-                        $q = $entity->getValue($titolo['id']);
-                        if ($q) {
-                            if ($q->getQuestion()->getType() == 'checkbox') {
-                                $valore = implode(', ', $q->getResponses());
-                            } else {
-                                $valore = $q->getResponse();
-                            }
-                        } else {
-                            $valore = '';
-                        }
-                        break;
+                if ($titolo['type'] == 'sg') {
+                    $q = $entity->getSubgroupValues($titolo['obj']->getId());
+                } else {
+                    $q = $entity->getValues($titolo['obj']);
+                }
+                if ($q) {
+                    $valore = implode("
+", $q->getResponse());
+                } else {
+                    $valore = '';
                 }
                 $cell = $sheet->setCellValue($colonna . $riga, $valore, true);
                 /* @var $cell \PHPExcel_Cell */
-                switch ($titolo['nome']) {
-                    case 'Claimant':
-                    case 'Group':
-                    case 'Number':
-                        $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
-                        break;
-                    default:
-                        $q = $entity->getValue($titolo['id']);
-                        if ($q) {
-                            switch ($q->getQuestion()->getType()) {
-                                case 'money':
-                                    $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
-                                    $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
-                                    break;
-                                case 'text':
-                                case 'textarea':
-                                case 'checkbox':
-                                    $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => true));
-                                    break;
-                                case 'select':
-                                    $sheet->getDataValidation($colonna . $riga)->setShowDropDown()
-                                            ->setType(\PHPExcel_Cell_DataValidation::TYPE_LIST)
-                                            ->setErrorStyle(\PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
-                                            ->setAllowBlank(true)
-                                            ->setShowInputMessage(true)
-                                            ->setShowErrorMessage(true)
-                                            ->setShowDropDown(true)
-                                            ->setErrorTitle('Input error')
-                                            ->setError('Value is not in list.')
-                                            ->setPromptTitle('Pick from list')
-                                            ->setPrompt('Please pick a value from the drop-down list.')
-                                            ->setFormula1('\'Hospital Audit\'!$C$1:$C$10');
-                                    $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
-                                    break;
+                if ($valore) {
+                    switch ($titolo['type']) {
+                        case 'money':
+                            $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
+                            $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                            break;
+                        case 'percent':
+                            $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('##0_-[$ %]');
+                            $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                            break;
+                        case 'sg':
+                        case 'text':
+                        case 'textarea':
+                        case 'checkbox':
+                            $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => true));
+                            break;
+                        case 'select':
+                            $sheet->getDataValidation($colonna . $riga)->setShowDropDown()
+                                    ->setType(\PHPExcel_Cell_DataValidation::TYPE_LIST)
+                                    ->setErrorStyle(\PHPExcel_Cell_DataValidation::STYLE_INFORMATION)
+                                    ->setAllowBlank(true)
+                                    ->setShowInputMessage(true)
+                                    ->setShowErrorMessage(true)
+                                    ->setShowDropDown(true)
+                                    ->setErrorTitle('Input error')
+                                    ->setError('Value is not in list.')
+                                    ->setPromptTitle('Pick from list')
+                                    ->setPrompt('Please pick a value from the drop-down list.')
+                                    ->setFormula1('\'Hospital Audit\'!$C$1:$C$10');
+                            $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                            break;
 
-                                default:
-                                    $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
-                                    break;
-                            }
-                        }
-                        break;
+                        default:
+                            $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
+                            break;
+                    }
                 }
             }
             $riga++;
@@ -169,30 +155,42 @@ class XlsController extends Controller {
         $nextprefix = ord('A');
         $colonna = ord('A');
         $colonne = array();
-        $colonne[$prefix . chr($colonna++)] = array('nome' => 'Group', 'larghezza' => 30);
-        $colonne[$prefix . chr($colonna++)] = array('nome' => 'Number', 'larghezza' => 20);
-        $colonne[$prefix . chr($colonna++)] = array('nome' => 'Claimant', 'larghezza' => 30);
+        $name = '';
+        $prev_name = '';
         foreach ($audit->getQuestion() as $question) {
             /* @var $question \Claims\HAuditBundle\Entity\AuditQuestion */
-            $q = $question->getQuestion();
-            switch ($q->getType()) {
-                case 'textarea':
-                    $colonne[$prefix . chr($colonna++)] = array('nome' => $q->getQuestion(), 'larghezza' => 50, 'id' => $q->getId());
-                    break;
-                case 'number':
-                case 'date':
-                    $colonne[$prefix . chr($colonna++)] = array('nome' => $q->getQuestion(), 'larghezza' => 10, 'id' => $q->getId());
-                    break;
-                case 'money':
-                case 'select':
-                case 'checkbox':
-                    $colonne[$prefix . chr($colonna++)] = array('nome' => $q->getQuestion(), 'larghezza' => 20, 'id' => $q->getId());
-                    break;
+            if ($question->getSottogruppo()) {
+                $name = array('nome' => $question->getSottogruppo()->getTitle(), 'type' => 'sg', 'obj' => $question->getSottogruppo());
+            } else {
+                $name = array('nome' => $question->getQuestion()->getQuestion(), 'type' => $question->getQuestion()->getType(), 'obj' => $question->getQuestion());
             }
-            if (ord('Z') < $colonna) {
-                $prefix = chr($nextprefix);
-                $nextprefix++;
-                $colonna = ord('A');
+            if ($name != $prev_name) {
+                switch ($name['type']) {
+                    case 'sg':
+                        $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 75));
+                        break;
+                    case 'textarea':
+                        $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 50));
+                        break;
+                    case 'number':
+                    case 'percent':
+                    case 'date':
+                    case 'fx':
+                        $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 10));
+                        break;
+                    case 'money':
+                    case 'select':
+                    case 'text':
+                    case 'checkbox':
+                        $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 30));
+                        break;
+                }
+                if (ord('Z') < $colonna) {
+                    $prefix = chr($nextprefix);
+                    $nextprefix++;
+                    $colonna = ord('A');
+                }
+                $prev_name = $name;
             }
         }
         return $colonne;

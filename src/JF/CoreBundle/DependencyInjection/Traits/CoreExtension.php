@@ -10,6 +10,7 @@ trait CoreExtension {
             $this->setRoles($container);
             $this->setWidgets($container);
             $this->setInstall($container);
+            $this->setSync($container);
     }
     
     protected function newPackage(&$package, $code, $name, $order, $permission) {
@@ -22,6 +23,10 @@ trait CoreExtension {
     
     protected function newInstall(&$install, $route, $render) {
         $install[$route] = $render;
+    }
+    
+    protected function newSync(&$sync, $route, $fetch, $push) {
+        $sync[$route] = array('fetch' => $fetch, 'push'=> $push);
     }
     
     protected function newWidget(&$widgets, $key, $name, $roles, $render, $params = array()) {

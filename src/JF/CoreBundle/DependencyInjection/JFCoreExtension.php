@@ -123,4 +123,10 @@ class JFCoreExtension extends Extension implements IExtension {
         $container->setParameter('jf.widgets', $widgets);
     }
 
+    public function setSync(ContainerBuilder $container) {
+        $widgets = array();
+
+        $container->setParameter('jf.sync', $widgets);
+    }
+
 }

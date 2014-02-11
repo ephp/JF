@@ -176,12 +176,12 @@
                                 <a href="{{ path('claims_hospital_report_pratica_show', {'slug': entity.slug, 'numero': report.number}) }}" class="button green" onclick="return loadAjax($(this));">
                                     <div class="icon"><span class="ico-eye"></span></div>
                                 </a>
-                                {% if not report.validato %}
+                                {#% if not report.validato %#}
                                     {% set numero = report.number %}
                                     <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': report.number}) }}" class="button yellow" onclick="return loadAjax($(this));">
                                         <div class="icon"><span class="ico-pencil"></span></div>
                                     </a>
-                                {% endif %}
+                                {#% endif %#}
                             </th>
                         </tr>
                     {% endfor %}

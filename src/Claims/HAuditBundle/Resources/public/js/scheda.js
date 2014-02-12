@@ -6,6 +6,7 @@ $(document).ready(function() {
 });
 
 function testCheckSave() {
+    checkSave = false;
     $('#check-save').blur(function(){
         checkSave = true;
     });
@@ -14,7 +15,7 @@ function testCheckSave() {
 function rispondi() {
     $.post(Routing.generate('claims-h-audit-risposta'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
-        checkSave = false;
+        testCheckSave();
         $.post(Routing.generate('claims-h-audit-rieilogo', {id: $('#pratica').val()}), function(html) {
             $('#riepilogo').html(html);
         });
@@ -30,7 +31,7 @@ function pagina(audit, ordine, pratica) {
     }
     $.post(Routing.generate('claims-h-audit-get-risposta', {'id': audit, 'ordine': ordine, 'pratica': pratica}), function(html) {
         $('#question').html(html);
-        checkSave = false;
+        testCheckSave();
     });
 }
 

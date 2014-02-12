@@ -17,7 +17,7 @@
                     <div class="audit no-margin">
                         <h6>Reserve</h6>
                         <ul id="ul_reserve">
-                            <li>{{ pratica.reserve|number_format(2, ',', '.') }} €</li>
+                            <li>{{ pratica.reserve|number_format(2, '.', ',') }} €</li>
                         </ul>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <div class="audit no-margin">
                         <h6>Pro Reserve</h6>
                         <ul id="ul_proreserve">
-                            <li>{{ pratica.proReserve|number_format(2, ',', '.') }} €</li>
+                            <li>{{ pratica.proReserve|number_format(2, '.', ',') }} €</li>
                         </ul>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <div class="audit no-margin">
                         <h6>Indemnity + CTP Paid</h6>
                         <ul id="ul_indemnityCtpPaid">
-                            <li>{{ pratica.indemnityCtpPaid|number_format(2, ',', '.') }} €</li>
+                            <li>{{ pratica.indemnityCtpPaid|number_format(2, '.', ',') }} €</li>
                         </ul>
                     </div>
                 </div>

@@ -928,6 +928,9 @@ class Pratica {
                 case 'proReserve':
                     $resp->setResponse($this->getProReserve());
                     break;
+                case 'gruppo':
+                    $_r->setResponse($this->getGruppo());
+                    break;
             }
             return $resp;
         }
@@ -987,6 +990,9 @@ class Pratica {
                     break;
                 case 'proReserve':
                     $_r->setResponse($this->getProReserve());
+                    break;
+                case 'gruppo':
+                    $_r->setResponse($this->getGruppo());
                     break;
             }
             return $_r->setResponse(array($_r->getResponse()));

@@ -929,7 +929,7 @@ class Pratica {
                     $resp->setResponse($this->getProReserve());
                     break;
                 case 'gruppo':
-                    $_r->setResponse($this->getGruppo());
+                    $resp->setResponse($this->getGruppo());
                     break;
             }
             return $resp;

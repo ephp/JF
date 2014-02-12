@@ -1,19 +1,36 @@
+var checkSave = false;
 $(document).ready(function() {
     sanitizeCurrency([$('.currency')]);
     autoupdate();
+    testCheckSave();
 });
+
+function testCheckSave() {
+    $('#check-save').blur(function(){
+        checkSave = true;
+    });
+}
 
 function rispondi() {
     $.post(Routing.generate('claims-h-audit-risposta'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
+        checkSave = false;
         $.post(Routing.generate('claims-h-audit-rieilogo', {id: $('#pratica').val()}), function(html) {
             $('#riepilogo').html(html);
         });
     });
 }
 function pagina(audit, ordine, pratica) {
+    if (checkSave && confirm('Do you want save this page?')) {
+        $.post(Routing.generate('claims-h-audit-risposta'), $('#risposta').serialize(), function(html) {
+            $.post(Routing.generate('claims-h-audit-rieilogo', {id: $('#pratica').val()}), function(html) {
+                $('#riepilogo').html(html);
+            });
+        });
+    }
     $.post(Routing.generate('claims-h-audit-get-risposta', {'id': audit, 'ordine': ordine, 'pratica': pratica}), function(html) {
         $('#question').html(html);
+        checkSave = false;
     });
 }
 
@@ -133,7 +150,7 @@ function sanitizeCurrencyFormat(fields) {
 }
 
 function _sanitizeCurrencyFormat(field) {
-    if(!field.val()) {
+    if (!field.val()) {
         return;
     }
     value = field.val().replace(",", "").remove(/[^0-9\.]/g);
@@ -164,28 +181,28 @@ function _sanitizeCurrencyFormat(field) {
 var righe = {};
 
 function addRow(table, riga, callback) {
-    if(!righe[table]) {
+    if (!righe[table]) {
         righe[table] = 0;
     }
-    if(!riga) {
+    if (!riga) {
         righe[table]++;
-        riga = righe[table]; 
+        riga = righe[table];
     }
-    $('#body_'+table).append($('#row_'+table).html().assign({'n': riga}));
-    sanitizePartialDate([$('.auto_date_'+table+'_r'+riga)]);
-    sanitizeCurrencyFormat([$('.currency_'+table+'_r'+riga)]);
-    if(eval('window.'+callback)) {
-        eval('window.'+callback+'()');
+    $('#body_' + table).append($('#row_' + table).html().assign({'n': riga}));
+    sanitizePartialDate([$('.auto_date_' + table + '_r' + riga)]);
+    sanitizeCurrencyFormat([$('.currency_' + table + '_r' + riga)]);
+    if (eval('window.' + callback)) {
+        eval('window.' + callback + '()');
     }
 }
 function delRow(row, callback) {
     $row = $(row);
     $row.animate({opacity: 0.5}, 500, function() {
-        if(confirm('Delete this row?')) {
+        if (confirm('Delete this row?')) {
             $row.animate({opacity: 0}, 500, function() {
                 $row.remove();
-                if(eval('window.'+callback)) {
-                    eval('window.'+callback+'()');
+                if (eval('window.' + callback)) {
+                    eval('window.' + callback + '()');
                 }
             });
         } else {
@@ -195,15 +212,15 @@ function delRow(row, callback) {
 }
 
 function addRisposta(table, question, riga, response) {
-    if(!risposte[table]) {
+    if (!risposte[table]) {
         risposte[table] = {};
     }
-    if(!risposte[table][riga]) {
+    if (!risposte[table][riga]) {
         addRow(table, riga);
         risposte[table][riga] = true;
     }
-    if(riga > righe[table]) {
+    if (riga > righe[table]) {
         righe[table] = riga;
     }
-    $('#risposta_'+question+'_r'+riga).val(response);
+    $('#risposta_' + question + '_r' + riga).val(response);
 }

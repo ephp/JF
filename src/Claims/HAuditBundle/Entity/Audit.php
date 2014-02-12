@@ -251,7 +251,7 @@ class Audit {
         $n = 0;
         foreach ($this->pratiche as $pratica) {
             /* @var $pratica Pratica */
-            $n += count($pratica->getQuestion());
+            $n += $pratica->getQuestion01();
         }
         return $n;
     }

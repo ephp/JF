@@ -1036,6 +1036,21 @@ class Pratica {
      * @param integer $id
      * @return PraticaQuestion|boolean
      */
+    public function getQuestion01() {
+        $out = 0;
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getOrdine() <= 1) {
+                $out++;
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * @param integer $id
+     * @return PraticaQuestion|boolean
+     */
     public function getRisposteSottogruppo($id) {
         $out = array();
         foreach ($this->question as $question) {

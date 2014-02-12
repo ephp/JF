@@ -7,18 +7,18 @@ $('#fast_search').keyup(function(){
 {% endblock ready_js %}
 {% block inline_js %}
 function fastSearch() {
-    var q = $('#fast_search').val();
+    var q = $('#fast_search').val().trim().toLowerCase();
     if(q.trim() == '') {
         $('.fast_search').show();
     } else {
         $('.fast_search').hide();
         $('.fast_search').each(function(){
-            if($(this).attr('name').find(q)) {
+            if($(this).attr('name').toLowerCase().search(q) >=0) {
                 $(this).show();
             }
         });
     }
-}
+} 
 {% endblock inline_js %}
 
 {% block body -%}

@@ -142,6 +142,21 @@ class AuditController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("-pratica-delete/{id}", name="claims-h-audit_pratica-delete")
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
+     */
+    public function deletePraticaAction(Pratica $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+
+        return $this->redirect($this->generateUrl('claims-h-audit'));
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route("-risposte/{id}", name="claims-h-audit_risposte")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()

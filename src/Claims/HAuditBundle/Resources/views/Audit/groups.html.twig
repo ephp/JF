@@ -89,7 +89,7 @@
                     {% if group.obj.id == gruppo.ordine %}
                     <li><a class="active bold yellow" href="javascript:paginaGruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
                     {% else %}
-                    <li><a href="javascript:paginaGruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
+                    <li><a href="#box" onclick="paginaGruppo({{ audit.id }}, {{ gruppo.ordine }}, {{ pratica.id }});" title="{{ gruppo.title }}">{{ gruppo.ordine }}</a></li>
                     {% endif %}
                 {% endif %}
             {% endfor %}

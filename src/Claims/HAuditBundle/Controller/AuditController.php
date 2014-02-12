@@ -18,7 +18,7 @@ use Claims\HAuditBundle\Form\AuditType;
 use Claims\HAuditBundle\Form\QuestionType;
 
 /**
- * Audit controller.
+ * Audit controller
  *
  * @Route("/claims-h-audit")
  */
@@ -358,6 +358,34 @@ class AuditController extends Controller {
             'audit' => $audit,
             'pratica' => $p,
             'group' => $group,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-f/{id}/{pratica}", name="claims-h-audit-files", options={"expose": true})
+     * @Template()
+     */
+    public function filesAction($id, $pratica) {
+        $audit = $this->find('ClaimsHAuditBundle:Audit', $id);
+        /* @var $audit Audit */
+        if (!$audit) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        $p = $this->find('ClaimsHAuditBundle:Pratica', $pratica);
+        /* @var $p Pratica */
+        if (!$p) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+        
+        $file = $this->find('JFDragDropBundle:File', $this->getParam('file_id'));
+        $p->addDocumenti($file);
+        $this->persist($p);
+
+        return array(
+            'audit' => $audit,
+            'pratica' => $p,
         );
     }
 

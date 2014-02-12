@@ -1,0 +1,33 @@
+<div class="head yellow">      
+    <h2>Documents</h2>
+</div>
+<div class="data dark">
+    {% if pratica.documenti|length > 0 %}
+    <table class="table">
+        <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Type</th>
+        </tr>
+        {% for documento in pratica.documenti %}
+            <tr>
+                <td><a href="{{ documento.urls.url }}" target="_blank">{{ documento.titolo }}</a></td>
+                <td>{{ documento.size }}</td>
+                <td>{{ documento.type }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form action="{{ path('claims-h-audit-files',{'id': audit.id, 'pratica': pratica.id}) }}" method="post" id="form_files">
+        <input type="hidden" id="file_id" name="file_id" value=""/>
+        {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
+    </form>
+    
+{% javascripts  
+    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+    '@ClaimsHAuditBundle/Resources/public/js/files.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}   
+
+</div>

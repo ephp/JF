@@ -145,6 +145,17 @@ class Pratica {
      */
     private $question;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="JF\DragDropBundle\Entity\File", cascade="all")
+     * @ORM\JoinTable(name="claims_h_audit_pratiche_documenti",
+     *      joinColumns={@ORM\JoinColumn(name="pratica_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
+     *      )
+     */
+    private $documenti;
+
     /*
      * AUDIT
      */
@@ -273,6 +284,7 @@ class Pratica {
      */
     public function __construct() {
         $this->question = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->documenti = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1029,4 +1041,37 @@ class Pratica {
         return $out;
     }
 
+
+    /**
+     * Add documenti
+     *
+     * @param \JF\DragDropBundle\Entity\File $documenti
+     * @return Pratica
+     */
+    public function addDocumenti(\JF\DragDropBundle\Entity\File $documenti)
+    {
+        $this->documenti[] = $documenti;
+    
+        return $this;
+    }
+
+    /**
+     * Remove documenti
+     *
+     * @param \JF\DragDropBundle\Entity\File $documenti
+     */
+    public function removeDocumenti(\JF\DragDropBundle\Entity\File $documenti)
+    {
+        $this->documenti->removeElement($documenti);
+    }
+
+    /**
+     * Get documenti
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDocumenti()
+    {
+        return $this->documenti;
+    }
 }

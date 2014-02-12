@@ -163,7 +163,7 @@ function _sanitizeCurrencyFormat(field) {
 
 var righe = {};
 
-function addRow(table, riga) {
+function addRow(table, riga, callback) {
     if(!righe[table]) {
         righe[table] = 0;
     }
@@ -175,12 +175,15 @@ function addRow(table, riga) {
     sanitizePartialDate([$('.auto_date_'+table+'_r'+riga)]);
     sanitizeCurrencyFormat([$('.currency_'+table+'_r'+riga)]);
 }
-function delRow(row) {
+function delRow(row, callback) {
     $row = $(row);
     $row.animate({opacity: 0.5}, 500, function() {
         if(confirm('Delete this row?')) {
             $row.animate({opacity: 0}, 500, function() {
                 $row.remove();
+                if(eval('window.'+callback)) {
+                    eval('window.'+callback+'()');
+                }
             });
         } else {
             $row.animate({opacity: 1}, 500)

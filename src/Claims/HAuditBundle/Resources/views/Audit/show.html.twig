@@ -2,6 +2,11 @@
 
 {% block ready_js %}
 $('#fast_search').keyup(function(){
+    fastSearch();
+});
+{% endblock ready_js %}
+{% block inline_js %}
+function fastSearch() {
     var q = $('#fast_search').val();
     if(q.trim() == '') {
         $('.fast_search').show();
@@ -13,8 +18,8 @@ $('#fast_search').keyup(function(){
             }
         });
     }
-});
-{% endblock ready_js %}
+}
+{% endblock inline_js %}
 
 {% block body -%}
 <div class="page-header">
@@ -45,7 +50,7 @@ $('#fast_search').keyup(function(){
                             <th width="40">#</th>
                             <th>Group</th>
                             <th>TPA</th>
-                            <th>Claimant <input type="text" id="fast_search"></th>
+                            <th>Claimant <input type="text" id="fast_search" style="width: 200px;"></th>
                             <th>Progress</th>
                             <th width="40" class="TAC">Op.</th>
                         </tr>

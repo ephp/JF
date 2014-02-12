@@ -41,15 +41,24 @@ function rispondiGruppo() {
     $.post(Routing.generate('claims-h-audit-risposte'), $('#risposta').serialize(), function(html) {
         $('#question').html(html);
         risposte = {};
+        testCheckSave();
         $.post(Routing.generate('claims-h-audit-riepilogo', {'id': $('#pratica').val()}), function(html) {
             $('#riepilogo').html(html);
         });
     });
 }
 function paginaGruppo(audit, ordine, pratica) {
+    if (checkSave && confirm('Do you want save this page?')) {
+        $.post(Routing.generate('claims-h-audit-risposte'), $('#risposta').serialize(), function(html) {
+            $.post(Routing.generate('claims-h-audit-rieilogo', {id: $('#pratica').val()}), function(html) {
+                $('#riepilogo').html(html);
+            });
+        });
+    }
     $.post(Routing.generate('claims-h-audit-get-risposte', {'id': audit, 'ordine': ordine, 'pratica': pratica}), function(html) {
         $('#question').html(html);
         risposte = {};
+        testCheckSave();
     });
 }
 

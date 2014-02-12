@@ -654,23 +654,21 @@ class AuditController extends Controller {
                                 if (!isset($colonne[$idx])) {
                                     continue;
                                 }
-                                switch ($colonne[$idx]) {
-                                    case 'TPA  Ref.':
-                                    case 'TPA Ref.':
+                                switch (strtoupper($colonne[$idx])) {
+                                    case 'TPA  REF.':
+                                    case 'TPA REF.':
                                     case 'TPA REF':
                                         $pratica->setTpa($value);
                                         $pratica->setCodice($value);
                                         break;
 
+                                    case 'TPA':
                                     case 'GROUP':
-                                    case 'Group':
                                     case 'GRUPPO':
-                                    case 'Gruppo':
                                         $pratica->setGruppo($value);
                                         break;
 
                                     case 'MONTH':
-                                    case 'Month':
                                         $pratica->setMese($value);
                                         break;
 
@@ -690,6 +688,21 @@ class AuditController extends Controller {
                                         $pratica->setDsCode($value);
                                         break;
 
+                                    case 'STATUS':
+                                        $pratica->setStatus($value);
+                                        break;
+                                    
+                                    case 'SRE':
+                                        $pratica->setSre($value);
+                                        break;
+                                    
+                                    case 'INDEMNITY + CTP PAID':
+                                    case 'INDEMNITY+ CTP PAID':
+                                    case 'INDEMNITY +CTP PAID':
+                                    case 'INDEMNITY+CTP PAID':
+                                        $pratica->setIndemnityCtpPaid($value);
+                                        break;
+
                                     case 'CLAYMANT':
                                     case 'CLAIMANT':
                                         $pratica->setClaimant(utf8_encode($value));
@@ -707,8 +720,6 @@ class AuditController extends Controller {
                                             $pratica->setDon($don);
                                         }
                                         break;
-                                    case 'Payments':
-                                    case 'Payments ':
                                     case 'PAYMENTS':
                                     case 'PAYMENTS ':
                                         if ($value) {

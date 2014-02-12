@@ -41,6 +41,20 @@ class Pratica {
     private $gruppo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sre", type="string", length=10)
+     */
+    private $sre;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="indemnity_ctp_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $indemnityCtpPaid;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="mese", type="string", length=16, nullable=true)
@@ -839,6 +853,24 @@ class Pratica {
 
     public function setNlComments($nlComments) {
         $this->nlComments = $nlComments;
+    }
+
+    public function getSre() {
+        return $this->sre;
+    }
+
+    public function getIndemnityCtpPaid() {
+        return $this->indemnityCtpPaid;
+    }
+
+    public function setSre($sre) {
+        $this->sre = $sre;
+        return $this;
+    }
+
+    public function setIndemnityCtpPaid($indemnityCtpPaid) {
+        $this->indemnityCtpPaid = $indemnityCtpPaid;
+        return $this;
     }
 
     /**

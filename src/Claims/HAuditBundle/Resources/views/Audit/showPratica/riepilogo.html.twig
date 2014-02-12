@@ -4,12 +4,48 @@
     {% if loop.index % 3 == 1 %}
     <div class="row-fluid">
         <div class="block" style="margin-bottom: 5px;">
-        {% if loop.length - loop.index == 1 %}
+        {% if loop.length - loop.index == 2 %}
             {% set span = 6 %}
         {% endif %}
-        {% if loop.length - loop.index == 0 %}
+        {% if loop.length - loop.index == 1 %}
             {% set span = 12 %}
         {% endif %}
+    {% endif %}
+    {% if loop.first %}
+            <div class="span{{ span }}">
+                <div class="block">
+                    <div class="audit no-margin">
+                        <h6>Reserve</h6>
+                        <ul id="ul_reserve">
+                            <li>{{ pratica.reserve }} €</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span{{ span }}">
+                <div class="block">
+                    <div class="audit no-margin">
+                        <h6>Pro Reserve</h6>
+                        <ul id="ul_proreserve">
+                            <li>{{ pratica.proReserve }} €</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span{{ span }}">
+                <div class="block">
+                    <div class="audit no-margin">
+                        <h6>Indemnity + CTP Paid</h6>
+                        <ul id="ul_indemnityCtpPaid">
+                            <li>{{ pratica.indemnityCtpPaid }} €</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="block" style="margin-bottom: 5px;">
     {% endif %}
             <div class="span{{ span }}">
                 <div class="block">
@@ -24,6 +60,18 @@
                     </div>
                 </div>
             </div>
+    {% if loop.last %}
+            <div class="span{{ span }}">
+                <div class="block">
+                    <div class="audit no-margin">
+                        <h6>Status</h6>
+                        <ul id="ul_status">
+                            <li>{{ pratica.status }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
     {% if loop.index % 3 == 0 or loop.last %}
         </div>
     </div>

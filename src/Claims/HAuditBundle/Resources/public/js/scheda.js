@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 function testCheckSave() {
     checkSave = false;
-    $('#check-save').blur(function(){
+    $('.check-save').blur(function(){
         checkSave = true;
     });
 }

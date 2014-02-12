@@ -1,5 +1,21 @@
 {% extends '::base.html.twig' %}
 
+{% block ready_js %}
+$('#fast_search').keyup(function(){
+    var q = $('#fast_search').val();
+    if(q.trim() == '') {
+        $('.fast_search').show();
+    } else {
+        $('.fast_search').hide();
+        $('.fast_search').each(function(){
+            if($(this).attr('name').find(q)) {
+                $(this).show();
+            }
+        });
+    }
+});
+{% endblock ready_js %}
+
 {% block body -%}
 <div class="page-header">
     <div class="icon">
@@ -29,14 +45,14 @@
                             <th width="40">#</th>
                             <th>Group</th>
                             <th>TPA</th>
-                            <th>Claimant</th>
+                            <th>Claimant <input type="text" id="fast_search"></th>
                             <th>Progress</th>
                             <th width="40" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for pratica in entity.pratiche %}
-                        <tr>                            
+                        <tr name="{{ pratica.claimant }}" class='fast_search'>                            
                             <td>{{ loop.index }}</td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>

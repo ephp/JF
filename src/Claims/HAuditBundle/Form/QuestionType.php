@@ -72,6 +72,7 @@ class QuestionType extends AbstractType {
                         'dsCode' => 'DS Code',
                         'reserve' => 'Reserve',
                         'proReserve' => 'Pro Reserve',
+                        'gruppo' => 'Riferimento TPA',
                     ),
                     'label' => 'Compilazione automatica',
                 ))

@@ -2,5 +2,5 @@
     {% set value = pratica.value(question.question, 0) %}
 {% endif %}
 <td>
-    <input id="risposta_{{ question.question.id }}_r{{n}}" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="currency_{{key}}_r{{n}} eur" name="risposta[{{ question.question.id }}][{{n}}]" />
+    <input id="risposta_{{ question.question.id }}_r{{n}}" type="text" value="{% if value %}{{ value.response }}{% endif %}" class="currency_{{key}}_r{{n}} eur risposta_{{ question.question.id }}" name="risposta[{{ question.question.id }}][{{n}}]" />
 </td>

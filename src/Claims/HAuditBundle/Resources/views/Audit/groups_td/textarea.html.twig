@@ -2,5 +2,5 @@
     {% set value = pratica.value(question.question, 0) %}
 {% endif %}
 <td>
-    <textarea id="risposta_{{ question.question.id }}_r{{n}}" class="expand autogrow" name="risposta[{{ question.question.id }}][{{n}}]">{% if value %}{{ value.response }}{% endif %}</textarea>
+    <textarea class="risposta_{{ question.question.id }}" id="risposta_{{ question.question.id }}_r{{n}}" class="expand autogrow" name="risposta[{{ question.question.id }}][{{n}}]">{% if value %}{{ value.response }}{% endif %}</textarea>
 </td>

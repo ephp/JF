@@ -2,7 +2,7 @@
     {% set value = pratica.value(question.question, 0) %}
 {% endif %}
 <td>
-    <select id="risposta_{{ question.question.id }}_r{{n}}" name="risposta[{{ question.question.id }}][{{n}}]">
+    <select id="risposta_{{ question.question.id }}_r{{n}}" class="risposta_{{ question.question.id }}" name="risposta[{{ question.question.id }}][{{n}}]">
         <option value="" ></option>
         {% for risposta in question.question.options %}
             <option value="{{ risposta }}" {% if value and value.response == risposta%}selected="selected"{% endif %}>{{ risposta }}</option>

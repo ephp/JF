@@ -97,7 +97,7 @@ class XlsController extends Controller {
                 /* @var $cell \PHPExcel_Cell */
                 if ($valore) {
                     switch ($titolo['type']) {
-                        case 'fx':
+                        case 'fxe':
                         case 'money':
                             $sheet->getStyle($colonna . $riga)->getNumberFormat()->setFormatCode('#,##0.00_-[$ €]');
                             $sheet->getStyle($colonna . $riga)->getAlignment()->applyFromArray(array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_TOP, 'wrap' => false));
@@ -172,12 +172,13 @@ class XlsController extends Controller {
                     case 'textarea':
                         $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 50));
                         break;
+                    case 'fx':
                     case 'number':
                     case 'percent':
                     case 'date':
                         $colonne[$prefix . chr($colonna++)] = array_merge($name, array('larghezza' => 10));
                         break;
-                    case 'fx':
+                    case 'fxe':
                     case 'money':
                     case 'select':
                     case 'text':

@@ -55,7 +55,8 @@ class QuestionType extends AbstractType {
                         'money' => 'Importo (€)',
                         'select' => 'Menu a tendina',
                         'checkbox' => 'Scelta multipla',
-                        'fx' => 'Formula (TODO)',
+                        'fx' => 'Formula',
+                        'fxe' => 'Formula Importo (€)',
                     ),
                     'label' => 'Tipo di campo per la risposta',
                 ))

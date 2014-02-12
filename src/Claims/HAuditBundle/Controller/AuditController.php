@@ -700,7 +700,7 @@ class AuditController extends Controller {
                                     case 'INDEMNITY+ CTP PAID':
                                     case 'INDEMNITY +CTP PAID':
                                     case 'INDEMNITY+CTP PAID':
-                                        $pratica->setIndemnityCtpPaid(String::currency($value, '.'));
+                                        $pratica->setIndemnityCtpPaid(String::currency($value, ',', '.'));
                                         break;
 
                                     case 'CLAYMANT':
@@ -723,17 +723,17 @@ class AuditController extends Controller {
                                     case 'PAYMENTS':
                                     case 'PAYMENTS ':
                                         if ($value) {
-                                            $pratica->setPayment(String::currency($value, '.'));
+                                            $pratica->setPayment(String::currency($value, ',', '.'));
                                         }
                                         break;
                                     case 'RESERVE':
                                         if ($value) {
-                                            $pratica->setReserve(String::currency($value, '.'));
+                                            $pratica->setReserve(String::currency($value, ',', '.'));
                                         }
                                         break;
                                     case 'PRO RESERVE':
                                         if ($value) {
-                                            $pratica->setProReserve(String::currency($value, '.'));
+                                            $pratica->setProReserve(String::currency($value, ',', '.'));
                                         }
                                         break;
                                     default: break;

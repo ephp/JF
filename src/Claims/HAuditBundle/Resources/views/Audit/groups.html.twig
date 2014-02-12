@@ -22,7 +22,7 @@
                                 {% endfor %}
                                 {% if question.obj.multiplo %}
                                     <th width="40">
-                                        <a href="javascript:addRow('{{ key }}')" class="button green">
+                                        <a href="javascript:addRow('{{ key }}')" class="button green" id="plus_{{ key }}}}">
                                             <div class="icon"><span class="ico-plus-sign">{% if label is defined %}{{ label }}{% endif %}</span></div>
                                         </a>
                                     </th>
@@ -44,7 +44,7 @@
                             {% endfor %}
                             {% if question.obj.multiplo %}
                                 <td>
-                                    <a href="javascript:delRow('#row_{{ key }}_r{n}')" class="button red">
+                                    <a href="javascript:delRow('#row_{{ key }}_r{n}')" class="button red minus_{{ key }}}}">
                                         <div class="icon"><span class="ico-minus-sign">{% if label is defined %}{{ label }}{% endif %}</span></div>
                                     </a>
                                 </td>

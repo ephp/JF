@@ -635,7 +635,7 @@ class AuditController extends Controller {
             $colonne = array();
             foreach ($sheet as $riga => $valori_riga) {
                 if (!$start) {
-                    if (isset($valori_riga[1]) && in_array($valori_riga[1], array('Group', 'GROUP', 'Gruppo', 'GRUPPO'))) {
+                    if (isset($valori_riga[1]) && in_array($valori_riga[1], array('DS CODE'))) {
                         $colonne = $valori_riga;
                         $start = true;
                     }

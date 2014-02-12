@@ -39,6 +39,7 @@ class QuestionSmallType extends AbstractType {
                         'select' => 'Single choice',
                         'checkbox' => 'Multiple choice',
                         'fx' => 'Formule (TODO)',
+                        'fxe' => '€uro Formule (TODO)',
                     ),
                     'label' => 'Tipo di campo per la risposta',
                 ))

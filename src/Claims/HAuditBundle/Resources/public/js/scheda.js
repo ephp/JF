@@ -174,6 +174,9 @@ function addRow(table, riga, callback) {
     $('#body_'+table).append($('#row_'+table).html().assign({'n': riga}));
     sanitizePartialDate([$('.auto_date_'+table+'_r'+riga)]);
     sanitizeCurrencyFormat([$('.currency_'+table+'_r'+riga)]);
+    if(eval('window.'+callback)) {
+        eval('window.'+callback+'()');
+    }
 }
 function delRow(row, callback) {
     $row = $(row);

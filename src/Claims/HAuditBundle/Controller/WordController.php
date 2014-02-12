@@ -34,7 +34,7 @@ class WordController extends Controller {
             $pratica->setGestore($this->getUser());
         }
 
-        $html = $this->render($twig, array('entity' => $pratica));
+        $html = $this->render($twig, array('pratica' => $pratica, 'audit' => $pratica->getAudit()));
 
         $word = new HtmlConverter("Report ".$pratica);
         $out = $word->createDoc($html);

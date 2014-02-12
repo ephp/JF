@@ -19,7 +19,12 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('jf_core');
-
+        
+        $rootNode
+                ->children()
+                    ->scalarNode('mode')->defaultValue('online')->cannotBeEmpty()->end()
+                    ->scalarNode('server')->defaultValue('http://www.jf-system.com')->cannotBeEmpty()->end()
+        ;   
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

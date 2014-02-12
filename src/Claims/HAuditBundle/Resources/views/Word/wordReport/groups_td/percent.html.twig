@@ -1,0 +1,6 @@
+{% if value is not defined %}
+    {% set value = pratica.value(question.question, 0) %}
+{% endif %}
+<td>
+    {% if value %}{{ value.response }} %{% else %}-{% endif %}
+</td>

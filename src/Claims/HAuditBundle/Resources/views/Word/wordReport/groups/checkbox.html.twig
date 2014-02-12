@@ -1,0 +1,10 @@
+{% set value = pratica.values(question.question) %}
+<tr><th width="33%">{{ question.question.question }}</th><td>
+{% for risposta in question.question.options %}
+    {% if value and risposta in value.response %}
+        <p>{{ risposta }}</p>
+    {% endif %}
+{% else %}
+    <p>-</p>
+{% endfor %}
+    </td></tr>

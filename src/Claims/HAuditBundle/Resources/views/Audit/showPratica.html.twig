@@ -35,34 +35,6 @@
                     <div  id="riepilogo">
                         {% include "ClaimsHAuditBundle:Audit:showPratica/riepilogo.html.twig" %}
                     </div>
-{#
-                    <div class="row-fluid">
-                        <div class="block" style="margin-bottom: 5px;">
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'DOL', 'span_value': 2, 'value': pratica.dol|date('d-m-Y')} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'DON', 'span_value': 2, 'value': pratica.don|date('d-m-Y')} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'MFRef', 'span_value': 4, 'value': pratica.mfRef} %}
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="block" style="margin-bottom: 5px;">
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Hospital', 'span_value': 4, 'value': pratica.ospedale} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'DSCode', 'span_value': 4, 'value': pratica.dsCode} %}
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="block" style="margin-bottom: 5px;">
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Reserve', 'span_value': 4, 'value': pratica.reserve, 'uumm': ' €'} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'ProReserve', 'span_value': 4, 'value': pratica.proReserve, 'uumm': ' €'} %}
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="block" style="margin-bottom: 5px;">
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Anno', 'span_value': 2, 'value': pratica.anno} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 1, 'label': 'Mese', 'span_value': 2, 'value': pratica.mese} %}
-                            {% include 'ClaimsHBundle:Tabellone:commons/sbrick.html.twig' with {'span_label': 2, 'label': 'Payment', 'span_value': 4, 'value': pratica.payment, 'uumm': ' €'} %}
-                        </div>
-                    </div>
-#}
                     {% for question in audit.question %}
                         {% if loop.first %}
                             {% if not question.gruppo %}

@@ -3,56 +3,43 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="block icon no-margin">
-            <h1 class="ico-file-3">Report {{ entity }}</h1>
+            <h1 class="ico-file-3">Report {{ pratica }}</h1>
         </div>
     </div>
 </div>
-<table>
-    <tr style="vertical-align: top">
-        <td colspan="2"><b>Claimant: </b></td>
-        <td colspan="4" style="text-align: center;">{{ entity.claimant }}</td>
-        <td colspan="2"><b>Hospital: </b></td>
-        <td colspan="4" style="text-align: center;">{{ entity.ospedale }}</td>
-    </tr>
-    <tr style="vertical-align: top">
-        <td colspan="2"><b>Group: </b></td>
-        <td colspan="4" style="text-align: center;">{{ entity.gruppo }}</td>
-        <td colspan="2"><b>N.Claim: </b></td>
-        <td colspan="4" style="text-align: center;">{{ entity.codice }}</td>
-    </tr>
-</table>
+{% include "ClaimsHAuditBundle:Word:wordReport/riepilogo.html.twig" %}
 
 <div style="clear: both; page-break-after: always;"></div>
-<h2>1. Fact:</h2>
-<p>{{ entity.fact|nl2br }}</p>
+<h2>1. Fact of Case:</h2>
+<p>{{ pratica.fact|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
-<h2>2. Investigation Handling:</h2>
-<p>{{ entity.investigationHandling|nl2br }}</p>
+<h2>2. Chronology:</h2>
+<p>{{ pratica.cronology|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
 <h2>3. Liability:</h2>
-<p>{{ entity.liability|nl2br }}</p>
+<p>{{ pratica.liability|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
 <h2>4. Quantum:</h2>
-<p>{{ entity.quantum|nl2br }}</p>
+<p>{{ pratica.quantum|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
-<h2>5. Negotiation Handling:</h2>
-<p>{{ entity.negotiationHandling|nl2br }}</p>
+<h2>5. Claims Handling Failings:</h2>
+<p>{{ pratica.claimsHandling|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
-<h2>6. Civil/Criminal Proceeding Handling:</h2>
-<p>{{ entity.proceedingHandling|nl2br }}</p>
+<h2>6. Any comments from Large Loss Reports:</h2>
+<p>{{ pratica.commentsLLR|nl2br }}</p>
 
 <div style="clear: both; page-break-after: always;"></div>
-<h2>7. Our Comments:</h2>
-<p>{{ entity.ourComments|nl2br }}</p>
+<h2>7. Newline comments:</h2>
+<p>{{ pratica.nlComments|nl2br }}</p>
 
+<h2>Questionnaire:</h2>
+{% for n in range(1, 10, 1) %}
 <div style="clear: both; page-break-after: always;"></div>
-<h2>8. NL Damage:</h2>
-<p>{{ entity.nlDamage|nl2br }}</p>
-
-<div style="clear: both; page-break-after: always;"></div>
+    {% include "ClaimsHAuditBundle:Word:wordReport/groups.html.twig" with {'group': audit.group(n)} %}
+{% endfor %}
 {% endblock %}

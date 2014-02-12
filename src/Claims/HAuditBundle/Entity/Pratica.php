@@ -985,7 +985,7 @@ class Pratica {
      * @param integer $id
      * @return PraticaQuestion|boolean
      */
-    public function getSubgroupValues($id) {
+    public function getSubgroupValues($id, $table = false) {
         $_r = new PraticaQuestion();
         $risposte = $this->getRisposteSottogruppo($id);
         $out = $tmp = array();
@@ -993,7 +993,7 @@ class Pratica {
             $tmp[$risposta->getOrdine()][$risposta->getQuestion()->getOrdine()] = $risposta->getResponse();
         }
         foreach ($tmp as $i => $t) {
-            $out[$i] = implode(' | ', $t);
+            $out[$i] = implode($table ? '</td><td>' : ' | ', $t);
         }
         $_r->setResponse($out);
         return $_r;

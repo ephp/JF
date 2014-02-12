@@ -1,0 +1,25 @@
+<b>{{ pratica.gruppo }}</b>
+<table>
+{% set span = 4 %}
+{% for domanda in audit.previewQuestion %}
+    {% if loop.index % 3 == 1 %}
+        <tr style="vertical-align: top">
+        {% if loop.length - loop.index == 1 %}
+            {% set span = 6 %}
+        {% endif %}
+        {% if loop.length - loop.index == 0 %}
+            {% set span = 12 %}
+        {% endif %}
+    {% endif %}
+            <td colspan="{{ span }}">
+                <h6>{{ domanda.domandaLocale(app.user.locale) }}</h6>
+                {% set values = pratica.values(domanda) %}
+                {% for value in values.response %}
+                    {{ value }}<br/>
+                {% endfor %}
+            </td>
+    {% if loop.index % 3 == 0 or loop.last %}
+        </tr>
+    {% endif %}
+{% endfor %}
+</table>

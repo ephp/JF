@@ -1,0 +1,31 @@
+<h2>8.{{n}} {{ group.obj.title }}</h2>
+<table>
+{% for key, question in group.questions %}
+    {% if key|first == 'q' %}
+        {% include "ClaimsHAuditBundle:Word:wordReport/groups/"~question.question.type~".html.twig" with {'question': question} %}
+    {% else %}
+        <tr>
+            <td colspan="2">
+            <b>{{ question.obj.title }}</b>
+            <table border="1">
+                <thead>
+                    <tr>
+                        {% for key2, subquestion in question.questions %}
+                            <th>{{ subquestion.question.question }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set rows = pratica.subgroupValues(question.obj.id, true) %}
+                    {% for row in rows.response %}
+                    <tr><td>{{ row|raw }}</td></tr>
+                    {% else %}
+                    <tr><td colspan="{{ question.questions|length }}">not available</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}
+</table>

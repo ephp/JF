@@ -1,0 +1,3 @@
+{% set value = pratica.value(question.question) %}
+<tr><th width="33%">{{ question.question.question }}</th><td>
+<p>{% if value %}{{ value.response }} €{% else %}-{% endif %}</p></td></tr>

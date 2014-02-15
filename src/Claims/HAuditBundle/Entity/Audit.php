@@ -244,7 +244,7 @@ class Audit {
     }
 
     public function __toString() {
-        return $this->luogo;
+        return "{$this->id}";
     }
 
     public function getResponses() {

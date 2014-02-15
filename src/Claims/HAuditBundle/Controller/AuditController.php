@@ -79,7 +79,7 @@ class AuditController extends Controller {
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Continua', 'attr' => array('class' => 'btn')));
+        $form->add('submit', 'submit', array('label' => 'Continue', 'attr' => array('class' => 'btn')));
 
         return $form;
     }
@@ -114,11 +114,79 @@ class AuditController extends Controller {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
 
+        $sorting = $this->sorting();
+
+        $qb = $this->getRepository('ClaimsHAuditBundle:Pratica')
+                ->createQueryBuilder('p')
+                ->where('p.audit = :audit')
+                ->setParameter('audit', $entity->getId())
+        ;
+        $dati = $this->getUser()->getDati();
+        $order = $dati['claims_haudit_sorting']{0} == 'i' && $dati['claims_haudit_sorting']{1} != 'd' ? 'DESC' : 'ASC';
+        $field = $dati['claims_haudit_sorting']{0} == 'i' && $dati['claims_haudit_sorting']{1} != 'd' ? substr($dati['claims_haudit_sorting'], 1) : $dati['claims_haudit_sorting'];
+        $qb->orderBy('p.' . $field, $order);
+        $pratiche = $qb->getQuery()->execute();
+
         return array(
             'entity' => $entity,
+            'pratiche' => $pratiche,
+            'sorting' => $sorting,
+            'query' => $this->getQuery(),
             'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
             'ricerca' => $this->getParam('ricerca', array()),
         );
+    }
+
+    private function sorting() {
+        $dati = $this->getUser()->getDati();
+        $sorting = $this->getParam('sorting', false);
+        if (!$sorting && !isset($dati['claims_haudit_sorting'])) {
+            $sorting = 'id';
+        }
+        if ($sorting) {
+            $dati['claims_haudit_sorting'] = $sorting;
+            $this->getUser()->setDati($dati);
+            $this->persist($this->getUser());
+        }
+        if (isset($dati['claims_haudit_sorting'])) {
+            $sorting = $dati['claims_haudit_sorting'];
+        }
+        $out = array();
+
+        $out['id'] = array(
+            'label' => 'Natural sort',
+            'mode' => 'id',
+        );
+        if ($sorting == 'uid') {
+            $out['uid']['icon'] = 'ico-chevron-up';
+            $out['uid']['mode'] = 'iid';
+        } elseif ($sorting == 'iid') {
+            $out['uid']['icon'] = 'ico-chevron-down';
+        }
+
+        $out['claimant'] = array(
+            'label' => 'Nome Claimant',
+            'mode' => 'claimant',
+        );
+        if ($sorting == 'claimant') {
+            $out['claimant']['icon'] = 'ico-chevron-up';
+            $out['claimant']['mode'] = 'iclaimant';
+        } elseif ($sorting == 'iclaimant') {
+            $out['claimant']['icon'] = 'ico-chevron-down';
+        }
+
+        $out['reserve'] = array(
+            'label' => 'Reserve',
+            'mode' => 'reserve',
+        );
+        if ($sorting == 'reserve') {
+            $out['reserve']['icon'] = 'ico-chevron-up';
+            $out['reserve']['mode'] = 'ireserve';
+        } elseif ($sorting == 'ireserve') {
+            $out['reserve']['icon'] = 'ico-chevron-down';
+        }
+
+        return $out;
     }
 
     /**
@@ -165,12 +233,13 @@ class AuditController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
-        
+
         $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()));
 
         return array(
             'entity' => $entity,
             'pratiche' => $pratiche,
+            'query' => $this->getQuery(),
             'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
             'ricerca' => $this->getParam('ricerca', array()),
         );
@@ -261,7 +330,7 @@ class AuditController extends Controller {
         if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
-        if(!$pratica->getGestore()) {
+        if (!$pratica->getGestore()) {
             $pratica->setGestore($this->getUser());
             $this->persist($pratica);
         }
@@ -393,7 +462,7 @@ class AuditController extends Controller {
         if (!$p) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
-        
+
         $file = $this->find('JFDragDropBundle:File', $this->getParam('file_id'));
         $p->addDocumenti($file);
         $this->persist($p);
@@ -617,7 +686,7 @@ class AuditController extends Controller {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
         $audit = $this->find('ClaimsHAuditBundle:Audit', $this->getParam('audit'));
-        if ($audit) {
+        if (intval($this->getParam('add_more', 1)) == 0) {
             $this->getRepository('ClaimsHAuditBundle:Pratica')->cancellaAudit($audit);
         }
         $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
@@ -691,11 +760,11 @@ class AuditController extends Controller {
                                     case 'STATUS':
                                         $pratica->setStatus($value);
                                         break;
-                                    
+
                                     case 'SRE':
                                         $pratica->setSre($value);
                                         break;
-                                    
+
                                     case 'INDEMNITY + CTP PAID':
                                     case 'INDEMNITY+ CTP PAID':
                                     case 'INDEMNITY +CTP PAID':

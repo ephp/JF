@@ -15,8 +15,9 @@ class AuditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('luogo')
+            ->add('luogo', null, array('label' => 'City'))
             ->add('giorno', null, array(
+                'label' => 'Day',
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
                 'attr' => array(

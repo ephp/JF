@@ -40,6 +40,19 @@ function fastSearch() {
     </div>
 </div>
 {% render(controller("ClaimsHAuditBundle:Render:ricerca", {'id': entity.id, 'route': route, 'ricerca': ricerca})) %}
+{% if sorting is defined %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="block">
+                <div class="data-fluid">
+                    {% for sortmode, link in sorting %}
+                        <a href="{{ path(app.request.get('_route'), query|merge({'sorting': link.mode})) }}"><span class="label {% if app.user.dati.claims_haudit_sorting == sortmode or app.user.dati.claims_haudit_sorting == 'i'~sortmode %}label-success{% else %}label-green{% endif %} {% if link.icon is defined %}{{ link.icon }}{% endif %}" style="margin-bottom: 3px;">{% if link.icon is defined %}&nbsp;{% endif %}{{ link.label }}</span></a>
+                    {% endfor %}
+                </div>            
+            </div>            
+        </div>       
+    </div> 
+{% endif %}
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
@@ -51,17 +64,19 @@ function fastSearch() {
                             <th>Group</th>
                             <th>TPA</th>
                             <th>Claimant <input type="text" id="fast_search" style="width: 200px;"></th>
+                            <th>Reserve</th>
                             <th>Progress</th>
                             <th width="80" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for pratica in entity.pratiche %}
+                    {% for pratica in pratiche %}
                         <tr name="{{ pratica.claimant }}" class='fast_search'>                            
                             <td>{{ loop.index }}</td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>
+                            <td>{{ pratica.reserve }} €</td>
                             <td>{{ pratica.question01 }}/{{ entity.question|length }}</td>
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}

@@ -42,20 +42,22 @@ class ClaimsRavinaleExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        if (true) {
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Importazione Ravinale',
-                'route' => 'ravinale_import_manuale',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 91,
-            );
-        } else {
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Importazione Ravinale',
-                'route' => 'ravinale_import_manuale',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 91,
-            );
+        if ($container->getParameter('jf.mode') == 'online') {
+            if (true) {
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Importazione Ravinale',
+                    'route' => 'ravinale_import_manuale',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 91,
+                );
+            } else {
+                $menu['admin']['submenu']['claims']['submenu'][] = array(
+                    'label' => 'Importazione Ravinale',
+                    'route' => 'ravinale_import_manuale',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 91,
+                );
+            }
         }
 
         $container->setParameter('jf.menu', $menu);

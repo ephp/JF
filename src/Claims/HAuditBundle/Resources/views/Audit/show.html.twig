@@ -27,13 +27,16 @@ function fastSearch() {
         <span class="ico-eye-open"></span>
     </div>
     <h1>Audit Hospital<small>{{ entity.luogo }} - {{ entity.giorno|date('d/m/Y') }}</small></h1>
+    <div class="icon green right white">
+        <a target="_blank" href="{{ path('claims-h-audit-xls', query)}}"><span class="ico-table" title="Esporta Excel"></span></a>
+    </div>
 </div>
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
             <div class="data-fluid">
-                <a href="{{ path('claims-h-audit_show', {'id': entity.id}) }}"><span class="label label-success" style="margin-bottom: 3px;">Riassunto</span></a>
-                <a href="{{ path('claims-h-audit_risposte', {'id': entity.id}) }}"><span class="label label-green" style="margin-bottom: 3px;">Risposte</span></a>
+                <a href="{{ path('claims-h-audit_show', query|merge({'id': entity.id})) }}"><span class="label label-success" style="margin-bottom: 3px;">Claims</span></a>
+                <a href="{{ path('claims-h-audit_risposte', query|merge({'id': entity.id})) }}"><span class="label label-green" style="margin-bottom: 3px;">Excel preview</span></a>
                 <a href="#fb_ricerca" class="fancybox"><span class="label label-info ico-search" style="margin-bottom: 3px;">&nbsp;Ricerca</span></a>
             </div>
         </div>

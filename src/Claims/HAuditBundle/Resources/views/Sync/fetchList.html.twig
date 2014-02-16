@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Sync Audit Hospital</h1>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="block">
+            <div class="data-fluid">
+                <table class="table grid" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Imported</th>
+                            <th>Site</th>
+                            <th>Date</th>
+                            <th>Notes</th>
+                            <th>Practices</th>
+                            <th>Questions</th>
+                            <th width="40" class="TAC">Op.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>                            
+                            <td>{% if entity.imported %}YES{% endif %}</td>
+                            <td>{{ entity.luogo }}</td>
+                            <td>{{ entity.giorno }}</td>
+                            <td>{{ entity.note }}</td>
+                            <td>{{ entity.pratiche }}</td>
+                            <td>{{ entity.question }}</td>
+                            <td>
+                                {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-push-audit', { 'id': entity.id })} %}                   
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -59,7 +59,7 @@ class JFACLExtension extends Extension implements IExtension {
             'show' => array('in_role' => array('R_EPH')),
             'order' => 1,
         );
-        
+
         $menu['login'] = array(
             'label' => 'Login',
             'route' => 'fos_user_security_login',
@@ -83,11 +83,13 @@ class JFACLExtension extends Extension implements IExtension {
             'order' => 1,
         );
 
-        $menu['profilo']['submenu'][] = array(
-            'label' => 'Cambia Password',
-            'route' => 'fos_user_change_password',
-            'order' => 25,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['profilo']['submenu'][] = array(
+                'label' => 'Cambia Password',
+                'route' => 'fos_user_change_password',
+                'order' => 25,
+            );
+        }
 
         $menu['profilo']['submenu'][] = array(
             'label' => 'Logout',
@@ -95,16 +97,17 @@ class JFACLExtension extends Extension implements IExtension {
             'order' => 99,
         );
 
-
-        $menu['utility']['submenu'][] = array(
-            'label' => 'Rubrica',
-            'route' => 'rubrica',
-            'show' => array(
-                'out_role' => 'R_EPH',
-                'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
-            ),
-            'order' => 90,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['utility']['submenu'][] = array(
+                'label' => 'Rubrica',
+                'route' => 'rubrica',
+                'show' => array(
+                    'out_role' => 'R_EPH',
+                    'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
+                ),
+                'order' => 90,
+            );
+        }
 
         $container->setParameter('jf.menu', $menu);
     }
@@ -134,7 +137,7 @@ class JFACLExtension extends Extension implements IExtension {
 
         $container->setParameter('jf.widgets', $widgets);
     }
-    
+
     public function setSync(ContainerBuilder $container) {
         $sync = $container->getParameter('jf.sync');
 
@@ -142,4 +145,5 @@ class JFACLExtension extends Extension implements IExtension {
 
         $container->setParameter('jf.sync', $sync);
     }
+
 }

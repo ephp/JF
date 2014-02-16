@@ -129,3 +129,6 @@ jf_git_hub:
     deploy:
         sudo: false;
         chown: %github_chown%
+        
+jf_core:
+    mode: %jf_mode%

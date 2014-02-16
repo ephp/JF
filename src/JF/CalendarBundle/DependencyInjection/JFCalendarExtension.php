@@ -41,14 +41,16 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $menu['utility']['submenu'][] = array(
-            'label' => 'Calendario personale',
-            'route' => 'calendario_personale',
-            'show' => array(
-                'logged' => true
-            ),
-            'order' => 90,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['utility']['submenu'][] = array(
+                'label' => 'Calendario personale',
+                'route' => 'calendario_personale',
+                'show' => array(
+                    'logged' => true
+                ),
+                'order' => 90,
+            );
+        }
 
         $container->setParameter('jf.menu', $menu);
     }
@@ -62,9 +64,11 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
     }
 
     public function setRoles(ContainerBuilder $container) {
+        
     }
 
     public function setWidgets(ContainerBuilder $container) {
+        
     }
 
     public function setTipoEventi(ContainerBuilder $container) {
@@ -77,7 +81,7 @@ class JFCalendarExtension extends Extension implements IExtension, Interfaces\IT
         $this->newTipoEvento($tipiEvento, 'Office', 'SCD', 'Scadenza', 'aa0000', true, true, false, true);
         $this->newTipoEvento($tipiEvento, 'Office', 'RIC', 'Riunione con cliente', '00aaaa', true, true, false, true);
         $this->newTipoEvento($tipiEvento, 'Office', 'RIU', 'Riunione ufficio', '00aaaa', true, true, true, true);
-        
+
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
 

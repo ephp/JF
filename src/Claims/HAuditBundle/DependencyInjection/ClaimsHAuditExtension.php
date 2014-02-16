@@ -58,40 +58,49 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
             'order' => 50,
         );
 
-        $menu['claims_audit']['submenu'][] = array(
-            'label' => 'New Audit Hospital',
-            'route' => 'claims-h-audit_new',
-            'show' => array('in_role' => array('C_AUDIT_HC')),
-            'order' => 10,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['claims_audit']['submenu'][] = array(
+                'label' => 'New Audit Hospital',
+                'route' => 'claims-h-audit_new',
+                'show' => array('in_role' => array('C_AUDIT_HC')),
+                'order' => 10,
+            );
 
-        $menu['a_claims']['submenu'][] = array(
-            'label' => 'Gruppi Audit Hospital',
-            'route' => 'eph_gurppi-audit',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 21,
-        );
+            $menu['a_claims']['submenu'][] = array(
+                'label' => 'Gruppi Audit Hospital',
+                'route' => 'eph_gurppi-audit',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 21,
+            );
 
-        $menu['a_claims']['submenu'][] = array(
-            'label' => 'Sottogruppi Audit Hospital',
-            'route' => 'eph_sottogruppi-audit',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 22,
-        );
+            $menu['a_claims']['submenu'][] = array(
+                'label' => 'Sottogruppi Audit Hospital',
+                'route' => 'eph_sottogruppi-audit',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 22,
+            );
 
-        $menu['a_claims']['submenu'][] = array(
-            'label' => 'Domande Audit Hospital',
-            'route' => 'eph_domande-audit',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 20,
-        );
+            $menu['a_claims']['submenu'][] = array(
+                'label' => 'Domande Audit Hospital',
+                'route' => 'eph_domande-audit',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 20,
+            );
 
-        $menu['claims_audit']['submenu'][] = array(
-            'label' => 'Questions Audit Hospital',
-            'route' => 'domande-audit',
-            'show' => array('in_role' => array('C_AUDIT_HQ')),
-            'order' => 30,
-        );
+            $menu['claims_audit']['submenu'][] = array(
+                'label' => 'Questions Audit Hospital',
+                'route' => 'domande-audit',
+                'show' => array('in_role' => array('C_AUDIT_HQ')),
+                'order' => 30,
+            );
+        } else {
+            $menu['claims_audit']['submenu'][] = array(
+                'label' => 'Import Audit Hospital',
+                'route' => 'sync_claims-h-audit-fetch-list',
+                'show' => array('in_role' => array('C_AUDIT_H')),
+                'order' => 10,
+            );
+        }
 
         $container->setParameter('jf.menu', $menu);
     }

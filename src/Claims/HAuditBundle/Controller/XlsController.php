@@ -16,7 +16,8 @@ use Claims\HAuditBundle\Entity\Audit;
 class XlsController extends Controller {
 
     use \Ephp\UtilityBundle\Controller\Traits\BaseController,
-        \Ephp\UtilityBundle\Controller\Traits\PaginatorController;
+        \Ephp\UtilityBundle\Controller\Traits\PaginatorController,
+        Traits\AuditController;
 
     /**
      * Finds and displays a Audit entity.
@@ -50,7 +51,10 @@ class XlsController extends Controller {
 
         $excel->getActiveSheet()->setTitle('Hospital Audit');
 
-        $this->fillSheet($sheet, $colonne, $entity->getPratiche());
+        $dati = $this->getUser()->getDati();
+        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
+
+        $this->fillSheet($sheet, $colonne, $pratiche);
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);

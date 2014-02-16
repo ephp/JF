@@ -25,3 +25,5 @@ parameters:
     github_path: /var/www/http/jf-system.com
     github_chown: apache.apache
     github_script_dir: /var/www/http
+
+    jf_mode: online

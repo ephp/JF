@@ -20,6 +20,13 @@ class Gruppo
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="remote_id", type="integer")
+     */
+    private $remoteId;
 
     /**
      * @var string
@@ -65,6 +72,15 @@ class Gruppo
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getRemoteId() {
+        return $this->remoteId;
+    }
+
+    public function setRemoteId($remoteId) {
+        $this->remoteId = $remoteId;
+        return $this;
     }
 
     /**

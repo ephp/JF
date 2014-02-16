@@ -42,18 +42,20 @@ class JFAndreaniExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $menu['utility']['submenu'][] = array(
-            'label' => 'Studio Andreani',
-            'route' => 'andreani',
-            'show'  => array('logged' => false),
-            'order' => 10,
-        );
-        $menu['utility']['submenu'][] = array(
-            'label' => 'Studio Andreani',
-            'route' => 'studio_andreani',
-            'show'  => array('out_role' => 'R_EPH'),
-            'order' => 10,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['utility']['submenu'][] = array(
+                'label' => 'Studio Andreani',
+                'route' => 'andreani',
+                'show' => array('logged' => false),
+                'order' => 10,
+            );
+            $menu['utility']['submenu'][] = array(
+                'label' => 'Studio Andreani',
+                'route' => 'studio_andreani',
+                'show' => array('out_role' => 'R_EPH'),
+                'order' => 10,
+            );
+        }
 
         $container->setParameter('jf.menu', $menu);
     }
@@ -67,6 +69,7 @@ class JFAndreaniExtension extends Extension implements IExtension {
     }
 
     public function setRoles(ContainerBuilder $container) {
+        
     }
 
     public function setWidgets(ContainerBuilder $container) {

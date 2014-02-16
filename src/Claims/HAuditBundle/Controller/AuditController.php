@@ -24,7 +24,8 @@ use Claims\HAuditBundle\Form\QuestionType;
  */
 class AuditController extends Controller {
 
-    use BaseController;
+    use BaseController,
+        Traits\AuditController;
 
     /**
      * Lists all Audit entities.
@@ -115,17 +116,8 @@ class AuditController extends Controller {
         }
 
         $sorting = $this->sorting();
-
-        $qb = $this->getRepository('ClaimsHAuditBundle:Pratica')
-                ->createQueryBuilder('p')
-                ->where('p.audit = :audit')
-                ->setParameter('audit', $entity->getId())
-        ;
         $dati = $this->getUser()->getDati();
-        $order = $dati['claims_haudit_sorting']{0} == 'i' && $dati['claims_haudit_sorting']{1} != 'd' ? 'DESC' : 'ASC';
-        $field = $dati['claims_haudit_sorting']{0} == 'i' && $dati['claims_haudit_sorting']{1} != 'd' ? substr($dati['claims_haudit_sorting'], 1) : $dati['claims_haudit_sorting'];
-        $qb->orderBy('p.' . $field, $order);
-        $pratiche = $qb->getQuery()->execute();
+        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
 
         return array(
             'entity' => $entity,
@@ -137,74 +129,30 @@ class AuditController extends Controller {
         );
     }
 
-    private function sorting() {
-        $dati = $this->getUser()->getDati();
-        $sorting = $this->getParam('sorting', false);
-        if (!$sorting && !isset($dati['claims_haudit_sorting'])) {
-            $sorting = 'id';
-        }
-        if ($sorting) {
-            $dati['claims_haudit_sorting'] = $sorting;
-            $this->getUser()->setDati($dati);
-            $this->persist($this->getUser());
-        }
-        if (isset($dati['claims_haudit_sorting'])) {
-            $sorting = $dati['claims_haudit_sorting'];
-        }
-        $out = array();
-
-        $out['id'] = array(
-            'label' => 'Natural sort',
-            'mode' => 'id',
-        );
-        if ($sorting == 'uid') {
-            $out['uid']['icon'] = 'ico-chevron-up';
-            $out['uid']['mode'] = 'iid';
-        } elseif ($sorting == 'iid') {
-            $out['uid']['icon'] = 'ico-chevron-down';
-        }
-
-        $out['claimant'] = array(
-            'label' => 'Nome Claimant',
-            'mode' => 'claimant',
-        );
-        if ($sorting == 'claimant') {
-            $out['claimant']['icon'] = 'ico-chevron-up';
-            $out['claimant']['mode'] = 'iclaimant';
-        } elseif ($sorting == 'iclaimant') {
-            $out['claimant']['icon'] = 'ico-chevron-down';
-        }
-
-        $out['reserve'] = array(
-            'label' => 'Reserve',
-            'mode' => 'reserve',
-        );
-        if ($sorting == 'reserve') {
-            $out['reserve']['icon'] = 'ico-chevron-up';
-            $out['reserve']['mode'] = 'ireserve';
-        } elseif ($sorting == 'ireserve') {
-            $out['reserve']['icon'] = 'ico-chevron-down';
-        }
-
-        return $out;
-    }
-
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-delete/{id}", name="claims-h-audit_delete")
-     * @Method("GET")
+     * @Route("-risposte/{id}", name="claims-h-audit_risposte")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     * @Template()
      */
-    public function deleteAction(Audit $entity) {
+    public function risposteAction(Audit $entity) {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
-        if ($this->getUser()->getCliente()->getId() == $entity->getCliente()->getId()) {
-            $this->remove($entity);
-        }
 
-        return $this->redirect($this->generateUrl('claims-h-audit'));
+        $sorting = $this->sorting();
+        $dati = $this->getUser()->getDati();
+        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
+
+        return array(
+            'entity' => $entity,
+            'pratiche' => $pratiche,
+            'sorting' => $sorting,
+            'query' => $this->getQuery(),
+            'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
+            'ricerca' => $this->getParam('ricerca', array()),
+        );
     }
 
     /**
@@ -220,29 +168,6 @@ class AuditController extends Controller {
         }
 
         return $this->redirect($this->generateUrl('claims-h-audit'));
-    }
-
-    /**
-     * Finds and displays a Audit entity.
-     *
-     * @Route("-risposte/{id}", name="claims-h-audit_risposte")
-     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
-     * @Template()
-     */
-    public function risposteAction(Audit $entity) {
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Audit entity.');
-        }
-
-        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()));
-
-        return array(
-            'entity' => $entity,
-            'pratiche' => $pratiche,
-            'query' => $this->getQuery(),
-            'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
-            'ricerca' => $this->getParam('ricerca', array()),
-        );
     }
 
     /**
@@ -291,6 +216,24 @@ class AuditController extends Controller {
             'pratica' => $pratica,
             'question' => $question,
         );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-delete/{id}", name="claims-h-audit_delete")
+     * @Method("GET")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     */
+    public function deleteAction(Audit $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+        if ($this->getUser()->getCliente()->getId() == $entity->getCliente()->getId()) {
+            $this->remove($entity);
+        }
+
+        return $this->redirect($this->generateUrl('claims-h-audit'));
     }
 
     /**
@@ -692,137 +635,6 @@ class AuditController extends Controller {
         $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
         $out['audit'] = $audit->getId();
         return $out;
-    }
-
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, \Claims\HAuditBundle\Entity\Audit $audit) {
-        $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
-        $pratiche = array();
-        //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
-        foreach ($data->sheets as $sheet) {
-            $sheet = $sheet['cells'];
-            $start = false;
-            $colonne = array();
-            foreach ($sheet as $riga => $valori_riga) {
-                if (!$start) {
-                    if (isset($valori_riga[1]) && in_array(strtoupper($valori_riga[1]), array('SRE'))) {
-                        $colonne = $valori_riga;
-                        $start = true;
-                    }
-                } else {
-                    if (!isset($valori_riga[1]) || !$valori_riga[1]) {
-                        continue;
-                    } else {
-                        try {
-                            $this->getEm()->beginTransaction();
-                            $pratica = new Pratica();
-                            $pratica->setAudit($audit);
-                            $pratica->setCliente($cliente);
-                            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Nuovo')));
-                            $pratica->setStatoPratica($this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $cliente->getId(), 'primo' => true)));
-                            foreach ($valori_riga as $idx => $value) {
-                                if (!isset($colonne[$idx])) {
-                                    continue;
-                                }
-                                switch (strtoupper($colonne[$idx])) {
-                                    case 'TPA  REF.':
-                                    case 'TPA REF.':
-                                    case 'TPA REF':
-                                        $pratica->setTpa($value);
-                                        $pratica->setCodice($value);
-                                        break;
-
-                                    case 'TPA':
-                                    case 'GROUP':
-                                    case 'GRUPPO':
-                                        $pratica->setGruppo($value);
-                                        break;
-
-                                    case 'MONTH':
-                                        $pratica->setMese($value);
-                                        break;
-
-                                    case 'MFREF':
-                                        $pratica->setMfRef($value);
-                                        break;
-
-                                    case 'HOSPITAL':
-                                        $pratica->setOspedale($value);
-                                        break;
-
-                                    case 'YOA':
-                                        $pratica->setAnno($value);
-                                        break;
-
-                                    case 'DS CODE':
-                                        $pratica->setDsCode($value);
-                                        break;
-
-                                    case 'STATUS':
-                                        $pratica->setStatus($value);
-                                        break;
-
-                                    case 'SRE':
-                                        $pratica->setSre($value);
-                                        break;
-
-                                    case 'INDEMNITY + CTP PAID':
-                                    case 'INDEMNITY+ CTP PAID':
-                                    case 'INDEMNITY +CTP PAID':
-                                    case 'INDEMNITY+CTP PAID':
-                                        $pratica->setIndemnityCtpPaid(String::currency($value, ',', '.'));
-                                        break;
-
-                                    case 'CLAYMANT':
-                                    case 'CLAIMANT':
-                                        $pratica->setClaimant(utf8_encode($value));
-                                        break;
-
-                                    case 'DOL':
-                                        if ($value) {
-                                            $dol = \DateTime::createFromFormat('d/m/Y', $value);
-                                            $pratica->setDol($dol);
-                                        }
-                                        break;
-                                    case 'DON':
-                                        if ($value) {
-                                            $don = \DateTime::createFromFormat('d/m/Y', $value);
-                                            $pratica->setDon($don);
-                                        }
-                                        break;
-                                    case 'PAYMENTS':
-                                    case 'PAYMENTS ':
-                                        if ($value) {
-                                            $pratica->setPayment(String::currency($value, ',', '.'));
-                                        }
-                                        break;
-                                    case 'RESERVE':
-                                        if ($value) {
-                                            $pratica->setReserve(String::currency($value, ',', '.'));
-                                        }
-                                        break;
-                                    case 'PRO RESERVE':
-                                        if ($value) {
-                                            $pratica->setProReserve(String::currency($value, ',', '.'));
-                                        }
-                                        break;
-                                    default: break;
-                                }
-                            }
-                            $pratica->setDataImport(new \DateTime());
-                            $pratica->addLog(array('Importata pratica'));
-                            $this->persist($pratica);
-                            $pratiche[] = $pratica;
-                            $this->getEm()->commit();
-                        } catch (\Exception $e) {
-                            $this->getEm()->rollback();
-                            throw $e;
-                        }
-                    }
-                }
-            }
-        }
-
-        return array('pratiche' => $pratiche);
     }
 
 }

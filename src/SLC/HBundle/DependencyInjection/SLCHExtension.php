@@ -42,19 +42,22 @@ class SLCHExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $menu['claims']['submenu'][] = array(
-            'label' => 'Analisi Claims Hospital',
-            'route' => 'slc_hospital',
-            'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('slc.h-analisi' => array('slc'))),
-            'order' => 35,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['claims']['submenu'][] = array(
+                'label' => 'Analisi Claims Hospital',
+                'route' => 'slc_hospital',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('slc.h-analisi' => array('slc'))),
+                'order' => 35,
+            );
 
-        $menu['claims']['submenu'][] = array(
-            'label' => 'Countdown Hospital',
-            'route' => 'claims_h_countdown',
-            'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('slc.h-analisi' => array('slc'))),
-            'order' => 50,
-        );
+            $menu['claims']['submenu'][] = array(
+                'label' => 'Countdown Hospital',
+                'route' => 'claims_h_countdown',
+                'show' => array('in_role' => array('C_ADMIN', 'C_GESTORE_H', 'C_RECUPERI_H'), 'license' => array('slc.h-analisi' => array('slc'))),
+                'order' => 50,
+            );
+        }
+
         $container->setParameter('jf.menu', $menu);
     }
 

@@ -42,20 +42,22 @@ class ClaimsContecExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        if (true) {
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Importazione Contec',
-                'route' => 'contec_import_manuale',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 90,
-            );
-        } else {
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Importazione Contec',
-                'route' => 'contec_import_form',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 90,
-            );
+        if ($container->getParameter('jf.mode') == 'online') {
+            if (true) {
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Importazione Contec',
+                    'route' => 'contec_import_manuale',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 90,
+                );
+            } else {
+                $menu['admin']['submenu']['claims']['submenu'][] = array(
+                    'label' => 'Importazione Contec',
+                    'route' => 'contec_import_form',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 90,
+                );
+            }
         }
 
         $container->setParameter('jf.menu', $menu);

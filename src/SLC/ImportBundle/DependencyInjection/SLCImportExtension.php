@@ -42,30 +42,29 @@ class SLCImportExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        if (true) {
+        if ($container->getParameter('jf.mode') == 'online') {
+            if (true) {
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Importa dati schede mancanti',
+                    'route' => 'slc_import_claims',
+                    'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
+                    'order' => 999,
+                );
 
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Importa dati schede mancanti',
-                'route' => 'slc_import_claims',
-                'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
-                'order' => 999,
-            );
-            
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Importa dati tutte schede',
-                'route' => 'slc_import_all_claims',
-                'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
-                'order' => 1000,
-            );
-
-        } else {
-
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Importa dati JF-Claims',
-                'route' => 'slc_import_claims',
-                'show' => array('in_role' => array('C_ADMIN'), 'license' => array('slc.h.import-import' => 'slc')),
-                'order' => 999,
-            );
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Importa dati tutte schede',
+                    'route' => 'slc_import_all_claims',
+                    'show' => array('in_role' => array('R_SUPER'), 'license' => array('slc.h.import-import' => array('slc'))),
+                    'order' => 1000,
+                );
+            } else {
+                $menu['admin']['submenu']['claims']['submenu'][] = array(
+                    'label' => 'Importa dati JF-Claims',
+                    'route' => 'slc_import_claims',
+                    'show' => array('in_role' => array('C_ADMIN'), 'license' => array('slc.h.import-import' => 'slc')),
+                    'order' => 999,
+                );
+            }
         }
 
         $container->setParameter('jf.menu', $menu);

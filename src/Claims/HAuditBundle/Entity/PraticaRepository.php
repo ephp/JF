@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PraticaRepository extends EntityRepository {
 
-    public function ricerca(Audit $audit, $filtri = array()) {
+    public function ricerca(Audit $audit, $filtri = array(), $orderBy = 'id') {
         $q = $this->createQueryBuilder('p')->where('p.audit = :audit')->setParameter('audit', $audit->getId());
         if (!count($filtri) == 0) {
             $sql_select = ' SELECT p.id ';
@@ -73,6 +73,10 @@ class PraticaRepository extends EntityRepository {
             }
             $q->andWhere($q->expr()->in('p.id', $ids));
         }
+        $order = $orderBy{0} == 'i' && $orderBy{1} != 'd' ? 'DESC' : 'ASC';
+        $field = $orderBy{0} == 'i' && $orderBy{1} != 'd' ? substr($orderBy, 1) : $orderBy;
+        $q->orderBy('p.' . $field, $order);
+
         return $q->getQuery()->execute();
     }
 

@@ -423,22 +423,22 @@ class SyncController extends Controller {
         try {
             $this->getEm()->beginTransaction();
 
-            $pratica->setFact($_pratica->fact);
-            $pratica->setLiability($_pratica->liability);
-            $pratica->setQuantum($_pratica->quantum);
-            $pratica->setCronology($_pratica->cronology);
-            $pratica->setClaimsHandling($_pratica->claimsHandling);
-            $pratica->setCommentsLLR($_pratica->commentsLLR);
-            $pratica->setNlComments($_pratica->nlComments);
-            $pratica->setNote($_pratica->note);
-            $this->persist($pratica);
+            $entity->setFact($_pratica->fact);
+            $entity->setLiability($_pratica->liability);
+            $entity->setQuantum($_pratica->quantum);
+            $entity->setCronology($_pratica->cronology);
+            $entity->setClaimsHandling($_pratica->claimsHandling);
+            $entity->setCommentsLLR($_pratica->commentsLLR);
+            $entity->setNlComments($_pratica->nlComments);
+            $entity->setNote($_pratica->note);
+            $this->persist($entity);
 
-            foreach ($pratica->getQuestion() as $pq) {
+            foreach ($entity->getQuestion() as $pq) {
                 $this->remove($pq);
             }
             foreach ($_pratica->question as $_question) {
                 $pq = new PraticaQuestion();
-                $pq->setPratica($pratica);
+                $pq->setPratica($entity);
                 $question = $this->find('ClaimsHAuditBundle:Question', $_question->question);
                 if (!$question) {
                     continue;

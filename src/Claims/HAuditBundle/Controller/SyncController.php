@@ -396,6 +396,7 @@ class SyncController extends Controller {
             'question' => $risposte,
         );
 
+        return $this->jsonResponse($params);
         $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
 
         \Ephp\UtilityBundle\Utility\Debug::vd($output);
@@ -404,7 +405,7 @@ class SyncController extends Controller {
             return $this->redirect('claims-h-audit_show', array('id' => $entity->getAudit()->getId()));
         }
         
-        throw $this->jsonResponse($output);
+        return $this->jsonResponse($output);
     }
 
     /**

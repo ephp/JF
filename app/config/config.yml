@@ -33,6 +33,7 @@ twig:
         dimensione_massima_immagine: %dimensione_massima_immagine%
         larghezza_minima_immagine: %larghezza_minima_immagine%
         altezza_minima_immagine: %altezza_minima_immagine%
+        jf_mode: %jf_mode%
 
 # Assetic Configuration
 assetic:

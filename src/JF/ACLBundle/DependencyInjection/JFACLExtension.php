@@ -44,21 +44,23 @@ class JFACLExtension extends Extension implements IExtension {
     public function setMenu(ContainerBuilder $container) {
         $menu = $container->getParameter('jf.menu');
 
-        $menu['admin']['submenu'][] = array(
-            'label' => 'Utenze',
-            'route' => 'utenze',
-            'show' => array(
-                'in_role' => array('R_SUPER'),
-                'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
-            ),
-            'order' => 10,
-        );
-        $menu['admin']['submenu'][] = array(
-            'label' => 'Clienti',
-            'route' => 'eph_clienti',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 1,
-        );
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['admin']['submenu'][] = array(
+                'label' => 'Utenze',
+                'route' => 'utenze',
+                'show' => array(
+                    'in_role' => array('R_SUPER'),
+                    'license' => array('jf.acl-utenze' => array('small', 'medium', 'big', 'unlimited', 'slc'))
+                ),
+                'order' => 10,
+            );
+            $menu['admin']['submenu'][] = array(
+                'label' => 'Clienti',
+                'route' => 'eph_clienti',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 1,
+            );
+        }
 
         $menu['login'] = array(
             'label' => 'Login',

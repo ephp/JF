@@ -50,54 +50,55 @@ class ClaimsCoreExtension extends Extension implements IExtension, ITipiEventi {
             'a' => array('class' => 'blblue'),
             'icon' => 'ico-archive',
         );
-        
-        $menu['a_claims'] = array(
-            'label' => 'Gestione Claims',
-            'submenu' => array(),
-            'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
-            'order' => 110,
-            'a' => array('class' => 'blpurple'),
-            'icon' => 'ico-tools',
-        );
 
-        if (true) {
-
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Priorita',
-                'route' => 'eph_priorita',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 10,
-            );
-
-            $menu['a_claims']['submenu'][] = array(
-                'label' => 'Stato delle pratiche',
-                'route' => 'claims_stato_pratica',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 10,
-            );
-
-        } else {
-
-            $menu['admin']['submenu']['claims'] = array(
-                'label' => 'Claims',
+        if ($container->getParameter('jf.mode') == 'online') {
+            $menu['a_claims'] = array(
+                'label' => 'Gestione Claims',
                 'submenu' => array(),
-                'show' => array('in_role' => array('R_EPH', 'C_ADMIN')),
-                'order' => 100,
+                'show' => array('in_role' => array('C_ADMIN', 'R_EPH')),
+                'order' => 110,
+                'a' => array('class' => 'blpurple'),
+                'icon' => 'ico-tools',
             );
 
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Priorita',
-                'route' => 'eph_priorita',
-                'show' => array('in_role' => array('R_EPH')),
-                'order' => 10,
-            );
+            if (true) {
 
-            $menu['admin']['submenu']['claims']['submenu'][] = array(
-                'label' => 'Stato delle pratiche',
-                'route' => 'claims_stato_pratica',
-                'show' => array('in_role' => array('C_ADMIN')),
-                'order' => 10,
-            );
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Priorita',
+                    'route' => 'eph_priorita',
+                    'show' => array('in_role' => array('R_EPH')),
+                    'order' => 10,
+                );
+
+                $menu['a_claims']['submenu'][] = array(
+                    'label' => 'Stato delle pratiche',
+                    'route' => 'claims_stato_pratica',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 10,
+                );
+            } else {
+
+                $menu['admin']['submenu']['claims'] = array(
+                    'label' => 'Claims',
+                    'submenu' => array(),
+                    'show' => array('in_role' => array('R_EPH', 'C_ADMIN')),
+                    'order' => 100,
+                );
+
+                $menu['admin']['submenu']['claims']['submenu'][] = array(
+                    'label' => 'Priorita',
+                    'route' => 'eph_priorita',
+                    'show' => array('in_role' => array('R_EPH')),
+                    'order' => 10,
+                );
+
+                $menu['admin']['submenu']['claims']['submenu'][] = array(
+                    'label' => 'Stato delle pratiche',
+                    'route' => 'claims_stato_pratica',
+                    'show' => array('in_role' => array('C_ADMIN')),
+                    'order' => 10,
+                );
+            }
         }
 
         $container->setParameter('jf.menu', $menu);
@@ -135,7 +136,7 @@ class ClaimsCoreExtension extends Extension implements IExtension, ITipiEventi {
 
         $container->setParameter('jf.tipi_evento', $tipiEvento);
     }
-    
+
     public function setSync(ContainerBuilder $container) {
         
     }

@@ -29,8 +29,8 @@ security:
         eph:
             pattern:  /eph$
             security: false
-        eph:
-            pattern:  ^/sync
+        push:
+            pattern:  /push$
             security: false
         work:
             pattern:  /(_wdt)|(js)

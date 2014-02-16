@@ -529,7 +529,7 @@ class SyncController extends Controller {
             throw $ex;
         }
 
-        return $this->redirect($this->generateUrl('claims-h-audit_show-pratica', array('slug' => $entity->getSlug())));
+        return $this->redirect($this->generateUrl('claims-h-audit_show-pratica', array('id' => $entity->getAudit()->getId(), 'slug' => $entity->getSlug())));
     }
 
 }

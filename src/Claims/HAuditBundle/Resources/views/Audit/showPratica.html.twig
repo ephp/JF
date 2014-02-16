@@ -24,12 +24,13 @@
         <a target="_blank" href="{{ path('claims_audit_hospital_word_report', {'slug': pratica.slug}) }}"><span class="ico-file-3" title="Word export"></span></a>
     </div>
     {% if jf_mode == 'offline' %}
-        <div class="icon blue right white">
-            <a target="_blank" href="{{ path('sync_claims-h-audit-fetch-p', { 'id': pratica.id }) }}"><span class="ico-download-alt" title="load from server"></span></a>
-        </div>
         {% if pratica.priorita and pratica.priorita.priorita == 'Aggiornato' %}
             <div class="icon dblue right white">
                 <a target="_blank" href="{{ path('sync_claims-h-audit-pull-p', { 'id': pratica.id }) }}"><span class="ico-upload-alt" title="Update remote server"></span></a>
+            </div>
+        {% else %}
+            <div class="icon blue right white">
+                <a target="_blank" href="{{ path('sync_claims-h-audit-fetch-p', { 'id': pratica.id }) }}"><span class="ico-download-alt" title="load from server"></span></a>
             </div>
         {% endif %}
     {% endif %}

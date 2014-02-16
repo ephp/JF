@@ -89,9 +89,10 @@ function fastSearch() {
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
                                 {% if jf_mode == 'offline' %}
-                                    {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-p', { 'id': pratica.id })} %}                    
                                     {% if pratica.priorita and pratica.priorita.priorita == 'Aggiornato' %}
                                         {% include ":commons:upload.html.twig" with {'route': path('sync_claims-h-audit-pull-p', { 'id': pratica.id })} %}                    
+                                    {% else %}
+                                        {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-p', { 'id': pratica.id })} %}                    
                                     {% endif %}
                                 {% endif %}
                                 {% if jf_mode == 'online' %}

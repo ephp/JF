@@ -397,8 +397,12 @@ class SyncController extends Controller {
         );
 
         $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
+
+        if(isset($output['status']) && $output['status'] = 200) {
+            return $this->redirect('claims-h-audit_show', array('id' => $pratica->getAudit()->getId()));
+        }
         
-        return $this->jsonResponse($output);
+        throw new Exception(json_encode($output), 500);
     }
 
     /**
@@ -412,31 +416,49 @@ class SyncController extends Controller {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
 
-        return $this->jsonResponse(json_decode($this->getRequest()->getContent()));
-        
-        $risposte = array();
-        foreach ($entity->getQuestion() as $_question) {
-            /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
-            $risposte[] = array(
-                'question' => $_question->getQuestion()->getRemoteId(),
-                'ordine' => $_question->getOrdine(),
-                'response' => $_question->getResponse(),
-            );
-        }
-        $output = array(
-            'id' => $entity->getRemoteId(),
-            'fact' => $entity->getFact(),
-            'liability' => $entity->getLiability(),
-            'quantum' => $entity->getQuantum(),
-            'cronology' => $entity->getCronology(),
-            'claimsHandling' => $entity->getClaimsHandling(),
-            'commentsLLR' => $entity->getCommentsLLR(),
-            'nlComments' => $entity->getNlComments(),
-            'note' => $entity->getNote(),
-            'question' => $risposte,
-        );
+        $_pratica = json_decode($this->getRequest()->getContent());
 
-        return $this->jsonResponse($output);
+        try {
+            $this->getEm()->beginTransaction();
+
+            $pratica->setFact($_pratica->fact);
+            $pratica->setLiability($_pratica->liability);
+            $pratica->setQuantum($_pratica->quantum);
+            $pratica->setCronology($_pratica->cronology);
+            $pratica->setClaimsHandling($_pratica->claimsHandling);
+            $pratica->setCommentsLLR($_pratica->commentsLLR);
+            $pratica->setNlComments($_pratica->nlComments);
+            $pratica->setNote($_pratica->note);
+            $this->persist($pratica);
+
+            foreach ($pratica->getQuestion() as $pq) {
+                $this->remove($pq);
+            }
+            foreach ($_pratica->question as $_question) {
+                $pq = new PraticaQuestion();
+                $pq->setPratica($pratica);
+                $question = $this->find('ClaimsHAuditBundle:Question', $_question->question);
+                if (!$question) {
+                    continue;
+                }
+                /* @var $question Question */
+                $pq->setQuestion($question);
+                $pq->setOrdine($_question->ordine);
+                $pq->setResponse($_question->response);
+                if ($question->getGruppo()) {
+                    $pq->setGruppo($question->getGruppo());
+                }
+                if ($question->getSottogruppo()) {
+                    $pq->setSottogruppo($question->getSottogruppo());
+                }
+                $this->persist($pq);
+            }
+            $this->getEm()->commit();
+        } catch (Exception $ex) {
+            $this->getEm()->rollback();
+        }
+
+        return $this->jsonResponse(array('status' => 200));
     }
 
 }

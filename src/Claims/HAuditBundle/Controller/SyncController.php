@@ -398,11 +398,13 @@ class SyncController extends Controller {
 
         $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
 
-        if(isset($output['status']) && $output['status'] = 200) {
-            return $this->redirect('claims-h-audit_show', array('id' => $pratica->getAudit()->getId()));
+        \Ephp\UtilityBundle\Utility\Debug::vd($output);
+        
+        if(isset($output->status) && $output->status = 200) {
+            return $this->redirect('claims-h-audit_show', array('id' => $entity->getAudit()->getId()));
         }
         
-        throw new Exception(json_encode($output), 500);
+        throw $this->jsonResponse($output);
     }
 
     /**
@@ -454,8 +456,9 @@ class SyncController extends Controller {
                 $this->persist($pq);
             }
             $this->getEm()->commit();
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->getEm()->rollback();
+            return $this->jsonResponse(array('status' => 500, 'message' => $ex->getMessage()));
         }
 
         return $this->jsonResponse(array('status' => 200));

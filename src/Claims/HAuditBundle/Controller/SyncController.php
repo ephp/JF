@@ -53,7 +53,7 @@ class SyncController extends Controller {
      * @Template()
      */
     public function fetchListAction() {
-        $output = json_decode($this->curlGet($this->container->getParameter('jf.server') . '/sync/claims-h-audit-push-list'));
+        $output = json_decode($this->curlGet($this->container->getParameter('jf.server') . '/sync/claims-h-audit-list/push'));
         foreach ($output as $key => $audit) {
             $n = $this->countDql('ClaimsHAuditBundle:Audit', array('remoteId' => $audit->id));
             $output[$key]->imported = $n;
@@ -92,7 +92,7 @@ class SyncController extends Controller {
                     $question = new Question();
                     $question->setRemoteId($_question->id);
                 }
-                
+
                 if ($_question->gruppo) {
                     $gruppo = $this->findOneBy('ClaimsHAuditBundle:Gruppo', array('remoteId' => $_question->gruppo->id));
                     if (!$gruppo) {
@@ -119,7 +119,7 @@ class SyncController extends Controller {
                     }
                     $question->setSottogruppo($sottogruppo);
                 }
-                
+
                 $question->setDomanda($_question->domanda);
                 $question->setQuestion($_question->question);
                 $question->setEsempio($_question->esempio);
@@ -127,6 +127,7 @@ class SyncController extends Controller {
                 $question->setOptions($_question->options);
                 $question->setOrdine($_question->ordine);
                 $question->setRicerca($_question->ricerca);
+                $question->setPrePopulate($_question->prePopulate);
                 $question->setType($_question->type);
                 $this->persist($question);
             }
@@ -141,10 +142,10 @@ class SyncController extends Controller {
                 /* @var $question Question */
                 $aq->setQuestion($question);
                 $aq->setOrdine($question->getOrdine());
-                if($question->getGruppo()) {
+                if ($question->getGruppo()) {
                     $aq->setGruppo($question->getGruppo());
                 }
-                if($question->getSottogruppo()) {
+                if ($question->getSottogruppo()) {
                     $aq->setSottogruppo($question->getSottogruppo());
                 }
                 $this->persist($aq);
@@ -180,6 +181,7 @@ class SyncController extends Controller {
                 $pratica->setNlComments($_pratica->nlComments);
                 $pratica->setNote($_pratica->note);
                 $pratica->setDataImport(new \DateTime());
+                $pratica->setAudit($audit);
                 $this->persist($pratica);
 
                 foreach ($pratica->getQuestion() as $pq) {
@@ -187,16 +189,19 @@ class SyncController extends Controller {
                 }
                 foreach ($_pratica->question as $_question) {
                     $pq = new PraticaQuestion();
-                    $pq->setPratica($audit);
-                    $question = $this->findOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->id));
+                    $pq->setPratica($pratica);
+                    $question = $this->findOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->question));
+                    if (!$question) {
+                        continue;
+                    }
                     /* @var $question Question */
                     $pq->setQuestion($question);
                     $pq->setOrdine($_question->ordine);
                     $pq->setResponse($_question->response);
-                    if($question->getGruppo()) {
+                    if ($question->getGruppo()) {
                         $pq->setGruppo($question->getGruppo());
                     }
-                    if($question->getSottogruppo()) {
+                    if ($question->getSottogruppo()) {
                         $pq->setSottogruppo($question->getSottogruppo());
                     }
                     $this->persist($pq);
@@ -272,7 +277,6 @@ class SyncController extends Controller {
             foreach ($pratica->getQuestion() as $_question) {
                 /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
                 $risposte[] = array(
-                    'pratica' => $pratica->getId(),
                     'question' => $_question->getQuestion()->getId(),
                     'ordine' => $_question->getOrdine(),
                     'response' => $_question->getResponse(),
@@ -305,6 +309,132 @@ class SyncController extends Controller {
                 'question' => $risposte,
             );
         }
+
+        return $this->jsonResponse($output);
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-audit/{id}/pull", name="sync_claims-h-audit-pull-audit", options={"_format": "json"})
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     */
+    public function pullAuditAction(Audit $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Audit entity.');
+        }
+
+        $output = array(
+            'audit' => array(),
+            'pratiche' => array(),
+        );
+
+        $output['audit'] = array(
+            'id' => $entity->getRemoteId(),
+            'luogo' => $entity->getLuogo(),
+            'giorno' => $entity->getGiorno()->format('d/m/Y'),
+            'note' => $entity->getNote(),
+        );
+
+        foreach ($entity->getPratiche() as $pratica) {
+            /* @var $pratica \Claims\HAuditBundle\Entity\Pratica */
+            $risposte = array();
+            foreach ($pratica->getQuestion() as $_question) {
+                /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
+                $risposte[] = array(
+                    'question' => $_question->getQuestion()->getRemoteId(),
+                    'ordine' => $_question->getOrdine(),
+                    'response' => $_question->getResponse(),
+                );
+            }
+            $output['pratiche'][] = array(
+                'id' => $pratica->getRemoteId(),
+                'fact' => $pratica->getFact(),
+                'liability' => $pratica->getLiability(),
+                'quantum' => $pratica->getQuantum(),
+                'cronology' => $pratica->getCronology(),
+                'claimsHandling' => $pratica->getClaimsHandling(),
+                'commentsLLR' => $pratica->getCommentsLLR(),
+                'nlComments' => $pratica->getNlComments(),
+                'note' => $pratica->getNote(),
+                'question' => $risposte,
+            );
+        }
+
+        return $this->jsonResponse($output);
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-pratica/{id}/pull", name="sync_claims-h-audit-pull-p", options={"_format": "json"})
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
+     */
+    public function pullPraticaAction(Pratica $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        $risposte = array();
+        foreach ($entity->getQuestion() as $_question) {
+            /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
+            $risposte[] = array(
+                'question' => $_question->getQuestion()->getRemoteId(),
+                'ordine' => $_question->getOrdine(),
+                'response' => $_question->getResponse(),
+            );
+        }
+        $params = array(
+            'fact' => $entity->getFact(),
+            'liability' => $entity->getLiability(),
+            'quantum' => $entity->getQuantum(),
+            'cronology' => $entity->getCronology(),
+            'claimsHandling' => $entity->getClaimsHandling(),
+            'commentsLLR' => $entity->getCommentsLLR(),
+            'nlComments' => $entity->getNlComments(),
+            'note' => $entity->getNote(),
+            'question' => $risposte,
+        );
+
+        $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
+        
+        return $this->jsonResponse($output);
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-pratica/{id}/get", name="sync_claims-h-audit-get-p", options={"_format": "json"})
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
+     */
+    public function getPraticaAction(Pratica $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        return $this->jsonResponse($this->getRequest()->getContent());
+        
+        $risposte = array();
+        foreach ($entity->getQuestion() as $_question) {
+            /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
+            $risposte[] = array(
+                'question' => $_question->getQuestion()->getRemoteId(),
+                'ordine' => $_question->getOrdine(),
+                'response' => $_question->getResponse(),
+            );
+        }
+        $output = array(
+            'id' => $entity->getRemoteId(),
+            'fact' => $entity->getFact(),
+            'liability' => $entity->getLiability(),
+            'quantum' => $entity->getQuantum(),
+            'cronology' => $entity->getCronology(),
+            'claimsHandling' => $entity->getClaimsHandling(),
+            'commentsLLR' => $entity->getCommentsLLR(),
+            'nlComments' => $entity->getNlComments(),
+            'note' => $entity->getNote(),
+            'question' => $risposte,
+        );
 
         return $this->jsonResponse($output);
     }

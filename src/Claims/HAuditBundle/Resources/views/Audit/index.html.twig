@@ -50,7 +50,7 @@
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
                                 {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id }), 'enable': true} %}
                                 {% if jf_mode == 'offline' %}
-                                    {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-audit', { 'id': entity.id })} %}                    
+                                    {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-audit', { 'id': entity.remoteId })} %}                    
                                 {% endif %}
                                 {% if jf_mode == 'online' %}
                                     {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id, 'question': 'You want to delete the audit ' ~ entity.luogo } %}

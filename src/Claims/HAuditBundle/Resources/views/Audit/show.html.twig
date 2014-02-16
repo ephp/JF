@@ -83,7 +83,12 @@ function fastSearch() {
                             <td>{{ pratica.question01 }}/{{ entity.question|length }}</td>
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
-                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_pratica-delete', { 'id': pratica.id }), 'disable': not app.user.hasRole('C_AUDIT_HC'), 'question': 'You want to delete ' ~ pratica.claimant } %}
+                                {% if jf_mode == 'offline' %}
+                                    {% include ":commons:upload.html.twig" with {'route': path('sync_claims-h-audit-pull-p', { 'id': pratica.id })} %}                    
+                                {% endif %}
+                                {% if jf_mode == 'online' %}
+                                    {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_pratica-delete', { 'id': pratica.id }), 'disable': not app.user.hasRole('C_AUDIT_HC'), 'question': 'You want to delete ' ~ pratica.claimant } %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

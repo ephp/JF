@@ -32,6 +32,9 @@ security:
         push:
             pattern:  /push$
             security: false
+        get:
+            pattern:  /get$
+            security: false
         work:
             pattern:  /(_wdt)|(js)
             security: false

@@ -31,9 +31,9 @@
                             <td>{{ entity.giorno }}</td>
                             <td>{{ entity.note }}</td>
                             <td>{{ entity.pratiche }}</td>
-                            <td>{{ entity.question }}</td>
+                            <td>{{ entity.domande }}</td>
                             <td>
-                                {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-push-audit', { 'id': entity.id })} %}                   
+                                {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-audit', { 'id': entity.id })} %}                   
                             </td>
                         </tr>
                     {% endfor %}

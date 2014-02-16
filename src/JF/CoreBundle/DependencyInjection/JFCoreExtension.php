@@ -24,10 +24,10 @@ class JFCoreExtension extends Extension implements IExtension {
     public function load(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        
+
         $container->setParameter('jf.mode', $config['mode']);
         $container->setParameter('jf.server', $config['server']);
-        
+
         $this->configure($container);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -61,7 +61,7 @@ class JFCoreExtension extends Extension implements IExtension {
             'a' => array('class' => 'blred'),
             'icon' => 'ico-monitor',
         );
-        if(true) {
+        if ($container->getParameter('jf.mode') == 'online') {
             $menu['admin']['submenu'][] = array(
                 'label' => 'Catalogo',
                 'route' => 'catalogo',
@@ -70,21 +70,21 @@ class JFCoreExtension extends Extension implements IExtension {
                 ),
                 'order' => 1,
             );
+            $menu['admin']['submenu'][] = array(
+                'label' => 'Licenze',
+                'route' => 'index',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 20,
+                'a' => array('class' => 'todo'),
+            );
+            $menu['admin']['submenu'][] = array(
+                'label' => 'Stato del sistema',
+                'route' => 'index',
+                'show' => array('in_role' => array('R_EPH')),
+                'order' => 999,
+                'a' => array('class' => 'todo'),
+            );
         }
-        $menu['admin']['submenu'][] = array(
-            'label' => 'Licenze',
-            'route' => 'index',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 20,
-            'a' => array('class' => 'todo'),
-        );
-        $menu['admin']['submenu'][] = array(
-            'label' => 'Stato del sistema',
-            'route' => 'index',
-            'show' => array('in_role' => array('R_EPH')),
-            'order' => 999,
-            'a' => array('class' => 'todo'),
-        );
 
         $menu['utility'] = array(
             'label' => 'Utility',
@@ -93,7 +93,7 @@ class JFCoreExtension extends Extension implements IExtension {
             'a' => array('class' => 'blgreen'),
             'icon' => 'ico-lab',
         );
-        if($container->getParameter("kernel.environment") == 'dev') {
+        if ($container->getParameter("kernel.environment") == 'dev') {
             $menu['utility']['submenu'][] = array(
                 'label' => 'Variabili di sistema',
                 'route' => 'debug',

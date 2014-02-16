@@ -412,7 +412,7 @@ class SyncController extends Controller {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
 
-        return $this->jsonResponse($this->getRequest()->getContent());
+        return $this->jsonResponse(json_decode($this->getRequest()->getContent()));
         
         $risposte = array();
         foreach ($entity->getQuestion() as $_question) {

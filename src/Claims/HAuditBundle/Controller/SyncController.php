@@ -68,11 +68,13 @@ class SyncController extends Controller {
      * @Route("-audit/{id}/fetch", name="sync_claims-h-audit-fetch-audit", options={"_format": "json"})
      */
     public function fetchAuditAction($id) {
-        $output = json_decode($this->curlGet($this->container->getParameter('jf.server') . '/sync/claims-h-audit-push-audit/' . $id));
+        set_time_limit(3600);
+
+        $output = json_decode($this->curlGet($this->container->getParameter('jf.server') . '/sync/claims-h-audit-audit/' . $id . '/push'));
 
         try {
             $this->getEm()->beginTransaction();
-            $audit = $this->finsOneBy('ClaimsHAuditBundle:Audit', array('remoteId' => $output->audit->id));
+            $audit = $this->findOneBy('ClaimsHAuditBundle:Audit', array('remoteId' => $output->audit->id));
             /* @var $audi Audit */
             if (!$audit) {
                 $audit = new Audit();
@@ -82,35 +84,42 @@ class SyncController extends Controller {
             $audit->setGiorno(\DateTime::createFromFormat('d/m/Y', $output->audit->giorno));
             $audit->setNote($output->audit->note);
             $this->persist($audit);
-            
-            foreach($output->question as $_question) {
-                $question = $this->finsOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->id));
+
+            foreach ($output->question as $_question) {
+                $question = $this->findOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->id));
                 /* @var $question Question */
                 if (!$question) {
                     $question = new Question();
                     $question->setRemoteId($_question->id);
                 }
-                $gruppo = $this->finsOneBy('ClaimsHAuditBundle:Gruppo', array('remoteId' => $_question->gruppo->id));
-                if (!$gruppo) {
-                    $gruppo = new Gruppo();
-                    $gruppo->setRemoteId($_question->gruppo->id);
-                    $gruppo->setOrdine($_question->gruppo->ordine);
-                    $gruppo->setShow($_question->gruppo->show);
-                    $gruppo->setTitle($_question->gruppo->title);
-                    $gruppo->setTitolo($_question->gruppo->titolo);
-                    $this->persist($gruppo);
+                
+                if ($_question->gruppo) {
+                    $gruppo = $this->findOneBy('ClaimsHAuditBundle:Gruppo', array('remoteId' => $_question->gruppo->id));
+                    if (!$gruppo) {
+                        $gruppo = new Gruppo();
+                        $gruppo->setRemoteId($_question->gruppo->id);
+                        $gruppo->setOrdine($_question->gruppo->ordine);
+                        $gruppo->setShow($_question->gruppo->show);
+                        $gruppo->setTitle($_question->gruppo->title);
+                        $gruppo->setTitolo($_question->gruppo->titolo);
+                        $this->persist($gruppo);
+                    }
+                    $question->setGruppo($gruppo);
                 }
-                $question->setGruppo($gruppo);
-                $sottogruppo = $this->finsOneBy('ClaimsHAuditBundle:Sottogruppo', array('remoteId' => $_question->sottogruppo->id));
-                if (!$sottogruppo) {
-                    $sottogruppo = new sottogruppo();
-                    $sottogruppo->setRemoteId($_question->sottogruppo->id);
-                    $sottogruppo->setMultiplo($_question->sottogruppo->multiplo);
-                    $sottogruppo->setTitle($_question->sottogruppo->title);
-                    $sottogruppo->setTitolo($_question->sottogruppo->titolo);
-                    $this->persist($sottogruppo);
+
+                if ($_question->sottogruppo) {
+                    $sottogruppo = $this->findOneBy('ClaimsHAuditBundle:Sottogruppo', array('remoteId' => $_question->sottogruppo->id));
+                    if (!$sottogruppo) {
+                        $sottogruppo = new sottogruppo();
+                        $sottogruppo->setRemoteId($_question->sottogruppo->id);
+                        $sottogruppo->setMultiplo($_question->sottogruppo->multiplo);
+                        $sottogruppo->setTitle($_question->sottogruppo->title);
+                        $sottogruppo->setTitolo($_question->sottogruppo->titolo);
+                        $this->persist($sottogruppo);
+                    }
+                    $question->setSottogruppo($sottogruppo);
                 }
-                $question->setSottogruppo($sottogruppo);
+                
                 $question->setDomanda($_question->domanda);
                 $question->setQuestion($_question->question);
                 $question->setEsempio($_question->esempio);
@@ -118,27 +127,31 @@ class SyncController extends Controller {
                 $question->setOptions($_question->options);
                 $question->setOrdine($_question->ordine);
                 $question->setRicerca($_question->ricerca);
-                $this->persist($question);
                 $question->setType($_question->type);
+                $this->persist($question);
             }
-            
-            foreach($audit->getQuestion() as $aq) {
+
+            foreach ($audit->getQuestion() as $aq) {
                 $this->remove($aq);
             }
-            foreach($output->auditQuestion as $_question) {
+            foreach ($output->auditQuestion as $_question) {
                 $aq = new AuditQuestion();
                 $aq->setAudit($audit);
-                $question = $this->finsOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question));
+                $question = $this->findOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question));
                 /* @var $question Question */
                 $aq->setQuestion($question);
                 $aq->setOrdine($question->getOrdine());
-                $aq->setGruppo($question->getGruppo());
-                $aq->setSottogruppo($question->getSottogruppo());
+                if($question->getGruppo()) {
+                    $aq->setGruppo($question->getGruppo());
+                }
+                if($question->getSottogruppo()) {
+                    $aq->setSottogruppo($question->getSottogruppo());
+                }
                 $this->persist($aq);
             }
 
-            foreach($output->pratiche as $_pratica) {
-                $pratica = $this->finsOneBy('ClaimsHAuditBundle:Pratica', array('remoteId' => $_pratica->id));
+            foreach ($output->pratiche as $_pratica) {
+                $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('remoteId' => $_pratica->id));
                 /* @var $pratica Pratica */
                 if (!$pratica) {
                     $pratica = new Pratica();
@@ -153,7 +166,7 @@ class SyncController extends Controller {
                 $pratica->setGruppo($_pratica->gruppo);
                 $pratica->setTpa($_pratica->tpa);
                 $pratica->setDsCode($_pratica->dsCode);
-                $pratica->setClaimant($_pratica->claimat);
+                $pratica->setClaimant($_pratica->claimant);
                 $pratica->setStatus($_pratica->status);
                 $pratica->setReserve($_pratica->reserve);
                 $pratica->setProReserve($_pratica->proReserve);
@@ -166,21 +179,26 @@ class SyncController extends Controller {
                 $pratica->setCommentsLLR($_pratica->commentsLLR);
                 $pratica->setNlComments($_pratica->nlComments);
                 $pratica->setNote($_pratica->note);
+                $pratica->setDataImport(new \DateTime());
                 $this->persist($pratica);
-                
-                foreach($pratica->getQuestion() as $pq) {
+
+                foreach ($pratica->getQuestion() as $pq) {
                     $this->remove($pq);
                 }
-                foreach($_pratica->question as $_question) {
+                foreach ($_pratica->question as $_question) {
                     $pq = new PraticaQuestion();
                     $pq->setPratica($audit);
-                    $question = $this->finsOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->id));
+                    $question = $this->findOneBy('ClaimsHAuditBundle:Question', array('remoteId' => $_question->id));
                     /* @var $question Question */
                     $pq->setQuestion($question);
                     $pq->setOrdine($_question->ordine);
                     $pq->setResponse($_question->response);
-                    $pq->setGruppo($question->getGruppo());
-                    $pq->setSottogruppo($question->getSottogruppo());
+                    if($question->getGruppo()) {
+                        $pq->setGruppo($question->getGruppo());
+                    }
+                    if($question->getSottogruppo()) {
+                        $pq->setSottogruppo($question->getSottogruppo());
+                    }
                     $this->persist($pq);
                 }
             }
@@ -189,7 +207,7 @@ class SyncController extends Controller {
             $this->getEm()->rollback();
             throw $ex;
         }
-        return $this->redirect($this->generateUrl('claims_h_audit_show', array('id' => $audit->getId())));
+        return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $audit->getId())));
     }
 
     /**
@@ -286,7 +304,6 @@ class SyncController extends Controller {
                 'note' => $pratica->getNote(),
                 'question' => $risposte,
             );
-
         }
 
         return $this->jsonResponse($output);

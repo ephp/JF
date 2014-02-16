@@ -30,7 +30,7 @@
                                 <a href="{{ path('claims-h-audit_edit', { 'id': entity.id }) }}">{{ entity.luogo }}</a>
                             </td>
                             <td>{% if entity.giorno %}{{ entity.giorno|date('d/m/Y') }}{% endif %}</td>
-                            <td>{{ entity.note }}{% if entity.note %}<br/>{% endif %}<small>created by {{ entity.cliente.nome }}</small></td>
+                            <td>{{ entity.note }}{% if entity.note %}<br/>{% endif %}{% if entity.cliente %}<small>created by {{ entity.cliente.nome }}</small>{% endif %}</td>
                             <td>
                                 <a href="{{ path('claims-h-audit-file', { 'audit': entity.id }) }}">{{ entity.pratiche|length }}</a>
                             </td>
@@ -48,9 +48,13 @@
                             </td>
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show', { 'id': entity.id })} %}
-                                {% include ":commons:download.html.twig" with {'route': path('claims-h-audit-xls', { 'id': entity.id })} %}                    
                                 {% include ":commons:star.html.twig" with {'route': path('claims-h-audit_risposte', { 'id': entity.id }), 'enable': true} %}
-                                {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id, 'question': 'You want to delete the audit ' ~ entity.luogo } %}
+                                {% if jf_mode == 'offline' %}
+                                    {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-audit', { 'id': entity.id })} %}                    
+                                {% endif %}
+                                {% if jf_mode == 'online' %}
+                                    {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_delete', { 'id': entity.id }), 'disable': entity.cliente.id != app.user.cliente.id, 'question': 'You want to delete the audit ' ~ entity.luogo } %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

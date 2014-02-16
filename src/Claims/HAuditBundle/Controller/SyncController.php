@@ -182,6 +182,7 @@ class SyncController extends Controller {
                 $pratica->setNlComments($_pratica->nlComments);
                 $pratica->setNote($_pratica->note);
                 $pratica->setDataImport(new \DateTime());
+                $pratica->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
                 $pratica->setAudit($audit);
                 $this->persist($pratica);
 
@@ -370,6 +371,7 @@ class SyncController extends Controller {
      * Finds and displays a Audit entity.
      *
      * @Route("-pratica/{id}/pull", name="sync_claims-h-audit-pull-p", options={"_format": "json"})
+     * @Route("-pratica/{id}/push", name="sync_claims-h-audit-push-p", options={"_format": "json"})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
     public function pullPraticaAction(Pratica $entity) {
@@ -398,13 +400,20 @@ class SyncController extends Controller {
             'question' => $risposte,
         );
 
-        $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
+        if ($this->getParam('_route') == 'sync_claims-h-audit-pull-p') {
 
-        if(isset($output->status) && $output->status = 200) {
-            return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $entity->getAudit()->getId())));
+            $output = json_decode($this->curlPost($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/get', $params));
+
+            if (isset($output->status) && $output->status = 200) {
+                $entity->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+                $this->persist($entity);
+                return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $entity->getAudit()->getId())));
+            }
+
+            throw new \Exception(json_encode($output));
+        } else {
+            return $this->jsonResponse($params);
         }
-        
-        throw new \Exception(json_encode($output));
     }
 
     /**
@@ -431,6 +440,7 @@ class SyncController extends Controller {
             $entity->setCommentsLLR($_pratica->commentsLLR);
             $entity->setNlComments($_pratica->nlComments);
             $entity->setNote($_pratica->note);
+            $entity->setDataImport(new \DateTime());
             $this->persist($entity);
 
             foreach ($entity->getQuestion() as $pq) {
@@ -462,6 +472,64 @@ class SyncController extends Controller {
         }
 
         return $this->jsonResponse(array('status' => 200));
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-pratica/{id}/fetch", name="sync_claims-h-audit-fetch-p", options={"_format": "json"})
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
+     */
+    public function fetchPraticaAction(Pratica $entity) {
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        $_pratica = json_decode($this->curlGet($this->container->getParameter('jf.server') . '/sync/claims-h-audit-pratica/' . $entity->getRemoteId() . '/push'));
+
+        try {
+            $this->getEm()->beginTransaction();
+
+            $entity->setFact($_pratica->fact);
+            $entity->setLiability($_pratica->liability);
+            $entity->setQuantum($_pratica->quantum);
+            $entity->setCronology($_pratica->cronology);
+            $entity->setClaimsHandling($_pratica->claimsHandling);
+            $entity->setCommentsLLR($_pratica->commentsLLR);
+            $entity->setNlComments($_pratica->nlComments);
+            $entity->setNote($_pratica->note);
+            $entity->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Normale')));
+            $this->persist($entity);
+
+            foreach ($entity->getQuestion() as $pq) {
+                $this->remove($pq);
+            }
+            foreach ($_pratica->question as $_question) {
+                $pq = new PraticaQuestion();
+                $pq->setPratica($entity);
+                $question = $this->find('ClaimsHAuditBundle:Question', $_question->question);
+                if (!$question) {
+                    continue;
+                }
+                /* @var $question Question */
+                $pq->setQuestion($question);
+                $pq->setOrdine($_question->ordine);
+                $pq->setResponse($_question->response);
+                if ($question->getGruppo()) {
+                    $pq->setGruppo($question->getGruppo());
+                }
+                if ($question->getSottogruppo()) {
+                    $pq->setSottogruppo($question->getSottogruppo());
+                }
+                $this->persist($pq);
+            }
+            $this->getEm()->commit();
+        } catch (\Exception $ex) {
+            $this->getEm()->rollback();
+            throw $ex;
+        }
+
+        return $this->redirect($this->generateUrl('claims-h-audit_show-pratica', array('slug' => $entity->getSlug())));
     }
 
 }

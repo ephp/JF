@@ -20,9 +20,19 @@
         <span class="ico-eye-open"></span>
     </div>
     <h1>Audit Hospital<small>{{ audit.luogo }} - {{ audit.giorno|date('d/m/Y') }}</small></h1>
-    <div class="icon dblue right white">
-        <a target="_blank" href="{{ path('claims_audit_hospital_word_report', {'slug': pratica.slug}) }}"><span class="ico-file-3" title="Esporta Word"></span></a>
+    <div class="icon red right white">
+        <a target="_blank" href="{{ path('claims_audit_hospital_word_report', {'slug': pratica.slug}) }}"><span class="ico-file-3" title="Word export"></span></a>
     </div>
+    {% if jf_mode == 'offline' %}
+        <div class="icon blue right white">
+            <a target="_blank" href="{{ path('sync_claims-h-audit-fetch-p', { 'id': pratica.id }) }}"><span class="ico-download-alt" title="load from server"></span></a>
+        </div>
+        {% if pratica.priorita and pratica.priorita.priorita == 'Aggiornato' %}
+            <div class="icon dblue right white">
+                <a target="_blank" href="{{ path('sync_claims-h-audit-pull-p', { 'id': pratica.id }) }}"><span class="ico-upload-alt" title="Update remote server"></span></a>
+            </div>
+        {% endif %}
+    {% endif %}
 </div>
 <div class="row-fluid">
     <div class="span6">
@@ -176,9 +186,11 @@
     </div>
     <div class="span6">
         <div class="block">
-            <div class="row-fluid" id="files">
-                {% include "ClaimsHAuditBundle:Audit:files.html.twig" %}
-            </div>
+            {% if jf_mode == 'online' %}
+                <div class="row-fluid" id="files">
+                    {% include "ClaimsHAuditBundle:Audit:files.html.twig" %}
+                </div>
+            {% endif %}
             <div class="row-fluid" id="question" style="margin-top: 10px;">
             <a name="box"></a>
              {% for question in audit.question %}

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ephp\UtilityBundle\Controller\Traits\BaseController;
 use Ephp\UtilityBundle\PhpExcel\SpreadsheetExcelReader;
-use Ephp\UtilityBundle\Utility\String;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -319,7 +318,10 @@ class AuditController extends Controller {
                 $pratica->addQuestion($pq);
             }
         }
-
+        if ($pratica->getRemoteId()) {
+            $pratica->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Aggiornato')));
+            $this->persist($pratica);
+        }
         $group = $audit->getGroup($this->getParam('ordine') + 1);
 
         return array(
@@ -603,6 +605,9 @@ class AuditController extends Controller {
             $this->getEm()->beginTransaction();
             $fx = \Doctrine\Common\Util\Inflector::camelize("set_{$req['field']}");
             $pratica->$fx($req['value']);
+            if ($pratica->getRemoteId()) {
+                $pratica->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Aggiornato')));
+            }
             $this->persist($pratica);
             $this->getEm()->commit();
         } catch (\Exception $e) {

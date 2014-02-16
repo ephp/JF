@@ -30,6 +30,11 @@ function fastSearch() {
     <div class="icon green right white">
         <a target="_blank" href="{{ path('claims-h-audit-xls', query)}}"><span class="ico-table" title="Esporta Excel"></span></a>
     </div>
+    {% if jf_mode == 'offline' %}
+        <div class="icon blue right white">
+            <a target="_blank" href="{{ path('sync_claims-h-audit-fetch-audit', { 'id': entity.remoteId }) }}"><span class="ico-download-alt" title="load from server"></span></a>
+        </div>
+    {% endif %}
 </div>
 <div class="row-fluid">
     <div class="span12">
@@ -84,7 +89,10 @@ function fastSearch() {
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
                                 {% if jf_mode == 'offline' %}
-                                    {% include ":commons:upload.html.twig" with {'route': path('sync_claims-h-audit-pull-p', { 'id': pratica.id })} %}                    
+                                    {% include ":commons:download.html.twig" with {'route': path('sync_claims-h-audit-fetch-p', { 'id': pratica.id })} %}                    
+                                    {% if pratica.priorita and pratica.priorita.priorita == 'Aggiornato' %}
+                                        {% include ":commons:upload.html.twig" with {'route': path('sync_claims-h-audit-pull-p', { 'id': pratica.id })} %}                    
+                                    {% endif %}
                                 {% endif %}
                                 {% if jf_mode == 'online' %}
                                     {% include ":commons:delete.html.twig" with {'route': path('claims-h-audit_pratica-delete', { 'id': pratica.id }), 'disable': not app.user.hasRole('C_AUDIT_HC'), 'question': 'You want to delete ' ~ pratica.claimant } %}

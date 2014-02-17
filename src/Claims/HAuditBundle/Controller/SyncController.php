@@ -432,6 +432,29 @@ class SyncController extends Controller {
         try {
             $this->getEm()->beginTransaction();
 
+            $risposte = array();
+            foreach ($entity->getQuestion() as $_question) {
+                /* @var $_question \Claims\HAuditBundle\Entity\PraticaQuestion */
+                $risposte[] = array(
+                    'question' => $_question->getQuestion()->getRemoteId(),
+                    'ordine' => $_question->getOrdine(),
+                    'response' => $_question->getResponse(),
+                );
+            }
+            $params = array(
+                'fact' => $entity->getFact(),
+                'liability' => $entity->getLiability(),
+                'quantum' => $entity->getQuantum(),
+                'cronology' => $entity->getCronology(),
+                'claimsHandling' => $entity->getClaimsHandling(),
+                'commentsLLR' => $entity->getCommentsLLR(),
+                'nlComments' => $entity->getNlComments(),
+                'note' => $entity->getNote(),
+                'question' => $risposte,
+            );
+
+            $entity->addLog($params);
+
             $entity->setFact($_pratica->fact);
             $entity->setLiability($_pratica->liability);
             $entity->setQuantum($_pratica->quantum);

@@ -2,6 +2,8 @@
 
 namespace Claims\HAuditBundle\Controller\Traits;
 
+use Ephp\UtilityBundle\PhpExcel\SpreadsheetExcelReader;
+
 trait AuditController {
 
     private function sorting() {

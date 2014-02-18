@@ -2,7 +2,19 @@
 
 namespace Claims\HAuditBundle\Controller\Traits;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Ephp\UtilityBundle\Controller\Traits\BaseController;
 use Ephp\UtilityBundle\PhpExcel\SpreadsheetExcelReader;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Claims\HAuditBundle\Entity\Pratica;
+use Claims\HAuditBundle\Entity\Audit;
+use Claims\HAuditBundle\Entity\Question;
+use Claims\HAuditBundle\Form\AuditType;
+use Claims\HAuditBundle\Form\QuestionType;
 
 trait AuditController {
 

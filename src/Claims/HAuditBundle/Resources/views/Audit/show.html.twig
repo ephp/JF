@@ -4,6 +4,15 @@
 $('#fast_search').keyup(function(){
     fastSearch();
 });
+
+$('span.label').click(function() {
+    var tr = $(this).closest('tr');
+    $('#cambia_priorita_a').text(tr.attr('titolo'));
+    $('#priorita_id').val(tr.attr('id'));
+    $('#priorita_priorita').val(tr.attr('priorita'));
+    $('#bt_cambia_priorita').show();
+    $('#wait_cambia_priorita').hide();
+});
 {% endblock ready_js %}
 {% block inline_js %}
 function fastSearch() {
@@ -18,7 +27,29 @@ function fastSearch() {
             }
         });
     }
-} 
+}
+
+function assegnaPriorita() {
+    $('#bt_cambia_priorita').hide();
+    $('#wait_cambia_priorita').show();
+    var form = $('#cambia_priorita');
+    $.post(Routing.generate('claims_hospital_audit_cambia_priorita'), form.serialize(), function(out) {
+        var riga = $('#' + $('#priorita_id').val());
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.label');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        $.fancybox.close();
+    });
+}
 {% endblock inline_js %}
 
 {% block body -%}
@@ -73,18 +104,32 @@ function fastSearch() {
                             <th>TPA</th>
                             <th>Claimant <input type="text" id="fast_search" style="width: 200px;"></th>
                             <th>Reserve</th>
+                            <th>Proirity</th>
                             <th>Progress</th>
                             <th width="80" class="TAC">Op.</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for pratica in pratiche %}
-                        <tr name="{{ pratica.claimant }}" class='fast_search'>                            
+                        <tr name="{{ pratica.claimant }}" class='fast_search' id="{{ pratica.slug }}" titolo="{{ pratica }}" priorita="{% if pratica.priorita %}{{ pratica.priorita.id }}{% endif %}">                            
                             <td>{{ loop.index }}</td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>
                             <td>{{ pratica.reserve }} €</td>
+                            <td>
+                                <a href="#fb_cambia_priorita" class="fancybox">
+                                    {% if pratica.priorita %}
+                                        <span class="label {{ pratica.priorita.css }}">
+                                            <abbr title="{{ pratica.priorita.priorita }}">{{ pratica.priorita.priorita }}</abbr>
+                                        </span>
+                                    {% else %}
+                                        <span class="label purple">
+                                            <abbr title="Not defined">Not defined</abbr>
+                                        </span>
+                                    {% endif %}
+                                </a>
+                            </td>
                             <td>{{ pratica.question01 }}/{{ entity.question|length }}</td>
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}
@@ -107,5 +152,6 @@ function fastSearch() {
         </div>
     </div>
 </div>
-                
+
+{% render(controller("ClaimsHAuditBundle:Render:cambiaPriorita")) %}
 {% endblock %}

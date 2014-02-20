@@ -774,5 +774,27 @@ class AuditController extends Controller {
         return array('pratiche' => $pratiche);
     }
 
+    /**
+     * @Route("-cambia-priorita/", name="claims_hospital_audit_cambia_priorita", options={"expose": true}, defaults={"_format": "json"})
+     */
+    public function cambiaPrioritaAction() {
+        $req = $this->getParam('priorita');
+
+        $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+        $priorita = $this->find('ClaimsCoreBundle:Priorita', $req['priorita']);
+        /* @var $priorita Priorita */
+
+        try {
+            $this->getEm()->beginTransaction();
+            $pratica->setPriorita($priorita);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        return $this->jsonResponse(array('id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
 
 }

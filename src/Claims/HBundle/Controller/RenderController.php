@@ -21,7 +21,7 @@ class RenderController extends Controller {
      * @Template()
      */
     public function cambiaPrioritaAction() {
-        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('show' => true));
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'hospital', 'show' => true));
         return array(
             'priorita' => $priorita,
         );

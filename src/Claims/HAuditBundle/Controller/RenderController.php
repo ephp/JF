@@ -25,6 +25,17 @@ use Claims\HAuditBundle\Form\QuestionType;
 class RenderController extends Controller {
 
     use BaseController;
+    
+    /**
+     * @Route("/priorita", name="render_claims_hospital_priorita")
+     * @Template()
+     */
+    public function cambiaPrioritaAction() {
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
+        return array(
+            'priorita' => $priorita,
+        );
+    }
 
     /**
      * Finds and displays a Audit entity.

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="claims_priorita")
  * @ORM\Entity(repositoryClass="Claims\CoreBundle\Entity\PrioritaRepository")
  */
-class Priorita
-{
+class Priorita {
+
     /**
      * @var integer
      *
@@ -43,6 +43,13 @@ class Priorita
     private $onAssign;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="area", type="string", length=16, nullable=true)
+     */
+    private $area;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="menu_tendina", type="boolean", nullable=true)
@@ -54,8 +61,7 @@ class Priorita
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -65,10 +71,9 @@ class Priorita
      * @param string $priorita
      * @return Priorita
      */
-    public function setPriorita($priorita)
-    {
+    public function setPriorita($priorita) {
         $this->priorita = $priorita;
-    
+
         return $this;
     }
 
@@ -77,8 +82,7 @@ class Priorita
      *
      * @return string 
      */
-    public function getPriorita()
-    {
+    public function getPriorita() {
         return $this->priorita;
     }
 
@@ -88,10 +92,9 @@ class Priorita
      * @param string $css
      * @return Priorita
      */
-    public function setCss($css)
-    {
+    public function setCss($css) {
         $this->css = $css;
-    
+
         return $this;
     }
 
@@ -100,8 +103,7 @@ class Priorita
      *
      * @return string 
      */
-    public function getCss()
-    {
+    public function getCss() {
         return $this->css;
     }
 
@@ -111,10 +113,9 @@ class Priorita
      * @param string $onAssign
      * @return Priorita
      */
-    public function setOnAssign($onAssign)
-    {
+    public function setOnAssign($onAssign) {
         $this->onAssign = $onAssign;
-    
+
         return $this;
     }
 
@@ -123,8 +124,7 @@ class Priorita
      *
      * @return string 
      */
-    public function getOnAssign()
-    {
+    public function getOnAssign() {
         return $this->onAssign;
     }
 
@@ -136,10 +136,10 @@ class Priorita
      */
     public function setShow($show) {
         $this->show = $show;
-    
+
         return $this;
     }
-    
+
     /**
      * Get show
      *
@@ -147,6 +147,15 @@ class Priorita
      */
     public function getShow() {
         return $this->show;
+    }
+
+    public function getArea() {
+        return $this->area;
+    }
+
+    public function setArea($area) {
+        $this->area = $area;
+        return $this;
     }
 
     public function __toString() {

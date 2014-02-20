@@ -273,6 +273,10 @@ class AuditController extends Controller {
         if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
+        if($pratica->getPriorita()->getPriorita() == 'To do') {
+            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Work in progress')));
+            $this->persist($pratica);
+        }
         if (!$pratica->getGestore()) {
             $pratica->setGestore($this->getUser());
             $this->persist($pratica);
@@ -601,6 +605,15 @@ class AuditController extends Controller {
         $req = $this->getParam('pratica');
 
         $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica Pratica */
+        if (!$pratica) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+        
+        if($pratica->getPriorita()->getPriorita() == 'To do') {
+            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Work in progress')));
+        }
+        
         /* @var $pratica Pratica */
         try {
             $this->getEm()->beginTransaction();

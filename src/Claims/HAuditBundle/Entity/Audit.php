@@ -292,7 +292,12 @@ class Audit {
         return $out;
     }
 
+    private $sumQuestions = null;
+    
     public function getSumQuestion() {
+        if($this->sumQuestions) {
+            return $this->sumQuestions;
+        }
         $out = array();
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
@@ -314,6 +319,7 @@ class Audit {
                     );
             }
         }
+        $this->sumQuestions = $out;
         return $out;
     }
 

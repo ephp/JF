@@ -107,7 +107,7 @@ function assegnaPriorita() {
         <div class="span{{ span }}">
             <div class="block">
                 <div class="audit padding-10" style="border: 1px solid #c9c9c9; background: #e9e9e9;">
-                    <b>{{ domanda.question.domandaLocale(app.user.locale) }}</b>:
+                    <b>{{ domanda.question.domandaLocale(app.user.locale) }}</b><br/>
                     {{ domanda.value|number_format(2, ',', '.') }} €
                     <small>({{domanda.n}} claims)</small>
                 </div>
@@ -127,9 +127,13 @@ function assegnaPriorita() {
                             <th width="40">#</th>
                             <th>Group</th>
                             <th>TPA</th>
-                            <th>Claimant <input type="text" id="fast_search" style="width: 200px;"></th>
+                            <th><input type="text" id="fast_search" style="width: 200px;" placeholder="Claimant"></th>
                             <th>Reserve</th>
                             <th>Proirity</th>
+                            {% for question in entity.sumQuestion %}
+                                {% set name = question.question.esempioLocale(app.user.locale) %}
+                                <th>{{ name }}</th>
+                            {% endfor %}
                             <th>Progress</th>
                             <th width="80" class="TAC">Op.</th>
                         </tr>
@@ -141,7 +145,7 @@ function assegnaPriorita() {
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>
-                            <td>{{ pratica.reserve }} €</td>
+                            <td nowrap style="text-align: right;">{{ pratica.reserve }} €</td>
                             <td style="text-align: center">
                                 <a href="#fb_cambia_priorita" class="fancybox">
                                     {% if pratica.priorita %}
@@ -155,6 +159,19 @@ function assegnaPriorita() {
                                     {% endif %}
                                 </a>
                             </td>
+                            {% set name = '' %}
+                            {% for question in entity.sumQuestion %}
+                                {% set values = pratica.values(question.question.id) %}
+                                <td nowrap style="text-align: right;">
+                                    {% if values %}
+                                        {% for value in values.response %}
+                                            {{ value }} €
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
                             <td>{{ pratica.question01 }}/{{ entity.question|length }}</td>
                             <td>
                                 {% include ":commons:show.html.twig" with {'route': path('claims-h-audit_show-pratica', { 'id': entity.id, 'slug': pratica.slug })} %}

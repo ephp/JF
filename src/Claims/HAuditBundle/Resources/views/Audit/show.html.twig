@@ -93,7 +93,7 @@ function assegnaPriorita() {
         </div>       
     </div> 
 {% endif %}
-{% for domanda in audit.sumQuestion %}
+{% for domanda in entity.sumQuestion %}
     {% if loop.index % 3 == 1 %}
     <div class="row-fluid">
         {% if loop.length - loop.index == 2 %}

@@ -292,11 +292,11 @@ class Audit {
         return $out;
     }
 
-    public function getSearchQuestion() {
+    public function getSumQuestion() {
         $out = array();
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
-            if ($question->getQuestion()->getRicerca()) {
+            if ($question->getQuestion()->getSomma()) {
                 $value = 0;
                 $n = 0;
                 foreach($this->getPratiche() as $pratica) {
@@ -317,11 +317,11 @@ class Audit {
         return $out;
     }
 
-    public function getSumQuestion() {
+    public function getSearchQuestion() {
         $out = array();
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
-            if ($question->getQuestion()->getSomma()) {
+            if ($question->getQuestion()->getRicerca()) {
                 $out[] = $question->getQuestion();
             }
         }

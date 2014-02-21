@@ -303,7 +303,7 @@ class Audit {
                     /* @var $pratica Pratica */
                     $_value = $pratica->getValue($question->getQuestion()->getId());
                     if($_value) {
-                        $value += floatval(str_replace(',', '', $_value));
+                        $value += floatval(str_replace(',', '', $_value->getResponse()));
                         $n++;
                     }
                 }

@@ -302,7 +302,7 @@ class Audit {
                 foreach($this->getPratiche() as $pratica) {
                     /* @var $pratica Pratica */
                     $_value = $pratica->getValue($question->getQuestion()->getId());
-                    if($_value) {
+                    if($_value && $_value->getResponse() && $_value->getResponse() != '') {
                         $value += floatval(str_replace(',', '', $_value->getResponse()));
                         $n++;
                     }

@@ -93,21 +93,22 @@ function assegnaPriorita() {
         </div>       
     </div> 
 {% endif %}
+{% set span = 4 %}
 {% for domanda in entity.sumQuestion %}
     {% if loop.index % 3 == 1 %}
     <div class="row-fluid">
-        {% if loop.length - loop.index == 2 %}
+        {% if loop.length - loop.index == 1 %}
             {% set span = 6 %}
         {% endif %}
-        {% if loop.length - loop.index == 1 %}
+        {% if loop.length - loop.index == 0 %}
             {% set span = 12 %}
         {% endif %}
     {% endif %}
         <div class="span{{ span }}">
             <div class="block">
-                <div class="audit margin-10" style="border: 1px solid black;">
-                    <h6>{{ domanda.question.domandaLocale(app.user.locale) }}</h6>
-                    {{ domanda.value }} €<br/>
+                <div class="audit padding-10" style="border: 1px solid #c9c9c9; background: #e9e9e9;">
+                    <b>{{ domanda.question.domandaLocale(app.user.locale) }}</b>:
+                    {{ domanda.value|number_format(2, ',', '.') }} €
                     <small>({{domanda.n}} claims)</small>
                 </div>
             </div>

@@ -297,6 +297,31 @@ class Audit {
         foreach ($this->question as $question) {
             /* @var $question PraticaQuestion */
             if ($question->getQuestion()->getRicerca()) {
+                $value = 0;
+                $n = 0;
+                foreach($this->getPratiche() as $pratica) {
+                    /* @var $pratica Pratica */
+                    $_value = $pratica->getValue($question->getQuestion()->getId());
+                    if($_value) {
+                        $value += floatval(str_replace(',', '', $_value));
+                        $n++;
+                    }
+                }
+                $out[] = array(
+                    'question' => $question->getQuestion(),
+                    'value' => $value,
+                    'n' => $n,
+                    );
+            }
+        }
+        return $out;
+    }
+
+    public function getSumQuestion() {
+        $out = array();
+        foreach ($this->question as $question) {
+            /* @var $question PraticaQuestion */
+            if ($question->getQuestion()->getSomma()) {
                 $out[] = $question->getQuestion();
             }
         }

@@ -20,14 +20,14 @@ class Question {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="remote_id", type="integer", nullable=true)
      */
     private $remoteId;
-    
+
     /**
      * @var \JF\ACLBundle\Entity\Cliente
      * 
@@ -116,6 +116,13 @@ class Question {
     private $ricerca;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="somma", type="boolean", nullable=true)
+     */
+    private $somma;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="options", type="array")
@@ -130,7 +137,7 @@ class Question {
     public function getId() {
         return $this->id;
     }
-    
+
     public function getRemoteId() {
         return $this->remoteId;
     }
@@ -343,6 +350,15 @@ class Question {
 
     public function setRicerca($ricerca) {
         $this->ricerca = $ricerca;
+    }
+
+    public function getSomma() {
+        return $this->somma;
+    }
+
+    public function setSomma($somma) {
+        $this->somma = $somma;
+        return $this;
     }
 
     public function getPrePopulate() {

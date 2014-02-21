@@ -45,6 +45,10 @@ class QuestionType extends AbstractType {
                     'required' => false,
                     'label' => 'Searchable',
                 ))
+                ->add('somma', null, array(
+                    'required' => false,
+                    'label' => 'Sum in first page',
+                ))
                 ->add('type', 'choice', array(
                     'choices' => array(
                         'text' => 'Testo',

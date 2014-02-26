@@ -144,9 +144,9 @@ class GruppoController extends Controller
     /**
      * Edits an existing Gruppo entity.
      *
-     * @Route("/{id}", name="eph_gurppi-audit_update")
+     * @Route("/{id}", name="eph_gurppi-audit_update", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("PUT")
-     * @ParamConverter("id", class="ClaimsHAuditBundle:Gruppo", options={"ACL": {"in_role": "R_EPH"}})
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Gruppo")
      * @Template("ClaimsHAuditBundle:Gruppo:edit.html.twig")
      */
     public function updateAction(Gruppo $entity)

@@ -191,10 +191,10 @@
     </div>
     <div class="span6">
         <div class="block">
-            {% if numero %}
                 <a href="{{ path('claims_hospital_report_pratica_edit', {'slug': entity.slug, 'numero': numero}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label yellow ico-pen"> Complata report {{ numero }}</span></a>
-            {% else %}
                 <a href="{{ path('claims_hospital_report_pratica_new', {'slug': entity.slug}) }}" class="icon" onclick="return loadAjax($(this));"><span class="label green ico-pen"> Aggiungi report</span></a>
+            {% if numero %}
+            {% else %}
             {% endif %}
             {% if app.user.cliente.get('slc.h-analisi.on', false) %}
                 <a href="{{ path('claims_hospital_word_report', {'slug': entity.slug}) }}" target="_blank" class="icon"><span class="label dblue ico-file-3"> Esporta Word</span></a>

@@ -21,10 +21,12 @@
         <td colspan="4" style="text-align: center;">{{ entity.codice }}</td>
     </tr>
     <tr style="vertical-align: top">
-        <td colspan="2"><b>Data evento (DOL):</b></td>
-        <td colspan="4" style="text-align: center;">{% if entity.reportDol %}{{ entity.reportDol|date('d/m/Y') }}{% endif %}</td>
-        <td colspan="2"><b>Data reclamo (DON):</b></td>
-        <td colspan="4" style="text-align: center;">{% if entity.reportDon %}{{ entity.reportDon|date('d/m/Y') }}{% endif %}</td>
+        <td colspan="1"><b>Data evento (DOL):</b></td>
+        <td colspan="2" style="text-align: center;">{% if entity.reportDol %}{{ entity.reportDol|date('d/m/Y') }}{% endif %}</td>
+        <td colspan="1"><b>Data reclamo (DON):</b></td>
+        <td colspan="2" style="text-align: center;">{% if entity.reportDon %}{{ entity.reportDon|date('d/m/Y') }}{% endif %}</td>
+        <td colspan="2"><b>Verifica Copertura:</b></td>
+        <td colspan="4" style="text-align: center;">{% if entity.reportDon %}{{ entity.reportVerificaCopertura|nl2br }}{% endif %}</td>
     </tr>
     <tr style="vertical-align: top">
         <td colspan="2"><b>Descrizione evento:</b></td>

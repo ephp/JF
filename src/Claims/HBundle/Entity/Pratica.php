@@ -435,6 +435,13 @@ class Pratica {
     /**
      * @var float
      *
+     * @ORM\Column(name="report_verifica_copertura", type="text", nullable=true)
+     */
+    private $reportVerificaCopertura;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="report_descrizione", type="text", nullable=true)
      */
     private $reportDescrizione;
@@ -1694,6 +1701,15 @@ class Pratica {
         return $this->reportDon;
     }
 
+    public function getReportVerificaCopertura() {
+        return $this->reportVerificaCopertura;
+    }
+
+    public function setReportVerificaCopertura($reportVerificaCopertura) {
+        $this->reportVerificaCopertura = $reportVerificaCopertura;
+        return $this;
+    }
+
     /**
      * Set report_descrizione
      *
@@ -2409,7 +2425,7 @@ class Pratica {
                         break;
                 }
             }
-            if($mr) {
+            if ($mr) {
                 $mr->setNote(str_replace('"', "'", \Ephp\UtilityBundle\Utility\String::strip_tags($mr->getNote(), true)));
             }
             return $mr;
@@ -2449,6 +2465,5 @@ class Pratica {
 
         return $this->eventi->matching($criteria);
     }
-
 
 }

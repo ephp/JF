@@ -409,7 +409,8 @@ SELECT id FROM claims_h_pratiche p
  WHERE (:claimant like CONCAT(REPLACE(p.claimant, ' ', '% '), '%') OR p.claimant like :claimant2)
    AND p.ospedale_id IN ( SELECT o.id
                             FROM claims_h_ospedali o
-                           WHERE o.ospedale LIKE :ospedale ) 
+                           WHERE o.ospedale LIKE :ospedale 
+                              OR o.sigla = :ospedale ) 
    AND p.anno = :anno 
    AND p.cliente_id = :cliente
 ";

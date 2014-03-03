@@ -55,4 +55,19 @@ class RenderController extends Controller {
             'route' => $this->getParam('route'),
         );
     }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-ricerca-full", name="claims-h-audit_ricerca")
+     * @Method("GET")
+     * @Template("ClaimsHAuditBundle:Render:ricerca.html.twig")
+     */
+    public function ricercaFullAction() {
+        return array(
+            'entity' => null,
+            'ricerca' => $this->getParam('ricerca'),
+            'route' => $this->getParam('route'),
+        );
+    }
 }

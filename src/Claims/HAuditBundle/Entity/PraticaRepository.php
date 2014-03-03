@@ -12,55 +12,66 @@ use Doctrine\ORM\EntityRepository;
  */
 class PraticaRepository extends EntityRepository {
 
-    public function ricerca(Audit $audit, $filtri = array(), $orderBy = 'id') {
-        $q = $this->createQueryBuilder('p')->where('p.audit = :audit')->setParameter('audit', $audit->getId());
+    public function ricerca($audit = null, $filtri = array(), $orderBy = 'id') {
+        $q = $this->createQueryBuilder('p');
+        if ($audit) {
+            $q->where('p.audit = :audit')->setParameter('audit', $audit->getId());
+        }
         if (!count($filtri) == 0) {
             $sql_select = ' SELECT p.id ';
             $sql_from = '   FROM claims_h_audit_pratiche p LEFT JOIN claims_h_audit_pratica_question r ON r.pratica_id = p.id';
-            $sql_where = '  WHERE p.audit_id = ' . $audit->getId() . ' ';
+            if ($audit) {
+                $sql_where = '  WHERE p.audit_id = ' . $audit->getId() . ' ';
+            } else {
+                $sql_where = '  WHERE 1 = 1 ';
+            }
             $_ids = array();
             $ids = false;
             $q->leftJoin('p.question', 'q');
             foreach ($filtri as $id => $value) {
-                if ($value && $value != array('from' => '', 'to' => '')) {
-                    $sql_and = '   AND ';
-                    $sql_params = array();
-                    $question = $this->getEntityManager()->getRepository('ClaimsHAuditBundle:Question')->find($id);
-                    /* @var $question Question */
-                    switch ($question->getType()) {
-                        case 'checkbox':
-                        case 'select':
-                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response = :r' . $question->getId();
-                            $sql_params['q' . $question->getId()] = $question->getId();
-                            $sql_params['r' . $question->getId()] = $value;
-                            break;
-                        case 'date':
-                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
-                            $sql_params['q' . $question->getId()] = $question->getId();
-                            $sql_params['r' . $question->getId()] = '%' . $value;
-                            break;
-                        case 'text':
-                        case 'textarea':
-                            $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
-                            $sql_params['q' . $question->getId()] = $question->getId();
-                            $sql_params['r' . $question->getId()] = '%' . $value . '%';
-                            break;
-                        case 'money':
-                        case 'number':
-                        case 'percent':
-                        case 'fx':
-                            $sql_and .= '(r.question_id = :q' . $question->getId() . ' AND CAST(r.response AS UNSIGNED) BETWEEN :rf' . $question->getId() . ' AND :rt' . $question->getId() . ' )';
-                            $sql_params['q' . $question->getId()] = $question->getId();
-                            $sql_params['rf' . $question->getId()] = isset($value['from']) && $value['from'] != '' ? $value['from'] : -999999999;
-                            $sql_params['rt' . $question->getId()] = isset($value['to']) && $value['to'] != '' ? $value['to'] : 999999999;
-                            break;
-                    }
-                    $sql = $sql_select . $sql_from . $sql_where . $sql_and;
-                    $connection = $this->getEntityManager()->getConnection();
-                    $rows = $connection->executeQuery($sql, $sql_params);
-                    $_ids[$question->getId()] = array();
-                    foreach ($rows as $row) {
-                        $_ids[$question->getId()][] = $row['id'];
+                if ($id == 'claimant') {
+                    $q->where('p.claimant LIKE :claimant')->setParameter('claimant', "%{$value}%");
+                } else {
+                    if ($value && $value != array('from' => '', 'to' => '')) {
+                        $sql_and = '   AND ';
+                        $sql_params = array();
+                        $question = $this->getEntityManager()->getRepository('ClaimsHAuditBundle:Question')->find($id);
+                        /* @var $question Question */
+                        switch ($question->getType()) {
+                            case 'checkbox':
+                            case 'select':
+                                $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response = :r' . $question->getId();
+                                $sql_params['q' . $question->getId()] = $question->getId();
+                                $sql_params['r' . $question->getId()] = $value;
+                                break;
+                            case 'date':
+                                $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
+                                $sql_params['q' . $question->getId()] = $question->getId();
+                                $sql_params['r' . $question->getId()] = '%' . $value;
+                                break;
+                            case 'text':
+                            case 'textarea':
+                                $sql_and .= 'r.question_id = :q' . $question->getId() . ' AND r.response LIKE :r' . $question->getId();
+                                $sql_params['q' . $question->getId()] = $question->getId();
+                                $sql_params['r' . $question->getId()] = '%' . $value . '%';
+                                break;
+                            case 'money':
+                            case 'number':
+                            case 'percent':
+                            case 'fx':
+                                $sql_and .= '(r.question_id = :q' . $question->getId() . ' AND CAST(r.response AS UNSIGNED) BETWEEN :rf' . $question->getId() . ' AND :rt' . $question->getId() . ' )';
+                                $sql_params['q' . $question->getId()] = $question->getId();
+                                $sql_params['rf' . $question->getId()] = isset($value['from']) && $value['from'] != '' ? $value['from'] : -999999999;
+                                $sql_params['rt' . $question->getId()] = isset($value['to']) && $value['to'] != '' ? $value['to'] : 999999999;
+                                break;
+                        }
+                        $sql = $sql_select . $sql_from . $sql_where . $sql_and;
+                        $connection = $this->getEntityManager()->getConnection();
+                        $rows = $connection->executeQuery($sql, $sql_params);
+                        $_ids[$question->getId()] = array();
+                        foreach ($rows as $row) {
+                            $_ids[$question->getId()][] = $row['id'];
+                        }
                     }
                 }
             }
@@ -71,7 +82,9 @@ class PraticaRepository extends EntityRepository {
                     $ids = array_intersect($ids, $_id);
                 }
             }
-            $q->andWhere($q->expr()->in('p.id', $ids));
+            if($ids && count($ids) > 0) {
+                $q->andWhere($q->expr()->in('p.id', $ids));
+            }
         }
         $order = $orderBy{0} == 'i' && $orderBy{1} != 'd' ? 'DESC' : 'ASC';
         $field = $orderBy{0} == 'i' && $orderBy{1} != 'd' ? substr($orderBy, 1) : $orderBy;

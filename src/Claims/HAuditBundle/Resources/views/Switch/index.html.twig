@@ -1,0 +1,77 @@
+{% extends '::base.html.twig' %}
+
+{% block inline_css %}
+.widget {
+height:200px !important;
+}
+.widget .right {
+height: 180px !important;
+}
+.widget .left {
+font-size: 75px !important;
+}
+{% endblock inline_css %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-eye-open"></span>
+    </div>
+    <h1>Audit Hospital</h1>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widgets">
+            <div class="widget yellow value">
+                <div class="left">
+                    <abbr title="Soft Leakage Case">SLC</abbr>
+                    <div class="row-form col-md-12">
+                        <form action="{{ path('claims-h-audit_show_all') }}" method="get">
+                            <div class="input-group" style="line-height: 25px; text-align: center;">
+                                <input class="form-control" type="text" autocomplete="off"  placeholder="Claimant name" name="ricerca[claimant]" style="width: 100px">
+                                <button type="submit" class="btn red">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="right">
+                    {% for row in slc %}
+                        <p>{{ row.q.domandaLocale(app.user.locale) }}:<br/><b>{{ row.tot|number_format(2, '.', ',') }} € ({{ row.n }})</b></p>
+                    {% endfor %}
+                </div>
+                <div class="bottom">
+                    <a href="{{ path('claims-h-audit') }}">OPEN</a>
+                </div>
+            </div>
+            <div class="widget red value todo">
+                <div class="left"><abbr title="Hard Leakage Case">HLC</abbr></div>
+                <div class="right">
+                    1 Some text here<br>
+                    2 Some text here<br>
+                    3 Some text here<br>
+                    4 Some text here<br>
+                    5 Some text here<br>
+                </div>
+                <div class="bottom">
+                    <a href="#">OPEN</a>
+                </div>
+            </div>
+            <div class="widget green value todo">
+                <div class="left">TOT</div>
+                <div class="right">
+                    1 Some text here<br>
+                    2 Some text here<br>
+                    3 Some text here<br>
+                    4 Some text here<br>
+                    5 Some text here<br>
+                </div>
+                <div class="bottom">
+                    <a href="#">VIEW STATS</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -20,7 +20,7 @@ use Claims\HAuditBundle\Form\QuestionType;
 /**
  * Audit controller
  *
- * @Route("/claims-h-audit")
+ * @Route("/claims-h-audit/soft")
  */
 class AuditController extends Controller {
 
@@ -36,9 +36,31 @@ class AuditController extends Controller {
      */
     public function indexAction() {
         $entities = $this->findAll('ClaimsHAuditBundle:Audit');
+        $questions = $this->findBy('ClaimsHAuditBundle:Question', array('somma' => true));
+        $slc = array();
+        foreach ($questions as $question) {
+            /* @var $question Question */
+            $q = "
+select sum(replace(r.response, ',', '')) as tot,
+       count(*) as n
+  from claims_h_audit_pratica_question r 
+ where r.question_id = :id
+   and r.response != ''
+";
+            $rows = $this->executeSql($q, array('id' => $question->getId()));
 
+            if ($rows[0]['n']) {
+                $slc[] = array(
+                    'question' => $question,
+                    'tot' => $rows[0]['tot'],
+                    'n' => $rows[0]['n'],
+                );
+            }
+        }
+        
         return array(
             'entities' => $entities,
+            'slc' => $slc,
         );
     }
 
@@ -115,17 +137,68 @@ class AuditController extends Controller {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
 
+        $questions = $this->findBy('ClaimsHAuditBundle:Question', array('somma' => true));
+        $slc = array();
+        foreach ($questions as $question) {
+            /* @var $question Question */
+            $q = "
+select sum(replace(r.response, ',', '')) as tot,
+       count(*) as n
+  from claims_h_audit_pratica_question r 
+ where r.question_id = :id
+   and r.audit_id = :aid
+   and r.response != ''
+";
+            $rows = $this->executeSql($q, array('id' => $question->getId(), 'aid' => $entity->getId()));
+
+            if ($rows[0]['n']) {
+                $slc[] = array(
+                    'question' => $question,
+                    'tot' => $rows[0]['tot'],
+                    'n' => $rows[0]['n'],
+                );
+            }
+        }
+        
         $sorting = $this->sorting();
         $dati = $this->getUser()->getDati();
         $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
 
         return array(
             'entity' => $entity,
+            'slc' => $slc,
             'pratiche' => $pratiche,
             'sorting' => $sorting,
             'query' => $this->getQuery(),
             'route' => $this->generateUrl('claims-h-audit_risposte', array('id' => $entity->getId())),
             'ricerca' => $this->getParam('ricerca', array()),
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
+     * @Route("-all/", name="claims-h-audit_show_all")
+     * @Method("GET")
+     * @Template("ClaimsHAuditBundle:Audit:show.html.twig")
+     */
+    public function showAllAction() {
+        $sorting = $this->sorting();
+        $dati = $this->getUser()->getDati();
+        $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca(null, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
+
+        $entity = new Audit();
+        $entity->setLuogo('All Audit');
+        $entity->setGiorno(new \DateTime());
+        
+        return array(
+            'entity' => $entity,
+            'pratiche' => $pratiche,
+            'sorting' => $sorting,
+            'query' => $this->getQuery(),
+            'route' => $this->generateUrl('claims-h-audit_show_all'),
+            'ricerca' => $this->getParam('ricerca', array()),
+            'full' => true,
         );
     }
 

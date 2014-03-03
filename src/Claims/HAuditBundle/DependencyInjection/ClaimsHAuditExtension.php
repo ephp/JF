@@ -53,14 +53,14 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
 
         $menu['claims_audit']['submenu'][] = array(
             'label' => 'Audit Hospital',
-            'route' => 'claims-h-audit',
+            'route' => 'claims-h-audit-switch',
             'show' => array('in_role' => array('C_AUDIT_H')),
             'order' => 50,
         );
 
         if ($container->getParameter('jf.mode') == 'online') {
             $menu['claims_audit']['submenu'][] = array(
-                'label' => 'New Audit Hospital',
+                'label' => 'New Audit Hospital SLC',
                 'route' => 'claims-h-audit_new',
                 'show' => array('in_role' => array('C_AUDIT_HC')),
                 'order' => 10,
@@ -88,14 +88,14 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
             );
 
             $menu['claims_audit']['submenu'][] = array(
-                'label' => 'Questions Audit Hospital',
+                'label' => 'Questions Audit Hospital SLC',
                 'route' => 'domande-audit',
                 'show' => array('in_role' => array('C_AUDIT_HQ')),
                 'order' => 30,
             );
         } else {
             $menu['claims_audit']['submenu'][] = array(
-                'label' => 'Import Audit Hospital',
+                'label' => 'Import Audit Hospital SLC',
                 'route' => 'sync_claims-h-audit-fetch-list',
                 'show' => array('in_role' => array('C_AUDIT_H')),
                 'order' => 10,

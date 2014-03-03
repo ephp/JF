@@ -118,7 +118,7 @@ function assegnaPriorita() {
                     <div class="audit padding-10" style="border: 1px solid #c9c9c9; background: #e9e9e9; height: 40px;">
                         <form action="{{ path('claims-h-audit_show_all') }}" method="get" style="margin-top: 5px;">
                             <div class="input-group" style="line-height: 25px; text-align: center;">
-                                <input class="form-control" type="text" autocomplete="off" style="width: 200px;" placeholder="Claimant name" name="ricerca[claimant]" value="{{ app.request.get('ricerca').claimant }}">
+                                <input class="form-control" type="text" autocomplete="off" style="width: 200px;" placeholder="Claimant name" name="ricerca[claimant]" value="{% if app.request.get('ricerca') %}{{ app.request.get('ricerca').claimant }}{% endif %}">
                                 <button type="submit" class="btn red">Search</button>
                             </div>
                         </form>

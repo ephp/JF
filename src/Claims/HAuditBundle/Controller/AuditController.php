@@ -145,8 +145,9 @@ select sum(replace(r.response, ',', '')) as tot,
 select sum(replace(r.response, ',', '')) as tot,
        count(*) as n
   from claims_h_audit_pratica_question r 
+  left join claims_h_audit_pratiche p on p.id = r.pratica_id
  where r.question_id = :id
-   and r.audit_id = :aid
+   and p.audit_id = :aid
    and r.response != ''
 ";
             $rows = $this->executeSql($q, array('id' => $question->getId(), 'aid' => $entity->getId()));

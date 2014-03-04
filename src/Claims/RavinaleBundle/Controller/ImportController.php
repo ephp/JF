@@ -62,9 +62,11 @@ class ImportController extends Controller {
             $logs = array();
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
+                /*
                 foreach ($bdxs as $bdx) {
                     $logs[] = $this->importBdx($cliente, $bdx);
                 }
+                 */
             }
             $out[$cliente->getId()] = array(
                 'pratiche_nuove' => array(),
@@ -75,6 +77,7 @@ class ImportController extends Controller {
                 $out[$cliente->getId()]['pratiche_aggiornate'] = array_merge($out[$cliente->getId()]['pratiche_aggiornate'], $log['pratiche_aggiornate']);
             }
         }
+        /*
         foreach ($out as $cliente_id => $elenchi) {
             foreach ($elenchi as $nome_elenco => $elenco) {
                 foreach ($elenco as $i => $pratica) {
@@ -82,11 +85,12 @@ class ImportController extends Controller {
                 }
             }
         }
+         */
         return $this->jsonResponse($out);
     }
 
     private function enterBdx($dati) {
-//        $admin = $this->find('JFACLBundle:Gestore', 1);
+        $admin = $this->find('JFACLBundle:Gestore', 1);
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Ravinale'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
         $p = array(
@@ -101,7 +105,7 @@ class ImportController extends Controller {
 
         // https://sistema.ravinalepartners.com/
         $access = $this->curlPost($sistema->getUrlBase(), implode('&', $p), array('show' => true));
-//        $this->notify($admin, 'login', 'ClaimsRavinaleBundle:email:pagina', array('html' => $access));
+        $this->notify($admin, 'login', 'ClaimsRavinaleBundle:email:pagina', array('html' => $access));
         
         $matchs = $cookies = array();
         preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
@@ -113,13 +117,13 @@ class ImportController extends Controller {
         // https://sistema.ravinalepartners.com/Moduli/San1/Riepilogo/
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
-//        $this->notify($admin, '2012 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+        $this->notify($admin, '2012 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/San1/EsportaInExcelNewLineNuovo/
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
         $out[] = $tmp;
-//        $this->notify($admin, '2012 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+        $this->notify($admin, '2012 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/Inizio/
         sleep(rand(3, 6));
@@ -135,7 +139,7 @@ class ImportController extends Controller {
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
         $out[] = $tmp; 
-//        $this->notify($admin, '2013 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+        $this->notify($admin, '2013 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/Inizio/
         sleep(rand(3, 6));
@@ -151,7 +155,7 @@ class ImportController extends Controller {
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
         $out[] = $tmp; 
-//        $this->notify($admin, '2014 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+        $this->notify($admin, '2014 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Uscita/
         sleep(rand(3, 6));

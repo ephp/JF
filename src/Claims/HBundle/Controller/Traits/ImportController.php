@@ -6,7 +6,7 @@ trait ImportController {
 
     protected function salvaPratica(\JF\ACLBundle\Entity\Cliente $cliente, \Claims\HBundle\Entity\Pratica &$pratica, &$pratiche_aggiornate, &$pratiche_nuove, &$pratiche_invariate = false, $audit = false) {
         $old = $this->findOneBy('ClaimsHBundle:Pratica', array('cliente' => $cliente->getId(), 'codice' => $pratica->getCodice()));
-        \Ephp\UtilityBundle\Utility\Debug::pr($pratica->getCodice().' - '.($old ? $old->getCodice() : 'NUOVA'), true);
+//        \Ephp\UtilityBundle\Utility\Debug::pr($pratica->getCodice().' - '.($old ? $old->getCodice() : 'NUOVA'), true);
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
             if ($audit) {
@@ -167,7 +167,7 @@ trait ImportController {
                 $old->setComments($pratica->getComments());
             }
             if ($audit || count($log) > 0) {
-                \Ephp\UtilityBundle\Utility\Debug::pr($log, true);
+//                \Ephp\UtilityBundle\Utility\Debug::pr($log, true);
                 $old->addLog($log);
                 if (!$audit) {
                     $this->persist($old);
@@ -179,7 +179,7 @@ trait ImportController {
                 $pratiche_invariate[] = $old;
             }
         } else {
-            \Ephp\UtilityBundle\Utility\Debug::pr(array('Importata pratica'), true);
+//            \Ephp\UtilityBundle\Utility\Debug::pr(array('Importata pratica'), true);
             if (!$audit) {
                 $pratica->setDataImport(new \DateTime());
                 $pratica->addLog(array('Importata pratica'));

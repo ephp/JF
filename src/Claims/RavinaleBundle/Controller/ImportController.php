@@ -63,7 +63,7 @@ class ImportController extends Controller {
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
                 foreach ($bdxs as $bdx) {
-                    Debug::pr('-----------', true);
+//                    Debug::pr('-----------', true);
                     $logs[] = $this->importBdx($cliente, $bdx);
                 }
                 $out[$cliente->getId()] = array(

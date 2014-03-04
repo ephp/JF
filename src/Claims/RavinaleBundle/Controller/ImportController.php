@@ -71,8 +71,8 @@ class ImportController extends Controller {
                 'pratiche_aggiornate' => array(),
             );
             foreach ($logs as $log) {
-                $out[$clienta->getId()]['pratiche_nuove'] = array_merge($out['pratiche_nuove'], $log['pratiche_nuove']);
-                $out[$clienta->getId()]['pratiche_aggiornate'] = array_merge($out['pratiche_aggiornate'], $log['pratiche_aggiornate']);
+                $out[$cliente->getId()]['pratiche_nuove'] = array_merge($out[$cliente->getId()]['pratiche_nuove'], $log['pratiche_nuove']);
+                $out[$cliente->getId()]['pratiche_aggiornate'] = array_merge($out[$cliente->getId()]['pratiche_aggiornate'], $log['pratiche_aggiornate']);
             }
         }
         foreach ($out as $cliente_id => $elenchi) {

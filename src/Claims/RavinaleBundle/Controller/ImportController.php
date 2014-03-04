@@ -62,11 +62,9 @@ class ImportController extends Controller {
             $logs = array();
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
-                /*
                 foreach ($bdxs as $bdx) {
                     $logs[] = $this->importBdx($cliente, $bdx);
                 }
-                 */
             }
             $out[$cliente->getId()] = array(
                 'pratiche_nuove' => array(),
@@ -77,7 +75,6 @@ class ImportController extends Controller {
                 $out[$clienta->getId()]['pratiche_aggiornate'] = array_merge($out['pratiche_aggiornate'], $log['pratiche_aggiornate']);
             }
         }
-        /*
         foreach ($out as $cliente_id => $elenchi) {
             foreach ($elenchi as $nome_elenco => $elenco) {
                 foreach ($elenco as $i => $pratica) {
@@ -85,7 +82,6 @@ class ImportController extends Controller {
                 }
             }
         }
-         */
         return $this->jsonResponse($out);
     }
 

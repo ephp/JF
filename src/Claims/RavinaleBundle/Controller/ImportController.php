@@ -63,16 +63,19 @@ class ImportController extends Controller {
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
                 foreach ($bdxs as $bdx) {
+                    Debug::pr('-----------', true);
                     $logs[] = $this->importBdx($cliente, $bdx);
                 }
-            }
-            $out[$cliente->getId()] = array(
-                'pratiche_nuove' => array(),
-                'pratiche_aggiornate' => array(),
-            );
-            foreach ($logs as $log) {
-                $out[$cliente->getId()]['pratiche_nuove'] = array_merge($out[$cliente->getId()]['pratiche_nuove'], $log['pratiche_nuove']);
-                $out[$cliente->getId()]['pratiche_aggiornate'] = array_merge($out[$cliente->getId()]['pratiche_aggiornate'], $log['pratiche_aggiornate']);
+                $out[$cliente->getId()] = array(
+                    'pratiche_nuove' => array(),
+                    'pratiche_aggiornate' => array(),
+                    'pratiche_invariate' => array(),
+                );
+                foreach ($logs as $log) {
+                    $out[$cliente->getId()]['pratiche_nuove'] = array_merge($out[$cliente->getId()]['pratiche_nuove'], $log['pratiche_nuove']);
+                    $out[$cliente->getId()]['pratiche_aggiornate'] = array_merge($out[$cliente->getId()]['pratiche_aggiornate'], $log['pratiche_aggiornate']);
+                    $out[$cliente->getId()]['pratiche_invariate'] = array_merge($out[$cliente->getId()]['pratiche_invariate'], $log['pratiche_invariate']);
+                }
             }
         }
         foreach ($out as $cliente_id => $elenchi) {
@@ -102,57 +105,26 @@ class ImportController extends Controller {
         // https://sistema.ravinalepartners.com/
         $access = $this->curlPost($sistema->getUrlBase(), implode('&', $p), array('show' => true));
 //        $this->notify($admin, 'login', 'ClaimsRavinaleBundle:email:pagina', array('html' => $access));
-        
+
         $matchs = $cookies = array();
         preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
 
         foreach ($matchs[0] as $match) {
             $cookies[] = trim(str_replace(array('Set-Cookie:', ';'), array('', ''), $match));
         }
-
-        // https://sistema.ravinalepartners.com/Moduli/San1/Riepilogo/
+        //https://sistema.ravinalepartners.com/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/
         sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
-//        $this->notify($admin, '2012 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $out[] = $tmp;
+        //https://sistema.ravinalepartners.com/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/
+        sleep(rand(3, 6));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $out[] = $tmp;
         //https://sistema.ravinalepartners.com/Moduli/San1/EsportaInExcelNewLineNuovo/
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
         $out[] = $tmp;
-//        $this->notify($admin, '2012 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/Inizio/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
-//        $this->notify($admin, 'home 2', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/SanPie2013/Riepilogo/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/Riepilogo/', array('cookies' => $cookies));
-//        $this->notify($admin, '2013 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
-        $out[] = $tmp; 
-//        $this->notify($admin, '2013 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/Inizio/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
-//        $this->notify($admin, 'home 3', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/SanPie2014/Riepilogo/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/Riepilogo/', array('cookies' => $cookies));
-//        $this->notify($admin, '2014 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
-        //https://sistema.ravinalepartners.com/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/
-        sleep(rand(3, 6));
-        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
-        $out[] = $tmp; 
 //        $this->notify($admin, '2014 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
-
         //https://sistema.ravinalepartners.com/Uscita/
         sleep(rand(3, 6));
         $tmp = $this->curlGet($sistema->getUrlBase() . '/Uscita/', array('cookies' => $cookies));
@@ -193,7 +165,7 @@ class ImportController extends Controller {
           'COMMENTS',
           );
          */
-        $pratiche_aggiornate = $pratiche_nuove = array();
+        $pratiche_aggiornate = $pratiche_nuove = $pratiche_invariate = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Ravinale'));
 
         $colonne = array();
@@ -381,7 +353,7 @@ class ImportController extends Controller {
                             default: break;
                         }
                     }
-                    $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove);
+                    $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate);
                     $this->getEm()->commit();
                 } catch (\Exception $e) {
                     $this->getEm()->rollback();

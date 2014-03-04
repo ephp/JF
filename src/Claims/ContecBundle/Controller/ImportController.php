@@ -157,7 +157,7 @@ class ImportController extends Controller {
 
     private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
-        $pratiche_aggiornate = $pratiche_nuove = array();
+        $pratiche_aggiornate = $pratiche_nuove = $pratiche_invariate = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
         foreach ($data->sheets as $sheet) {
@@ -379,7 +379,7 @@ class ImportController extends Controller {
                                     default: break;
                                 }
                             }
-                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $audit);
+                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate, $audit);
                             $this->getEm()->commit();
                         } catch (\Exception $e) {
                             $this->getEm()->rollback();

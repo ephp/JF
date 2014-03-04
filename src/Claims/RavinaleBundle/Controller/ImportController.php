@@ -55,18 +55,20 @@ class ImportController extends Controller {
     public function cronAction() {
         $out = array();
         foreach ($this->findAll('JFACLBundle:Cliente') as $cliente) {
-            $cliente = $this->getUser()->getCliente();
+            //$cliente = $this->getUser()->getCliente();
             /* @var $cliente \JF\ACLBundle\Entity\Cliente */
             set_time_limit(3600);
             $dati = $cliente->getDati();
             $logs = array();
             if (isset($dati['cl_h_ravinale-import'])) {
                 $bdxs = $this->enterBdx($dati['cl_h_ravinale-import']);
+                /*
                 foreach ($bdxs as $bdx) {
                     $logs[] = $this->importBdx($cliente, $bdx);
                 }
+                 */
             }
-            $out[$clienta->getId()] = array(
+            $out[$cliente->getId()] = array(
                 'pratiche_nuove' => array(),
                 'pratiche_aggiornate' => array(),
             );
@@ -75,6 +77,7 @@ class ImportController extends Controller {
                 $out[$clienta->getId()]['pratiche_aggiornate'] = array_merge($out['pratiche_aggiornate'], $log['pratiche_aggiornate']);
             }
         }
+        /*
         foreach ($out as $cliente_id => $elenchi) {
             foreach ($elenchi as $nome_elenco => $elenco) {
                 foreach ($elenco as $i => $pratica) {
@@ -82,10 +85,12 @@ class ImportController extends Controller {
                 }
             }
         }
+         */
         return $this->jsonResponse($out);
     }
 
     private function enterBdx($dati) {
+//        $admin = $this->find('JFACLBundle:Gestore', 1);
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Ravinale'));
         /* @var $sistema \Claims\HBundle\Entity\Sistema */
         $p = array(
@@ -100,7 +105,8 @@ class ImportController extends Controller {
 
         // https://sistema.ravinalepartners.com/
         $access = $this->curlPost($sistema->getUrlBase(), implode('&', $p), array('show' => true));
-
+//        $this->notify($admin, 'login', 'ClaimsRavinaleBundle:email:pagina', array('html' => $access));
+        
         $matchs = $cookies = array();
         preg_match_all('/Set-Cookie:[^;]+;/', $access, $matchs);
 
@@ -110,27 +116,51 @@ class ImportController extends Controller {
 
         // https://sistema.ravinalepartners.com/Moduli/San1/Riepilogo/
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/Riepilogo/', array('cookies' => $cookies));
+//        $this->notify($admin, '2012 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/San1/EsportaInExcelNewLineNuovo/
         sleep(rand(3, 6));
-        $out[] = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/San1/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $out[] = $tmp;
+//        $this->notify($admin, '2012 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/Inizio/
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
+//        $this->notify($admin, 'home 2', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/SanPie2013/Riepilogo/
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/Riepilogo/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/Riepilogo/', array('cookies' => $cookies));
+//        $this->notify($admin, '2013 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/
         sleep(rand(3, 6));
-        $out[] = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2013/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $out[] = $tmp; 
+//        $this->notify($admin, '2013 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+
+        //https://sistema.ravinalepartners.com/Moduli/Inizio/
+        sleep(rand(3, 6));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/Inizio/', array('cookies' => $cookies));
+//        $this->notify($admin, 'home 3', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+
+        //https://sistema.ravinalepartners.com/Moduli/SanPie2014/Riepilogo/
+        sleep(rand(3, 6));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/Riepilogo/', array('cookies' => $cookies));
+//        $this->notify($admin, '2014 html', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
+
+        //https://sistema.ravinalepartners.com/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/
+        sleep(rand(3, 6));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Moduli/SanPie2014/EsportaInExcelNewLineNuovo/', array('cookies' => $cookies));
+        $out[] = $tmp; 
+//        $this->notify($admin, '2014 xls', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         //https://sistema.ravinalepartners.com/Uscita/
         sleep(rand(3, 6));
-        $this->curlGet($sistema->getUrlBase() . '/Uscita/', array('cookies' => $cookies));
+        $tmp = $this->curlGet($sistema->getUrlBase() . '/Uscita/', array('cookies' => $cookies));
+//        $this->notify($admin, 'logout', 'ClaimsRavinaleBundle:email:pagina', array('html' => $tmp));
 
         return $out;
     }

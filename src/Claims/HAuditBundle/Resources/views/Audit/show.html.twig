@@ -166,6 +166,7 @@ function assegnaPriorita() {
                             {% if full is defined %}
                                 <th>Audit</th>
                             {% endif %}
+                            <th>Operator</th>
                             <th>Group</th>
                             <th>TPA</th>
                             <th><input type="text" id="fast_search" style="width: 200px;" placeholder="Claimant"></th>
@@ -186,6 +187,7 @@ function assegnaPriorita() {
                             {% if full is defined %}
                                 <td><a href="{{ path('claims-h-audit_show', {'id': pratica.audit.id }) }}">{{ pratica.audit.luogo }}<br/>({{ pratica.audit.giorno|date('d/m/Y') }})</a></td>
                             {% endif %}
+                            <td style="text-align: center;">{% if pratica.gestore %}{{ pratica.gestore.sigla }}{% else %}-{% endif %}</td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>

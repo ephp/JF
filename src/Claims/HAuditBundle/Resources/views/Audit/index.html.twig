@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-    {% if loop.index % 3 == 0 or loop.last %}
+    {% if (loop.index + 1) % 3 == 0 or loop.last %}
         </div>
     {% endif %}
 {% endfor %}

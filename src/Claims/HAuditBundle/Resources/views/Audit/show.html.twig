@@ -100,7 +100,7 @@ function assegnaPriorita() {
 {% if slc is defined %}
     {% set span = 3 %}
     {% for domanda in slc %}
-        {% if loop.index % 3 == 1 %}
+        {% if loop.index % 3 == 0 %}
         <div class="row-fluid">
             {% if loop.length - loop.index == 2 %}
                 {% set span = 4 %}

@@ -24,7 +24,7 @@
     {% if loop.first %}
             <div class="span12">
                 <div class="block">
-                    <div class="audit padding-10" style="border: 1px solid #c9c9c9; background: #e9e9e9; height: 40px;">
+                    <div class="audit padding-10 no-margin" style="border: 1px solid #c9c9c9; background: #e9e9e9; height: 40px;">
                         <form action="{{ path('claims-h-audit_show_all') }}" method="get" style="margin-top: 5px;">
                             <div class="input-group" style="line-height: 25px; text-align: center;">
                                 <input class="form-control" type="text" autocomplete="off" style="width: 200px;" placeholder="Claimant name" name="ricerca[claimant]" value="{% if app.request.get('ricerca') %}{{ app.request.get('ricerca').claimant }}{% endif %}">
@@ -39,14 +39,14 @@
         {% endif %}
         <div class="span{{ span }}">
             <div class="block">
-                <div class="audit padding-10" style="border: 1px solid #c9c9c9; background: #e9e9e9;">
+                <div class="audit padding-10 no-margin" style="border: 1px solid #c9c9c9; background: #e9e9e9;">
                     <b>{{ domanda.question.domandaLocale(app.user.locale) }}</b><br/>
                     {{ domanda.tot|number_format(2, ',', '.') }} €
                     <small>({{domanda.n}} claims)</small>
                 </div>
             </div>
         </div>
-    {% if loop.index % 3 == 0 or loop.last %}
+    {% if loop.index % 4 == 0 or loop.last %}
         </div>
     {% endif %}
 {% endfor %}

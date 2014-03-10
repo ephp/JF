@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0ac1a428179a952e4ab70c7b78c8e816",
+    "hash": "7c0409f236cacff58339069dd4ee9f3a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -622,12 +622,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/ACL.git",
-                "reference": "49915d39b3b685b94a1c6248388a958b576c4ad7"
+                "reference": "e41c9bbdd577f2d7e0f4dc0f34a260fac9ce4433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/ACL/zipball/49915d39b3b685b94a1c6248388a958b576c4ad7",
-                "reference": "49915d39b3b685b94a1c6248388a958b576c4ad7",
+                "url": "https://api.github.com/repos/ephp/ACL/zipball/e41c9bbdd577f2d7e0f4dc0f34a260fac9ce4433",
+                "reference": "e41c9bbdd577f2d7e0f4dc0f34a260fac9ce4433",
                 "shasum": ""
             },
             "require": {
@@ -663,7 +663,7 @@
                 "symfony",
                 "symfony-2.1"
             ],
-            "time": "2013-09-29 17:56:50"
+            "time": "2014-03-07 17:40:52"
         },
         {
             "name": "ephp/cal",
@@ -809,12 +809,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/Utility.git",
-                "reference": "3a179c9e28805e0da4479f5cbf30524b6a05ef6c"
+                "reference": "8d0f9d076004b2b5b5e4311cc6d61dd55467e5b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/Utility/zipball/3a179c9e28805e0da4479f5cbf30524b6a05ef6c",
-                "reference": "3a179c9e28805e0da4479f5cbf30524b6a05ef6c",
+                "url": "https://api.github.com/repos/ephp/Utility/zipball/8d0f9d076004b2b5b5e4311cc6d61dd55467e5b4",
+                "reference": "8d0f9d076004b2b5b5e4311cc6d61dd55467e5b4",
                 "shasum": ""
             },
             "require": {
@@ -848,7 +848,7 @@
                 "symfony-2.1",
                 "time"
             ],
-            "time": "2014-01-09 17:12:15"
+            "time": "2014-03-05 00:29:43"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -914,12 +914,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "23d15ad680fe5b695df1565e7854342e608bc483"
+                "reference": "7867dfc7aa67969a24fec7f8aa1051eda23098e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/23d15ad680fe5b695df1565e7854342e608bc483",
-                "reference": "23d15ad680fe5b695df1565e7854342e608bc483",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/7867dfc7aa67969a24fec7f8aa1051eda23098e9",
+                "reference": "7867dfc7aa67969a24fec7f8aa1051eda23098e9",
                 "shasum": ""
             },
             "require": {
@@ -974,7 +974,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-01-26 23:20:11"
+            "time": "2014-03-04 23:23:39"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1063,12 +1063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "071bd0de9245cbbc0bce057e4d3a8c696d790894"
+                "reference": "5a667454c32e35e4f5ab53030b54f21e1aee839f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/071bd0de9245cbbc0bce057e4d3a8c696d790894",
-                "reference": "071bd0de9245cbbc0bce057e4d3a8c696d790894",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/5a667454c32e35e4f5ab53030b54f21e1aee839f",
+                "reference": "5a667454c32e35e4f5ab53030b54f21e1aee839f",
                 "shasum": ""
             },
             "require": {
@@ -1167,7 +1167,7 @@
                 "yahoo",
                 "yandex"
             ],
-            "time": "2014-02-07 11:44:56"
+            "time": "2014-02-17 15:26:38"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1338,12 +1338,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "835ee51d911e4d8c9adf129907ebbebfa9a1e906"
+                "reference": "ff1a6e73e79c9f75c6a130d03b07f05c89fede63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/835ee51d911e4d8c9adf129907ebbebfa9a1e906",
-                "reference": "835ee51d911e4d8c9adf129907ebbebfa9a1e906",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/ff1a6e73e79c9f75c6a130d03b07f05c89fede63",
+                "reference": "ff1a6e73e79c9f75c6a130d03b07f05c89fede63",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -1394,7 +1394,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2014-02-03 10:44:10"
+            "time": "2014-03-07 15:36:26"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -1403,12 +1403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "838c4a0f9b0631b37d699d9a7ebd695707298678"
+                "reference": "e5700ed8cbd5c402d24d6dda118aa23400937288"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/838c4a0f9b0631b37d699d9a7ebd695707298678",
-                "reference": "838c4a0f9b0631b37d699d9a7ebd695707298678",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/e5700ed8cbd5c402d24d6dda118aa23400937288",
+                "reference": "e5700ed8cbd5c402d24d6dda118aa23400937288",
                 "shasum": ""
             },
             "require": {
@@ -1448,7 +1448,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2013-12-03 00:27:28"
+            "time": "2014-03-03 22:44:01"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -1457,12 +1457,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
-                "reference": "0558122152ca6a7af71730f88b728a091dea490e"
+                "reference": "7ea961c9ef60343a359f513c9fec7fd3bb65ddcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/0558122152ca6a7af71730f88b728a091dea490e",
-                "reference": "0558122152ca6a7af71730f88b728a091dea490e",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/7ea961c9ef60343a359f513c9fec7fd3bb65ddcb",
+                "reference": "7ea961c9ef60343a359f513c9fec7fd3bb65ddcb",
                 "shasum": ""
             },
             "require": {
@@ -1507,7 +1507,7 @@
                 "pagination",
                 "paginator"
             ],
-            "time": "2014-01-21 11:16:05"
+            "time": "2014-03-04 08:53:05"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1817,6 +1817,63 @@
             "time": "2013-05-24 11:57:42"
         },
         {
+            "name": "phpoffice/phpword",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPWord.git",
+                "reference": "5a6cb0891f23f7886cda1a793e30caa75a7897a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/5a6cb0891f23f7886cda1a793e30caa75a7897a2",
+                "reference": "5a6cb0891f23f7886cda1a793e30caa75a7897a2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.28"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPWord": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com",
+                    "homepage": "http://gabrielbull.com/"
+                },
+                {
+                    "name": "Mark Baker"
+                }
+            ],
+            "description": "PHPWord - Read, Create and Write Word documents in PHP",
+            "homepage": "http://phpoffice.github.io",
+            "keywords": [
+                "doc",
+                "docx",
+                "php",
+                "rtf",
+                "word",
+                "writer"
+            ],
+            "time": "2014-03-03 18:29:17"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -2064,12 +2121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "cbec28d1ed6dce13b0c18c2dfd8f6af81e65cbae"
+                "reference": "ec565406edc50453f9d61e2fd7c30c61e406c6b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/cbec28d1ed6dce13b0c18c2dfd8f6af81e65cbae",
-                "reference": "cbec28d1ed6dce13b0c18c2dfd8f6af81e65cbae",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/ec565406edc50453f9d61e2fd7c30c61e406c6b4",
+                "reference": "ec565406edc50453f9d61e2fd7c30c61e406c6b4",
                 "shasum": ""
             },
             "require": {
@@ -2117,7 +2174,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2014-01-23 11:00:25"
+            "time": "2014-02-21 11:10:28"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2393,16 +2450,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.9",
+            "version": "v2.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74"
+                "reference": "aa5b228e87dde1a1a9c7c3c78ad538739da05fe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
-                "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/aa5b228e87dde1a1a9c7c3c78ad538739da05fe1",
+                "reference": "aa5b228e87dde1a1a9c7c3c78ad538739da05fe1",
                 "shasum": ""
             },
             "require": {
@@ -2485,7 +2542,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -2497,7 +2556,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-01-05 01:24:54"
+            "time": "2014-02-27 14:55:30"
         },
         {
             "name": "twig/extensions",
@@ -2548,16 +2607,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.15.0",
+            "version": "v1.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "85e4ff98000157ff753d934b9f13659a953f5666"
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/85e4ff98000157ff753d934b9f13659a953f5666",
-                "reference": "85e4ff98000157ff753d934b9f13659a953f5666",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
                 "shasum": ""
             },
             "require": {
@@ -2581,11 +2640,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com"
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
@@ -2593,7 +2660,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-12-06 07:47:10"
+            "time": "2014-02-13 10:19:29"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -2644,6 +2711,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phpoffice/phpword": 20,
         "ephp/acl": 20,
         "ephp/cal": 20,
         "ephp/dragdrop": 20,

@@ -77,17 +77,12 @@ class WordController extends Controller {
         // New portrait section
         $section = $PHPWord->createSection();
 
-        $PHPWord->addFontStyle('rStyle', array('bold' => true, 'italic' => true, 'size' => 14));
+        $PHPWord->addFontStyle('rStyle', array('bold' => true, 'italic' => true, 'size' => 11));
         $PHPWord->addParagraphStyle('pStyle', array('align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0));
         $PHPWord->addParagraphStyle('tdStyle', array('align' => 'justify', 'spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0));
 
         $section->addText('Claims Reporting', 'rStyle', 'pStyle');
-        //        $section->addTitle('Claims Reporting', 1);
-        //        $section->addTextBreak(1);
-
         $section->addText('Newline – Claims ' . $this->range($pratica->getAmountReserved()), 'rStyle', 'pStyle');
-        //        $section->addTitle('Newline – Claims ' . $this->range($pratica->getAmountReserved()), 2);
-        //        $section->addTextBreak(1);
 
         $styleTable = array('borderSize' => 5, 'borderColor' => '006699', 'cellMargin' => 5, 'bgColor' => 'efefef');
         $styleCell = array('valign' => 'justify');
@@ -97,7 +92,7 @@ class WordController extends Controller {
 
         $table = $section->addTable();
         /* @var $table \PHPWord_Section_Table */
-        // Add row
+
         // Riga 1
         $table->addRow();
         $claimant = $table->addCell($larghezza / 2, $styleCell, $styleTable);
@@ -145,8 +140,10 @@ class WordController extends Controller {
         // Riga 7
         $table->addRow();
         $giudiziale = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $giudiziale->addText('Giudiziale: ', $fontBold, 'tdStyle');
-        $giudiziale->addText($pratica->getReportGiudiziale(), $fontNormal, 'tdStyle');
+        if($pratica->getReportGiudiziale()) {
+            $giudiziale->addText('Giudiziale: ', $fontBold, 'tdStyle');
+            $giudiziale->addText($pratica->getReportGiudiziale(), $fontNormal, 'tdStyle');
+        }
         $table->addCell($larghezza / 2, $styleCell, $styleTable);
 
         // Riga 8
@@ -189,17 +186,24 @@ class WordController extends Controller {
         $table->addRow();
         $table->addCell($larghezza / 2, $styleCell, $styleTable);
         $avv = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $avv->addText('Avv:', $pratica->getReportGestore()->getFullName());
+        $avv->addText('Avv:', $pratica->getGestore()->getNome());
 
         foreach ($pratica->getReports() as $report) {
+            /* @var $report \Claims\HBundle\Entity\Report */
             $section->addPageBreak();
 
-            /* @var $report \Claims\HBundle\Entity\Report */
             $section->addText('Report ' . $report->getData()->format('d/m/Y'), 'rStyle', 'pStyle');
             $section->addTextBreak(1);
 
             $tableReport = $section->addTable();
             /* @var $tableReport \PHPWord_Section_Table */
+
+            // Riga 0
+            $tableReport->addRow();
+            $sx00 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx00->addText('TPA: ' . $pratica->getOspedale()->getSistema()->getNome(), $fontBold, 'tdStyle');
+            $dx00 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx00->addText('Claimant: ' . $pratica->getClaimant(), $fontBold, 'tdStyle');
 
             // Riga 1
             $tableReport->addRow();
@@ -307,7 +311,6 @@ class WordController extends Controller {
             $dx15->addText($report->getNote(), $fontNormal, 'tdStyle');
         }
 
-
         // Save File
         $writer = \PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
 
@@ -318,7 +321,6 @@ class WordController extends Controller {
         );
 
         /* @var $response \Symfony\Component\HttpFoundation\Response */
-//        $response->headers->set('Content-Type', 'application/vnd.oasis.opendocument.text; charset=utf-8');
         $response->headers->set('Content-Type', 'application/rtfn/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=report_' . \Doctrine\Common\Util\Inflector::camelize($pratica->getClaimant()) . date('_d-m-Y') . '.docx;');
 
@@ -330,6 +332,7 @@ class WordController extends Controller {
     }
 
     private function range($ar) {
+        return "over € 100,000.00";
         if ($ar < 0) {
             return "N.P.";
         }

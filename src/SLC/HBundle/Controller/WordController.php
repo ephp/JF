@@ -71,9 +71,12 @@ class WordController extends Controller {
             $pratica->setGestore($this->getUser());
         }
 
-        // New Word Document
-        $PHPWord = new \PHPWord();
+        $wordService = $this->get('phpword');
+        /* @var $wordService \Ephp\OfficeBundle\FactoryWord */
 
+        $PHPWord = $wordService->createPHPWordObject();
+        /* @var $excel \PHPWord */
+        
         // New portrait section
         $section = $PHPWord->createSection();
 
@@ -86,6 +89,7 @@ class WordController extends Controller {
 
         $styleTable = array('borderSize' => 5, 'borderColor' => '006699', 'cellMargin' => 5, 'bgColor' => 'efefef');
         $styleCell = array('valign' => 'justify');
+        $styleCell4 = array('valign' => 'justify', 'gridSpan' => 3);
 
         $fontBold = array('bold' => true);
         $fontNormal = array('bold' => false);
@@ -200,125 +204,128 @@ class WordController extends Controller {
 
             // Riga 0
             $tableReport->addRow();
-            $sx00 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx00 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx00->addText('TPA: ' . $pratica->getOspedale()->getSistema()->getNome(), $fontBold, 'tdStyle');
-            $dx00 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx00 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx00->addText('Claimant: ' . $pratica->getClaimant(), $fontBold, 'tdStyle');
 
             // Riga 1
             $tableReport->addRow();
-            $sx01 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx01 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx01->addText('Copertura:', $fontBold, 'tdStyle');
-            $dx01 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx01 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx01->addText($report->getCopertura(), $fontNormal, 'tdStyle');
 
             // Riga 2
             $tableReport->addRow();
-            $sx02 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx02 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx02->addText('Stato:', $fontBold, 'tdStyle');
-            $dx02 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx02 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx02->addText($report->getStato(), $fontNormal, 'tdStyle');
 
             // Riga 3
             $tableReport->addRow();
-            $sx03 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx03 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx03->addText('Descrizione in fatto:', $fontBold, 'tdStyle');
-            $dx03 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx03 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx03->addText($report->getDescrizioneInFatto(), $fontNormal, 'tdStyle');
 
             // Riga 4
             $tableReport->addRow();
-            $sx04 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx04 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx04->addText('Relazione avversaria:', $fontBold, 'tdStyle');
-            $dx04 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx04 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx04->addText($report->getRelazioneAvversaria(), $fontNormal, 'tdStyle');
 
             // Riga 5
             $tableReport->addRow();
-            $sx05 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx05 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx05->addText('Relazioni ex-adverso:', $fontBold, 'tdStyle');
-            $dx05 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx05 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx05->addText($report->getRelazioneExAdverso(), $fontNormal, 'tdStyle');
 
             // Riga 6
             $tableReport->addRow();
-            $sx06 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx06 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx06->addText('Medico Legale 1:', $fontBold, 'tdStyle');
-            $dx06 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx06 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx06->addText($report->getMedicoLegale1(), $fontNormal, 'tdStyle');
 
             // Riga 7
             $tableReport->addRow();
-            $sx07 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx07 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx07->addText('Medico Legale 2:', $fontBold, 'tdStyle');
-            $dx07 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx07 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx07->addText($report->getMedicoLegale2(), $fontNormal, 'tdStyle');
 
             // Riga 8
             $tableReport->addRow();
-            $sx08 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx08 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx08->addText('Medico Legale 3:', $fontBold, 'tdStyle');
-            $dx08 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx08 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx08->addText($report->getMedicoLegale3(), $fontNormal, 'tdStyle');
 
             // Riga 9
             $tableReport->addRow();
-            $sx09 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx09 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx09->addText('Valutazione responsabilità:', $fontBold, 'tdStyle');
-            $dx09 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx09 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx09->addText($report->getValutazioneResponsabilita(), $fontNormal, 'tdStyle');
 
             // Riga 10
             $tableReport->addRow();
-            $sx10 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx10 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx10->addText('Analisi danno (MPL):', $fontBold, 'tdStyle');
-            $dx10 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx10 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx10->addText($report->getAnalisiDanno(), $fontNormal, 'tdStyle');
 
             // Riga 11
             $tableReport->addRow();
-            $sx11 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx11 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx11->addText('Riserva:', $fontBold, 'tdStyle');
-            $dx11 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx11 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx11->addText($report->getRiserva(), $fontNormal, 'tdStyle');
 
             // Riga 12
             $tableReport->addRow();
-            $sx12 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx12 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx12->addText('Possibile recupero:', $fontBold, 'tdStyle');
-            $dx12 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx12 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx12->addText($report->getPossibileRivalsa(), $fontNormal, 'tdStyle');
 
             // Riga 13
             $tableReport->addRow();
-            $sx13 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx13 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx13->addText('Azioni:', $fontBold, 'tdStyle');
-            $dx13 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx13 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx13->addText($report->getAzioni(), $fontNormal, 'tdStyle');
 
             // Riga 14
             $tableReport->addRow();
-            $sx14 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx14 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx14->addText('Richiesta SA:', $fontBold, 'tdStyle');
-            $dx14 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx14 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx14->addText($report->getRichiestaSa(), $fontNormal, 'tdStyle');
 
             // Riga 15
             $tableReport->addRow();
-            $sx15 = $tableReport->addCell($larghezza / 5, $styleCell, $styleTable);
+            $sx15 = $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
             $sx15->addText('Note:', $fontBold, 'tdStyle');
-            $dx15 = $tableReport->addCell(4 * $larghezza / 5, $styleCell, $styleTable);
+            $dx15 = $tableReport->addCell(3 * $larghezza / 4, $styleCell4, $styleTable);
             $dx15->addText($report->getNote(), $fontNormal, 'tdStyle');
+
+            // Riga 16
+            $tableReport->addRow();
+            $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
+            $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
+            $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
+            $tableReport->addCell($larghezza / 4, $styleCell, $styleTable);
         }
 
-        // Save File
-        $writer = \PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
-
-        $response = new StreamedResponse(
-                function () use ($writer) {
-            $writer->save('php://output');
-        }, 200, array()
-        );
+        // create the writer
+        $writer = $wordService->createWriter($PHPWord, 'Word2007');
+        // create the response
+        $response = $wordService->createStreamedResponse($writer);
 
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response->headers->set('Content-Type', 'application/rtfn/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8');

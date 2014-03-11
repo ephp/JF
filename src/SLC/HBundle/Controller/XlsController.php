@@ -46,7 +46,7 @@ class XlsController extends Controller {
      */
     public function xlsAction($mode, $vista) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
@@ -122,7 +122,7 @@ class XlsController extends Controller {
      */
     public function stampaRicercaAction($mode, $vista) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
@@ -175,7 +175,7 @@ class XlsController extends Controller {
      */
     public function xlsMonthlyAction($mode, $monthly_report) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
@@ -224,7 +224,7 @@ class XlsController extends Controller {
      */
     public function allXlsStatiAction($mode) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
@@ -280,7 +280,7 @@ class XlsController extends Controller {
      */
     public function xlsStatiAction($mode, $stato) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */
@@ -334,7 +334,7 @@ class XlsController extends Controller {
      */
     public function xlsAnalisiAction($mode) {
         $excelService = $this->get('phpexcel');
-        /* @var $excelService \Liuggio\ExcelBundle\Service\ExcelContainer */
+        /* @var $excelService \Ephp\OfficeBundle\FactoryExcel */
 
         $excel = $excelService->createPHPExcelObject();
         /* @var $excel \PHPExcel */

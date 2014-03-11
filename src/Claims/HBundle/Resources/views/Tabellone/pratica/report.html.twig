@@ -16,6 +16,7 @@
     <div class="span6">
         <div class="block bold">
             Claimant: {{ entity.claimant }}
+            Note claimat:<br/><textarea class="expand autoupdate" pratica="{{ entity.slug }}" name="report_report_claimant">{{ entity.reportClaimant }}</textarea>
         </div>
     </div>
     <div class="span6">
@@ -25,13 +26,9 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span1">
+    <div class="span6">
         <div class="block bold">
-            SOI:
-        </div>
-    </div>
-    <div class="span5">
-        <div class="block bold">
+            SOI:<br/>
             <select class="autoupdate" pratica="{{ entity.slug }}" name="report_soi">
             {% for n, soi in entity.severityOfInjury %}
                 <option value="{{ n }}" {% if entity.reportSoi == n %}selected="selected"{% endif %}>{{ soi }}</option>
@@ -46,35 +43,38 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span3">
+    <div class="span6">
+        <div class="block">
+            Dati polizza:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_verifica_copertura">{{ entity.reportVerificaCopertura }}</textarea>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6">
         <div class="block">
             Data evento (DOL):<input type="text" class="autoupdate autodate" pratica="{{ entity.slug }}" name="report_dol" value="{% if entity.reportDol %}{{ entity.reportDol|date('d/m/Y') }}{% endif %}"/>
         </div>
     </div>
-    <div class="span3">
+    <div class="span6">
         <div class="block">
             Data reclamo (DON):<input type="text" class="autoupdate autodate" pratica="{{ entity.slug }}" name="report_don" value="{% if entity.reportDon %}{{ entity.reportDon|date('d/m/Y') }}{% endif %}"/>
         </div>
     </div>
-    <div class="span6">
-        <div class="block">
-            Verifica Copertura:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_verifica_copertura">{{ entity.reportVerificaCopertura }}</textarea>
-        </div>
-    </div>
 </div>
 <div class="row-fluid">
-    <div class="span12">
+    <div class="span6">
         <div class="block">
             Descrizione evento:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_descrizione">{{ entity.reportDescrizione }}</textarea>
         </div>
     </div>
+    <div class="span6">
+        <div class="block">
+        </div>
+    </div>
 </div>
 <div class="row-fluid">
-    <div class="span12">
+    <div class="span6">
         <div class="block">
-            {# 
-            MPL:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_mpl">{{ entity.reportMpl }}</textarea>
-            #}
             MPL:<select class="autoupdate" pratica="{{ entity.slug }}" name="report_mpl">
             {% for n, mpl in entity.fasceMpl %}
                 <option value="{{ n }}" {% if entity.reportMpl == n %}selected="selected"{% endif %}>{{ mpl }}</option>
@@ -82,18 +82,30 @@
             </select> 
         </div>
     </div>
-</div>
-<div class="row-fluid">
-    <div class="span12">
+    <div class="span6">
         <div class="block">
-            Giudiziale:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_giudiziale">{{ entity.reportGiudiziale }}</textarea>
         </div>
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span12">
+    <div class="span6">
         <div class="block">
-            Other Policies:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_other_policies">{{ entity.reportOtherPolicies }}</textarea>
+            Giudiziale:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_giudiziale">{{ entity.reportGiudiziale }}</textarea>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="block">
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6">
+        <div class="block">
+            Altre polizze:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_other_policies">{{ entity.reportOtherPolicies }}</textarea>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="block">
         </div>
     </div>
 </div>
@@ -120,30 +132,34 @@
 <div class="row-fluid">
     <div class="span6">
         <div class="block">
-            Possible Recovery:<input type="text" class="autoupdate currency" pratica="{{ entity.slug }}" name="report_possible_recovery" value="{{ entity.reportPossibleRecovery }}"/>
+            Possibile Recupero:<input type="text" class="autoupdate currency" pratica="{{ entity.slug }}" name="report_possible_recovery" value="{{ entity.reportPossibleRecovery }}"/>
         </div>
     </div>
     <div class="span6">
         <div class="block">
-            Amount Reserved:<input type="text" class="autoupdate currencynp" pratica="{{ entity.slug }}" name="report_amount_reserved" value="{% if entity.reportAmountReserved < 0 %}N.P.{% else %}{{ entity.reportAmountReserved }}{% endif %}"/>
+            Riserva:<input type="text" class="autoupdate currencynp" pratica="{{ entity.slug }}" name="report_amount_reserved" value="{% if entity.reportAmountReserved < 0 %}N.P.{% else %}{{ entity.reportAmountReserved }}{% endif %}"/>
         </div>
     </div>
 </div>
 <div class="row-fluid">
     <div class="span6">
         <div class="block">
-            Applicable Deductable:<input type="text" class="autoupdate currency" pratica="{{ entity.slug }}" name="report_applicable_deductable" value="{{ entity.reportApplicableDeductable }}"/>
         </div>
     </div>
     <div class="span6">
         <div class="block">
+            Applicable Deductable:<input type="text" class="autoupdate currency" pratica="{{ entity.slug }}" name="report_applicable_deductable" value="{{ entity.reportApplicableDeductable }}"/>
         </div>
     </div>
 </div>
 <div class="row-fluid">
     <div class="span12">
         <div class="block">
-            Future Conduct:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_future_conduct">{{ entity.reportFutureConduct }}</textarea>
+            Azioni:<br/><textarea class="expand autoupdate autogrow" pratica="{{ entity.slug }}" name="report_future_conduct">{{ entity.reportFutureConduct }}</textarea>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="block">
         </div>
     </div>
 </div>

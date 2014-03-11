@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "7c0409f236cacff58339069dd4ee9f3a",
+    "hash": "8220e7528f7426d1c5dbf46538a7b3bd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -849,6 +849,66 @@
                 "time"
             ],
             "time": "2014-03-05 00:29:43"
+        },
+        {
+            "name": "ephpoffice/phpword",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ephp/PHPWord.git",
+                "reference": "9ea5d7bb6d916176b36c24d9546257a4c86f19e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ephp/PHPWord/zipball/9ea5d7bb6d916176b36c24d9546257a4c86f19e7",
+                "reference": "9ea5d7bb6d916176b36c24d9546257a4c86f19e7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.28"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPWord": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com",
+                    "homepage": "http://gabrielbull.com/"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Ephraim Pepe"
+                }
+            ],
+            "description": "PHPWord - Read, Create and Write Word documents in PHP",
+            "homepage": "http://phpoffice.github.io",
+            "keywords": [
+                "doc",
+                "docx",
+                "php",
+                "rtf",
+                "word",
+                "writer"
+            ],
+            "time": "2014-03-11 01:01:06"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1817,63 +1877,6 @@
             "time": "2013-05-24 11:57:42"
         },
         {
-            "name": "phpoffice/phpword",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PHPWord.git",
-                "reference": "5a6cb0891f23f7886cda1a793e30caa75a7897a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/5a6cb0891f23f7886cda1a793e30caa75a7897a2",
-                "reference": "5a6cb0891f23f7886cda1a793e30caa75a7897a2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xml": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.28"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPWord": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
-                },
-                {
-                    "name": "Gabriel Bull",
-                    "email": "me@gabrielbull.com",
-                    "homepage": "http://gabrielbull.com/"
-                },
-                {
-                    "name": "Mark Baker"
-                }
-            ],
-            "description": "PHPWord - Read, Create and Write Word documents in PHP",
-            "homepage": "http://phpoffice.github.io",
-            "keywords": [
-                "doc",
-                "docx",
-                "php",
-                "rtf",
-                "word",
-                "writer"
-            ],
-            "time": "2014-03-03 18:29:17"
-        },
-        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -2711,7 +2714,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpoffice/phpword": 20,
+        "ephpoffice/phpword": 20,
         "ephp/acl": 20,
         "ephp/cal": 20,
         "ephp/dragdrop": 20,

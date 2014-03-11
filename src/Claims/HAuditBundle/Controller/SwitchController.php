@@ -30,7 +30,7 @@ class SwitchController extends Controller {
     /**
      * Lists all Audit entities.
      *
-     * @Route("/", name="claims-h-audit-switch")
+     * @Route("/", name="claims-h-audit")
      * @Method("GET")
      * @Template()
      */

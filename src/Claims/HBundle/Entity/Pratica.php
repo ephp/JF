@@ -414,6 +414,13 @@ class Pratica {
     /**
      * @var string
      *
+     * @ORM\Column(name="report_claimant", type="string", length=255, nullable=true)
+     */
+    private $reportClaimant;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="report_soi", type="string", length=2, nullable=true)
      */
     private $reportSoi;
@@ -1632,6 +1639,15 @@ class Pratica {
      */
     public function getInformazioni() {
         return $this->informazioni;
+    }
+
+    public function getReportClaimant() {
+        return $this->reportClaimant;
+    }
+
+    public function setReportClaimant($reportClaimant) {
+        $this->reportClaimant = $reportClaimant;
+        return $this;
     }
 
     /**

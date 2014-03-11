@@ -30,7 +30,7 @@ class AuditController extends Controller {
     /**
      * Lists all Audit entities.
      *
-     * @Route("/", name="claims-h-audit")
+     * @Route("/", name="claims-h-audit-slc")
      * @Method("GET")
      * @Template()
      */

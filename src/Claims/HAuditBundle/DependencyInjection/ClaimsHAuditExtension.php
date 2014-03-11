@@ -53,7 +53,7 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
 
         $menu['claims_audit']['submenu'][] = array(
             'label' => 'Audit Hospital',
-            'route' => 'claims-h-audit-switch',
+            'route' => 'claims-h-audit',
             'show' => array('in_role' => array('C_AUDIT_H')),
             'order' => 50,
         );

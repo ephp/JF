@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8220e7528f7426d1c5dbf46538a7b3bd",
+    "hash": "4523d1f5ecec3f3584fbbc0ffde534c7",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -803,6 +803,76 @@
             "time": "2013-08-09 16:41:23"
         },
         {
+            "name": "ephp/office",
+            "version": "dev-master",
+            "target-dir": "Ephp/OfficeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ephp/OfficeBundle.git",
+                "reference": "6e2186f300ad79923d3ff6d2e132e307af9962bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ephp/OfficeBundle/zipball/6e2186f300ad79923d3ff6d2e132e307af9962bc",
+                "reference": "6e2186f300ad79923d3ff6d2e132e307af9962bc",
+                "shasum": ""
+            },
+            "require": {
+                "ephpoffice/phpexcel": "master@dev",
+                "ephpoffice/phpword": "master@dev",
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "~2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "sensio/framework-extra-bundle": "~2.1",
+                "symfony/browser-kit": "~2.1",
+                "symfony/class-loader": "~2.1",
+                "symfony/finder": "~2.0",
+                "symfony/form": "~2.1",
+                "symfony/validator": "~2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Ephp\\OfficeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giulio De Donato",
+                    "email": "liuggio@gmail.com",
+                    "homepage": "http://www.welcometothebundle.com"
+                },
+                {
+                    "name": "Ephraim Pepe",
+                    "email": "staff@jf-system.com"
+                },
+                {
+                    "name": "OfficeBundle Contributors",
+                    "homepage": "https://github.com/ephp/OfficeBundle#contributors"
+                }
+            ],
+            "description": "This is a Symfony2 Bundle helps you to read and write Excel files (including pdf, xlsx, odt), thanks to the PHPExcel library",
+            "homepage": "http://www.welcometothebundle.com",
+            "keywords": [
+                "Symfony2",
+                "bundle",
+                "excel",
+                "xls"
+            ],
+            "time": "2014-03-11 11:23:57"
+        },
+        {
             "name": "ephp/utility",
             "version": "dev-master",
             "target-dir": "Ephp/UtilityBundle",
@@ -851,17 +921,78 @@
             "time": "2014-03-05 00:29:43"
         },
         {
+            "name": "ephpoffice/phpexcel",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ephp/PHPExcel.git",
+                "reference": "d40bd57f7153a45cf569608311931691523df621"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ephp/PHPExcel/zipball/d40bd57f7153a45cf569608311931691523df621",
+                "reference": "d40bd57f7153a45cf569608311931691523df621",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Ephraim Pepe",
+                    "email": "staff@jf-system.com"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2014-03-11 11:22:30"
+        },
+        {
             "name": "ephpoffice/phpword",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ephp/PHPWord.git",
-                "reference": "9ea5d7bb6d916176b36c24d9546257a4c86f19e7"
+                "reference": "a29297221e3e994879ca37c09ad1cb9ce68fe6be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ephp/PHPWord/zipball/9ea5d7bb6d916176b36c24d9546257a4c86f19e7",
-                "reference": "9ea5d7bb6d916176b36c24d9546257a4c86f19e7",
+                "url": "https://api.github.com/repos/ephp/PHPWord/zipball/a29297221e3e994879ca37c09ad1cb9ce68fe6be",
+                "reference": "a29297221e3e994879ca37c09ad1cb9ce68fe6be",
                 "shasum": ""
             },
             "require": {
@@ -895,7 +1026,8 @@
                     "name": "Mark Baker"
                 },
                 {
-                    "name": "Ephraim Pepe"
+                    "name": "Ephraim Pepe",
+                    "email": "staff@jf-system.com"
                 }
             ],
             "description": "PHPWord - Read, Create and Write Word documents in PHP",
@@ -908,7 +1040,7 @@
                 "word",
                 "writer"
             ],
-            "time": "2014-03-11 01:01:06"
+            "time": "2014-03-11 11:21:38"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1689,71 +1821,6 @@
             "time": "2013-05-19 03:41:15"
         },
         {
-            "name": "liuggio/ExcelBundle",
-            "version": "v2.0.0",
-            "target-dir": "Liuggio/ExcelBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/liuggio/ExcelBundle.git",
-                "reference": "74b6833c772e3e371a398de8bbcd1856a14286ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/liuggio/ExcelBundle/zipball/74b6833c772e3e371a398de8bbcd1856a14286ec",
-                "reference": "74b6833c772e3e371a398de8bbcd1856a14286ec",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "phpoffice/phpexcel": "1.7.9",
-                "symfony/framework-bundle": "~2.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*",
-                "sensio/framework-extra-bundle": "~2.1",
-                "symfony/browser-kit": "~2.1",
-                "symfony/class-loader": "~2.1",
-                "symfony/finder": "~2.0",
-                "symfony/form": "~2.1",
-                "symfony/validator": "~2.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Liuggio\\ExcelBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Giulio De Donato",
-                    "email": "liuggio@gmail.com",
-                    "homepage": "http://www.welcometothebundle.com"
-                },
-                {
-                    "name": "ExcelBundle Contributors",
-                    "homepage": "https://github.com/liuggio/ExcelBundle#contributors"
-                }
-            ],
-            "description": "This is a Symfony2 Bundle helps you to read and write Excel files (including pdf, xlsx, odt), thanks to the PHPExcel library",
-            "homepage": "http://www.welcometothebundle.com",
-            "keywords": [
-                "Symfony2",
-                "bundle",
-                "excel",
-                "xls"
-            ],
-            "time": "2013-12-29 10:38:23"
-        },
-        {
             "name": "monolog/monolog",
             "version": "1.7.0",
             "source": {
@@ -1819,62 +1886,6 @@
                 "psr-3"
             ],
             "time": "2013-11-14 19:48:31"
-        },
-        {
-            "name": "phpoffice/phpexcel",
-            "version": "1.7.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "7a7634fba664249a04fc771df677a9b9f755d7ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/7a7634fba664249a04fc771df677a9b9f755d7ec",
-                "reference": "7a7634fba664249a04fc771df677a9b9f755d7ec",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xml": "*",
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPExcel": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Maarten Balliauw",
-                    "homepage": "http://blog.maartenballiauw.be"
-                },
-                {
-                    "name": "Mark Baker"
-                },
-                {
-                    "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
-                },
-                {
-                    "name": "Erik Tilt"
-                }
-            ],
-            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
-            "homepage": "http://phpexcel.codeplex.com",
-            "keywords": [
-                "OpenXML",
-                "excel",
-                "php",
-                "spreadsheet",
-                "xls",
-                "xlsx"
-            ],
-            "time": "2013-05-24 11:57:42"
         },
         {
             "name": "psr/log",
@@ -2714,11 +2725,13 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ephpoffice/phpexcel": 20,
         "ephpoffice/phpword": 20,
         "ephp/acl": 20,
         "ephp/cal": 20,
         "ephp/dragdrop": 20,
         "ephp/imap": 20,
+        "ephp/office": 20,
         "ephp/utility": 20,
         "friendsofsymfony/user-bundle": 20,
         "hwi/oauth-bundle": 20,

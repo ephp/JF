@@ -104,7 +104,7 @@ class WordController extends Controller {
         // Riga 2
         $table->addRow();
         $soi = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $soi->addText('SOI: ' . $pratica->getReportSoi(), $fontBold, 'tdStyle');
+        $soi->addText('SOI:', $fontBold, 'tdStyle');
         $soi->addText($pratica->getReportSoi(true), $fontNormal, 'tdStyle');
         $nClaim = $table->addCell($larghezza / 2, $styleCell, $styleTable);
         $nClaim->addText('N.Claim: ' . $pratica->getCodice(), $fontBold, 'tdStyle');
@@ -126,14 +126,14 @@ class WordController extends Controller {
         // Riga 5
         $table->addRow();
         $descEvento = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $descEvento->addText('Descrrizione Evento:', $fontBold, 'tdStyle');
+        $descEvento->addText('Descrizione Evento:', $fontBold, 'tdStyle');
         $descEvento->addText($pratica->getReportVerificaCopertura(), $fontNormal, 'tdStyle');
         $table->addCell($larghezza / 2, $styleCell, $styleTable);
 
         // Riga 6
         $table->addRow();
         $mpl = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $mpl->addText('MPL: ' . $pratica->getReportMpl(), $fontBold, 'tdStyle');
+        $mpl->addText('MPL:', $fontBold, 'tdStyle');
         $mpl->addText($pratica->getReportMpl(true), $fontNormal, 'tdStyle');
         $table->addCell($larghezza / 2, $styleCell, $styleTable);
 
@@ -156,18 +156,18 @@ class WordController extends Controller {
         // Riga 9
         $table->addRow();
         $tpl = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $tpl->addText('Tipo danno (TPL): ' . $pratica->getReportTypeOfLoss(), $fontBold, 'tdStyle');
+        $tpl->addText('Tipo danno (TPL):', $fontBold, 'tdStyle');
         $tpl->addText($pratica->getReportTypeOfLoss(true), $fontNormal, 'tdStyle');
         $dipartimento = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $dipartimento->addText('Dipartimento ospedaliero: ' . $pratica->getReportServiceProvider(), $fontBold, 'tdStyle');
+        $dipartimento->addText('Dipartimento ospedaliero:', $fontBold, 'tdStyle');
         $dipartimento->addText($pratica->getReportServiceProvider(true), $fontNormal, 'tdStyle');
 
         // Riga 10
         $table->addRow();
         $recupero = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $recupero->addText('Possibile recupero: ' . $pratica->getReportPossibleRecovery() < 0 ? 'N.P.' : $pratica->getReportPossibleRecovery() . ' €', $fontBold, 'tdStyle');
+        $recupero->addText('Possibile recupero: ' . ($pratica->getReportPossibleRecovery() < 0 ? 'N.P.' : $pratica->getReportPossibleRecovery() . ' €'), $fontBold, 'tdStyle');
         $riserva = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $riserva->addText('Riserva: ' . $pratica->getReportAmountReserved() < 0 ? 'N.P.' : $pratica->getReportAmountReserved() . ' €', $fontBold, 'tdStyle');
+        $riserva->addText('Riserva: ' . ($pratica->getReportAmountReserved() < 0 ? 'N.P.' : $pratica->getReportAmountReserved() . ' €'), $fontBold, 'tdStyle');
 
         // Riga 11
         $table->addRow();
@@ -186,7 +186,7 @@ class WordController extends Controller {
         $table->addRow();
         $table->addCell($larghezza / 2, $styleCell, $styleTable);
         $avv = $table->addCell($larghezza / 2, $styleCell, $styleTable);
-        $avv->addText('Avv:', $pratica->getGestore()->getNome());
+        $avv->addText('Avv: ' . $pratica->getGestore()->getNome());
 
         foreach ($pratica->getReports() as $report) {
             /* @var $report \Claims\HBundle\Entity\Report */

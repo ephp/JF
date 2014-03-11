@@ -23,13 +23,13 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new PunkAve\FileUploaderBundle\PunkAveFileUploaderBundle(),
-            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             
             new Ephp\UtilityBundle\EphpUtilityBundle(),
             new Ephp\CalendarBundle\EphpCalendarBundle(),
             new Ephp\DragDropBundle\EphpDragDropBundle(),
             new Ephp\ACLBundle\EphpACLBundle(),
             new Ephp\ImapBundle\EphpImapBundle(),
+            new Ephp\OfficeBundle\EphpOfficeBundle(),
             
             new JF\GeneratorBundle\JFGeneratorBundle(),
             new JF\CoreBundle\JFCoreBundle(),

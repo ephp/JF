@@ -30,7 +30,7 @@ class SwitchController extends Controller {
     /**
      * Lists all Audit entities.
      *
-     * @Route("/", name="claims-h-audit")
+     * @Route("/", name="claims-h-audit", options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @Method("GET")
      * @Template()
      */

@@ -27,7 +27,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-list/push", name="sync_claims-h-audit-push-list", options={"_format": "json"})
+     * @Route("-list/push", name="sync_claims-h-audit-push-list", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      */
     public function pushListAction() {
         $output = array();
@@ -65,7 +65,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-audit/{id}/fetch", name="sync_claims-h-audit-fetch-audit", options={"_format": "json"})
+     * @Route("-audit/{id}/fetch", name="sync_claims-h-audit-fetch-audit", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      */
     public function fetchAuditAction($id) {
         set_time_limit(3600);
@@ -220,7 +220,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-audit/{id}/push", name="sync_claims-h-audit-push-audit", options={"_format": "json"})
+     * @Route("-audit/{id}/push", name="sync_claims-h-audit-push-audit", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      */
     public function pushAuditAction(Audit $entity) {
@@ -319,7 +319,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-audit/{id}/pull", name="sync_claims-h-audit-pull-audit", options={"_format": "json"})
+     * @Route("-audit/{id}/pull", name="sync_claims-h-audit-pull-audit", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      */
     public function pullAuditAction(Audit $entity) {
@@ -370,8 +370,8 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-pratica/{id}/pull", name="sync_claims-h-audit-pull-p", options={"_format": "json"})
-     * @Route("-pratica/{id}/push", name="sync_claims-h-audit-push-p", options={"_format": "json"})
+     * @Route("-pratica/{id}/pull", name="sync_claims-h-audit-pull-p", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
+     * @Route("-pratica/{id}/push", name="sync_claims-h-audit-push-p", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
     public function pullPraticaAction(Pratica $entity) {
@@ -419,7 +419,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-pratica/{id}/get", name="sync_claims-h-audit-get-p", options={"_format": "json"})
+     * @Route("-pratica/{id}/get", name="sync_claims-h-audit-get-p", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
     public function getPraticaAction(Pratica $entity) {
@@ -500,7 +500,7 @@ class SyncController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-pratica/{id}/fetch", name="sync_claims-h-audit-fetch-p", options={"_format": "json"})
+     * @Route("-pratica/{id}/fetch", name="sync_claims-h-audit-fetch-p", options={"_format": "json"}, options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
     public function fetchPraticaAction(Pratica $entity) {

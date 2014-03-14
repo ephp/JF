@@ -116,9 +116,12 @@ class ClaimsHAuditExtension extends Extension implements IExtension, ITipiEventi
     public function setRoles(ContainerBuilder $container) {
         $roles = $container->getParameter('jf.roles');
 
-        $this->newRole($roles, 'C_AUDIT_H', 'C-AUDH', 'Audit');
         $this->newRole($roles, 'C_AUDIT_HC', 'C-AUDHC', 'Audit Creator');
-        $this->newRole($roles, 'C_AUDIT_HQ', 'C-AUDHQ', 'Question Revisor');
+        $this->newRole($roles, 'C_AUDIT_H', 'C-AUDH', 'Audit Examiner');
+        $this->newRole($roles, 'C_AUDIT_HR', 'C-AUDHR', 'Audit Revisor');
+        $this->newRole($roles, 'C_AUDIT_HV', 'C-AUDHV', 'Audit Validator');
+        $this->newRole($roles, 'C_AUDIT_HQ', 'C-AUDHQ', 'SLC Question Revisor');
+        $this->newRole($roles, 'C_AUDIT_HH', 'C-AUDHH', 'Audit HLC');
 
         $container->setParameter('jf.roles', $roles);
     }

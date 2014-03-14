@@ -35,7 +35,8 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'evalutation', 5, 'Evalutation',            //Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
                     100,                                                        //Durata
-                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC'),              //Ruoli abilitati
+                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC',
+                          'C_AUDIT_HR', 'C_AUDIT_HB', 'C_AUDIT_HH'),            //Ruoli abilitati
                     array('claims.h-audit.cerca'),                              //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -46,7 +47,8 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'base', 10, 'Base Audit Package',    //Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
                     365,                                                        //Durata
-                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC'),              //Ruoli abilitati
+                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC',
+                          'C_AUDIT_HR', 'C_AUDIT_HB', 'C_AUDIT_HH'),            //Ruoli abilitati
                     array('claims.h-audit.cerca'),                              //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package
@@ -57,7 +59,8 @@ class InstallController extends Controller {
                     $package, $g_pratiche, 'slc', 100, 'Studio Legale Carlesi',//Anagrafica licenza 
                     'ClaimsHAuditBundle:Install:audit_base.txt.twig',           //TWIG descrizione
                     null,                                                       //Durata
-                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC'),              //Ruoli abilitati
+                    array('C_AUDIT_H', 'C_AUDIT_HQ', 'C_AUDIT_HC',
+                          'C_AUDIT_HR', 'C_AUDIT_HB', 'C_AUDIT_HH'),            //Ruoli abilitati
                     array('claims.h-audit.cerca'),                              //Widget abilitati
                     array(                                                      //Parametri di configurazione
                         'on' => true,                                           //  Abilitazione del package

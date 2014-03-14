@@ -272,6 +272,22 @@ class Audit {
         return $n;
     }
 
+    public function getPriorita() {
+        $out = array();
+        foreach ($this->pratiche as $pratica) {
+            /* @var $pratica Pratica */
+            if(!isset($out[$pratica->getPriorita()->getId()])) {
+                $out[$pratica->getPriorita()->getId()] = array(
+                    'priorita' => $pratica->getPriorita(),
+                    'n' => 0,
+                );
+            }
+            $out[$pratica->getPriorita()->getId()]['n']++;
+        }
+        krsort($out);
+        return $out;
+    }
+
     public function getGroup($ordine) {
         $out = array(
             'obj' => null,

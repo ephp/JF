@@ -24,7 +24,7 @@ class SottogruppoController extends Controller
     /**
      * Lists all Sottogruppo entities.
      *
-     * @Route("/", name="eph_sottogruppi-audit")
+     * @Route("/", name="eph_sottogruppi-audit", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -39,7 +39,7 @@ class SottogruppoController extends Controller
     /**
      * Creates a new Sottogruppo entity.
      *
-     * @Route("/", name="eph_sottogruppi-audit_create")
+     * @Route("/", name="eph_sottogruppi-audit_create", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("POST")
      * @Template("ClaimsHAuditBundle:Sottogruppo:new.html.twig")
      */
@@ -84,7 +84,7 @@ class SottogruppoController extends Controller
     /**
      * Displays a form to create a new Sottogruppo entity.
      *
-     * @Route("/new", name="eph_sottogruppi-audit_new")
+     * @Route("/new", name="eph_sottogruppi-audit_new", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class SottogruppoController extends Controller
     /**
      * Displays a form to edit an existing Sottogruppo entity.
      *
-     * @Route("/{id}/edit", name="eph_sottogruppi-audit_edit")
+     * @Route("/{id}/edit", name="eph_sottogruppi-audit_edit", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Sottogruppo")
      * @Template()
@@ -142,7 +142,7 @@ class SottogruppoController extends Controller
     /**
      * Edits an existing Sottogruppo entity.
      *
-     * @Route("/{id}", name="eph_sottogruppi-audit_update")
+     * @Route("/{id}", name="eph_sottogruppi-audit_update", options={"ACL": {"in_role": "R_EPH"}})
      * @Method("PUT")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Sottogruppo")
      * @Template("ClaimsHAuditBundle:Sottogruppo:edit.html.twig")

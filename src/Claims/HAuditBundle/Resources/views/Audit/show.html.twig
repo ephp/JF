@@ -13,6 +13,15 @@ $('span.label').click(function() {
     $('#bt_cambia_priorita').show();
     $('#wait_cambia_priorita').hide();
 });
+
+$('a.gestore').click(function() {
+    var tr = $(this).closest('tr');
+    $('#cambia_gestore_a').text(tr.attr('titolo'));
+    $('#gestore_id').val(tr.attr('id'));
+    $('#gestore_gestore').val(tr.attr('gestore'));
+    $('#bt_cambia_gestore').show();
+    $('#wait_cambia_gestore').hide();
+});
 {% endblock ready_js %}
 {% block inline_js %}
 function fastSearch() {
@@ -48,6 +57,32 @@ function assegnaPriorita() {
         riga.attr('priorita', out.id);
         abbr.attr('title', out.label);
         abbr.html(out.label);
+        $.fancybox.close();
+    });
+}
+
+function assegnaGestore() {
+    $('#bt_cambia_gestore').hide();
+    $('#wait_cambia_gestore').show();
+    var form = $('#cambia_gestore');
+    $.post(Routing.generate('claims_hospital_audit_cambia_gestore'), form.serialize(), function(out) {
+        var riga = $('#' + $('#gestore_id').val());
+        var a = riga.find('.gestore');
+        a.html('<div class="user"><abbr title="{nome}">{sigla}</abbr></div>'.assign(out));
+        riga.attr('gestore', out.slug);
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.label');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        var dasc = riga.find('.dasc').find('a');
         $.fancybox.close();
     });
 }
@@ -184,12 +219,22 @@ function assegnaPriorita() {
                     </thead>
                     <tbody>
                     {% for pratica in pratiche %}
-                        <tr name="{{ pratica.claimant }}" class='fast_search' id="{{ pratica.slug }}" titolo="{{ pratica }}" priorita="{% if pratica.priorita %}{{ pratica.priorita.id }}{% endif %}">                            
+                        <tr name="{{ pratica.claimant }}" class='fast_search' id="{{ pratica.slug }}" titolo="{{ pratica }}" priorita="{% if pratica.priorita %}{{ pratica.priorita.id }}{% endif %}" gestore="{% if pratica.gestore %}{{ pratica.gestore.slug }}{% endif %}">                            
                             <td>{{ loop.index }}</td>
                             {% if full is defined %}
                                 <td><a href="{{ path('claims-h-audit_show', {'id': pratica.audit.id }) }}">{{ pratica.audit.luogo }}<br/>({{ pratica.audit.giorno|date('d/m/Y') }})</a></td>
                             {% endif %}
-                            <td style="text-align: center;">{% if pratica.gestore %}{{ pratica.gestore.sigla }}{% else %}-{% endif %}</td>
+                            <td>
+                                <a href="#fb_cambia_gestore" class="fancybox button {% if pratica.gestore %}gray{% else %}lgray{% endif %} gestore">
+                                {% if pratica.gestore %}
+                                    <div class="user">
+                                        {{ pratica.gestore.sigla }}
+                                    </div>
+                                {% else %}
+                                    <div class="icon"><span class="ico-user"></span></div>
+                                {% endif %}
+                                </a>
+                            </td>
                             <td>{{ pratica.gruppo }}</td>
                             <td>{{ pratica.codice }}</td>
                             <td>{{ pratica.claimant }}</td>
@@ -254,4 +299,5 @@ function assegnaPriorita() {
 </div>
 
 {% render(controller("ClaimsHAuditBundle:Render:cambiaPriorita")) %}
+{% render(controller("ClaimsHAuditBundle:Render:cambiaGestore")) %}
 {% endblock %}

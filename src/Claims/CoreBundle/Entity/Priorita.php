@@ -24,7 +24,7 @@ class Priorita {
     /**
      * @var string
      *
-     * @ORM\Column(name="priorita", type="string", length=16)
+     * @ORM\Column(name="priorita", type="string", length=32)
      */
     private $priorita;
 

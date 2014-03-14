@@ -22,7 +22,7 @@ class XlsController extends Controller {
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("/{id}", name="claims-h-audit-xls")
+     * @Route("/{id}", name="claims-h-audit-xls", options={"ACL": {"in_role": "C_AUDIT_H"}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      */
     public function downloadAction(Audit $entity) {
@@ -202,7 +202,7 @@ class XlsController extends Controller {
     }
 
     /**
-     * @Route("-form/{audit}", name="claims-h-audit-xls-file")
+     * @Route("-form/{audit}", name="claims-h-audit-xls-file", options={"ACL": {"in_role": "C_AUDIT_CH"}})
      * @Template()
      */
     public function formAction($audit) {
@@ -211,7 +211,7 @@ class XlsController extends Controller {
     }
 
     /**
-     * @Route("-callback", name="claims-h-audit-xls-file-callback", options={"expose": true})
+     * @Route("-callback", name="claims-h-audit-xls-file-callback", options={"expose": true, "ACL": {"in_role": "C_AUDIT_CH"}})
      * @Template()
      */
     public function callbackAction() {

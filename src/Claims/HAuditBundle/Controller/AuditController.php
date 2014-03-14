@@ -30,7 +30,7 @@ class AuditController extends Controller {
     /**
      * Lists all Audit entities.
      *
-     * @Route("/", name="claims-h-audit-slc")
+     * @Route("/", name="claims-h-audit-slc", options={"ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Method("GET")
      * @Template()
      */
@@ -67,7 +67,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Creates a new Audit entity.
      *
-     * @Route("/", name="claims-h-audit_create")
+     * @Route("/", name="claims-h-audit_create", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("POST")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
      */
@@ -129,7 +129,7 @@ select sum(replace(r.response, ',', '')) as tot,
      *
      * @Route("/{id}", name="claims-h-audit_show")
      * @Method("GET")
-     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
+     * @ParamConverter("id", class="ClaimsHAuditBundle:Audit", options={"ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template()
      */
     public function showAction(Audit $entity) {
@@ -179,7 +179,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-all/", name="claims-h-audit_show_all")
+     * @Route("-all/", name="claims-h-audit_show_all", options={"ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Method("GET")
      * @Template("ClaimsHAuditBundle:Audit:show.html.twig")
      */
@@ -206,7 +206,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-risposte/{id}", name="claims-h-audit_risposte")
+     * @Route("-risposte/{id}", name="claims-h-audit_risposte", options={"ACL": {"in_role": {"C_AUDIT_H"}}})
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()
      */
@@ -232,7 +232,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-pratica-delete/{id}", name="claims-h-audit_pratica-delete")
+     * @Route("-pratica-delete/{id}", name="claims-h-audit_pratica-delete", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
@@ -247,7 +247,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true})
+     * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function rispostaAction() {
@@ -295,7 +295,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-delete/{id}", name="claims-h-audit_delete")
+     * @Route("-delete/{id}", name="claims-h-audit_delete", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      */
@@ -313,7 +313,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-riepilogo/{id}", name="claims-h-audit-riepilogo", options={"expose": true})
+     * @Route("-riepilogo/{id}", name="claims-h-audit-riepilogo", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:showPratica/riepilogo.html.twig")
      */
     public function riepilogoGruppoAction($id) {
@@ -332,7 +332,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-salvarisposte", name="claims-h-audit-risposte", options={"expose": true})
+     * @Route("-salvarisposte", name="claims-h-audit-risposte", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:groups.html.twig")
      */
     public function risposteGruppoAction() {
@@ -413,7 +413,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-q/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true})
+     * @Route("-q/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposta", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */
     public function questionAction($id, $ordine, $pratica) {
@@ -445,7 +445,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-g/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposte", options={"expose": true})
+     * @Route("-g/{id}/{ordine}/{pratica}", name="claims-h-audit-get-risposte", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:groups.html.twig")
      */
     public function groupQuestionsAction($id, $ordine, $pratica) {
@@ -472,7 +472,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-f/{id}/{pratica}", name="claims-h-audit-files", options={"expose": true})
+     * @Route("-f/{id}/{pratica}", name="claims-h-audit-files", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template()
      */
     public function filesAction($id, $pratica) {
@@ -500,7 +500,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-show/{id}/{slug}", name="claims-h-audit_show-pratica")
+     * @Route("-show/{id}/{slug}", name="claims-h-audit_show-pratica", options={"ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()
@@ -521,7 +521,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Displays a form to edit an existing Audit entity.
      *
-     * @Route("/{id}/edit", name="claims-h-audit_edit")
+     * @Route("/{id}/edit", name="claims-h-audit_edit", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
@@ -560,7 +560,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Edits an existing Audit entity.
      *
-     * @Route("/{id}", name="claims-h-audit_update")
+     * @Route("/{id}", name="claims-h-audit_update", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("PUT")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
@@ -588,7 +588,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Displays a form to edit an existing Audit entity.
      *
-     * @Route("/{id}/questions", name="claims-h-audit-questions")
+     * @Route("/{id}/questions", name="claims-h-audit-questions", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()
@@ -644,7 +644,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Edits an existing Audit entity.
      *
-     * @Route("/{id}/questions", name="claims-h-audit-question-save")
+     * @Route("/{id}/questions", name="claims-h-audit-question-save", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:questions/question.html.twig")
@@ -673,7 +673,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-autoupdate-pratica/{slug}", name="claims-h-audit-autoupdate", options={"expose": true}, defaults={"_format": "json"})
+     * @Route("-autoupdate-pratica/{slug}", name="claims-h-audit-autoupdate", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}}, defaults={"_format": "json"})
      */
     public function autoupdatePraticaAction($slug) {
         $req = $this->getParam('pratica');
@@ -706,7 +706,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-form/{audit}", name="claims-h-audit-file")
+     * @Route("-form/{audit}", name="claims-h-audit-file", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Template()
      */
     public function formAction($audit) {
@@ -715,7 +715,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-callback", name="claims-h-audit-file-callback", options={"expose": true})
+     * @Route("-callback", name="claims-h-audit-file-callback", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_CH"}}})
      * @Template()
      */
     public function callbackAction() {
@@ -862,7 +862,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-cambia-priorita/", name="claims_hospital_audit_cambia_priorita", options={"expose": true}, defaults={"_format": "json"})
+     * @Route("-cambia-priorita/", name="claims_hospital_audit_cambia_priorita", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_CH"}}}, defaults={"_format": "json"})
      */
     public function cambiaPrioritaAction() {
         $req = $this->getParam('priorita');
@@ -882,6 +882,34 @@ select sum(replace(r.response, ',', '')) as tot,
             throw $e;
         }
         return $this->jsonResponse(array('id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
+    
+    /**
+     * @Route("-cambia-gestore/", name="claims_hospital_audit_cambia_gestore", options={"expose": true, "ACL": {"in_role": {"C_ADMIN"}}}, defaults={"_format": "json"})
+     */
+    public function cambiaGestoreAction() {
+        $req = $this->getParam('gestore');
+
+        $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+        $gestore = $this->findOneBy('JFACLBundle:Gestore', array('slug' => $req['gestore']));
+        /* @var $gestore Gestore */
+
+        $genera = false;
+        try {
+            $this->getEm()->beginTransaction();
+            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'To do', 'Updated'))) {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'priorita' => 'Work in progress')));
+            }
+            $pratica->setGestore($gestore);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        $priorita = $pratica->getPriorita();
+        return $this->jsonResponse(array('nome' => $gestore->getNome(), 'slug' => $gestore->getSlug(), 'sigla' => $gestore->getSigla(), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
 
 }

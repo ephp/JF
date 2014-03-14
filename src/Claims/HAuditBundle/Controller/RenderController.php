@@ -27,7 +27,7 @@ class RenderController extends Controller {
     use BaseController;
     
     /**
-     * @Route("/priorita", name="render_claims_hospital_priorita")
+     * @Route("/priorita", name="render_claims_hospital_audit_priorita")
      * @Template()
      */
     public function cambiaPrioritaAction() {
@@ -37,6 +37,22 @@ class RenderController extends Controller {
         );
     }
 
+    /**
+     * @Route("/gestore", name="render_claims_hospital_audit_gestori")
+     * @Template()
+     */
+    public function cambiaGestoreAction() {
+        $gestori = $this->getRepository('JFACLBundle:Gestore')
+                ->createQueryBuilder('u')
+                ->where('u.roles LIKE :audit')
+                ->setParameter('audit', '%"C_AUDIT_H"%')
+                ->getQuery()
+                ->execute();
+        return array(
+            'gestori' => $gestori,
+        );
+    }
+    
     /**
      * Finds and displays a Audit entity.
      *

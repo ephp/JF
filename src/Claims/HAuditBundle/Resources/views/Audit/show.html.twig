@@ -72,6 +72,7 @@ function assegnaPriorita() {
     });
 }
 
+{% if app.user.hasRole('C_AUDIT_HV') %}
 function assegnaSemaforo() {
     $('#bt_cambia_semaforo').hide();
     $('#wait_cambia_semaforo').show();
@@ -93,6 +94,7 @@ function assegnaSemaforo() {
         $.fancybox.close();
     });
 }
+{% endif %}
 
 function assegnaGestore() {
     $('#bt_cambia_gestore').hide();

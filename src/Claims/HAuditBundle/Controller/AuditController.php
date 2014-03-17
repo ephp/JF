@@ -886,7 +886,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-cambia-semaforo/", name="claims_hospital_audit_cambia_semaforo", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_VH"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-semaforo/", name="claims_hospital_audit_cambia_semaforo", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_HV"}}}, defaults={"_format": "json"})
      */
     public function cambiaSemaforoAction() {
         $req = $this->getParam('semaforo');

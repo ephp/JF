@@ -862,7 +862,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-cambia-priorita/", name="claims_hospital_audit_cambia_priorita", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_CH"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-priorita/", name="claims_hospital_audit_cambia_priorita", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaPrioritaAction() {
         $req = $this->getParam('priorita');
@@ -885,7 +885,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
     
     /**
-     * @Route("-cambia-gestore/", name="claims_hospital_audit_cambia_gestore", options={"expose": true, "ACL": {"in_role": {"C_ADMIN"}}}, defaults={"_format": "json"})
+     * @Route("-cambia-gestore/", name="claims_hospital_audit_cambia_gestore", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}}, defaults={"_format": "json"})
      */
     public function cambiaGestoreAction() {
         $req = $this->getParam('gestore');

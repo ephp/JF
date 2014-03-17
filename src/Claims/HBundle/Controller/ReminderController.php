@@ -68,11 +68,15 @@ SELECT e.id,
 HAVING days >= 30 
         ");
         $pratiche = $verifiche = 0;
-        foreach ($out as $row) {
+        foreach ($out as $i => $row) {
             $pratiche++;
             $pratica = $this->find('ClaimsHBundle:Pratica', $row['pratica_id']);
             /* @var $pratica \Claims\HBundle\Entity\Pratica */
-            $data = \DateTime::createFromFormat('Y-m-d h:i:s', $row['data_ora']);
+            $data = \DateTime::createFromFormat('Y-m-d H:i:s', $row['data_ora']);
+            if(!$data) {
+                Debug::pr($i, true);
+                Debug::pr($row);
+            }
             /* @var $data \DateTime */
             $data->setTime(8, 0, 0);
             while($row['days'] >= 30) {

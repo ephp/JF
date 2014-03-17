@@ -883,6 +883,29 @@ select sum(replace(r.response, ',', '')) as tot,
         }
         return $this->jsonResponse(array('id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
+
+    /**
+     * @Route("-cambia-semaforo/", name="claims_hospital_audit_cambia_semaforo", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_VH"}}}, defaults={"_format": "json"})
+     */
+    public function cambiaSemaforoAction() {
+        $req = $this->getParam('priorita');
+
+        $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $req['id']));
+        /* @var $pratica Pratica */
+        $priorita = $this->find('ClaimsCoreBundle:Priorita', $req['priorita']);
+        /* @var $priorita Priorita */
+
+        try {
+            $this->getEm()->beginTransaction();
+            $pratica->setSemaforo($priorita);
+            $this->persist($pratica);
+            $this->getEm()->commit();
+        } catch (\Exception $e) {
+            $this->getEm()->rollback();
+            throw $e;
+        }
+        return $this->jsonResponse(array('id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
+    }
     
     /**
      * @Route("-cambia-gestore/", name="claims_hospital_audit_cambia_gestore", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}}, defaults={"_format": "json"})

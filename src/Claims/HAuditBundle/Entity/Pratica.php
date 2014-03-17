@@ -177,6 +177,14 @@ class Pratica {
      */
     private $documenti;
 
+    /**
+     * @var \Claims\CoreBundle\Entity\Priorita
+     * 
+     * @ORM\ManyToOne(targetEntity="Claims\CoreBundle\Entity\Priorita")
+     * @ORM\JoinColumn(name="semaforo_id", referencedColumnName="id", nullable=true)
+     */
+    private $semaforo;
+
     /*
      * AUDIT
      */

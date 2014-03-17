@@ -1,0 +1,19 @@
+<div style="display: none" id="fb_cambia_semaforo">
+    <form id="cambia_semaforo">
+        <div class="page-header">
+            <div class="icon">
+                <span class="ico-warning-sign"></span>
+            </div>
+            <h1>Change priority to <small id="cambia_semaforo_a"></small></h1>
+        </div>        
+        <div style="clear: both"></div>
+        <select name="semaforo[semaforo]" id="semaforo_semaforo">
+            {% for pri in priorita %}
+                <option value="{{ pri.id }}">{{pri.priorita}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="semaforo[id]" id="semaforo_id" value="" />    
+        <button type="button" onclick="assegnaSemaforo();" class="btn" id="bt_cambia_semaforo">Change</button>
+        <div style="text-align:center;" class="no-display" id="wait_cambia_semaforo"><img src="{{ asset('/img/loaders/1d_2.gif') }}"></div>
+    </form>
+</div>

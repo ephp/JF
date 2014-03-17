@@ -36,6 +36,17 @@ class RenderController extends Controller {
             'priorita' => $priorita,
         );
     }
+    
+    /**
+     * @Route("/priorita", name="render_claims_hospital_audit_semaforo")
+     * @Template()
+     */
+    public function cambiaSemaforoAction() {
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit-v', 'show' => true));
+        return array(
+            'priorita' => $priorita,
+        );
+    }
 
     /**
      * @Route("/gestore", name="render_claims_hospital_audit_gestori")

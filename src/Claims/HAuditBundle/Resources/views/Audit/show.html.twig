@@ -5,7 +5,7 @@ $('#fast_search').keyup(function(){
     fastSearch();
 });
 
-$('span.label').click(function() {
+$('span.priorita').click(function() {
     var tr = $(this).closest('tr');
     $('#cambia_priorita_a').text(tr.attr('titolo'));
     $('#priorita_id').val(tr.attr('id'));
@@ -13,6 +13,17 @@ $('span.label').click(function() {
     $('#bt_cambia_priorita').show();
     $('#wait_cambia_priorita').hide();
 });
+
+{% if app.user.hasRole('C_AUDIT_HV') %}
+$('span.semaforo').click(function() {
+    var tr = $(this).closest('tr');
+    $('#cambia_semaforo_a').text(tr.attr('titolo'));
+    $('#semaforo_id').val(tr.attr('id'));
+    $('#semaforo_semaforo').val(tr.attr('semaforo'));
+    $('#bt_cambia_semaforo').show();
+    $('#wait_cambia_semaforo').hide();
+});
+{% endif %}
 
 $('a.gestore').click(function() {
     var tr = $(this).closest('tr');
@@ -46,7 +57,30 @@ function assegnaPriorita() {
         var riga = $('#' + $('#priorita_id').val());
         var label = riga.find('.label');
         var abbr = label.find('abbr');
-        label = riga.find('.label');
+        label = riga.find('.priorita');
+        label.removeClass('label-normal')
+                .removeClass('label-info')
+                .removeClass('label-green')
+                .removeClass('label-warning')
+                .removeClass('label-important')
+                .removeClass('label-success')
+                .addClass(out.css);
+        riga.attr('priorita', out.id);
+        abbr.attr('title', out.label);
+        abbr.html(out.label);
+        $.fancybox.close();
+    });
+}
+
+function assegnaSemaforo() {
+    $('#bt_cambia_priorita').hide();
+    $('#wait_cambia_priorita').show();
+    var form = $('#cambia_priorita');
+    $.post(Routing.generate('claims_hospital_audit_cambia_priorita'), form.serialize(), function(out) {
+        var riga = $('#' + $('#priorita_id').val());
+        var label = riga.find('.label');
+        var abbr = label.find('abbr');
+        label = riga.find('.semaforo');
         label.removeClass('label-normal')
                 .removeClass('label-info')
                 .removeClass('label-green')
@@ -219,8 +253,18 @@ function assegnaGestore() {
                     </thead>
                     <tbody>
                     {% for pratica in pratiche %}
-                        <tr name="{{ pratica.claimant }}" class='fast_search' id="{{ pratica.slug }}" titolo="{{ pratica }}" priorita="{% if pratica.priorita %}{{ pratica.priorita.id }}{% endif %}" gestore="{% if pratica.gestore %}{{ pratica.gestore.slug }}{% endif %}">                            
-                            <td>{{ loop.index }}</td>
+                        <tr name="{{ pratica.claimant }}" class='fast_search' id="{{ pratica.slug }}" titolo="{{ pratica }}" priorita="{% if pratica.priorita %}{{ pratica.priorita.id }}{% endif %}" semaforo="{% if pratica.semaforo %}{{ pratica.semaforo.id }}{% endif %}" gestore="{% if pratica.gestore %}{{ pratica.gestore.slug }}{% endif %}">                            
+                            <td>
+                                {% if app.user.hasRole('C_AUDIT_HV') %}
+                                <a href="#fb_cambia_semaforo" class="fancybox">
+                                {% endif %}
+                                <span class="label semaforo {{ pratica.semaforo.css }}">
+                                    <abbr title="{{ pratica.semaforo.priorita }}">{{ loop.index }}</abbr>
+                                </span>
+                                {% if app.user.hasRole('C_AUDIT_HV') %}
+                                </a>
+                                {% endif %}
+                            </td>
                             {% if full is defined %}
                                 <td><a href="{{ path('claims-h-audit_show', {'id': pratica.audit.id }) }}">{{ pratica.audit.luogo }}<br/>({{ pratica.audit.giorno|date('d/m/Y') }})</a></td>
                             {% endif %}
@@ -242,7 +286,7 @@ function assegnaGestore() {
                             <td style="text-align: center">
                                 <a href="#fb_cambia_priorita" class="fancybox">
                                     {% if pratica.priorita %}
-                                        <span class="label {{ pratica.priorita.css }}">
+                                        <span class="label priorita {{ pratica.priorita.css }}">
                                             <abbr title="{{ pratica.priorita.priorita }}">{{ pratica.priorita.priorita }}</abbr>
                                         </span>
                                     {% else %}
@@ -300,4 +344,7 @@ function assegnaGestore() {
 
 {% render(controller("ClaimsHAuditBundle:Render:cambiaPriorita")) %}
 {% render(controller("ClaimsHAuditBundle:Render:cambiaGestore")) %}
+{% if app.user.hasRole('C_AUDIT_HV') %}
+    {% render(controller("ClaimsHAuditBundle:Render:cambiaSemaforo")) %}
+{% endif %}
 {% endblock %}

@@ -927,6 +927,24 @@ class Pratica {
         return $this->question;
     }
 
+    /**
+     * 
+     * @return \Claims\CoreBundle\Entity\Priorita
+     */
+    public function getSemaforo() {
+        return $this->semaforo;
+    }
+
+    /**
+     * 
+     * @param \Claims\CoreBundle\Entity\Priorita $semaforo
+     * @return \Claims\HAuditBundle\Entity\Pratica
+     */
+    public function setSemaforo(\Claims\CoreBundle\Entity\Priorita $semaforo) {
+        $this->semaforo = $semaforo;
+        return $this;
+    }
+        
     public function __toString() {
         return $this->getGruppo() . ' ' . $this->getClaimant();
     }

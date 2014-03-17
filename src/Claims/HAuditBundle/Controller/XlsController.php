@@ -249,7 +249,8 @@ class XlsController extends Controller {
                             $pratica = new Pratica();
                             $pratica->setAudit($audit);
                             $pratica->setCliente($cliente);
-                            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Nuovo')));
+                            $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'To do', 'area' => 'audit')));
+                            $pratica->setSemaforo($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'OFF', 'area' => 'audit-v')));
                             $pratica->setStatoPratica($this->findOneBy('ClaimsCoreBundle:StatoPratica', array('cliente' => $cliente->getId(), 'primo' => true)));
                             foreach ($valori_riga as $idx => $value) {
                                 if (!isset($colonne[$idx])) {

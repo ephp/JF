@@ -57,7 +57,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 );
             }
         }
-        
+
         return array(
             'entities' => $entities,
             'slc' => $slc,
@@ -160,7 +160,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 );
             }
         }
-        
+
         $sorting = $this->sorting();
         $dati = $this->getUser()->getDati();
         $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
@@ -191,7 +191,7 @@ select sum(replace(r.response, ',', '')) as tot,
         $entity = new Audit();
         $entity->setLuogo('All Audit');
         $entity->setGiorno(new \DateTime());
-        
+
         return array(
             'entity' => $entity,
             'pratiche' => $pratiche,
@@ -347,7 +347,7 @@ select sum(replace(r.response, ',', '')) as tot,
         if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
-        if($pratica->getPriorita()->getPriorita() == 'To do') {
+        if ($pratica->getPriorita()->getPriorita() == 'To do') {
             $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Work in progress')));
             $this->persist($pratica);
         }
@@ -683,11 +683,11 @@ select sum(replace(r.response, ',', '')) as tot,
         if (!$pratica) {
             throw $this->createNotFoundException('Unable to find Pratica entity.');
         }
-        
-        if($pratica->getPriorita()->getPriorita() == 'To do') {
+
+        if ($pratica->getPriorita()->getPriorita() == 'To do') {
             $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('priorita' => 'Work in progress')));
         }
-        
+
         /* @var $pratica Pratica */
         try {
             $this->getEm()->beginTransaction();
@@ -729,8 +729,8 @@ select sum(replace(r.response, ',', '')) as tot,
         $out['audit'] = $audit->getId();
         return $out;
     }
-    
-        private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, \Claims\HAuditBundle\Entity\Audit $audit) {
+
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, \Claims\HAuditBundle\Entity\Audit $audit) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche = array();
         //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
@@ -889,11 +889,11 @@ select sum(replace(r.response, ',', '')) as tot,
      * @Route("-cambia-semaforo/", name="claims_hospital_audit_cambia_semaforo", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_VH"}}}, defaults={"_format": "json"})
      */
     public function cambiaSemaforoAction() {
-        $req = $this->getParam('priorita');
+        $req = $this->getParam('semaforo');
 
         $pratica = $this->findOneBy('ClaimsHAuditBundle:Pratica', array('slug' => $req['id']));
         /* @var $pratica Pratica */
-        $priorita = $this->find('ClaimsCoreBundle:Priorita', $req['priorita']);
+        $priorita = $this->find('ClaimsCoreBundle:Priorita', $req['semaforo']);
         /* @var $priorita Priorita */
 
         try {
@@ -907,7 +907,7 @@ select sum(replace(r.response, ',', '')) as tot,
         }
         return $this->jsonResponse(array('id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }
-    
+
     /**
      * @Route("-cambia-gestore/", name="claims_hospital_audit_cambia_gestore", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}}, defaults={"_format": "json"})
      */

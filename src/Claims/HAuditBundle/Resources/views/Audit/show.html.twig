@@ -55,7 +55,7 @@ function assegnaPriorita() {
     var form = $('#cambia_priorita');
     $.post(Routing.generate('claims_hospital_audit_cambia_priorita'), form.serialize(), function(out) {
         var riga = $('#' + $('#priorita_id').val());
-        var label = riga.find('.label');
+        var label = riga.find('.priorita');
         var abbr = label.find('abbr');
         label = riga.find('.priorita');
         label.removeClass('label-normal')
@@ -73,12 +73,12 @@ function assegnaPriorita() {
 }
 
 function assegnaSemaforo() {
-    $('#bt_cambia_priorita').hide();
-    $('#wait_cambia_priorita').show();
-    var form = $('#cambia_priorita');
-    $.post(Routing.generate('claims_hospital_audit_cambia_priorita'), form.serialize(), function(out) {
-        var riga = $('#' + $('#priorita_id').val());
-        var label = riga.find('.label');
+    $('#bt_cambia_semaforo').hide();
+    $('#wait_cambia_semaforo').show();
+    var form = $('#cambia_semaforo');
+    $.post(Routing.generate('claims_hospital_audit_cambia_semaforo'), form.serialize(), function(out) {
+        var riga = $('#' + $('#semaforo_id').val());
+        var label = riga.find('.semaforo');
         var abbr = label.find('abbr');
         label = riga.find('.semaforo');
         label.removeClass('label-normal')
@@ -88,9 +88,8 @@ function assegnaSemaforo() {
                 .removeClass('label-important')
                 .removeClass('label-success')
                 .addClass(out.css);
-        riga.attr('priorita', out.id);
+        riga.attr('semaforo', out.id);
         abbr.attr('title', out.label);
-        abbr.html(out.label);
         $.fancybox.close();
     });
 }

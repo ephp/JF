@@ -48,6 +48,7 @@ SELECT c.id
     }
 
     private function creaVerifiche(\JF\ACLBundle\Entity\Cliente $cliente) {
+        set_time_limit(3600);
         $out = $this->executeSql("
 SELECT e.id,
        e.pratica_id,
@@ -68,15 +69,11 @@ SELECT e.id,
 HAVING days >= 30 
         ");
         $pratiche = $verifiche = 0;
-        foreach ($out as $i => $row) {
+        foreach ($out as $row) {
             $pratiche++;
             $pratica = $this->find('ClaimsHBundle:Pratica', $row['pratica_id']);
             /* @var $pratica \Claims\HBundle\Entity\Pratica */
             $data = \DateTime::createFromFormat('Y-m-d H:i:s', $row['data_ora']);
-            if(!$data) {
-                Debug::pr($i, true);
-                Debug::pr($row);
-            }
             /* @var $data \DateTime */
             $data->setTime(8, 0, 0);
             while($row['days'] >= 30) {

@@ -57,6 +57,8 @@ class RenderController extends Controller {
                 ->createQueryBuilder('u')
                 ->where('u.roles LIKE :audit')
                 ->setParameter('audit', '%"C_AUDIT_H"%')
+                ->andWhere('u.sigla != :eph')
+                ->setParameter('eph', 'EPH')
                 ->getQuery()
                 ->execute();
         return array(

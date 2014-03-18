@@ -57,8 +57,21 @@ select sum(replace(r.response, ',', '')) as tot,
                 );
             }
         }
+        
+        $gestori = $this->getRepository('JFACLBundle:Gestore')
+                ->createQueryBuilder('u')
+                ->where('u.roles LIKE :audit')
+                ->setParameter('audit', '%"C_AUDIT_H"%')
+                ->andWhere('u.sigla != :eph')
+                ->setParameter('eph', 'EPH')
+                ->getQuery()
+                ->execute();
 
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
+        
         return array(
+            'gestori' => $gestori,
+            'priorita' => $priorita,
             'entities' => $entities,
             'slc' => $slc,
         );
@@ -165,7 +178,20 @@ select sum(replace(r.response, ',', '')) as tot,
         $dati = $this->getUser()->getDati();
         $pratiche = $this->getRepository('ClaimsHAuditBundle:Pratica')->ricerca($entity, $this->getParam('ricerca', array()), $dati['claims_haudit_sorting']);
 
+        $gestori = $this->getRepository('JFACLBundle:Gestore')
+                ->createQueryBuilder('u')
+                ->where('u.roles LIKE :audit')
+                ->setParameter('audit', '%"C_AUDIT_H"%')
+                ->andWhere('u.sigla != :eph')
+                ->setParameter('eph', 'EPH')
+                ->getQuery()
+                ->execute();
+
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
+        
         return array(
+            'gestori' => $gestori,
+            'priorita' => $priorita,
             'entity' => $entity,
             'slc' => $slc,
             'pratiche' => $pratiche,
@@ -192,7 +218,20 @@ select sum(replace(r.response, ',', '')) as tot,
         $entity->setLuogo('All Audit');
         $entity->setGiorno(new \DateTime());
 
+        $gestori = $this->getRepository('JFACLBundle:Gestore')
+                ->createQueryBuilder('u')
+                ->where('u.roles LIKE :audit')
+                ->setParameter('audit', '%"C_AUDIT_H"%')
+                ->andWhere('u.sigla != :eph')
+                ->setParameter('eph', 'EPH')
+                ->getQuery()
+                ->execute();
+
+        $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
+        
         return array(
+            'gestori' => $gestori,
+            'priorita' => $priorita,
             'entity' => $entity,
             'pratiche' => $pratiche,
             'sorting' => $sorting,

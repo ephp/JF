@@ -266,7 +266,12 @@ function assegnaGestore() {
                             <th><input type="text" id="fast_search" style="width: 200px;" placeholder="Claimant"></th>
                             <th>Reserve</th>
                             <th>Progress status</th>
-                            {% for question in entity.sumQuestion %}
+                            {% if full is defined %}
+                                {% set sumQuestion = pratiche[0].audit.sumQuestion %}
+                            {% else %}
+                                {% set sumQuestion = entity.sumQuestion %}
+                            {% endif %}
+                            {% for question in sumQuestion %}
                                 {% set name = question.question.esempioLocale(app.user.locale) %}
                                 <th>{{ name }}</th>
                             {% endfor %}
@@ -319,7 +324,7 @@ function assegnaGestore() {
                                 </a>
                             </td>
                             {% set name = '' %}
-                            {% for question in entity.sumQuestion %}
+                            {% for question in sumQuestion %}
                                 {% set values = pratica.values(question.question.id) %}
                                 <td nowrap style="text-align: right;">
                                     {% if values %}

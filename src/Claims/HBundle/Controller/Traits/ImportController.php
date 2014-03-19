@@ -11,7 +11,7 @@ trait ImportController {
         if ($old) {
             if ($audit) {
                 $old->setInAudit(true);
-                return $this->persist($old);
+                $this->persist($old);
             }
             $log = array();
             if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
@@ -181,10 +181,12 @@ trait ImportController {
         } else {
 //            \Ephp\UtilityBundle\Utility\Debug::pr(array('Importata pratica'), true);
             if (!$audit) {
-                $pratica->setDataImport(new \DateTime());
                 $pratica->addLog(array('Importata pratica'));
-                $this->persist($pratica);
+            } else {
+                $pratica->addLog(array('Importata pratica con Audit'));
             }
+            $pratica->setDataImport(new \DateTime());
+            $this->persist($pratica);
             $pratiche_nuove[] = $pratica;
         }
     }

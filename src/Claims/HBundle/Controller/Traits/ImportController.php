@@ -11,7 +11,7 @@ trait ImportController {
         if ($old) {
             if ($audit) {
                 $old->setInAudit(true);
-                $this->persist($old);
+                return $this->persist($old);
             }
             $log = array();
             if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {

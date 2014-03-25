@@ -2320,7 +2320,7 @@ i     * @ORM\Column(name="anno", type="integer")
     }
 
     public function setInAudit2($in_audit2) {
-        $this->inAudit2 = $in_audi2t;
+        $this->inAudit2 = $in_audit2;
         return $this;
     }
 

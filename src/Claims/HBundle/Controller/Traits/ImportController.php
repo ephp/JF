@@ -18,11 +18,11 @@ trait ImportController {
                 $this->persist($old);
             }
             $log = array();
-            if ($old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
+            if ($pratica->getDol() && $old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
                 $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
                 $old->setDol($pratica->getDol());
             }
-            if ($old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
+            if ($pratica->getDon() && $old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
                 $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
                 $old->setDon($pratica->getDon());
             }

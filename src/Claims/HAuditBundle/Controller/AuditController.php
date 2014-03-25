@@ -80,7 +80,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Creates a new Audit entity.
      *
-     * @Route("/", name="claims-h-audit_create", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("/", name="claims-h-audit_create", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("POST")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
      */
@@ -271,7 +271,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-pratica-delete/{id}", name="claims-h-audit_pratica-delete", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("-pratica-delete/{id}", name="claims-h-audit_pratica-delete", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Pratica")
      */
@@ -334,7 +334,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
-     * @Route("-delete/{id}", name="claims-h-audit_delete", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("-delete/{id}", name="claims-h-audit_delete", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      */
@@ -560,7 +560,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Displays a form to edit an existing Audit entity.
      *
-     * @Route("/{id}/edit", name="claims-h-audit_edit", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("/{id}/edit", name="claims-h-audit_edit", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
@@ -599,7 +599,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Edits an existing Audit entity.
      *
-     * @Route("/{id}", name="claims-h-audit_update", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("/{id}", name="claims-h-audit_update", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("PUT")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:new.html.twig")
@@ -627,7 +627,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Displays a form to edit an existing Audit entity.
      *
-     * @Route("/{id}/questions", name="claims-h-audit-questions", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("/{id}/questions", name="claims-h-audit-questions", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("GET")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template()
@@ -683,7 +683,7 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Edits an existing Audit entity.
      *
-     * @Route("/{id}/questions", name="claims-h-audit-question-save", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("/{id}/questions", name="claims-h-audit-question-save", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Method("POST")
      * @ParamConverter("id", class="ClaimsHAuditBundle:Audit")
      * @Template("ClaimsHAuditBundle:Audit:questions/question.html.twig")
@@ -745,7 +745,7 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-form/{audit}", name="claims-h-audit-file", options={"ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("-form/{audit}", name="claims-h-audit-file", options={"ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Template()
      */
     public function formAction($audit) {
@@ -754,16 +754,18 @@ select sum(replace(r.response, ',', '')) as tot,
     }
 
     /**
-     * @Route("-callback", name="claims-h-audit-file-callback", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_CH"}}})
+     * @Route("-callback", name="claims-h-audit-file-callback", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_HC"}}})
      * @Template()
      */
     public function callbackAction() {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
         $audit = $this->find('ClaimsHAuditBundle:Audit', $this->getParam('audit'));
+        /*
         if (intval($this->getParam('add_more', 1)) == 0) {
             $this->getRepository('ClaimsHAuditBundle:Pratica')->cancellaAudit($audit);
         }
+         */
         $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
         $out['audit'] = $audit->getId();
         return $out;

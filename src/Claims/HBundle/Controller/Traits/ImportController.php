@@ -10,7 +10,11 @@ trait ImportController {
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
             if ($audit) {
-                $old->setInAudit(true);
+                if(intval($audit) == 2) {
+                    $old->setInAudit2(true);
+                } else {
+                    $old->setInAudit(true);
+                }
                 $this->persist($old);
             }
             $log = array();
@@ -184,6 +188,7 @@ trait ImportController {
                 $pratica->addLog(array('Importata pratica'));
             } else {
                 $pratica->addLog(array('Importata pratica con Audit'));
+                $pratica->setInAudit(true);
             }
             $pratica->setDataImport(new \DateTime());
             $this->persist($pratica);

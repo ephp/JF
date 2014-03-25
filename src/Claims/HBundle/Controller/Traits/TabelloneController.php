@@ -345,6 +345,7 @@ trait TabelloneController {
     protected $V_STANDARD = 1;
     protected $V_MONTLY_REPORT = 2;
     protected $V_AUDIT = 3;
+    protected $V_AUDIT2 = 4;
 
     protected function getColonne($mode, $view = 1) {
         $colonne = array();

@@ -12,6 +12,7 @@
         <div class="block">
             <label for="mr">Audit</label>
             <input id="mr" type="checkbox" value="1" {% if app.request.get('audit') %}checked="checked"{% endif %} />
+            <input id="audit" type="hidden" value="{% if app.request.get('audit') %}{{ app.request.get('audit') }}{% else %}1{% endif %}" />
             {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
 {% javascripts  
     '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'

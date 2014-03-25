@@ -44,8 +44,7 @@ class Pratica {
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="anno", type="integer")
+i     * @ORM\Column(name="anno", type="integer")
      */
     private $anno;
 
@@ -625,6 +624,13 @@ class Pratica {
     /*
      * AUDIT
      */
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="in_audit2", type="boolean", nullable=true)
+     */
+    private $inAudit2;
 
     /**
      * @var boolean

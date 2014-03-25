@@ -65,10 +65,15 @@ class ImportController extends Controller {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
         $audit = $this->getParam('mr') == 'checked';
+        
         if ($audit) {
-            $this->getRepository('ClaimsHBundle:Pratica')->cancellaAudit($this->getUser()->getCliente());
+            if(intval($this->getParam('audit')) == 2){
+                $this->getRepository('ClaimsHBundle:Pratica')->cancellaAudit2($this->getUser()->getCliente());
+            } else {
+                $this->getRepository('ClaimsHBundle:Pratica')->cancellaAudit($this->getUser()->getCliente());
+            }
         }
-        $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
+        $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit, $this->getParam('audit'));
         return $out;
     }
 
@@ -155,7 +160,7 @@ class ImportController extends Controller {
         return $this->jsonResponse($out);
     }
 
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false) {
+    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false, $auditType = 0) {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche_aggiornate = $pratiche_nuove = $pratiche_invariate = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
@@ -379,7 +384,7 @@ class ImportController extends Controller {
                                     default: break;
                                 }
                             }
-                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate, $audit);
+                            $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate, $audit ? $auditType : false);
                             $this->getEm()->commit();
                         } catch (\Exception $e) {
                             $this->getEm()->rollback();

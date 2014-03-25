@@ -2315,6 +2315,15 @@ i     * @ORM\Column(name="anno", type="integer")
         return $this;
     }
 
+    public function getInAudit2() {
+        return $this->inAudit2;
+    }
+
+    public function setInAudit2($in_audit2) {
+        $this->inAudit2 = $in_audi2t;
+        return $this;
+    }
+
     public function getAudit() {
         return $this->audit;
     }

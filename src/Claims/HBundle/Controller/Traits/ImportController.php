@@ -188,7 +188,11 @@ trait ImportController {
                 $pratica->addLog(array('Importata pratica'));
             } else {
                 $pratica->addLog(array('Importata pratica con Audit'));
-                $pratica->setInAudit(true);
+                if(intval($audit) == 2) {
+                    $pratica->setInAudit2(true);
+                } else {
+                    $pratica->setInAudit(true);
+                }
             }
             $pratica->setDataImport(new \DateTime());
             $this->persist($pratica);

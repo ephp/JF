@@ -10,7 +10,7 @@ trait ImportController {
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
             if ($audit) {
-                if(intval($audit) == 2) {
+                if (intval($audit) == 2) {
                     $old->setInAudit2(true);
                 } else {
                     $old->setInAudit(true);
@@ -18,14 +18,14 @@ trait ImportController {
                 $this->persist($old);
             }
             $log = array();
-            if ($pratica->getDol() && $old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
-                $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
-                $old->setDol($pratica->getDol());
-            }
-            if ($pratica->getDon() && $old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
-                $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
-                $old->setDon($pratica->getDon());
-            }
+                if ($pratica->getDol() && $old->getDol() && $old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
+                    $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
+                    $old->setDol($pratica->getDol());
+                }
+                if ($pratica->getDon() && $old->getDon() && $old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
+                    $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
+                    $old->setDon($pratica->getDon());
+                }
             if ($old->getTypeOfLoss() != $pratica->getTypeOfLoss()) {
                 $log[] = "TYPE OF LOSS: da '" . $old->getTypeOfLoss(true) . "' a '" . $pratica->getTypeOfLoss(true) . "'";
                 $old->setTypeOfLoss($pratica->getTypeOfLoss());
@@ -188,7 +188,7 @@ trait ImportController {
                 $pratica->addLog(array('Importata pratica'));
             } else {
                 $pratica->addLog(array('Importata pratica con Audit'));
-                if(intval($audit) == 2) {
+                if (intval($audit) == 2) {
                     $pratica->setInAudit2(true);
                 } else {
                     $pratica->setInAudit(true);

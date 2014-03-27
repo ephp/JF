@@ -216,7 +216,7 @@ class RenderController extends Controller {
      */
     public function consegnaAuditAction() {
         return array(
-            'route' => 'claims_audit_hospital_consegna',
+            'route' => $this->getParam('audit') == 2 ? 'claims_audit2_hospital_consegna' : 'claims_audit_hospital_consegna',
             'label' => 'Audit',
             'sistemi' => $this->findAll('ClaimsHBundle:Sistema'),
         );

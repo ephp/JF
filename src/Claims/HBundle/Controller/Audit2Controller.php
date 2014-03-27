@@ -46,6 +46,7 @@ class Audit2Controller extends Controller {
             'sorting' => $sorting,
             'twig_button' => 'ClaimsHBundle:Audit2:button.html.twig',
             'query' => $this->getQuery(),
+            'audit' => 2,
             'route_ricerca' => 'claims_audit2_hospital_ricerca', 
         );
     }
@@ -105,6 +106,7 @@ class Audit2Controller extends Controller {
             'sistema' => $this->getUser()->get('claims_h_sistema'),
             'sorting' => $sorting,
             'query' => $this->getQuery(),
+            'audit' => 2,
             'route_ricerca' => 'claims_audit2_hospital_ricerca', 
         );
     }
@@ -176,6 +178,7 @@ class Audit2Controller extends Controller {
      LEFT JOIN claims_h_sistemi s ON o.sistema_id = s.id
     WHERE s.nome = :sistema
       AND p.cliente_id = :cliente
+      AND p.in_audit2 = :true
 ;", array(
                 'calendario' => $tipoEvento->getCalendario()->getId(),
                 'tipo' => $tipoEvento->getId(),

@@ -166,6 +166,9 @@ class ImportController extends Controller {
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
         foreach ($data->sheets as $sheet) {
+            if(!isset($sheet['cells'])){
+                break;
+            }
             $sheet = $sheet['cells'];
             $start = false;
             $colonne = array();

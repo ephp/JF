@@ -18,14 +18,14 @@ trait ImportController {
                 $this->persist($old);
             }
             $log = array();
-                if ($pratica->getDol() && $old->getDol() && $old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
-                    $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
-                    $old->setDol($pratica->getDol());
-                }
-                if ($pratica->getDon() && $old->getDon() && $old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
-                    $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
-                    $old->setDon($pratica->getDon());
-                }
+            if ($pratica->getDol() && $old->getDol() && $old->getDol()->format('d-m-Y') != $pratica->getDol()->format('d-m-Y')) {
+                $log[] = "DOL: da '" . $old->getDol()->format('d-m-Y') . "' a '" . $pratica->getDol()->format('d-m-Y') . "'";
+                $old->setDol($pratica->getDol());
+            }
+            if ($pratica->getDon() && $old->getDon() && $old->getDon()->format('d-m-Y') != $pratica->getDon()->format('d-m-Y')) {
+                $log[] = "DON: da '" . $old->getDon()->format('d-m-Y') . "' a '" . $pratica->getDon()->format('d-m-Y') . "'";
+                $old->setDon($pratica->getDon());
+            }
             if ($old->getTypeOfLoss() != $pratica->getTypeOfLoss()) {
                 $log[] = "TYPE OF LOSS: da '" . $old->getTypeOfLoss(true) . "' a '" . $pratica->getTypeOfLoss(true) . "'";
                 $old->setTypeOfLoss($pratica->getTypeOfLoss());
@@ -161,7 +161,7 @@ trait ImportController {
                 $log[] = "MEDIACAL EXAMINER : da '" . ($old->getMedicalExaminer() ? $old->getMedicalExaminer()->format('d-m-Y') : 'Non impostata') . "' a '" . ($pratica->getMedicalExaminer() ? $pratica->getMedicalExaminer()->format('d-m-Y') : 'Non impostata') . "'";
                 $old->setMedicalExaminer($pratica->getMedicalExaminer());
             }
-            if (is_null($old->getLegalTeam()) != is_null($pratica->getLegalTeam()) || (!is_null($old->getLegalTeam()) && $old->getLegalTeam()->format('d-m-Y') != $pratica->getLegalTeam()->format('d-m-Y'))) {
+            if ($pratica->getLegalTeam() && (is_null($old->getLegalTeam()) != is_null($pratica->getLegalTeam()) || (!is_null($old->getLegalTeam()) && !is_null($pratica->getLegalTeam()) && $old->getLegalTeam()->format('d-m-Y') != $pratica->getLegalTeam()->format('d-m-Y')))) {
                 $log[] = "LEGAL TEAM : da '" . ($old->getLegalTeam() ? $old->getLegalTeam()->format('d-m-Y') : 'Non impostata') . "' a '" . ($pratica->getLegalTeam() ? $pratica->getLegalTeam()->format('d-m-Y') : 'Non impostata') . "'";
                 $old->setLegalTeam($pratica->getLegalTeam());
                 $old->setDasc($pratica->getLegalTeam());

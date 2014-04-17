@@ -21,7 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         
         "ephpoffice/phpexcel": "master@dev",
-        "ephpoffice/phpword": "master@dev",
+        "phpoffice/phpword": "master@dev",
         
         "ephp/acl": "master@dev",
         "ephp/cal": "master@dev",

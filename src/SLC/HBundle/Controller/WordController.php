@@ -58,6 +58,114 @@ class WordController extends Controller {
      * @Route("-word-report/{slug}", name="claims_hospital_word_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
      */
     public function wordReportAction($slug) {
+        $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
+        /* @var $pratica \Claims\HBundle\Entity\Pratica */
+
+        if ($this->getUser()->getCliente()->getId() != $pratica->getCliente()->getId()) {
+            return $this->createNotFoundException('Utente non autorizzato');
+        }
+
+        if (!$pratica->getGestore()) {
+            $pratica->setGestore($this->getUser());
+        }
+
+        $wordService = $this->get('phpword');
+        /* @var $wordService \Ephp\OfficeBundle\FactoryWord */
+        
+        $phpWord = $wordService->createPHPWordObject();
+        /* @var $phpWord \PhpOffice\PhpWord\PhpWord */
+
+        $document = $phpWord->loadTemplate(__DIR__ . '/../../../../web/bundles/slch/SchemaReport.docx');
+
+        $document->setValue('claimant', $pratica->getClaimant());
+        $document->setValue('claimantNote', $pratica->getReportClaimant());
+        $document->setValue('system', $pratica->getOspedale()->getSistema()->getNome());
+        $document->setValue('soi', $pratica->getReportSoi(true));
+        $document->setValue('tpaRef', $pratica->getCodice());
+        $document->setValue('polizza', $pratica->getReportVerificaCopertura());
+        $document->setValue('dol', $pratica->getReportDol()->format('d/m/Y'));
+        $document->setValue('don', $pratica->getReportDon()->format('d/m/Y'));
+        $document->setValue('descrizione', $pratica->getReportDescrizione());
+        $document->setValue('mpl', $pratica->getReportMpl(true));
+        $document->setValue('giudiziale', $pratica->getReportGiudiziale());
+        $document->setValue('altrePolizze', $pratica->getReportOtherPolicies());
+        $document->setValue('tpl', $pratica->getReportTypeOfLoss(true));
+        $document->setValue('dipartimento', $pratica->getReportServiceProvider(true));
+        $document->setValue('recovery', $pratica->getReportPossibleRecovery() < 0 ? 'N.P.' : $pratica->getReportPossibleRecovery() . ' €');
+        $document->setValue('riserva', $pratica->getReportAmountReserved() < 0 ? 'N.P.' : $pratica->getReportAmountReserved() . ' €');
+        $document->setValue('franchigia', $pratica->getReportApplicableDeductable() ? $pratica->getReportApplicableDeductable() . ' €' : '');
+        $document->setValue('azioni', $pratica->getReportFutureConduct());
+        $document->setValue('avvocato', $pratica->getGestore()->getNome());
+
+        $i = 0;
+        foreach ($pratica->getReports() as $report) {
+            /* @var $report \Claims\HBundle\Entity\Report */
+            $i++;
+            $document->setValue('date'.$i, $report->getData()->format('d/m/Y'));
+            $document->cloneRow('reportField'.$i, 15);
+            $document->setValue('reportField'.$i.'#1', 'Copertura');
+            $document->setValue('reportValue'.$i.'#1', $report->getCopertura());
+            $document->setValue('reportField'.$i.'#2', 'Stato');
+            $document->setValue('reportValue'.$i.'#2', $report->getStato());
+            $document->setValue('reportField'.$i.'#3', 'Descrizione in fatto');
+            $document->setValue('reportValue'.$i.'#3', $report->getDescrizioneInFatto());
+            $document->setValue('reportField'.$i.'#4', 'Relazione avversaria');
+            $document->setValue('reportValue'.$i.'#4', $report->getRelazioneAvversaria());
+            $document->setValue('reportField'.$i.'#5', 'Relazioni ex-adverso');
+            $document->setValue('reportValue'.$i.'#5', $report->getRelazioneExAdverso());
+            $document->setValue('reportField'.$i.'#6', 'Medico Legale 1');
+            $document->setValue('reportValue'.$i.'#6', $report->getMedicoLegale1());
+            $document->setValue('reportField'.$i.'#7', 'Medico Legale 2');
+            $document->setValue('reportValue'.$i.'#7', $report->getMedicoLegale2());
+            $document->setValue('reportField'.$i.'#8', 'Medico Legale 3');
+            $document->setValue('reportValue'.$i.'#8', $report->getMedicoLegale3());
+            $document->setValue('reportField'.$i.'#9', 'Valutazione responsabilità');
+            $document->setValue('reportValue'.$i.'#9', $report->getValutazioneResponsabilita());
+            $document->setValue('reportField'.$i.'#10', 'Analisi danno (MPL)');
+            $document->setValue('reportValue'.$i.'#10', $report->getAnalisiDanno());
+            $document->setValue('reportField'.$i.'#11', 'Riserva');
+            $document->setValue('reportValue'.$i.'#11', $report->getRiserva());
+            $document->setValue('reportField'.$i.'#12', 'Possibile recupero');
+            $document->setValue('reportValue'.$i.'#12', $report->getPossibileRivalsa());
+            $document->setValue('reportField'.$i.'#13', 'Azioni');
+            $document->setValue('reportValue'.$i.'#13', $report->getAzioni());
+            $document->setValue('reportField'.$i.'#14', 'Richiesta SA');
+            $document->setValue('reportValue'.$i.'#14', $report->getRichiestaSa());
+            $document->setValue('reportField'.$i.'#15', 'Note');
+            $document->setValue('reportValue'.$i.'#15', $report->getNote());
+        }
+        for(;$i <= 5;) {
+            $i++;
+            $document->setValue('date'.$i, 'Pagina da cancellare');
+            $document->setValue('reportField'.$i, 'ATTENZIONE');
+            $document->setValue('reportValue'.$i, 'Ricordati di cancellare questa pagina');
+        }
+
+        $name = \Doctrine\Common\Util\Inflector::camelize("report_" . $pratica->getClaimant()) . date('_d-m-Y') . ".docx";
+        $document->saveAs($name);
+
+        $response = new StreamedResponse(
+            function () use ($name) {
+                copy($name, 'php://output');
+                unlink($name);
+            },
+            200,
+            array()
+        );
+
+        $response->headers->set('Content-Type', 'application/rtfn/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $name . ';');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+        return $response;
+        
+    }
+
+    /**
+     * @Route("-generate-word-report/{slug}", name="claims_hospital_generate_word_report", options={"expose": true, "ACL": {"in_role": {"C_ADMIN", "C_GESTORE_H", "C_RECUPERI_H"}}})
+     */
+    public function generaWordReportAction($slug) {
         $larghezza = 8500;
 
         $pratica = $this->findOneBy('ClaimsHBundle:Pratica', array('slug' => $slug));
@@ -75,8 +183,8 @@ class WordController extends Controller {
         /* @var $wordService \Ephp\OfficeBundle\FactoryWord */
 
         $PHPWord = $wordService->createPHPWordObject();
-        /* @var $excel \PHPWord */
-        
+        /* @var $excel \PhpOffice\PhpWord\PhpWord */
+
         // New portrait section
         $section = $PHPWord->createSection();
 
@@ -90,7 +198,7 @@ class WordController extends Controller {
         $borderTable = array('width' => 100, 'borderSize' => 1, 'borderColor' => '000000');
         $styleFirstRow = array();
         $PHPWord->addTableStyle('Border Table', $borderTable, $styleFirstRow);
-        
+
         $styleCell = array('width' => round($larghezza / 2), 'valign' => 'top');
 
         $fontBold = array('bold' => true);
@@ -146,7 +254,7 @@ class WordController extends Controller {
         // Riga 7
         $table->addRow();
         $giudiziale = $table->addCell(null, $styleCell);
-        if($pratica->getReportGiudiziale()) {
+        if ($pratica->getReportGiudiziale()) {
             $giudiziale->addText('Giudiziale: ', $fontBold, 'tdStyle');
             $this->cellText($giudiziale, $pratica->getReportGiudiziale(), $fontNormal, 'tdStyle');
         }
@@ -211,7 +319,7 @@ class WordController extends Controller {
             $sx00->addText('TPA: ' . $pratica->getOspedale()->getSistema()->getNome(), $fontBold, 'tdStyle');
             $dx00 = $tableReport->addCell(null, $styleCell);
             $dx00->addText('Claimant: ' . $pratica->getClaimant(), $fontBold, 'tdStyle');
-  
+
             // Riga 1
             $tableReport->addRow();
             $sx01 = $tableReport->addCell(null, $styleCell);
@@ -316,8 +424,8 @@ class WordController extends Controller {
             $sx15->addText('Note:', $fontBold, 'tdStyle');
             $dx15 = $tableReport->addCell(null, $styleCell);
             $this->cellText($dx15, $report->getNote(), $fontNormal, 'tdStyle');
-/*
-*/
+            /*
+             */
         }
 
         // create the writer
@@ -331,7 +439,6 @@ class WordController extends Controller {
         $response->headers->set('Content-Disposition', 'attachment; filename=report_' . \Doctrine\Common\Util\Inflector::camelize($pratica->getClaimant()) . date('_d-m-Y') . '.docx;');
 //        $response->headers->set('Content-Type', 'application/rtf; charset=utf-8');
 //        $response->headers->set('Content-Disposition', 'attachment; filename=report_' . \Doctrine\Common\Util\Inflector::camelize($pratica->getClaimant()) . date('_d-m-Y') . '.rtf;');
-
         // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
         $response->headers->set('Pragma', 'public');
         $response->headers->set('Cache-Control', 'maxage=1');
@@ -341,10 +448,10 @@ class WordController extends Controller {
 
     private function cellText(\PhpOffice\PhpWord\Section\Table\Cell $cell, $text, $style1, $style2) {
         $texts = explode("\n", $text);
-        if(count($texts) == 0 || count($texts) == 1 && trim($texts[0]) == '') {
+        if (count($texts) == 0 || count($texts) == 1 && trim($texts[0]) == '') {
             $cell->addText('-', $style1, $style2);
         }
-        foreach($texts as $t) {
+        foreach ($texts as $t) {
             $cell->addText($t, $style1, $style2);
         }
     }

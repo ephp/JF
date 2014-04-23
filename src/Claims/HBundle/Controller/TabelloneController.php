@@ -80,7 +80,7 @@ class TabelloneController extends Controller {
             $sistemi = $this->getSistemi();
             $sorting = $this->sorting();
             $null = null;
-            $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'));
+            $filtri = $this->buildFiltri($mode, $null, $this->getParam('q'), $this->getParam('all', false));
             $pagination = $this->createPagination($this->getRepository('ClaimsHBundle:Pratica')->filtra($filtri), 50);
             $tds = $this->getColonne($mode);
         } catch (\Exception $e) {

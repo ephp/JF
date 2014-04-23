@@ -206,7 +206,7 @@ trait TabelloneController {
         return $out;
     }
 
-    private function buildFiltri(&$mode, &$stato = null, $q = null) {
+    private function buildFiltri(&$mode, &$stato = null, $q = null, $all = false) {
         $logger = $this->get('logger');
         $cliente = $this->getUser()->getCliente();
         /* @var $cliente \JF\ACLBundle\Entity\Cliente */
@@ -219,6 +219,7 @@ trait TabelloneController {
         );
         if($q) {
             $filtri['in']['q'] = $q;
+            $filtri['in']['all'] = $all;
         }
         if ($this->getUser()->get('claims_h_sistema') != 'tutti') {
             $filtri['in']['sistema'] = $this->getUser()->get('claims_h_sistema');

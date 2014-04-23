@@ -38,6 +38,8 @@ class PraticaRepository extends EntityRepository {
                     $q->andWhere("p.{$field} IS NULL");
                 } else {
                     switch ($field) {
+                        case 'all':
+                            break;
                         case 'recuperi':
                             $q->andWhere("p.recupero = :true OR p.gestore = :gestore")
                                     ->setParameter('true', true)
@@ -51,14 +53,21 @@ class PraticaRepository extends EntityRepository {
                             break;
                         case 'q':
                             /* @var $value \DateTime */
-                            $q->leftJoin('p.eventi', 'e')
-                                    ->andWhere("
+                            if (isset($filtri['in']['all']) && $filtri['in']['all']) {
+                                $q->leftJoin('p.eventi', 'e')
+                                        ->andWhere("
                                         p.claimant LIKE :{$field}
                                      OR p.note LIKE :{$field}
                                      OR p.datiRecupero LIKE :{$field}
                                      OR e.titolo LIKE :{$field}
                                      OR e.note LIKE :{$field}")
-                                    ->setParameter($field, "%{$value}%");
+                                        ->setParameter($field, "%{$value}%");
+                            } else {
+                                $q->leftJoin('p.eventi', 'e')
+                                        ->andWhere("
+                                        p.claimant LIKE :{$field}")
+                                        ->setParameter($field, "%{$value}%");
+                            }
                             break;
                         case 'evento':
                             /* @var $value \DateTime */
@@ -562,4 +571,3 @@ SELECT id FROM claims_h_pratiche p
     }
 
 }
-

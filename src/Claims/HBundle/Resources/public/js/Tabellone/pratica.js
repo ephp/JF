@@ -102,7 +102,6 @@ function _autoupdate($this) {
     }
 }
 
-
 function autoupdate() {
 //    $('.autoupdate').change(function() {
 //        _autoupdate($(this));

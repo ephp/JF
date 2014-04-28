@@ -35,6 +35,12 @@ function pagina(audit, ordine, pratica) {
     });
 }
 
+function cancellaFile(file, pratica) {
+    $.post(Routing.generate('claims-h-audit_file-delete', {'id': file, 'pratica': pratica}), function(html) {
+        $('#files').html(html);
+    });
+}
+
 var risposte = {};
 
 function rispondiGruppo() {

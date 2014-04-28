@@ -8,26 +8,17 @@
             <th>File</th>
             <th>Size</th>
             <th>Type</th>
+            <th>Op.</th>
         </tr>
         {% for documento in pratica.documenti %}
             <tr>
                 <td><a href="{{ documento.urls.url }}" target="_blank">{{ documento.titolo }}</a></td>
                 <td>{{ documento.size }}</td>
                 <td>{{ documento.type }}</td>
+                <td>{% include ":commons:delete.html.twig" with {'js': 'cancellaFile('~documento.id~', '~pratica.id~');' , 'question': 'You want to delete file ' ~ documento.titolo } %}</td>
             </tr>
         {% endfor %}
     </table>
     {% endif %}
-    <form action="{{ path('claims-h-audit-files',{'id': audit.id, 'pratica': pratica.id}) }}" method="post" id="form_files">
-        <input type="hidden" id="file_id" name="file_id" value=""/>
-        {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
-    </form>
-    
-{% javascripts  
-    '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
-    '@ClaimsHAuditBundle/Resources/public/js/files.js'
-%}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}   
 
 </div>

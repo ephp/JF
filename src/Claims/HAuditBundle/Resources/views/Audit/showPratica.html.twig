@@ -191,6 +191,18 @@
                 <div class="row-fluid" id="files">
                     {% include "ClaimsHAuditBundle:Audit:files.html.twig" %}
                 </div>
+                <div class="row-fluid">
+                    <form action="{{ path('claims-h-audit-files',{'id': audit.id, 'pratica': pratica.id}) }}" method="post" id="form_files">
+                        <input type="hidden" id="file_id" name="file_id" value=""/>
+                        {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
+                    </form>
+                    {% javascripts  
+                        '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'
+                        '@ClaimsHAuditBundle/Resources/public/js/files.js'
+                    %}
+                        <script type="text/javascript" src="{{ asset_url }}"></script>
+                    {% endjavascripts %}   
+                </div>
             {% endif %}
             <div class="row-fluid" id="question" style="margin-top: 10px;">
             <a name="box"></a>

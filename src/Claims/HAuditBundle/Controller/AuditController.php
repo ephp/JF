@@ -286,6 +286,34 @@ select sum(replace(r.response, ',', '')) as tot,
     /**
      * Finds and displays a Audit entity.
      *
+     * @Route("-pratica-file-delete/{id}/{pratica}", name="claims-h-audit_file-delete", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
+     * @Method("POST")
+     * @Template("ClaimsHAuditBundle:Audit:files.html.twig")
+     */
+    public function deleteFileAction($id, $pratica) {
+        $file = $this->find('JFDragDropBundle:File', $id);
+        /* @var $file \JF\DragDropBundle\Entity\File */
+        if (!$file) {
+            throw $this->createNotFoundException('Unable to find File entity.');
+        }
+        $p = $this->find('ClaimsHAuditBundle:Pratica', $pratica);
+        /* @var $p Pratica */
+        if (!$p) {
+            throw $this->createNotFoundException('Unable to find Pratica entity.');
+        }
+
+        $p->removeDocumenti($file);
+        $this->persist($p);
+
+        return array(
+            'audit' => $p->getAudit(),
+            'pratica' => $p,
+        );
+    }
+
+    /**
+     * Finds and displays a Audit entity.
+     *
      * @Route("-salvarisposta", name="claims-h-audit-risposta", options={"expose": true, "ACL": {"in_role": {"C_AUDIT_H"}}})
      * @Template("ClaimsHAuditBundle:Audit:question.html.twig")
      */

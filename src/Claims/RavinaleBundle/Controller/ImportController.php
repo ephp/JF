@@ -133,7 +133,7 @@ class ImportController extends Controller {
         return $out;
     }
 
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source) {
+    public function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $mode = 'default') {
         /*
           $colonne = array(
           'ID',
@@ -353,7 +353,7 @@ class ImportController extends Controller {
                             default: break;
                         }
                     }
-                    $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate);
+                    $this->salvaPratica($cliente, $pratica, $pratiche_aggiornate, $pratiche_nuove, $pratiche_invariate, $mode);
                     $this->getEm()->commit();
                 } catch (\Exception $e) {
                     $this->getEm()->rollback();

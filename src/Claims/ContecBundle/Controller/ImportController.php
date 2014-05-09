@@ -160,7 +160,7 @@ class ImportController extends Controller {
         return $this->jsonResponse($out);
     }
 
-    private function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false, $auditType = 0) {
+    public function importBdx(\JF\ACLBundle\Entity\Cliente $cliente, $source, $audit = false, $auditType = 0, $mode = 'default') {
         $data = new SpreadsheetExcelReader($source, true, 'UTF-8');
         $pratiche_aggiornate = $pratiche_nuove = $pratiche_invariate = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));

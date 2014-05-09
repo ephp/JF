@@ -311,7 +311,27 @@ class MonthlyReportController extends Controller {
     public function callbackAction() {
         set_time_limit(3600);
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
-        $out = $this->importBdx($this->getUser()->getCliente(), $source);
+        $mode = abs(intval($this->getParam('mode', 0)));
+        $cancella = intval($this->getParam('mode', 0)) > 0;
+        
+        if($cancella) {
+            $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($this->getUser()->getCliente());
+        }
+        
+        $out = array();
+        switch($mode) {
+            case 1:
+                $out = $this->importBdx($this->getUser()->getCliente(), $source);
+                break;
+            case 2:
+                $contec = new \Claims\ContecBundle\Controller\ImportController($this->container);
+                $out = $contec->importBdx($this->getUser()->getCliente(), $source, 'report', false, 0, 'mr');
+                break;
+            case 3:
+                $ravinale = new \Claims\RavinaleBundle\Controller\ImportController($this->container);
+                $out = $ravinale->importBdx($this->getUser()->getCliente(), $source, 'mr');
+                break;
+        }
         return $out;
     }
 
@@ -321,7 +341,6 @@ class MonthlyReportController extends Controller {
         $pratiche_aggiornate = $pratiche_nuove = array();
         $sistema = $this->findOneBy('ClaimsHBundle:Sistema', array('nome' => 'Contec'));
         //return new \Symfony\Component\HttpFoundation\Response(json_encode($data->sheets));
-        $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($cliente);
         $aggiornamenti = array();
         foreach ($data->sheets as $sheet) {
             $sheet = $sheet['cells'];

@@ -10,6 +10,14 @@
 <div class="row-fluid">
     <div class="span6">
         <div class="block">
+            <select name="mode" id="mode">
+                <option value="-1">Standard</option>
+               {# <option value="-2">BDX Contec</option> #}
+                <option value="-3">BDX Ravinale</option>
+                <option value="1">Add da Standard</option>
+               {# <option value="2">Add da BDX Contec</option> #}
+                <option value="3">Add da BDX Ravinale</option>
+            </select>
 {{ render(controller('EphpDragDropBundle:Render:uploadNf')) }}
 {% javascripts  
     '@EphpUtilityBundle/Resources/public/js/check_sanitize_regexp.js'

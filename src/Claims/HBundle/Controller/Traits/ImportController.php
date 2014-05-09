@@ -10,7 +10,9 @@ trait ImportController {
         /* @var $old \Claims\HBundle\Entity\Pratica */
         if ($old) {
             if ($audit) {
-                if (intval($audit) == 2) {
+                if ($audit == 'mr') {
+                    $old->setInMonthlyReport(true);
+                } elseif (intval($audit) == 2) {
                     $old->setInAudit2(true);
                 } else {
                     $old->setInAudit(true);
@@ -173,7 +175,7 @@ trait ImportController {
             if ($audit || count($log) > 0) {
 //                \Ephp\UtilityBundle\Utility\Debug::pr($log, true);
                 $old->addLog($log);
-                if (!$audit) {
+                if (!$audit || $audit == 'mr') {
                     $this->persist($old);
                     $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
                     $this->persist($evento);
@@ -187,11 +189,15 @@ trait ImportController {
             if (!$audit) {
                 $pratica->addLog(array('Importata pratica'));
             } else {
-                $pratica->addLog(array('Importata pratica con Audit'));
-                if (intval($audit) == 2) {
-                    $pratica->setInAudit2(true);
+                if ($audit == 'mr') {
+                    $old->setInMonthlyReport(true);
+                    $pratica->addLog(array('Importata pratica con Monthly Report'));
+                } elseif (intval($audit) == 2) {
+                    $old->setInAudit2(true);
+                    $pratica->addLog(array('Importata pratica con Audit'));
                 } else {
-                    $pratica->setInAudit(true);
+                    $old->setInAudit(true);
+                    $pratica->addLog(array('Importata pratica con Audit'));
                 }
             }
             $pratica->setDataImport(new \DateTime());

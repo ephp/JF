@@ -175,7 +175,7 @@ trait ImportController {
             if ($audit || count($log) > 0) {
 //                \Ephp\UtilityBundle\Utility\Debug::pr($log, true);
                 $old->addLog($log);
-                if (!$audit || $audit == 'mr') {
+                if (!$audit) {
                     $this->persist($old);
                     $evento = $this->newEvento($this->BORDERAUX, $old, null, implode("\n", $log));
                     $this->persist($evento);

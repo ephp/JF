@@ -324,11 +324,13 @@ class MonthlyReportController extends Controller {
                 $out = $this->importBdx($this->getUser()->getCliente(), $source);
                 break;
             case 2:
-                $contec = new \Claims\ContecBundle\Controller\ImportController($this->container);
+                $contec = new \Claims\ContecBundle\Controller\ImportController();
+                $contec->setContainer($this->container);
                 $out = $contec->importBdx($this->getUser()->getCliente(), $source, 'report', false, 0, 'mr');
                 break;
             case 3:
-                $ravinale = new \Claims\RavinaleBundle\Controller\ImportController($this->container);
+                $ravinale = new \Claims\RavinaleBundle\Controller\ImportController();
+                $ravinale->setContainer($this->container);
                 $out = $ravinale->importBdx($this->getUser()->getCliente(), $source, 'mr');
                 break;
         }

@@ -281,6 +281,9 @@ select sum(replace(r.response, ',', '')) as tot,
         }
         
         $audit = $entity->getAudit();
+        foreach($entity->getDocumenti() as $d) {
+            $this->remove($d);
+        }
         $this->remove($entity);
         
         return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $audit->getId())));

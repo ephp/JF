@@ -190,13 +190,13 @@ trait ImportController {
                 $pratica->addLog(array('Importata pratica'));
             } else {
                 if ($audit == 'mr') {
-                    $old->setInMonthlyReport(true);
+                    $pratica->setInMonthlyReport(true);
                     $pratica->addLog(array('Importata pratica con Monthly Report'));
                 } elseif (intval($audit) == 2) {
-                    $old->setInAudit2(true);
+                    $pratica->setInAudit2(true);
                     $pratica->addLog(array('Importata pratica con Audit'));
                 } else {
-                    $old->setInAudit(true);
+                    $pratica->setInAudit(true);
                     $pratica->addLog(array('Importata pratica con Audit'));
                 }
             }

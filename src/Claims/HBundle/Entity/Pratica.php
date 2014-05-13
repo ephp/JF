@@ -1674,6 +1674,9 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return string 
      */
     public function getReportSoi($encode = false) {
+        if(!$this->reportSoi) {
+            $this->reportSoi = $this->soi;
+        }
         if ($encode) {
             $soi = $this->severityOfInjury();
             return isset($soi[$this->reportSoi]) ? $soi[$this->reportSoi] : $soi[intval($this->reportSoi)];
@@ -1699,7 +1702,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return \DateTime 
      */
     public function getReportDol() {
-        return $this->reportDol;
+        return $this->reportDol ?: $this->dol;
     }
 
     /**
@@ -1720,7 +1723,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return \DateTime 
      */
     public function getReportDon() {
-        return $this->reportDon;
+        return $this->reportDon ?: $this->don;
     }
 
     public function getReportVerificaCopertura() {
@@ -1771,6 +1774,9 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return string 
      */
     public function getReportMpl($encode = false) {
+        if(!$this->reportMpl) {
+            $this->reportMpl = $this->mpl;
+        }
         if ($encode) {
             $mpl = $this->fasceMpl();
             if (isset($mpl[$this->reportMpl])) {
@@ -1840,6 +1846,9 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return string 
      */
     public function getReportTypeOfLoss($encode = true) {
+        if(!$this->reportTypeOfLoss) {
+            $this->reportTypeOfLoss = $this->typeOfLoss;
+        }
         if ($encode) {
             $tpl = $this->tpl();
             if (isset($tpl[intval($this->reportTypeOfLoss)])) {
@@ -1867,6 +1876,9 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return string 
      */
     public function getReportServiceProvider($encode = false) {
+        if(!$this->reportServiceProvider) {
+            $this->reportServiceProvider = $this->sp;
+        }
         if ($encode) {
             $sa = $this->sa();
             if (isset($sa[intval($this->reportServiceProvider)])) {
@@ -1894,7 +1906,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return float 
      */
     public function getReportPossibleRecovery() {
-        return $this->reportPossibleRecovery;
+        return $this->reportPossibleRecovery ?: $this->possibleRecovery;
     }
 
     /**
@@ -1915,7 +1927,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return float 
      */
     public function getReportAmountReserved() {
-        return $this->reportAmountReserved;
+        return $this->reportAmountReserved ?: $this->amountReserved;
     }
 
     /**
@@ -1936,7 +1948,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return float 
      */
     public function getReportApplicableDeductable() {
-        return $this->reportApplicableDeductable;
+        return $this->reportApplicableDeductable ?: $this->applicableDeductible;
     }
 
     /**
@@ -2041,7 +2053,7 @@ i     * @ORM\Column(name="anno", type="integer")
      * @return \JF\ACLBundle\Entity\Gestore
      */
     public function getReportGestore() {
-        return $this->reportGestore;
+        return $this->reportGestore ?: $this->getGestore();
     }
 
     /**

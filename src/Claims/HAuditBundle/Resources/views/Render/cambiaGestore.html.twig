@@ -8,6 +8,7 @@
         </div>        
         <div style="clear: both"></div>
         <select name="gestore[gestore]" id="gestore_gestore">
+            <option value=""></option>
             {% for gestore in gestori %}
                 <option value="{{ gestore.slug }}">{{gestore.nome}}</option>
             {% endfor %}

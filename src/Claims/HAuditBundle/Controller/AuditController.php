@@ -57,7 +57,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 );
             }
         }
-        
+
         $gestori = $this->getRepository('JFACLBundle:Gestore')
                 ->createQueryBuilder('u')
                 ->where('u.roles LIKE :audit')
@@ -68,7 +68,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 ->execute();
 
         $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
-        
+
         return array(
             'gestori' => $gestori,
             'priorita' => $priorita,
@@ -188,7 +188,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 ->execute();
 
         $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
-        
+
         return array(
             'gestori' => $gestori,
             'priorita' => $priorita,
@@ -228,7 +228,7 @@ select sum(replace(r.response, ',', '')) as tot,
                 ->execute();
 
         $priorita = $this->findBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'show' => true));
-        
+
         return array(
             'gestori' => $gestori,
             'priorita' => $priorita,
@@ -790,9 +790,9 @@ select sum(replace(r.response, ',', '')) as tot,
         $source = __DIR__ . '/../../../../web' . $this->getParam('file');
         $audit = $this->find('ClaimsHAuditBundle:Audit', $this->getParam('audit'));
         /*
-        if (intval($this->getParam('add_more', 1)) == 0) {
-            $this->getRepository('ClaimsHAuditBundle:Pratica')->cancellaAudit($audit);
-        }
+          if (intval($this->getParam('add_more', 1)) == 0) {
+          $this->getRepository('ClaimsHAuditBundle:Pratica')->cancellaAudit($audit);
+          }
          */
         $out = $this->importBdx($this->getUser()->getCliente(), $source, $audit);
         $out['audit'] = $audit->getId();
@@ -991,8 +991,12 @@ select sum(replace(r.response, ',', '')) as tot,
         $genera = false;
         try {
             $this->getEm()->beginTransaction();
-            if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'To do', 'Updated'))) {
-                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'priorita' => 'Work in progress')));
+            if ($gestore) {
+                if (in_array($pratica->getPriorita()->getPriorita(), array('Nuovo', 'To do', 'Updated'))) {
+                    $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'priorita' => 'Work in progress')));
+                }
+            } else {
+                $pratica->setPriorita($this->findOneBy('ClaimsCoreBundle:Priorita', array('area' => 'audit', 'priorita' => 'To do')));
             }
             $pratica->setGestore($gestore);
             $this->persist($pratica);

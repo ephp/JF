@@ -81,6 +81,30 @@ class PraticaController extends Controller
         if ($editForm->isValid()) {
             $this->persist($entity);
 
+            $responses = getPremarkedResponse();
+            foreach ($responses as $response) {
+                /* @var $response \Claims\HAuditBundle\Entity\PraticaQuestion */
+                switch($response->getQuestion()->getPrePopulate()) {
+                    case 'dol':
+                        $response->setResponse($entity->getDol()->format('d-m-Y'));
+                        $this->persist($response);
+                        break;
+                    case 'don':
+                        $response->setResponse($entity->getDon()->format('d-m-Y'));
+                        $this->persist($response);
+                        break;
+                    case 'dsCode':
+                        $response->setResponse($entity->getDsCode());
+                        $this->persist($response);
+                        break;
+                    case 'mfRef':
+                        $response->setResponse($entity->getMfRef());
+                        $this->persist($response);
+                        break;
+                }
+            }
+            
+
             return $this->redirect($this->generateUrl('claims-h-audit_show-pratica', array('slug' => $entity->getSlug(), 'id' => $entity->getAudit()->getId())));
         }
 

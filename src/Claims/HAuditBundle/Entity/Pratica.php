@@ -964,6 +964,16 @@ class Pratica {
         return $this->getGruppo() . ' ' . $this->getClaimant();
     }
 
+    public function getPremarkedResponse() {
+        try {
+            $criteria = Criteria::create()
+                    ->where(Criteria::expr()->in("question", array(85, 86, 87, 101, 102, 254)));
+            return $this->question->matching($criteria);
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+    
     /**
      * @param integer $id
      * @return PraticaQuestion|boolean

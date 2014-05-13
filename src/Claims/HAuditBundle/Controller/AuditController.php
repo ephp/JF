@@ -279,6 +279,11 @@ select sum(replace(r.response, ',', '')) as tot,
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Audit entity.');
         }
+        
+        $audit = $entity->getAudit();
+        $this->remove($entity);
+        
+        return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $audit->getId())));
 
         return $this->redirect($this->generateUrl('claims-h-audit'));
     }

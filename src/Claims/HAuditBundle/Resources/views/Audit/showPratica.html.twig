@@ -41,6 +41,7 @@
             <div class="data-fluid">
                 <div class="head dblue">                                
                     <h2>{{ pratica.codice }} - {{ pratica.claimant }}</h2>
+                    <button class="btn btn-info" type="button" style="float: right;" onclick="window.location = '{{ path('claims-h-audit_soft_pratica_edit', {'slug': pratica.slug}) }}';">Edit Claim Data</button>
                 </div>
                 <div class="data dark">
                     <div  id="riepilogo">

@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+{% form_theme edit_form '::form_aries_layout.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+    <div class="icon">
+        <span class="ico-cog"></span>
+    </div>
+    <h1>Claim <small>Edit</small></h1>
+</div>
+{{ form_start(edit_form) }}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>Claims: {{ entity }}</h2>
+                </div>                                        
+                <div class="data-fluid">
+                {{ form_row(edit_form.sre) }}
+                {{ form_row(edit_form.dol) }}
+                {{ form_row(edit_form.reserve) }}
+                {{ form_row(edit_form.totalPaid) }}
+                {{ form_row(edit_form.dsCode) }}
+                {{ form_row(edit_form.gruppo) }}
+                </div>                                        
+            </div>
+        </div>
+        <div class="span6">
+            <div class="block">
+                <div class="head">                                
+                    <h2>{{ entity.ospedale }}</h2>
+                </div>                                        
+                <div class="data-fluid">
+                {{ form_row(edit_form.mfRef) }}
+                {{ form_row(edit_form.don) }}
+                {{ form_row(edit_form.proReserve) }}
+                {{ form_row(edit_form.indemnityCtpPaid) }}
+                {{ form_row(edit_form.status) }}
+                {{ form_rest(edit_form) }}
+                </div>                                        
+            </div>
+        </div>
+    </div>
+{{ form_end(edit_form) }}
+<a href="{{ path('claims-h-audit_show-pratica', {'slug': entity.slug, 'id': entity.audit.id}) }}">
+    <span class="label label-inverse">Torna indietro</span>
+</a>
+
+{% endblock %}

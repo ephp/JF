@@ -466,8 +466,8 @@ select sum(replace(r.response, ',', '')) as tot,
         }
         if ($pratica->getRemoteId()) {
             $pratica->setPriorita($this->findOneby('ClaimsCoreBundle:Priorita', array('priorita' => 'Aggiornato')));
-            $this->persist($pratica);
         }
+        $this->persist($pratica);
         $group = $audit->getGroup($this->getParam('ordine') + 1);
 
         return array(

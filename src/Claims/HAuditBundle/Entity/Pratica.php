@@ -36,21 +36,21 @@ class Pratica {
      * @var Audit
      * 
      * @ORM\ManyToOne(targetEntity="Audit")
-     * @ORM\JoinColumn(name="audit_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="audit_id", referencedColumnName="id", nullable=true)
      */
     private $audit;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="gruppo", type="string", length=64)
+     * @ORM\Column(name="gruppo", type="string", length=64, nullable=true)
      */
     private $gruppo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sre", type="string", length=10)
+     * @ORM\Column(name="sre", type="string", length=10, nullable=true)
      */
     private $sre;
 
@@ -131,6 +131,12 @@ class Pratica {
      */
     private $reserve;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_paid", type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $totalPaid;
     /**
      * @var float
      *
@@ -897,6 +903,15 @@ class Pratica {
         return $this;
     }
 
+    public function getTotalPaid() {
+        return $this->totalPaid;
+    }
+
+    public function setTotalPaid($totalPaid) {
+        $this->totalPaid = $totalPaid;
+        return $this;
+    }
+    
     /**
      * Add question
      *

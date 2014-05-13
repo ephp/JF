@@ -314,7 +314,7 @@ class MonthlyReportController extends Controller {
         $mode = abs(intval($this->getParam('mode', 0)));
         $cancella = intval($this->getParam('mode', 0)) > 0;
         
-        if($cancella) {
+        if(false && $cancella) {
             $this->getRepository('ClaimsHBundle:Pratica')->cancellaMR($this->getUser()->getCliente());
         }
         
@@ -326,7 +326,7 @@ class MonthlyReportController extends Controller {
             case 2:
                 $contec = new \Claims\ContecBundle\Controller\ImportController();
                 $contec->setContainer($this->container);
-                $out = $contec->importBdx($this->getUser()->getCliente(), $source, 'report', false, 0, 'mr');
+                $out = $contec->importBdx($this->getUser()->getCliente(), $source, true, 'mr', 'mr');
                 break;
             case 3:
                 $ravinale = new \Claims\RavinaleBundle\Controller\ImportController();

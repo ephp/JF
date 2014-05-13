@@ -1008,6 +1008,9 @@ select sum(replace(r.response, ',', '')) as tot,
         $priorita = $pratica->getPriorita();
         if (!$gestore) {
             $gestore = new \JF\ACLBundle\Entity\Gestore();
+            $gestore->setNome('');
+            $gestore->setSigla('');
+            $gestore->setSlug('');
         }
         return $this->jsonResponse(array('nome' => $gestore->getNome(), 'slug' => $gestore->getSlug(), 'sigla' => $gestore->getSigla(), 'id' => $priorita->getId(), 'label' => $priorita->getPriorita(), 'css' => $priorita->getCss()));
     }

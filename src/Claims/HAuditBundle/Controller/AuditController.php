@@ -281,7 +281,7 @@ select sum(replace(r.response, ',', '')) as tot,
         }
         
         $audit = $entity->getAudit();
-        $this->setAudit(null);
+        $entity->setAudit(null);
         $this->persist($entity);
         
         return $this->redirect($this->generateUrl('claims-h-audit_show', array('id' => $audit->getId())));
